@@ -1,0 +1,41 @@
+/* Write your global styles here, in SCSS syntax. Variables and mixins from the src/variables.scss file are available here without importing */
+
+// Style reset for all input fields
+input {
+	width: 100%;
+	border: none;
+	background: none;
+	outline: none;
+}
+
+.invoiceTable {
+	th {
+		@apply text-sm text-left;
+	}
+
+	th,
+	td {
+		padding: 0.4rem 0.7rem;
+
+		&:first-child,
+		&:last-child {
+			padding: 0;
+		}
+	}
+
+	.tablePadding {
+		padding: 0.4rem 0.7rem;
+	}
+
+	tr:nth-child(even) {
+		@apply bg-gray-100;
+	}
+
+	tr:nth-child(odd) {
+		@apply bg-white;
+	}
+
+	tr.borderline {
+		@apply border-b-2 border-gray-300;
+	}
+}
