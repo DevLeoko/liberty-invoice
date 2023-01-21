@@ -3,19 +3,18 @@
 // Style reset for all input fields
 input {
 	width: 100%;
-	border: none;
 	background: none;
 	outline: none;
 }
 
 .invoiceTable {
 	th {
-		@apply text-sm text-left;
+		@apply text-sm text-left bg-white;
 	}
 
 	th,
 	td {
-		padding: 0.4rem 0.7rem;
+		padding: 0.3rem 0.7rem;
 
 		&:first-child,
 		&:last-child {
@@ -24,18 +23,18 @@ input {
 	}
 
 	.tablePadding {
-		padding: 0.4rem 0.7rem;
-	}
-
-	tr:nth-child(even) {
-		@apply bg-gray-100;
+		padding: 0.3rem 0.7rem;
 	}
 
 	tr:nth-child(odd) {
+		background-color: #f3f7fc;
+	}
+
+	tr:nth-child(even) {
 		@apply bg-white;
 	}
 
 	tr.borderline {
-		@apply border-b-2 border-gray-300;
+		@apply border-b border-gray-300;
 	}
 }

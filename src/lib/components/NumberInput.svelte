@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { tick } from 'svelte'
+	import StealthyInput from './StealthyInput.svelte'
 
-	export let prefix: string = ''
+	export let formatted: string
 	export let value: number = 0
 
 	let focused = false
-	let inputElement: HTMLInputElement
-
-	$: formattedValue = `${prefix}${value.toFixed(2)}`
+	let inputElement: StealthyInput
 
 	function focus() {
 		focused = true
@@ -16,13 +15,12 @@
 </script>
 
 {#if focused}
-	<input type="number" bind:value bind:this={inputElement} on:blur={() => (focused = false)} />
-{:else}
-	<input
-		type="text"
-		class="pr-3"
-		on:focus={focus}
-		value={formattedValue}
-		on:keydown|preventDefault
+	<StealthyInput
+		type="number"
+		bind:value
+		bind:this={inputElement}
+		on:blur={() => (focused = false)}
 	/>
+{:else}
+	<StealthyInput type="text" bind:this={inputElement} on:focus={focus} value={formatted} />
 {/if}
