@@ -18,7 +18,10 @@ export interface InvoiceItem {
 }
 
 export interface Invoice {
+	internalId: number
 	id: string
+	partialId: number
+	idDate: Date
 	language: Locale
 	date: Date
 	due:
@@ -79,7 +82,12 @@ export function getDueDays(invoice: Invoice) {
 }
 
 export const SAMPLE_INVOICE: Invoice = {
+	internalId: 0,
 	id: '2301.001',
+	idDate: new Date(),
+	description: '',
+	note: '',
+	partialId: 1,
 	language: Locale.DE,
 	date: new Date(),
 	due: {
