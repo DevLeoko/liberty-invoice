@@ -1,14 +1,15 @@
+import { writable } from 'svelte/store'
 import type { TranslationFunction } from './i18n'
-import type { Locale } from './translations'
 
 export interface ClientDetails {
 	name?: string
+	shorthand?: string
 	additionalLine?: string
 	firstName?: string
 	lastName?: string
 	phone?: string
 	email?: string
-	address?: Address
+	address: Address
 	vatNumber?: string
 }
 
@@ -18,17 +19,6 @@ export interface Address {
 	city?: string
 	zip?: string
 	countryCode?: string
-}
-
-export interface BankingDetails {
-	bankName: string
-	Iban: string
-	Bic: string
-}
-
-export interface AccountDetails extends ClientDetails {
-	bankingDetails?: BankingDetails
-	logoUrl?: string
 }
 
 export function getClientDisplayLines(client: ClientDetails, t: TranslationFunction) {
@@ -74,3 +64,20 @@ export function getAddressDisplayLines(address: Address, t: TranslationFunction)
 	}
 	return lines
 }
+
+export const SAMPLE_CLIENT: ClientDetails = {
+	name: 'SomeComp Ltd.',
+	phone: '+1 234 567 890',
+	email: 'info@somecomp.com',
+	shorthand: 'SC',
+	address: {
+		street: 'Anystreet',
+		streetNumber: '12',
+		city: 'Thiscity',
+		zip: '12345',
+		countryCode: 'US'
+	},
+	vatNumber: 'US123456789'
+}
+
+export const clients = writable([SAMPLE_CLIENT])

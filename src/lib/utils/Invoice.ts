@@ -1,4 +1,7 @@
-import type { AccountDetails, ClientDetails } from './Client'
+import { cloneDeep } from 'lodash'
+import { derived, get, writable, type Writable } from 'svelte/store'
+import { SAMPLE_ACCOUNT, type AccountDetails } from './Account'
+import { SAMPLE_CLIENT, type ClientDetails } from './Client'
 import { CURRENCIES, type Currency } from './Currency'
 import { Locale } from './translations'
 
@@ -116,39 +119,56 @@ export const SAMPLE_INVOICE: Invoice = {
 			value: 10
 		}
 	],
-	currency: CURRENCIES[0],
-	client: {
-		name: 'SomeComp Ltd.',
-		phone: '+1 234 567 890',
-		email: 'info@somecomp.com',
-		address: {
-			street: 'Anystreet',
-			streetNumber: '12',
-			city: 'Thiscity',
-			zip: '12345',
-			countryCode: 'US'
-		},
-		vatNumber: 'US123456789'
+	currency: cloneDeep(CURRENCIES[0]),
+	client: cloneDeep(SAMPLE_CLIENT),
+	account: cloneDeep(SAMPLE_ACCOUNT)
+}
+
+export const invoices = writable([SAMPLE_INVOICE])
+export const activeInvoiceId = writable(get(invoices)[0].internalId)
+
+let activeInvoiceIdLocal = get(activeInvoiceId)
+activeInvoiceId.subscribe((value) => (activeInvoiceIdLocal = value))
+
+export const activeInvoice: Writable<Invoice> = {
+	...derived([invoices, activeInvoiceId], ([$invoices, $index]) => $invoices[$index]),
+	set: (value) => {
+		invoices.update((invoices) => {
+			const invoiceIndex = invoices.findIndex((inv) => inv.internalId == activeInvoiceIdLocal)
+			invoices[invoiceIndex] = value
+			return invoices
+		})
 	},
-	account: {
-		name: 'MyComp Inc.',
-		firstName: 'John',
-		lastName: 'Doe',
-		phone: '+1 234 567 890',
-		email: 'contact@mycomp.com',
-		address: {
-			street: 'Anystreet',
-			streetNumber: '12',
-			city: 'Thiscity',
-			zip: '12345',
-			countryCode: 'US'
-		},
-		vatNumber: 'US123456789',
-		bankingDetails: {
-			bankName: 'MyBank',
-			Iban: 'US12 3456 7891 1234 1846 20',
-			Bic: 'US123456789'
-		},
-		logoUrl: 'example-logo.svg'
+	update: (fn) => {
+		invoices.update((invoices) => {
+			const invoiceIndex = invoices.findIndex((inv) => inv.internalId == activeInvoiceIdLocal)
+			invoices[invoiceIndex] = fn(invoices[get(activeInvoiceId)])
+			return invoices
+		})
 	}
+}
+
+export function creanteNewInvoice() {
+	const currInvoices = get(invoices)
+	const lastInvoice: Invoice | undefined = currInvoices[currInvoices.length - 1]
+	const newInvoice = cloneDeep(SAMPLE_INVOICE)
+	newInvoice.internalId = Math.max(...currInvoices.map((invoice) => invoice.internalId)) + 1
+
+	if (lastInvoice) {
+		// copy currency, client, account, language, due days
+		newInvoice.client = cloneDeep(lastInvoice.client)
+		newInvoice.account = cloneDeep(lastInvoice.account)
+		newInvoice.currency = cloneDeep(lastInvoice.currency)
+		newInvoice.language = lastInvoice.language
+
+		if (lastInvoice.due.type === 'days') {
+			newInvoice.due = {
+				type: 'days',
+				value: lastInvoice.due.value
+			}
+		}
+	}
+
+	invoices.update((invoices) => [...invoices, newInvoice])
+	activeInvoiceId.set(currInvoices.length - 1)
 }

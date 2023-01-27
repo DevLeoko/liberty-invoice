@@ -54,5 +54,7 @@ input[type='datetime-local'],
 input[type='search'],
 textarea,
 select {
-	@apply border border-gray-300 px-2 py-1;
+	&:not(.pure) {
+		@apply border border-gray-300 px-2 py-1;
+	}
 }

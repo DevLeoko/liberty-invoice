@@ -65,7 +65,7 @@
 
 <div
 	style="width: 210mm; min-height: 297mm; color: #4F5A69; box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.3); font-family: 'Roboto', sans-serif; font-size: 15px;"
-	class="m-4 p-10 mx-auto relative flex flex-col"
+	class="p-10 relative flex flex-col"
 	on:pointermove={movedCursor}
 >
 	<InvoiceHeader {invoice} />
@@ -78,7 +78,7 @@
 
 	<InvoiceDescription {invoice} />
 
-	<InvoiceTable {invoice} />
+	<InvoiceTable bind:invoice />
 
 	<InvoiceFooter {invoice} />
 </div>

@@ -20,7 +20,7 @@
 	</td>
 	<td class="relative">
 		<span class="invisible whitespace-nowrap">{item.quantity}</span>
-		<input type="number" class="absolute inset-0" bind:value={item.quantity} />
+		<input type="number" class="absolute inset-0 pure" bind:value={item.quantity} />
 	</td>
 	<td><NumberInput formatted={$formatCurrency(item.unitPrice)} bind:value={item.unitPrice} /> </td>
 	<td class="text-right">{$formatCurrency(item.quantity * item.unitPrice)}</td>

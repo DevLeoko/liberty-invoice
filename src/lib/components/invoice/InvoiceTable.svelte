@@ -20,7 +20,7 @@
 		<th class="w-36 !text-right">{$it('invoice.amount')}</th>
 		<th class="w-0" />
 	</tr>
-	<InvoiceItemList items={invoice.items} />
+	<InvoiceItemList bind:items={invoice.items} />
 	<tbody>
 		{#if invoice.items.length % 2 == 1}
 			<tr class="h-0" />

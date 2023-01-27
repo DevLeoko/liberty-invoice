@@ -37,6 +37,8 @@
 	"type": "module",
 	"dependencies": {
 		"@leoko/html2pdf-browser": "^1.0.0",
+		"@types/lodash": "^4.14.191",
+		"lodash": "^4.17.21",
 		"material-icons": "^1.13.1"
 	}
 }
