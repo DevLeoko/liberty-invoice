@@ -39,6 +39,30 @@ input {
 	}
 }
 
+.vertialSelector {
+	@apply flex;
+
+	.item {
+		@apply flex items-center justify-center h-14 w-14 border-blue-500  bg-white cursor-pointer select-none hover:text-blue-500 hover:border mr-2;
+
+		&.active {
+			@apply text-blue-500 border-2 hover:border-2;
+		}
+
+		.actions {
+			@apply hidden absolute -mt-8;
+
+			.action {
+				@apply hover:text-blue-500 text-lg text-gray-600  text-opacity-20 hover:text-opacity-100 cursor-pointer;
+			}
+		}
+
+		&:hover .actions {
+			@apply flex;
+		}
+	}
+}
+
 input[type='text'],
 input[type='number'],
 input[type='email'],
@@ -57,4 +81,21 @@ select {
 	&:not(.pure) {
 		@apply border border-gray-300 px-2 py-1;
 	}
+}
+
+// Style scrollbar
+::-webkit-scrollbar {
+	width: 0.4rem;
+}
+
+::-webkit-scrollbar-track {
+	background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #555;
 }

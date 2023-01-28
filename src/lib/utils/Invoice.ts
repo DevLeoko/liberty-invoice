@@ -3,6 +3,7 @@ import { derived, get, writable, type Writable } from 'svelte/store'
 import { SAMPLE_ACCOUNT, type AccountDetails } from './Account'
 import { SAMPLE_CLIENT, type ClientDetails } from './Client'
 import { CURRENCIES, type Currency } from './Currency'
+import { parseInvoiceIdFormat, settings } from './Settings'
 import { Locale } from './translations'
 
 export interface PriceModifier {
@@ -20,6 +21,16 @@ export interface InvoiceItem {
 	unitPrice: number
 }
 
+export type InvoiceDue =
+	| {
+			type: 'days'
+			value: number
+	  }
+	| {
+			type: 'date'
+			value: Date
+	  }
+
 export interface Invoice {
 	internalId: number
 	id: string
@@ -27,15 +38,7 @@ export interface Invoice {
 	idDate: Date
 	language: Locale
 	date: Date
-	due:
-		| {
-				type: 'days'
-				value: number
-		  }
-		| {
-				type: 'date'
-				value: Date
-		  }
+	due: InvoiceDue
 	items: InvoiceItem[]
 	modifiers: PriceModifier[]
 	currency: Currency
@@ -150,9 +153,28 @@ export const activeInvoice: Writable<Invoice> = {
 
 export function creanteNewInvoice() {
 	const currInvoices = get(invoices)
-	const lastInvoice: Invoice | undefined = currInvoices[currInvoices.length - 1]
-	const newInvoice = cloneDeep(SAMPLE_INVOICE)
-	newInvoice.internalId = Math.max(...currInvoices.map((invoice) => invoice.internalId)) + 1
+	const lastInvoice = currInvoices[currInvoices.length - 1] ?? SAMPLE_INVOICE
+
+	const { id, partialId } = getNextId(currInvoices, get(settings).invoiceIdFormat)
+	const internalId = Math.max(...currInvoices.map((invoice) => invoice.internalId)) + 1
+
+	const newInvoice: Invoice = {
+		internalId,
+		id,
+		partialId,
+		idDate: new Date(),
+		date: new Date(),
+		items: cloneDeep(lastInvoice.items),
+		modifiers: cloneDeep(lastInvoice.modifiers),
+		language: lastInvoice.language,
+		currency: cloneDeep(lastInvoice.currency),
+		client: cloneDeep(lastInvoice.client),
+		account: cloneDeep(lastInvoice.account),
+		due: {
+			type: 'days',
+			value: getDueDays(lastInvoice)
+		}
+	}
 
 	if (lastInvoice) {
 		// copy currency, client, account, language, due days
@@ -170,5 +192,46 @@ export function creanteNewInvoice() {
 	}
 
 	invoices.update((invoices) => [...invoices, newInvoice])
-	activeInvoiceId.set(currInvoices.length - 1)
+	activeInvoiceId.set(internalId)
+}
+
+function getCurrentTimespan(type: 'year' | 'month' | 'day'): { from: Date; to: Date } {
+	const now = new Date()
+	switch (type) {
+		case 'year':
+			return {
+				from: new Date(now.getFullYear(), 0, 1),
+				to: new Date(now.getFullYear() + 1, 0, 1)
+			}
+		case 'month':
+			return {
+				from: new Date(now.getFullYear(), now.getMonth(), 1),
+				to: new Date(now.getFullYear(), now.getMonth() + 1, 1)
+			}
+		case 'day':
+			return {
+				from: new Date(now.getFullYear(), now.getMonth(), now.getDate()),
+				to: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1)
+			}
+	}
+}
+
+function getNextId(invoices: Invoice[], idFormat: string): { id: string; partialId: number } {
+	const { discriminatingTimespan, format } = parseInvoiceIdFormat(idFormat)
+
+	const currentTimespan =
+		discriminatingTimespan == 'none' ? null : getCurrentTimespan(discriminatingTimespan)
+
+	const maxPartialId = invoices
+		.filter((invoice) => {
+			if (!currentTimespan) return true
+			return invoice.date >= currentTimespan.from && invoice.date < currentTimespan.to
+		})
+		.map((invoice) => invoice.partialId)
+		.reduce((max, curr) => Math.max(max, curr), 0)
+
+	return {
+		id: format(maxPartialId + 1),
+		partialId: maxPartialId + 1
+	}
 }

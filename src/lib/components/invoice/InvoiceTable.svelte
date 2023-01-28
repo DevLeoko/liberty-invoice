@@ -33,10 +33,10 @@
 		</tr>
 		<tr>
 			<td colspan="3" class="bg-white" />
-			<td colspan="3" class="!text-left"
-				>{@html $it('invoice.taxReverseCharge')}
-				{#if showHints} <LightPulse /> {/if}</td
-			>
+			<td colspan="3" class="!text-left">
+				{@html $it('invoice.taxReverseCharge')}
+				{#if $showHints} <LightPulse /> {/if}
+			</td>
 			<td />
 		</tr>
 		<tr class="!bg-slate-200 font-semibold">

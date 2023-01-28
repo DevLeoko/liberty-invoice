@@ -16,6 +16,7 @@
 		"@sveltejs/kit": "^1.0.0",
 		"@typescript-eslint/eslint-plugin": "^5.45.0",
 		"@typescript-eslint/parser": "^5.45.0",
+		"@types/lodash": "^4.14.191",
 		"autoprefixer": "^10.4.7",
 		"eslint": "^8.28.0",
 		"eslint-config-prettier": "^8.5.0",
@@ -37,7 +38,6 @@
 	"type": "module",
 	"dependencies": {
 		"@leoko/html2pdf-browser": "^1.0.0",
-		"@types/lodash": "^4.14.191",
 		"lodash": "^4.17.21",
 		"material-icons": "^1.13.1"
 	}

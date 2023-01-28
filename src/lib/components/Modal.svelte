@@ -22,7 +22,7 @@
 
 {#if open}
 	<div
-		class="flex justify-center items-center w-screen h-screen fixed z-20 bg-blur left-0 top-0"
+		class="flex justify-center items-center w-screen h-screen fixed z-40 bg-blur left-0 top-0"
 		on:click|self={() => dispatchEvent('exit')}
 		on:keydown={handleKeydown}
 	>

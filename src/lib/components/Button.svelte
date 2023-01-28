@@ -25,7 +25,7 @@
 			</div>
 		</div>
 	{/if}
-	<div class:invisible={loading}>
+	<div class:invisible={loading} class="flex justify-center">
 		<slot />
 	</div>
 </button>

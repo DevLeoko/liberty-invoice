@@ -27,11 +27,18 @@
 
 	export let invoice: Invoice
 
+	export let invoiceContainer: HTMLElement | null = null
+
 	let showHints = writable(false)
+	let previewProp = false
 	let preview = writable(false)
+
+	$: $preview = previewProp
 
 	let timeout: ReturnType<typeof setTimeout> | null = null
 	function movedCursor() {
+		if ($preview) return
+
 		$showHints = true
 		if (timeout) clearTimeout(timeout)
 
@@ -61,11 +68,14 @@
 		formatFloat: derived(formatFloat, ($formatFloat) => $formatFloat),
 		formatCurrency: derived(formatCurrency, ($formatCurrency) => $formatCurrency)
 	})
+
+	export { previewProp as preview }
 </script>
 
 <div
 	style="width: 210mm; min-height: 297mm; color: #4F5A69; box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.3); font-family: 'Roboto', sans-serif; font-size: 15px;"
 	class="p-10 relative flex flex-col"
+	bind:this={invoiceContainer}
 	on:pointermove={movedCursor}
 >
 	<InvoiceHeader {invoice} />

@@ -55,34 +55,21 @@
 	</BasicModal>
 {/if}
 
-<div class="flex">
+<div class="vertialSelector">
 	{#each $clients as client, i}
 		{@const isSelected = JSON.stringify(client) === JSON.stringify(selected)}
-		<div
-			class="circleBtn mr-2 group"
-			on:click={() => (selected = client)}
-			class:border-2={isSelected}
-		>
-			<h3 class="text-lg group-hover:hidden">{client.shorthand}</h3>
-			<div class="group-hover:flex hidden text-gray-600">
-				<span
-					class="material-icons hover:text-blue-600 text-lg mr-1 cursor-pointer"
-					on:click={() => startEdit(i)}>edit</span
-				>
-				<span
-					class="material-icons hover:text-blue-600 text-lg cursor-pointer"
-					on:click={() => deleteClient(i)}>delete</span
-				>
+		<div class="item group" on:click={() => (selected = client)} class:border-2={isSelected}>
+			<h3 class="text-lg">{client.shorthand}</h3>
+			<div class="actions">
+				<span class="material-icons action mr-2" on:click={() => startEdit(i)}>edit</span>
+				<span class="material-icons action" on:click={() => deleteClient(i)}>delete</span>
 			</div>
 		</div>
 	{/each}
-	<div class="circleBtn" on:click={startCreate}>
+	<div class="item" on:click={startCreate}>
 		<h3 class="text-2xl font-bold pb-1">+</h3>
 	</div>
 </div>
 
 <style>
-	.circleBtn {
-		@apply flex items-center justify-center h-16 w-16 rounded-full border-blue-500  bg-white cursor-pointer select-none hover:text-blue-500 hover:border;
-	}
 </style>
