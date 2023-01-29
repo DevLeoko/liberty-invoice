@@ -38,6 +38,7 @@
 	"type": "module",
 	"dependencies": {
 		"@leoko/html2pdf-browser": "^1.0.0",
+		"@sveltejs/adapter-static": "^1.0.5",
 		"localforage": "^1.10.0",
 		"lodash": "^4.17.21",
 		"material-icons": "^1.13.1"
