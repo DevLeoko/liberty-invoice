@@ -119,7 +119,7 @@ export const SAMPLE_INVOICE: Invoice = {
 			type: 'percent',
 			class: 'tax',
 			description: 'invoice.taxReverseCharge',
-			value: 10
+			value: 0
 		}
 	],
 	currency: cloneDeep(CURRENCIES[0]),
