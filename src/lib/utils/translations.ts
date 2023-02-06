@@ -18,6 +18,8 @@ const en = {
 		invoiceDate: 'Invoice date',
 		dueDate: 'Due date',
 
+		asFreelancer: 'Operating as freelancer',
+
 		billedTo: 'Billed to',
 		dueText: '{{amount}} due {{date}}',
 		vatId: 'VAT',
@@ -69,6 +71,8 @@ export const TRANSLATIONS: Record<Locale, ReplaceConst<typeof en>> = {
 			invoiceNumber: 'Rechnungsnummer',
 			invoiceDate: 'Rechnungsdatum',
 			dueDate: 'Fälligkeitsdatum',
+
+			asFreelancer: 'Tätig als Freiberufler',
 
 			billedTo: 'Rechnungsempfänger',
 			dueText: '{{amount}} fällig am {{date}}',

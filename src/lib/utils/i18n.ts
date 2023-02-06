@@ -29,8 +29,7 @@ export function translate(locale: Locale, key: TranslationPaths, vars: Record<st
 		translation = (translation as Tree)[k]
 	}
 
-	if (!translation || !translation.length)
-		throw new Error(`no translation found for ${locale}.${key}`)
+	if (!translation || !translation.length) return null
 
 	let text = translation as string
 
@@ -50,7 +49,10 @@ export const t = derived(
 			translate($locale, key, vars)
 )
 
-export type TranslationFunction = (key: TranslationPaths, vars?: Record<string, string>) => string
+export type TranslationFunction = (
+	key: TranslationPaths,
+	vars?: Record<string, string>
+) => string | null
 
 export function formatFloatGeneric(locale: Locale, value: number, decimals = 2) {
 	return value.toLocaleString(locale, {

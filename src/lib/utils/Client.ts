@@ -27,7 +27,7 @@ export function getClientDisplayLines(client: ClientDetails, t: TranslationFunct
 		lines.push(client.name)
 	}
 	if (client.additionalLine) {
-		lines.push(client.additionalLine)
+		lines.push(t(client.additionalLine as 'invoice.asFreelancer') || client.additionalLine)
 		lines.push('')
 	}
 	if (client.firstName || client.lastName) {
