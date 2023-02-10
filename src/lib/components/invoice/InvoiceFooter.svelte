@@ -17,8 +17,8 @@
 		<p class="font-semibold">{$it('invoice.bankingInfo')}</p>
 		<p>{accountName}</p>
 		<p>Bank: {invoice.account.bankingDetails?.bankName}</p>
-		<p>IBAN: {invoice.account.bankingDetails?.Iban}</p>
-		<p>BIC: {invoice.account.bankingDetails?.Bic}</p>
+		<p>IBAN: {invoice.account.bankingDetails?.iban}</p>
+		<p>BIC: {invoice.account.bankingDetails?.bic}</p>
 	</div>
 	<div class="text-xs  leading-tight">
 		<p class="font-semibold">{$it('invoice.paymentDetails')}</p>
@@ -27,7 +27,7 @@
 		<p>{@html $it('invoice.paymentDetailsLine2')}</p>
 	</div>
 	<div class="flex flex-col justify-between">
-		<p class="text-xs">{$it('invoice.deliveryDateNotice')}</p>
+		<p class="text-xs">{@html $it('invoice.deliveryDateNotice')}</p>
 		<p class="text-sm text-right">
 			{$it('invoice.page', { page: '1', pages: preview ? '1' : 'X' })}
 		</p>

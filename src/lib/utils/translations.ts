@@ -39,7 +39,8 @@ const en = {
 		paymentDetailsLine1: 'Payment due within {{days}} days',
 		paymentDetailsLine3: 'Bank transfer',
 		paymentDetailsLine2: 'Please use the invoice number as reference',
-		deliveryDateNotice: 'Delivery date corresponds to invoice date'
+		deliveryDateNotice:
+			'<span>Delivery date corresponds to invoice</span><br><span>date, unless stated otherwise</span>'
 	}
 } as const
 
@@ -96,7 +97,8 @@ export const TRANSLATIONS: Record<Locale, ReplaceConst<typeof en>> = {
 			paymentDetailsLine2:
 				'<span>Bitte geben Sie die Rechnungsnummer</span><br/><span>als Verwendungszweck an</span>',
 
-			deliveryDateNotice: 'Lieferdatum entspricht Rechnungsdatum'
+			deliveryDateNotice:
+				'<span>Soweit nicht anders angegeben, enspricht</span><br/><span> Lieferdatum dem Rechnungsdatum</span>'
 		}
 	}
 }
