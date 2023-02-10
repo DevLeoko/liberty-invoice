@@ -53,7 +53,7 @@
 		<input type="text" bind:value={client.address.countryCode} />
 	</Labeled>
 	<Labeled label="Postal code">
-		<input type="text" bind:value={client.address.city} />
+		<input type="text" bind:value={client.address.zip} />
 	</Labeled>
 	<div class="col-span-2">
 		<Labeled label="VAT number">
