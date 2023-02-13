@@ -1,9 +1,9 @@
 <script lang="ts">
 	export let value: number | string = ''
 
-	export let type: 'text' | 'number' = 'text'
+	export let type: 'text' | 'number' | 'textarea' = 'text'
 
-	let inputElement: HTMLInputElement
+	let inputElement: HTMLInputElement | HTMLTextAreaElement
 
 	let hovered = false
 
@@ -16,6 +16,8 @@
 	<span class="invisible whitespace-nowrap">&nbsp;{value}</span>
 	{#if type === 'number'}
 		<input class="pure" on:focus on:blur bind:this={inputElement} type="number" bind:value />
+	{:else if type === 'textarea'}
+		<textarea class="pure" on:focus on:blur bind:this={inputElement} bind:value />
 	{:else}
 		<input class="pure" on:focus on:blur bind:this={inputElement} type="text" bind:value />
 	{/if}
@@ -27,7 +29,8 @@
 </div>
 
 <style lang="scss">
-	input {
+	input,
+	textarea {
 		// border-radius: 4px;
 		transition: border-color 100ms ease-in-out;
 		@apply absolute inset-0 border-transparent;
@@ -37,7 +40,10 @@
 
 	.hovered input,
 	input:hover,
-	input:focus {
+	input:focus,
+	.hovered textarea,
+	textarea:hover,
+	textarea:focus {
 		margin-left: -6px;
 		@apply border border-gray-300;
 	}
