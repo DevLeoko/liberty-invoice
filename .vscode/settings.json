@@ -1,8 +1,26 @@
 {
+  "colorTabs.config": [
+    {
+      "regex": "frontend/.*",
+      "color": "#578a58"
+    },
+    {
+      "regex": "backend/.*",
+      "color": "#475569"
+    },
+  ],
+  "colorTabs.titleBackground": true,
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "svelte.plugin.svelte.compilerWarnings": {
     "a11y-click-events-have-key-events": "ignore"
+  },
+  "workbench.colorCustomizations": {
+    "tab.activeBorder": "#475569",
+    "titleBar.activeBackground": "#475569",
+    "titleBar.activeForeground": "#ffffff",
+    "statusBar.background": "#475569",
+    "statusBar.foreground": "#ffffff"
   },
 }

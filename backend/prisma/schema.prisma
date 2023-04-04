@@ -1,0 +1,149 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              Int      @id @default(autoincrement())
+  email           String   @unique
+  isEmailVerified Boolean
+  passwordHash    String?
+  refreshSession  String?
+  createdAt       DateTime @default(now())
+
+  userSettings UserSettings?
+
+  clients      Client[]
+  taxRates     TaxRate[]
+  invoices     Invoice[]
+  invoiceItems InvoiceItem[]
+}
+
+model UserSettings {
+  id Int @id @default(autoincrement())
+
+  user   User? @relation(fields: [userId], references: [id])
+  userId Int?  @unique
+
+  // Account details (same a client)
+  name           String?
+  shorthand      String?
+  additionalLine String?
+  firstName      String?
+  lastName       String?
+  contactPhone   String?
+  contactEmail   String?
+  vatNumber      String?
+
+  street       String?
+  streetNumber String?
+  city         String?
+  zip          String?
+  countryCode  String?
+  // End account details
+
+  logoUrl  String?
+  bankName String?
+  iban     String?
+  bic      String?
+
+  idFormat       String
+  partialIdCount Int
+  partialIdDate  DateTime
+
+  defaultLanguage  String
+  defaultCurrency  String
+  defaultTaxRate   TaxRate? @relation(fields: [defaultTaxRateId], references: [id])
+  defaultTaxRateId Int?
+  defaultDueDays   Int
+
+  enableTaxPerItem   Boolean
+  enableMultilingual Boolean
+}
+
+model TaxRate {
+  id Int @id @default(autoincrement())
+
+  user   User? @relation(fields: [userId], references: [id])
+  userId Int?
+
+  name String
+  rate Float
+
+  clients      Client[]
+  userSettings UserSettings[]
+  invoices     Invoice[]
+}
+
+model Client {
+  id Int @id @default(autoincrement())
+
+  user   User? @relation(fields: [userId], references: [id])
+  userId Int?
+
+  name           String?
+  shorthand      String?
+  additionalLine String?
+  firstName      String?
+  lastName       String?
+  contactPhone   String?
+  contactEmail   String?
+  vatNumber      String?
+  // Address:
+  street         String?
+  streetNumber   String?
+  city           String?
+  zip            String?
+  countryCode    String?
+
+  defaultLanguage  String
+  defaultCurrency  String
+  defaultTaxRate   TaxRate? @relation(fields: [defaultTaxRateId], references: [id])
+  defaultTaxRateId Int?
+  defaultDueDays   Int
+
+  invoices Invoice[]
+}
+
+model Invoice {
+  id Int @id @default(autoincrement())
+
+  user   User? @relation(fields: [userId], references: [id])
+  userId Int?
+
+  client   Client? @relation(fields: [clientId], references: [id])
+  clientId Int?
+
+  invoiceNumber String
+  date          DateTime
+  dueDate       DateTime
+  currency      String
+  language      String
+  taxRates      TaxRate[]
+  note          String
+
+  items InvoiceItem[]
+}
+
+model InvoiceItem {
+  id Int @id @default(autoincrement())
+
+  user   User? @relation(fields: [userId], references: [id])
+  userId Int?
+
+  invoice   Invoice? @relation(fields: [invoiceId], references: [id])
+  invoiceId Int?
+
+  name        String
+  description String
+  quantity    Float
+  price       Float
+  discount    Float
+}
