@@ -25,7 +25,7 @@ export async function authExpressMiddleware(
   res: Response,
   next: NextFunction
 ) {
-  const token = req.cookies.accessToken;
+  const token = req.cookies?.accessToken;
 
   if (!token) return next();
 
@@ -145,7 +145,7 @@ async function createUser(
   isEmailVerified: boolean
 ) {
   try {
-    return prisma.user.create({
+    return await prisma.user.create({
       data: {
         email,
         passwordHash: await authenticator.hashPassword(password),

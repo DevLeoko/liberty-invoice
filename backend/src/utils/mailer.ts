@@ -4,7 +4,6 @@ import fs from "fs";
 const mailer = createTransport({
   host: process.env.SMTP_HOST,
   port: Number.parseInt(process.env.SMTP_PORT),
-  secure: true,
   auth: {
     user: process.env.SMTP_USERNAME,
     pass: process.env.SMTP_PASSWORD,
@@ -20,7 +19,7 @@ export async function sendMail(
   templateVariables: { [key: string]: string }
 ) {
   const mailTemplate = fs.readFileSync(
-    `src/assets/mail/${templateName}`,
+    `src/assets/mail/${templateName}.html`,
     "utf8"
   );
   const mailBody = Object.keys(templateVariables).reduce((acc, key) => {

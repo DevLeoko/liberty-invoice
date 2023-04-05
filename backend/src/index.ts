@@ -4,11 +4,10 @@ import "dotenv-safe/config";
 
 process.env.TZ = "Europe/Vienna";
 
-import express, { json, Request, Response } from "express";
+import express from "express";
 import * as trpcExpress from "@trpc/server/adapters/express";
 import { appRouter } from "./routers/_app";
 import cors from "cors";
-import multer from "multer";
 import { authExpressMiddleware } from "./controller/auth-flows";
 
 const app = express();
