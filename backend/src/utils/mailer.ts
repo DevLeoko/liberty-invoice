@@ -10,7 +10,7 @@ const mailer = createTransport({
   },
 });
 
-type MailTemplateName = "verify-email";
+type MailTemplateName = "verify-email" | "reset-password";
 
 export async function sendMail(
   email: string,

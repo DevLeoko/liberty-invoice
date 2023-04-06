@@ -3,6 +3,8 @@ import { createTRPCProxyClient, httpBatchLink, loggerLink, type TRPCLink } from 
 import SuperJSON from 'superjson';
 import type { AppRouter, RouterInput, RouterOutput } from '../../../backend/src/routers/_app';
 import { logError } from './stores/alerts';
+import { setLoggedOut } from './stores/auth';
+import { goto } from '$app/navigation';
 
 export const trpc = createTRPCProxyClient<AppRouter>({
 	transformer: SuperJSON,
@@ -11,7 +13,13 @@ export const trpc = createTRPCProxyClient<AppRouter>({
 			logger: (data) => {
 				if (data.direction == 'down') {
 					if (data.result instanceof Error) {
-						logError(data.result.message);
+						if (data.result.message == 'error.notAuthenticated') {
+							logError('error.sessionExpired');
+							setLoggedOut();
+							goto('/');
+						} else {
+							logError(data.result.message);
+						}
 					}
 				}
 			}

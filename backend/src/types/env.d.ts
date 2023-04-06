@@ -10,6 +10,7 @@ declare global {
       SMTP_SENDER: string;
       JWT_SECRET: string;
       SIGN_IN_URL: string;
+      RESET_PASSWORD_URL: string;
     }
   }
 }

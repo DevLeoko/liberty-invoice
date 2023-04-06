@@ -3,7 +3,8 @@
 	import Button from '../../../lib/components/basics/Button.svelte';
 	import { logSuccess } from '../../../lib/stores/alerts';
 	import { trpc } from '../../../lib/trpcClient';
-	import { page } from '$app/stores';
+	import { setLoggedIn } from '../../../lib/stores/auth';
+	import { goto } from '$app/navigation';
 
 	let email = '';
 	let password = '';
@@ -44,6 +45,9 @@
 		});
 
 		logSuccess('Logged in successfully');
+		setLoggedIn();
+
+		goto('/dashboard');
 	}
 </script>
 

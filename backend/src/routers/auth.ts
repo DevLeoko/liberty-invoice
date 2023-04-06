@@ -3,6 +3,8 @@ import { z } from "zod";
 import { publicProcedure, router } from "../trpc";
 import {
   loginWithPassword,
+  requestPasswordReset,
+  resetPassword,
   signUpWithPassword,
   verifyMailToken,
 } from "../controller/auth-flows";
@@ -56,5 +58,26 @@ export const authRouter = router({
       await verifyMailToken(input.token, input.email);
     }),
 
-  // TODO: password change flow
+  // TODO: add google recaptcha check for public reset requests
+  requestPasswordReset: publicProcedure
+    .input(
+      z.object({
+        email: z.string().email(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      await requestPasswordReset(input.email);
+    }),
+
+  resetPassword: publicProcedure
+    .input(
+      z.object({
+        token: z.string(),
+        email: z.string().email(),
+        password: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      await resetPassword(input);
+    }),
 });

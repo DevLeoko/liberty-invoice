@@ -59,13 +59,6 @@ export async function authExpressMiddleware(
   next();
 }
 
-// Login (password):
-// 1. User enters email and password
-// 2. Get verified user with email
-// 3. Login with #loginWithPassword(passwordHash, password, data)
-// 4. User gets access token and refresh token as http-only cookies
-// 5. Set refresh session in DB
-// User is now logged in
 export async function loginWithPassword(
   email: string,
   password: string
@@ -176,4 +169,49 @@ function getDefaultUserSettings(): Prisma.UserSettingsCreateInput {
     partialIdCount: 0,
     partialIdDate: new Date(),
   };
+}
+
+export async function requestPasswordReset(email: string) {
+  email = email.toLowerCase();
+
+  const resetToken = authenticator.generateMailToken(email);
+  const resetUrl = `${
+    process.env.RESET_PASSWORD_URL
+  }?token=${encodeURIComponent(resetToken)}&email=${encodeURIComponent(email)}`;
+
+  await sendMail(email, "Reset your password", "reset-password", {
+    url: resetUrl,
+  });
+}
+
+export async function resetPassword({
+  token,
+  email,
+  password,
+}: {
+  token: string;
+  email: string;
+  password: string;
+}) {
+  email = email.toLowerCase();
+
+  const isValid = authenticator.verifyMailToken(token, email);
+  if (!isValid) throw new Error("error.invalidToken");
+
+  const user = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
+
+  if (!user) throw new Error("error.invalidToken");
+
+  await prisma.user.update({
+    where: {
+      id: user.id,
+    },
+    data: {
+      passwordHash: await authenticator.hashPassword(password),
+    },
+  });
 }
