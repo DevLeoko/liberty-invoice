@@ -129,6 +129,9 @@ model Invoice {
   taxRates      TaxRate[]
   note          String
 
+  grossAmount Float
+  paidAmount  Float
+
   items InvoiceItem[]
 }
 
