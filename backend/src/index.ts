@@ -9,10 +9,13 @@ import * as trpcExpress from "@trpc/server/adapters/express";
 import { appRouter } from "./routers/_app";
 import cors from "cors";
 import { authExpressMiddleware } from "./controller/auth-flows";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
-app.use(cors());
+app.use(cors({ origin: process.env.CORS_ORIGIN, credentials: true }));
+
+app.use(cookieParser());
 
 app.use(authExpressMiddleware);
 

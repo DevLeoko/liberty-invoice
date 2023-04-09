@@ -11,6 +11,7 @@ declare global {
       JWT_SECRET: string;
       SIGN_IN_URL: string;
       RESET_PASSWORD_URL: string;
+      CORS_ORIGIN: string;
     }
   }
 }

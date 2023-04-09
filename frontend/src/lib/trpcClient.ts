@@ -25,7 +25,13 @@ export const trpc = createTRPCProxyClient<AppRouter>({
 			}
 		}),
 		httpBatchLink({
-			url: PUBLIC_BACKEND_URL + '/trpc'
+			url: PUBLIC_BACKEND_URL + '/trpc',
+			fetch(url, options) {
+				return fetch(url, {
+					...options,
+					credentials: 'include'
+				});
+			}
 		})
 	]
 });
