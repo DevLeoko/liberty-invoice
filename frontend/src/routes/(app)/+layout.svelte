@@ -40,7 +40,7 @@
 </script>
 
 <div class="flex max-w-screen-2xl">
-	<div class="flex flex-col w-48 h-screen px-4 pt-8 bg-slate-200">
+	<div class="flex flex-col w-48 h-screen px-4 pt-8 bg-white">
 		<!-- <img src="" alt="logo" class="self-center w-2/3" /> -->
 		<h2 class="text-lg font-bold">Liberty Invoice</h2>
 		<nav class="flex flex-col mt-6">
@@ -48,9 +48,8 @@
 				{@const active = $page.url.pathname.startsWith(link.href)}
 				<a
 					href={link.href}
-					class="flex items-center px-2 py-1 my-2 rounded-sm hover:bg-slate-300"
-					class:bg-slate-500={active}
-					class:text-slate-50={active}
+					class="flex items-center px-2 py-1 my-2 rounded-sm hover:bg-slate-100"
+					class:bg-slate-200={active}
 				>
 					<span class="material-icons mr-2 !text-lg relative">
 						{link.icon}

@@ -1,4 +1,10 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+	import ConfirmationCard from './ConfirmationCard.svelte';
+
+	export let requiresConfirmation = false;
+	export let confirmationOpen = false;
+
 	export let loading = false;
 	export let disabled = false;
 	export let outlined = false;
@@ -9,18 +15,37 @@
 	let className = '';
 
 	export { className as class };
+
+	const eventDispatcher = createEventDispatcher<{ click: MouseEvent }>();
+
+	function handleClick(event: MouseEvent) {
+		if (requiresConfirmation) {
+			confirmationOpen = true;
+		} else {
+			eventDispatcher('click', event);
+		}
+	}
+
+	function handleConfirm(event: CustomEvent<MouseEvent>) {
+		confirmationOpen = false;
+		eventDispatcher('click', event.detail);
+	}
 </script>
 
 <button
-	class="text-white font-medium rounded-sm relative {className} select-none"
+	class="text-white font-medium rounded-sm relative {className} select-none block"
 	class:loading
 	class:disabled
 	class:outlined
 	class:snug
 	class:gray
 	class:red
-	on:click
+	on:click|stopPropagation={handleClick}
 >
+	{#if requiresConfirmation && confirmationOpen}
+		<ConfirmationCard on:confirm={handleConfirm} on:cancel={() => (confirmationOpen = false)} />
+	{/if}
+
 	{#if loading}
 		<div class="absolute inset-0 flex items-center justify-center">
 			<div class="lds-ellipsis">
@@ -31,7 +56,7 @@
 			</div>
 		</div>
 	{/if}
-	<div class:invisible={loading}>
+	<div class:invisible={loading} class="flex items-center justify-center">
 		<slot />
 	</div>
 </button>

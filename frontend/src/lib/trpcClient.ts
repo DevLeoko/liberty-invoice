@@ -6,6 +6,10 @@ import { logError } from './stores/alerts';
 import { setLoggedOut } from './stores/auth';
 import { goto } from '$app/navigation';
 
+export type CreateClient = RouterInput['client']['create'];
+
+export type ReadUserSettings = RouterOutput['userSettings']['read'];
+
 export const trpc = createTRPCProxyClient<AppRouter>({
 	transformer: SuperJSON,
 	links: [

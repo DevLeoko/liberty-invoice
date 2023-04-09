@@ -160,6 +160,26 @@ async function createUser(
 function getDefaultUserSettings(): Prisma.UserSettingsCreateInput {
   // TODO: Vary default settings based on user's country
   return {
+    name: "",
+    shorthand: "",
+    additionalLine: "",
+    firstName: "",
+    lastName: "",
+    contactPhone: "",
+    contactEmail: "",
+    vatNumber: "",
+
+    street: "",
+    streetNumber: "",
+    city: "",
+    zip: "",
+    countryCode: "",
+
+    bankName: "",
+    bic: "",
+    iban: "",
+    logoUrl: "",
+
     defaultCurrency: "USD",
     defaultLanguage: "en",
     defaultDueDays: 14,

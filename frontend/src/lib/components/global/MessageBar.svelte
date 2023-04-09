@@ -6,10 +6,13 @@
 	<!-- <div class="fixed z-50 w-screen h-56 bg-red-500 ">&nbsp;</div>
 	<div class="fixed w-screen h-56 bg-red-500 z-90">&nbsp;</div> -->
 
-	<div class="fixed top-0 flex flex-col items-center w-full text-white" style="z-index: 90;">
+	<div
+		class="fixed top-0 flex flex-col items-center w-full text-white pointer-events-none"
+		style="z-index: 90;"
+	>
 		{#each $alerts as alert, i (alert.startTime)}
 			<div
-				class="flex items-center w-lg max-w-full pt-1 px-3 pb-1.5 mt-2 relative rounded-sm"
+				class="flex items-center w-lg max-w-full pt-1 px-3 pb-1.5 mt-2 relative rounded-sm pointer-events-auto"
 				class:bg-red-600={alert.type == 'error'}
 				class:bg-lime-600={alert.type == 'success'}
 				class:bg-blue-600={alert.type == 'info'}
