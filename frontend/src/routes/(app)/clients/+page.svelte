@@ -47,7 +47,7 @@
 {:else if $clients.isError}
 	<span>Something went wrong</span>
 {:else if $clients.data.length === 0}
-	<div class="error">No clients found</div>
+	<span>No clients found</span>
 {:else}
 	{#each $clients.data as client}
 		<div

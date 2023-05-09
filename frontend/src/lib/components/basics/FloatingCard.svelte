@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
+
+	const dispatch = createEventDispatcher<{ clickOutside: MouseEvent }>();
 
 	let el: HTMLDivElement;
 
@@ -17,7 +19,16 @@
 			placeLeft = true;
 		}
 	});
+
+	function onBodyClick(event: MouseEvent) {
+		// Check if the click was outside the card
+		if (!el.contains(event.target as Node)) {
+			dispatch('clickOutside', event);
+		}
+	}
 </script>
+
+<svelte:body on:click={onBodyClick} />
 
 <div
 	class="absolute z-20 flex items-center px-3 py-2 my-1 text-black bg-white rounded-md shadow-sm w-max"

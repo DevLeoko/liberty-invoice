@@ -29,7 +29,7 @@ model User {
 model UserSettings {
   id Int @id @default(autoincrement())
 
-  user   User? @relation(fields: [userId], references: [id])
+  user   User? @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int?  @unique
 
   // Account details (same a client)
@@ -50,7 +50,7 @@ model UserSettings {
 
   defaultLanguage  String
   defaultCurrency  String
-  defaultTaxRate   TaxRate? @relation(fields: [defaultTaxRateId], references: [id])
+  defaultTaxRate   TaxRate? @relation(fields: [defaultTaxRateId], references: [id], onDelete: SetNull)
   defaultTaxRateId Int?
   defaultDueDays   Int
   // End account details
@@ -71,11 +71,12 @@ model UserSettings {
 model TaxRate {
   id Int @id @default(autoincrement())
 
-  user   User @relation(fields: [userId], references: [id])
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int
 
-  name String
-  rate Float
+  name        String
+  displayText String
+  rate        Float
 
   clients      Client[]
   userSettings UserSettings[]
@@ -85,7 +86,7 @@ model TaxRate {
 model Client {
   id Int @id @default(autoincrement())
 
-  user   User @relation(fields: [userId], references: [id])
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int
 
   name           String
@@ -105,7 +106,7 @@ model Client {
 
   defaultLanguage  String
   defaultCurrency  String
-  defaultTaxRate   TaxRate? @relation(fields: [defaultTaxRateId], references: [id])
+  defaultTaxRate   TaxRate? @relation(fields: [defaultTaxRateId], references: [id], onDelete: SetNull)
   defaultTaxRateId Int?
   defaultDueDays   Int
 
@@ -115,13 +116,14 @@ model Client {
 model Invoice {
   id Int @id @default(autoincrement())
 
-  user   User @relation(fields: [userId], references: [id])
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int
 
-  client   Client @relation(fields: [clientId], references: [id])
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Restrict)
   clientId Int
 
-  invoiceNumber String
+  draft         Boolean   @default(true)
+  invoiceNumber String    @unique
   date          DateTime
   dueDate       DateTime
   currency      String
@@ -129,8 +131,8 @@ model Invoice {
   taxRates      TaxRate[]
   note          String
 
-  grossAmount Float
-  paidAmount  Float
+  amountWithTax Float
+  amountPaid    Float
 
   items InvoiceItem[]
 }
@@ -138,10 +140,10 @@ model Invoice {
 model InvoiceItem {
   id Int @id @default(autoincrement())
 
-  user   User @relation(fields: [userId], references: [id])
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int
 
-  invoice   Invoice @relation(fields: [invoiceId], references: [id])
+  invoice   Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
   invoiceId Int
 
   name        String

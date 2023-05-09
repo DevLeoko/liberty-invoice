@@ -40,42 +40,49 @@ export const invoiceRouter = router({
     .mutation(async ({ ctx, input }) => {
       const { partialId, invoice } = input;
 
-      if (partialId) {
+      if (partialId != undefined) {
         const success = await claimInvoiceId(ctx.userId, partialId);
         if (!success) {
           throw new Error("error.invoice.partialIdAlreadyClaimed");
         }
       }
 
-      return prisma.invoice.create({
-        data: {
-          userId: ctx.userId,
-          clientId: invoice.clientId,
-          invoiceNumber: invoice.invoiceNumber,
-          date: invoice.date,
-          dueDate: invoice.dueDate,
-          currency: invoice.currency,
-          language: invoice.language,
-          taxRates: {
-            connect: invoice.taxRateIds.map((id) => ({ id })),
+      try {
+        return prisma.invoice.create({
+          data: {
+            userId: ctx.userId,
+            clientId: invoice.clientId,
+            invoiceNumber: invoice.invoiceNumber,
+            date: invoice.date,
+            dueDate: invoice.dueDate,
+            currency: invoice.currency,
+            language: invoice.language,
+            taxRates: {
+              connect: invoice.taxRateIds.map((id) => ({ id })),
+            },
+            note: invoice.note,
+            items: {
+              create: invoice.items.map((item) => ({
+                ...item,
+
+                userId: ctx.userId,
+              })),
+            },
+            amountWithTax: 0,
+            amountPaid: 0,
           },
-          note: invoice.note,
-          items: {
-            create: invoice.items.map((item) => ({
-              ...item,
-              
-              userId: ctx.userId,
-            })),
+          include: {
+            client: true,
+            items: true,
+            taxRates: true,
           },
-          grossAmount: 0,
-          paidAmount: 0,
-        },
-        include: {
-          client: true,
-          items: true,
-          taxRates: true,
-        },
-      });
+        });
+      } catch (e: any) {
+        // Duplicate invoice number
+        if (e.code === "P2002") {
+          throw new Error("error.invoice.partialIdAlreadyClaimed");
+        }
+      }
     }),
 
   getNextAvailablePartialInvoiceId: protectedProcedure.query(

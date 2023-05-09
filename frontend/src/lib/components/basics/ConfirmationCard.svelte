@@ -19,7 +19,7 @@
 	}
 </script>
 
-<FloatingCard>
+<FloatingCard on:clickOutside={handleNo}>
 	<div class="mr-4">Are you sure?</div>
 	<Button snug red class="mr-2" on:click={handleYes}>Yes</Button>
 	<Button snug gray on:click={handleNo}>Cancel</Button>

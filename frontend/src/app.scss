@@ -1,3 +1,5 @@
+/* Write your global styles here, in SCSS syntax. Variables and mixins from the src/variables.scss file are available here without importing */
+
 @import 'material-icons/iconfont/material-icons.css';
 
 @tailwind base;
@@ -76,4 +78,11 @@ select:disabled:not(.plain) {
 
 .pageTitle {
 	@apply text-2xl font-semibold;
+}
+
+// Hide number handles
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
 }

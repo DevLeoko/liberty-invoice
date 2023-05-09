@@ -186,7 +186,7 @@ function getDefaultUserSettings(): Prisma.UserSettingsCreateInput {
     enableMultilingual: false,
     enableTaxPerItem: false,
     idFormat: "YYMM.XXX",
-    nextPartialId: 0,
+    nextPartialId: 1,
     partialIdDate: new Date(),
   };
 }

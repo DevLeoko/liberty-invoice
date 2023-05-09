@@ -54,12 +54,12 @@ export async function getNextAvailablePartialId(
     await prisma.userSettings.update({
       where: { userId },
       data: {
-        nextPartialId: 0,
+        nextPartialId: 1,
         partialIdDate: today,
       },
     });
 
-    return { partialId: 0, idFormat };
+    return { partialId: 1, idFormat };
   }
 
   return { partialId: nextPartialId, idFormat };
