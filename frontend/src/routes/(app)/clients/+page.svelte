@@ -1,64 +1,62 @@
 <script lang="ts">
-	import { createQuery, useQueryClient } from '@tanstack/svelte-query';
 	import { trpc, type CreateClient } from '../../../lib/trpcClient';
 	import Skeleton from '../../../lib/components/basics/Skeleton.svelte';
 	import Button from '../../../lib/components/basics/Button.svelte';
-	import ClientEditor from '../../../lib/components/editors/ClientEditor.svelte';
 	import { emptyClient } from '../../../lib/utils/clientUtils';
 	import type { EditorSelection } from '../../../lib/components/basics/EditorModal.svelte';
-	import EditorModal from '../../../lib/components/basics/EditorModal.svelte';
-	import { logSuccess } from '../../../lib/stores/alerts';
+	import { createClientQuery, createUserSettingsQuery } from '../../../lib/tanQuery';
+	import ClientEditorModal from '../../../lib/components/editors/ClientEditorModal.svelte';
 
-	const client = useQueryClient();
-
-	const clients = createQuery({
-		queryKey: ['clients'],
-		queryFn: () => trpc.client.list.query()
-	});
+	const userSettings = createUserSettingsQuery();
+	const clients = createClientQuery();
 
 	let selected: EditorSelection<CreateClient> = null;
 
 	function startCreate() {
+		const defaults = $userSettings.data;
+		if (!defaults) return;
+
 		selected = {
-			entity: emptyClient({
-				defaultCurrency: 'EUR',
-				defaultLanguage: 'en',
-				defaultTaxRateId: null,
-				defaultDueDays: 30
-			})
+			entity: emptyClient(defaults)
 		};
 	}
 
-	async function onSave() {
-		if (selected) {
-			if (selected.id === undefined) {
-				await trpc.client.create.mutate(selected.entity);
-				logSuccess('clients.created');
-			} else {
-				await trpc.client.update.mutate({ id: selected.id, client: selected.entity });
-				logSuccess('clients.updated');
-			}
-			selected = null;
-			client.invalidateQueries(['clients']);
-		}
+	async function selectClient(id: number) {
+		// TODO: add load indicator
+		const client = await trpc.client.read.query({ id });
+		selected = {
+			id,
+			entity: client
+		};
 	}
 </script>
 
-<EditorModal editor={ClientEditor} name="Client" bind:selected {onSave} />
+<ClientEditorModal bind:selected />
 
-<div class="flex justify-between">
+<div class="flex justify-between mb-4">
 	<h1 class="pageTitle">Clients</h1>
-	<Button on:click={startCreate}><span class="mr-1 material-icons">add</span> New client</Button>
+	{#if $userSettings.isLoading}
+		<Skeleton class="h-9 w-36" />
+	{:else}
+		<Button on:click={startCreate}><span class="mr-1 material-icons">add</span> New client</Button>
+	{/if}
 </div>
 
 {#if $clients.isLoading}
-	<Skeleton height="50px" />
+	<Skeleton class="w-24 h-12" />
 {:else if $clients.isError}
 	<span>Something went wrong</span>
 {:else if $clients.data.length === 0}
 	<div class="error">No clients found</div>
 {:else}
 	{#each $clients.data as client}
-		<div>{client.name}</div>
+		<div
+			class="h-16 p-2 mt-2 rounded-sm cursor-pointer w-36 bg-slate-300 hover:bg-slate-400"
+			on:click={() => selectClient(client.id)}
+		>
+			<h3 class="text-lg font-semibold">
+				{client.name}
+			</h3>
+		</div>
 	{/each}
 {/if}

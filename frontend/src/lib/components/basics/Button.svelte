@@ -11,6 +11,7 @@
 	export let gray = false;
 	export let snug = false;
 	export let red = false;
+	export let href: string | undefined = undefined;
 
 	let className = '';
 

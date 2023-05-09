@@ -60,9 +60,9 @@ model UserSettings {
   iban     String
   bic      String
 
-  idFormat       String
-  partialIdCount Int
-  partialIdDate  DateTime
+  idFormat      String
+  nextPartialId Int
+  partialIdDate DateTime
 
   enableTaxPerItem   Boolean
   enableMultilingual Boolean
@@ -71,8 +71,8 @@ model UserSettings {
 model TaxRate {
   id Int @id @default(autoincrement())
 
-  user   User? @relation(fields: [userId], references: [id])
-  userId Int?
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
 
   name String
   rate Float
@@ -85,8 +85,8 @@ model TaxRate {
 model Client {
   id Int @id @default(autoincrement())
 
-  user   User? @relation(fields: [userId], references: [id])
-  userId Int?
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
 
   name           String
   shorthand      String
@@ -115,11 +115,11 @@ model Client {
 model Invoice {
   id Int @id @default(autoincrement())
 
-  user   User? @relation(fields: [userId], references: [id])
-  userId Int?
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
 
-  client   Client? @relation(fields: [clientId], references: [id])
-  clientId Int?
+  client   Client @relation(fields: [clientId], references: [id])
+  clientId Int
 
   invoiceNumber String
   date          DateTime
@@ -138,15 +138,16 @@ model Invoice {
 model InvoiceItem {
   id Int @id @default(autoincrement())
 
-  user   User? @relation(fields: [userId], references: [id])
-  userId Int?
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
 
-  invoice   Invoice? @relation(fields: [invoiceId], references: [id])
-  invoiceId Int?
+  invoice   Invoice @relation(fields: [invoiceId], references: [id])
+  invoiceId Int
 
   name        String
   description String
   quantity    Float
-  price       Float
+  unit        String
+  unitPrice   Float
   discount    Float
 }

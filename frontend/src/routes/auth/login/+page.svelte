@@ -44,7 +44,7 @@
 			loading = false;
 		});
 
-		logSuccess('Logged in successfully');
+		// logSuccess('Logged in successfully');
 		setLoggedIn();
 
 		goto('/dashboard');

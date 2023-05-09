@@ -10,7 +10,7 @@ const userSettingsInputSchema = clientInputSchema.extend({
   bic: z.string(),
 
   idFormat: z.string(),
-  partialIdCount: z.number(),
+  nextPartialId: z.number(),
   partialIdDate: z.date(),
   enableTaxPerItem: z.boolean(),
   enableMultilingual: z.boolean(),
@@ -18,11 +18,11 @@ const userSettingsInputSchema = clientInputSchema.extend({
 
 export const userSettingsRouter = router({
   read: protectedProcedure.query(async ({ ctx }) => {
-    return prisma.userSettings.findUnique({
+    return (await prisma.userSettings.findUnique({
       where: {
         userId: ctx.userId,
       },
-    });
+    }))!;
   }),
 
   update: protectedProcedure

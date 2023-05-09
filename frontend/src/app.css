@@ -24,7 +24,54 @@ input[type='time'],
 input[type='color'],
 textarea,
 select {
-	@apply bg-white bg-opacity-75 outline-none relative block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-1 focus:ring-inset focus:ring-blue-400 sm:text-sm sm:leading-6;
+	@apply outline-none bg-transparent;
+}
+
+input[type='text']:not(.plain),
+input[type='password']:not(.plain),
+input[type='email']:not(.plain),
+input[type='number']:not(.plain),
+input[type='tel']:not(.plain),
+input[type='url']:not(.plain),
+input[type='search']:not(.plain),
+input[type='date']:not(.plain),
+input[type='datetime']:not(.plain),
+input[type='datetime-local']:not(.plain),
+input[type='month']:not(.plain),
+input[type='week']:not(.plain),
+input[type='time']:not(.plain),
+input[type='color']:not(.plain),
+textarea:not(.plain),
+select:not(.plain),
+.input-style {
+	@apply bg-white bg-opacity-70 outline-none relative block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-1 focus:ring-inset focus:ring-blue-400 sm:text-sm sm:leading-6;
+}
+
+.input-style {
+	@apply focus-within:z-10 focus-within:ring-1 focus-within:ring-inset focus-within:ring-blue-400;
+}
+
+input[type='text']:disabled:not(.plain),
+input[type='password']:disabled:not(.plain),
+input[type='email']:disabled:not(.plain),
+input[type='number']:disabled:not(.plain),
+input[type='tel']:disabled:not(.plain),
+input[type='url']:disabled:not(.plain),
+input[type='search']:disabled:not(.plain),
+input[type='date']:disabled:not(.plain),
+input[type='datetime']:disabled:not(.plain),
+input[type='datetime-local']:disabled:not(.plain),
+input[type='month']:disabled:not(.plain),
+input[type='week']:disabled:not(.plain),
+input[type='time']:disabled:not(.plain),
+input[type='color']:disabled:not(.plain),
+textarea:disabled:not(.plain),
+select:disabled:not(.plain) {
+	@apply bg-gray-100 text-gray-500 cursor-pointer;
+}
+
+.input-icon {
+	@apply z-10 w-8 -ml-8 text-base text-center text-gray-600 border-l border-gray-300 hover:text-gray-600;
 }
 
 .pageTitle {

@@ -10,10 +10,20 @@ import { appRouter } from "./routers/_app";
 import cors from "cors";
 import { authExpressMiddleware } from "./controller/auth-flows";
 import cookieParser from "cookie-parser";
+import { buildLatestInvoice } from "./utils/pdf/temp-pdf-generation";
 
 const app = express();
 
 app.use(cors({ origin: process.env.CORS_ORIGIN, credentials: true }));
+
+app.get("/download-test", async (req, res) => {
+  const pdfBuffer = buildLatestInvoice();
+
+  res.setHeader("Content-Type", "application/pdf");
+  res.setHeader("Content-Disposition", `inline; filename=${pdfBuffer.title}`);
+
+  res.send(await pdfBuffer.buffer);
+});
 
 app.use(cookieParser());
 
@@ -34,27 +44,6 @@ app.use(
     },
   })
 );
-
-// function errorHandler(
-//   routeHandler: (req: Request, res: Response) => Promise<unknown>
-// ) {
-//   return (req: Request, res: Response) => {
-//     routeHandler(req, res).catch((err) => {
-//       if (err.message?.startsWith("error.")) {
-//         res.status(400).json({ success: false, message: err.message });
-//         return;
-//       }
-
-//       console.error(err);
-//       res
-//         .status(500)
-//         .json({ success: false, message: "error.internalServerError" });
-//     });
-//   };
-// }
-
-// app.post("/upload", multer().array("files"), errorHandler(uploadHandler));
-// app.post("/download", json(), errorHandler(downloadHandler));
 
 app.listen(8080, () => {
   console.log("\n📄 Server ready on port 8080\n");

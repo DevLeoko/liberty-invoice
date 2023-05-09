@@ -1,20 +1,16 @@
 <script>
-	export let height = '100px';
-
 	let className = '';
 
 	export { className as class };
 </script>
 
-<div class="skeleton-loader {className}" style="height: {height};" />
+<div class="skeleton-loader rounded-sm {className}" />
 
 <style>
 	.skeleton-loader {
 		position: relative;
 		overflow: hidden;
 		background-color: #e0e0e0;
-		width: 100%;
-		border-radius: 4px;
 	}
 
 	.skeleton-loader::after {
