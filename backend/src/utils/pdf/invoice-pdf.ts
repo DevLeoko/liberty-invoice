@@ -20,7 +20,20 @@ import {
 import { getClientDisplayLines } from "../../../../shared/address-formatter";
 import { addAllRobotoFonts } from "./pdf-fonts";
 import { getCurrency } from "../../../../shared/currencies";
-import { TempInvoiceType } from "./temp-pdf-generation";
+import { Prisma } from "@prisma/client";
+
+export type Invoice = Prisma.InvoiceGetPayload<{
+  include: {
+    user: {
+      include: {
+        userSettings: true;
+      };
+    };
+    client: true;
+    items: true;
+    taxRates: true;
+  };
+}>;
 
 interface Address {
   name: string;
@@ -39,8 +52,8 @@ interface Address {
   countryCode: string;
 }
 
-export async function buildInvoicePdf(invoice: TempInvoiceType) {
-  const account = invoice.account;
+export async function buildInvoicePdf(invoice: Invoice) {
+  const account = invoice.user.userSettings!;
   const client = invoice.client;
 
   function getTotal() {

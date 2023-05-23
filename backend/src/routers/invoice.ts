@@ -6,6 +6,7 @@ import {
   claimInvoiceId,
   getNextAvailablePartialId,
 } from "../controller/invoice-ids";
+import { computeTotalWithTax } from "../../../shared/invoice-computations";
 
 export const invoiceRouter = router({
   list: protectedProcedure.query(async ({ ctx }) => {
@@ -68,7 +69,7 @@ export const invoiceRouter = router({
                 userId: ctx.userId,
               })),
             },
-            amountWithTax: 0,
+            amountWithTax: computeTotalWithTax(invoice),
             amountPaid: 0,
           },
           include: {
@@ -83,6 +84,85 @@ export const invoiceRouter = router({
           throw new Error("error.invoice.partialIdAlreadyClaimed");
         }
       }
+    }),
+
+  update: protectedProcedure
+    .input(
+      z.object({
+        id: z.number().int(),
+        invoice: invoiceCreateSchema,
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { id, invoice } = input;
+
+      const existingInvoice = await prisma.invoice.findUnique({
+        where: {
+          id,
+        },
+        select: {
+          userId: true,
+        },
+      });
+
+      if (existingInvoice?.userId !== ctx.userId) {
+        throw new Error("error.invoice.notFound");
+      }
+
+      const updatedInvoice = await prisma.invoice.update({
+        where: {
+          id,
+        },
+        data: {
+          clientId: invoice.clientId,
+          invoiceNumber: invoice.invoiceNumber,
+          date: invoice.date,
+          dueDate: invoice.dueDate,
+          currency: invoice.currency,
+          language: invoice.language,
+          taxRates: {
+            connect: invoice.taxRateIds.map((id) => ({ id })),
+          },
+          note: invoice.note,
+          items: {
+            deleteMany: {},
+            create: invoice.items.map((item) => ({
+              ...item,
+
+              userId: ctx.userId,
+            })),
+          },
+          amountWithTax: computeTotalWithTax(invoice),
+        },
+        include: {
+          client: true,
+          items: true,
+          taxRates: true,
+        },
+      });
+
+      return updatedInvoice;
+    }),
+
+  read: protectedProcedure
+    .input(z.number().int())
+    .query(async ({ input, ctx }) => {
+      const invoice = await prisma.invoice.findUnique({
+        where: {
+          id: input,
+        },
+        include: {
+          client: true,
+          items: true,
+          taxRates: true,
+        },
+      });
+
+      if (invoice?.userId !== ctx.userId) {
+        throw new Error("error.invoice.notFound");
+      }
+
+      return invoice;
     }),
 
   getNextAvailablePartialInvoiceId: protectedProcedure.query(

@@ -13,6 +13,8 @@ export type ReadUserSettings = RouterOutput['userSettings']['read'];
 export type CreateInvoice = RouterInput['invoice']['create']['invoice'];
 
 export type CreateInvoiceItem = RouterInput['invoice']['create']['invoice']['items'][0];
+export type ListInvoice = RouterOutput['invoice']['list'][0];
+export type ReadInvoice = RouterOutput['invoice']['read'];
 
 export const trpc = createTRPCProxyClient<AppRouter>({
 	transformer: SuperJSON,

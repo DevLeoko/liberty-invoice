@@ -10,24 +10,17 @@ import { appRouter } from "./routers/_app";
 import cors from "cors";
 import { authExpressMiddleware } from "./controller/auth-flows";
 import cookieParser from "cookie-parser";
-import { buildLatestInvoice } from "./utils/pdf/temp-pdf-generation";
+import { invoiceDownloadHandler } from "./routers/non-trpc/invoice-download";
 
 const app = express();
 
 app.use(cors({ origin: process.env.CORS_ORIGIN, credentials: true }));
 
-app.get("/download-test", async (req, res) => {
-  const pdfBuffer = buildLatestInvoice();
-
-  res.setHeader("Content-Type", "application/pdf");
-  res.setHeader("Content-Disposition", `inline; filename=${pdfBuffer.title}`);
-
-  res.send(await pdfBuffer.buffer);
-});
-
 app.use(cookieParser());
 
 app.use(authExpressMiddleware);
+
+app.get("/invoice/:invoiceId/download", invoiceDownloadHandler);
 
 app.use(
   "/trpc",

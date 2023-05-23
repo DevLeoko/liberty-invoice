@@ -4,6 +4,7 @@
 	import ConfirmationCard from '../basics/ConfirmationCard.svelte';
 
 	export let item: CreateInvoiceItem;
+	export let dummy = false;
 
 	const dispatch = createEventDispatcher<{ remove: void }>();
 
@@ -28,9 +29,13 @@
 		showDeleteConfirmation = false;
 		dispatch('remove');
 	}
+
+	let className = '';
+
+	export { className as class };
 </script>
 
-<tr class="align-top">
+<tr class="align-top {className}">
 	<td class="pr-2" on:focusin>
 		<div class="-ml-2 input-style">
 			<input type="text" class="w-full plain" bind:value={item.name} />
@@ -75,25 +80,27 @@
 		{item.quantity * item.unitPrice}
 	</td>
 	<td class="pt-1.5">
-		<div class="relative flex justify-end">
-			<span class="text-base align-middle cursor-pointer material-icons show-on-hover"
-				>more_vert</span
-			>
-			<span
-				class="text-base text-red-500 align-middle cursor-pointer material-icons show-on-hover"
-				on:click|stopPropagation={() => {
-					showDeleteConfirmation = true;
-				}}>close</span
-			>
-			{#if showDeleteConfirmation}
-				<ConfirmationCard
-					on:confirm={onRemove}
-					on:cancel={() => {
-						showDeleteConfirmation = false;
-					}}
-				/>
-			{/if}
-		</div>
+		{#if !dummy}
+			<div class="relative flex justify-end">
+				<span class="text-base align-middle cursor-pointer material-icons show-on-hover"
+					>more_vert</span
+				>
+				<span
+					class="text-base text-red-500 align-middle cursor-pointer material-icons show-on-hover"
+					on:click|stopPropagation={() => {
+						showDeleteConfirmation = true;
+					}}>close</span
+				>
+				{#if showDeleteConfirmation}
+					<ConfirmationCard
+						on:confirm={onRemove}
+						on:cancel={() => {
+							showDeleteConfirmation = false;
+						}}
+					/>
+				{/if}
+			</div>
+		{/if}
 	</td>
 </tr>
 

@@ -5,6 +5,7 @@
 	import AddressEditor from './AddressEditor.svelte';
 
 	export let entity: CreateClient;
+	export let large = false;
 </script>
 
 <!-- name: string;
@@ -64,8 +65,11 @@
 		<input type="text" bind:value={entity.vatNumber} />
 	</Labeled>
 
-	<Collapsable label="Invoice defaults" class="col-span-2 mt-2 bg-slate-100">
-		<div class="grid grid-cols-2 gap-2 my-2">
+	<Collapsable label="Invoice defaults" class="col-span-2 mt-2 bg-slate-100" flatten={large}>
+		{#if large}
+			<h2 class="!mb-0 pageSubTitle mt-2">Invoice defaults</h2>
+		{/if}
+		<div class="grid w-full grid-cols-2 col-span-2 gap-2 my-2">
 			<Labeled label="Default language">
 				<input type="text" bind:value={entity.defaultLanguage} />
 			</Labeled>

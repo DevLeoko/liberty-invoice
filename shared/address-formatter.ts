@@ -25,7 +25,7 @@ export function getClientDisplayLines(
   client: ClientDetails,
   t: TranslationFunction
 ) {
-  const lines = [];
+  const lines: string[] = [];
   if (client.name) {
     lines.push(client.name);
   }
@@ -62,7 +62,7 @@ export function getAddressDisplayLines(
   address: Address,
   t: TranslationFunction
 ): string[] {
-  const lines = [];
+  const lines: string[] = [];
   if (address.street) {
     lines.push(`${address.street} ${address.streetNumber || ""}`.trim());
   }

@@ -12,6 +12,7 @@ declare global {
       SIGN_IN_URL: string;
       RESET_PASSWORD_URL: string;
       CORS_ORIGIN: string;
+      FILE_STORAGE_PATH: string;
     }
   }
 }

@@ -30,13 +30,13 @@ export const userSettingsRouter = router({
       z.object({ id: z.number(), settings: userSettingsInputSchema.partial() })
     )
     .mutation(async ({ ctx, input }) => {
-      return prisma.userSettings.update({
+      return prisma.userSettings.updateMany({
         where: {
           id: input.id,
           userId: ctx.userId,
         },
         data: {
-          ...input,
+          ...input.settings,
         },
       });
     }),

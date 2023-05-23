@@ -12,6 +12,7 @@
 	export let snug = false;
 	export let red = false;
 	export let href: string | undefined = undefined;
+	export let target: undefined | '_blank' | '_self' | '_parent' | '_top' = undefined;
 
 	let className = '';
 
@@ -33,7 +34,10 @@
 	}
 </script>
 
-<button
+<svelte:element
+	this={href ? 'a' : 'button'}
+	{href}
+	{target}
 	class="text-white font-medium rounded-sm relative {className} select-none block"
 	class:loading
 	class:disabled
@@ -60,7 +64,7 @@
 	<div class:invisible={loading} class="flex items-center justify-center">
 		<slot />
 	</div>
-</button>
+</svelte:element>
 
 <style lang="postcss">
 	/* Define css variable for color */
@@ -69,7 +73,8 @@
 		--hover-color: theme('colors.blue.600');
 	}
 
-	button {
+	button,
+	a {
 		@apply px-3 py-1;
 		background-color: var(--color);
 
