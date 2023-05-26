@@ -5,7 +5,7 @@
 	import Button from '../../../lib/components/basics/Button.svelte'
 	import SidePopup from '../../../lib/components/basics/SidePopup.svelte'
 	import Skeleton from '../../../lib/components/basics/Skeleton.svelte'
-	import { t } from '../../../lib/stores/settings'
+	import { getCurrency, t } from '../../../lib/stores/settings'
 	import { createInvoiceQuery } from '../../../lib/tanQuery'
 	import { trpc, type ReadInvoice, type ListInvoice } from '../../../lib/trpcClient'
 
@@ -55,6 +55,7 @@
 			<div>{$t('general.status')}</div>
 		</div>
 		{#each $invoices.data as invoice}
+			{@const currency = $getCurrency(invoice.currency)}
 			<a
 				class="contents my-row [&>*]:px-2 [&>*]:py-1"
 				href="{PUBLIC_BACKEND_URL}/invoice/{invoice.id}/download"
@@ -63,7 +64,7 @@
 			>
 				<div class="rounded-l-sm">{invoice.invoiceNumber}</div>
 				<div>{invoice.client.name}</div>
-				<div>{invoice.amountWithTax}</div>
+				<div>{currency.format(invoice.amountWithTax)}</div>
 				<div>{invoice.dueDate.toDateString()}</div>
 				<div class="rounded-r-sm">
 					{invoice.amountPaid === invoice.amountWithTax ? 'Paid' : 'Unpaid'}

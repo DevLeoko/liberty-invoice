@@ -1,17 +1,17 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte'
 	import { getClientDisplayLines } from '../../../../shared/address-formatter'
-	import { getCurrency } from '../../../../shared/currencies'
 	import type { ReadInvoice } from '../trpcClient'
 	import Button from './basics/Button.svelte'
 	import { PUBLIC_BACKEND_URL } from '$env/static/public'
+	import { formatFloat, getCurrency } from '../stores/settings'
 
 	export let invoice: ReadInvoice
 
 	const dispatchEvent = createEventDispatcher()
 
 	$: remainingDays = Math.round((invoice.dueDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24))
-	$: currency = getCurrency(invoice.currency, 'de')
+	$: currency = $getCurrency(invoice.currency)
 </script>
 
 <div class="w-full">
@@ -31,7 +31,7 @@
 	<Button class="flex-1" href="{PUBLIC_BACKEND_URL}/invoice/{invoice.id}/download" target="_blank"
 		>Download</Button
 	>
-	<Button class="flex-1" href="/invoices/{invoice.id}/edit" target="_blank">Edit</Button>
+	<Button class="flex-1" href="/invoices/{invoice.id}/edit">Edit</Button>
 	<Button class="flex-1">Sent</Button>
 </div>
 
@@ -60,7 +60,8 @@
 {/if}
 
 <h3 class="mt-8 text-xl font-medium text-center">
-	{currency.format(invoice.amountWithTax)} due in {remainingDays} days
+	{currency.shorthand}
+	{$formatFloat(invoice.amountWithTax)} due in {remainingDays} days
 </h3>
 
 <div class="grid w-full mt-8 gap-x-2 grid-table-4">

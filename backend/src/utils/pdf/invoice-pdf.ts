@@ -82,7 +82,12 @@ export async function buildInvoicePdf(invoice: Invoice) {
     });
   }
 
-  const currency = getCurrency(invoice.currency, t("langCode"));
+  const numberFormatter = (number: number) =>
+    number.toLocaleString(t("langCode"), {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  const currency = getCurrency(invoice.currency, numberFormatter);
 
   async function fetchLogo() {
     return fetch(account.logoUrl).then((res) => res.arrayBuffer());

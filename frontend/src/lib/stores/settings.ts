@@ -1,6 +1,7 @@
 import { derived, writable } from 'svelte/store'
 import { Locale, LOCALES, TRANSLATIONS, type TranslationPaths } from '../translations/translations'
 import { translate } from '../../../../shared/invoice-translations/translations'
+import { getCurrency as getCurrencyUtil } from '../../../../shared/currencies'
 
 // Get browser language.
 function getApplicationLanguage(): Locale {
@@ -26,4 +27,15 @@ export const t = derived(
 	($applicationLanguage) =>
 		(key: TranslationPaths, vars?: Record<string, { toString(): string }>) =>
 			translate(TRANSLATIONS[$applicationLanguage], key, vars),
+)
+
+export const formatFloat = derived(
+	t,
+	($t) => (value: number) =>
+		value.toLocaleString($t('langCode'), { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+)
+
+export const getCurrency = derived(
+	formatFloat,
+	($formatFloat) => (shorthand: string) => getCurrencyUtil(shorthand, $formatFloat),
 )

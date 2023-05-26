@@ -36,6 +36,7 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		toggleSearch: 'Zu Suche umschalten',
 		note: 'Anmerkung',
 		create: 'Anlegen',
+		addDescription: 'Beschreibung hinzufügen',
 	},
 
 	clientEditorModal: {

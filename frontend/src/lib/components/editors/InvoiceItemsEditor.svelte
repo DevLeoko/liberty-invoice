@@ -3,7 +3,9 @@
 	import type { CreateInvoiceItem } from '../../trpcClient'
 	import InvoiceItemEditorRow from './InvoiceItemEditorRow.svelte'
 	import { t } from '../../stores/settings'
+	import type { FullCurrency } from '../../../../../shared/currencies'
 
+	export let currency: FullCurrency
 	export let items: CreateInvoiceItem[]
 
 	function getEmptyItem() {
@@ -45,10 +47,11 @@
 		<th class="w-12" />
 	</tr>
 	{#each items as item, i (i)}
-		<InvoiceItemEditorRow bind:item on:remove={() => removeItem(i)} />
+		<InvoiceItemEditorRow {currency} bind:item on:remove={() => removeItem(i)} />
 	{/each}
 	{#key items.length}
 		<InvoiceItemEditorRow
+			{currency}
 			class="opacity-50"
 			item={getEmptyItem()}
 			on:focusin={() => addNewAndFocusLast()}
@@ -58,7 +61,7 @@
 	<tr>
 		<td colspan="2" />
 		<td class="border-t border-gray-300">{$t('invoice.subtotal')}</td>
-		<td class="text-right border-t border-gray-300">{itemSubtotal}</td>
+		<td class="text-right border-t border-gray-300">{currency.format(itemSubtotal)}</td>
 		<td />
 	</tr>
 	<tr>
@@ -69,7 +72,7 @@
 	<tr class="font-medium">
 		<td colspan="2" />
 		<td> {$t('invoice.total')}</td>
-		<td class="text-right">{itemSubtotal}</td>
+		<td class="text-right">{currency.format(itemSubtotal)}</td>
 		<td />
 	</tr>
 </table>

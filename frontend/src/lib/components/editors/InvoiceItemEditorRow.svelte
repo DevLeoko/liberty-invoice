@@ -2,9 +2,13 @@
 	import { createEventDispatcher, tick } from 'svelte'
 	import type { CreateInvoiceItem } from '../../trpcClient'
 	import ConfirmationCard from '../basics/ConfirmationCard.svelte'
+	import type { FullCurrency } from '../../../../../shared/currencies'
+	import { t } from '../../stores/settings'
 
 	export let item: CreateInvoiceItem
 	export let dummy = false
+
+	export let currency: FullCurrency
 
 	const dispatch = createEventDispatcher<{ remove: void }>()
 
@@ -59,7 +63,8 @@
 				class="absolute z-10 -mt-1 text-sm text-gray-500 cursor-pointer show-on-focus"
 				on:click={addDescription}
 			>
-				<b>+</b> Add description
+				<b>+</b>
+				{$t('invoiceEditor.addDescription')}
 			</div>
 		{/if}
 	</td>
@@ -77,7 +82,7 @@
 		<input type="number" class="-ml-2" bind:value={item.unitPrice} />
 	</td>
 	<td class="py-1.5 text-right">
-		{item.quantity * item.unitPrice}
+		{currency.format(item.quantity * item.unitPrice)}
 	</td>
 	<td class="pt-1.5">
 		{#if !dummy}

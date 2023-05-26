@@ -108,12 +108,16 @@ export const CURRENCIES = [
   },
 ];
 
-export function getCurrency(shorthand: string, langCode: string) {
+export function getCurrency(
+  shorthand: string,
+  formatter: (value: number) => string
+) {
   const currency =
     CURRENCIES.find((currency) => currency.shorthand === shorthand) || USD;
   return {
     ...currency,
-    format: (value: number) => formatCurrencyGeneric(value, currency, langCode),
+    format: (value: number) =>
+      formatCurrencyGeneric(value, currency, formatter),
   };
 }
 
@@ -125,15 +129,16 @@ export interface Currency {
   symbolOnLeft: boolean;
 }
 
+export interface FullCurrency extends Currency {
+  format: (value: number) => string;
+}
+
 export function formatCurrencyGeneric(
   value: number,
   currency: Currency,
-  langCode: string
+  formatter: (value: number) => string
 ) {
-  const formatted = value.toLocaleString(langCode, {
-    maximumFractionDigits: 2,
-    minimumFractionDigits: 2,
-  });
+  const formatted = formatter(value);
   if (currency.symbolOnLeft) {
     return `${currency.symbol}${formatted}`;
   }

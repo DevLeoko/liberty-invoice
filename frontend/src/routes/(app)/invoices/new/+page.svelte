@@ -9,6 +9,7 @@
 	import Skeleton from '../../../../lib/components/basics/Skeleton.svelte'
 	import { logError, logSuccess } from '../../../../lib/stores/alerts'
 	import { useQueryClient } from '@tanstack/svelte-query'
+	import { t } from '../../../../lib/stores/settings'
 
 	let invoice: null | NullableProp<CreateInvoice, 'clientId'> = null
 	let partialId: null | number = null
@@ -71,9 +72,9 @@
 </script>
 
 <div class="flex justify-between mb-4">
-	<h1 class="pageTitle">New invoice</h1>
+	<h1 class="pageTitle">{$t('invoiceList.newInvoice')}</h1>
 	<Button loading={loadingSave} on:click={createInvoice}
-		><span class="mr-1 material-icons">check</span> Save</Button
+		><span class="mr-1 material-icons">check</span> {$t('general.save')}</Button
 	>
 </div>
 

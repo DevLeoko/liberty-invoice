@@ -35,6 +35,7 @@ export const TRANSLATIONS_EN = {
 		toggleSearch: 'toggle search',
 		note: 'Note',
 		create: 'New',
+		addDescription: 'Add description',
 	},
 	clientEditorModal: {
 		updated: 'Client updated',

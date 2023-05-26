@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { NullableProp } from '../../../types/utilities'
-	import { t } from '../../stores/settings'
+	import { getCurrency, t } from '../../stores/settings'
 	import type { CreateInvoice } from '../../trpcClient'
 	import DateInput from '../basics/DateInput.svelte'
 	import Labeled from '../basics/Labeled.svelte'
@@ -8,6 +8,8 @@
 	import InvoiceItemsEditor from './InvoiceItemsEditor.svelte'
 
 	export let invoice: NullableProp<CreateInvoice, 'clientId'>
+
+	$: currency = $getCurrency(invoice.currency) || $getCurrency('USD')
 
 	// const clients = createClientQuery();
 	// const userSettings = queryUserSettings();
@@ -45,6 +47,6 @@
 	</Labeled>
 
 	<div>
-		<InvoiceItemsEditor bind:items={invoice.items} />
+		<InvoiceItemsEditor {currency} bind:items={invoice.items} />
 	</div>
 </div>
