@@ -53,10 +53,10 @@
 				<h2 class="pageSubTitle">{$t('settings.companyLogo')}</h2>
 				<div
 					class="h-48 overflow-hidden bg-center bg-no-repeat bg-contain border rounded-md w-80"
-					style="background-image: url({userEditObject.logoUrl}); background-size: 80%;"
+					style="background-image: url({userEditObject.logoUrl}); background-size: 80%; "
 				>
 					<div
-						class="flex items-center justify-center h-full transition-opacity bg-black opacity-0 bg-opacity-40 hover:opacity-100"
+						class="flex items-center justify-center h-full transition-opacity opacity-0 cursor-pointer bg-slate-500 bg-opacity-80 hover:opacity-100"
 					>
 						<div class="flex items-center font-semibold text-white">
 							<span class="text-sm material-icons">upload</span>

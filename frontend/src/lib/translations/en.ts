@@ -9,6 +9,13 @@ export const TRANSLATIONS_EN = {
 		settings: 'Settings',
 		logout: 'Logout',
 	},
+
+	language: {
+		en: 'English',
+		de: 'German',
+		pl: 'Polish',
+	},
+
 	invoiceList: {
 		newInvoice: 'New Invoice',
 		noneFound: 'No invoices found.',

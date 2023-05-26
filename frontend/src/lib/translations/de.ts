@@ -11,6 +11,12 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		logout: 'Abmelden',
 	},
 
+	language: {
+		en: 'Englisch',
+		de: 'Deutsch',
+		pl: 'Polnisch',
+	},
+
 	invoiceList: {
 		newInvoice: 'Neue Rechnung',
 		noneFound: 'Keine Rechnungen gefunden.',
@@ -31,13 +37,6 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		note: 'Anmerkung',
 		create: 'Anlegen',
 	},
-
-	// clientEditorModal: {
-	// 	updated: 'Client updated',
-	// 	deleted: 'Client deleted',
-	// 	update: 'Update client',
-	// 	create: 'Create client'
-	// },
 
 	clientEditorModal: {
 		updated: 'Kunde gespeichert',

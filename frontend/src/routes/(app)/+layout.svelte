@@ -5,11 +5,15 @@
 	import Button from '../../lib/components/basics/Button.svelte'
 	import { applicationLanguage, t } from '../../lib/stores/settings'
 	import { Locale } from '../../lib/translations/translations'
+	import FloatingCard from '../../lib/components/basics/FloatingCard.svelte'
+	import LanguageSelector from '../../lib/components/LanguageSelector.svelte'
 
 	function logout() {
 		setLoggedOut()
 		goto('/')
 	}
+
+	let showLanguageSelector = false
 
 	// Uses google material icons
 	const PAGES = [
@@ -69,9 +73,22 @@
 		<Button on:click={logout} outlined class="mt-auto">{$t('menu.logout')}</Button>
 		<div class="flex justify-between mt-1 mb-4 text-xs text-gray-700">
 			<span>&copy; Liberty Invoice 2023</span>
-			<span class="underline cursor-pointer" on:click={changeLanguage}
-				>{$applicationLanguage.toUpperCase()}</span
+
+			<span
+				class="relative underline cursor-pointer"
+				on:click|stopPropagation={() => (showLanguageSelector = true)}
 			>
+				{$applicationLanguage.toUpperCase()}
+
+				{#if showLanguageSelector}
+					<FloatingCard
+						on:clickOutside={() => (showLanguageSelector = false)}
+						on:click={() => (showLanguageSelector = false)}
+					>
+						<LanguageSelector bind:selected={$applicationLanguage} />
+					</FloatingCard>
+				{/if}
+			</span>
 		</div>
 	</div>
 	<div class="flex-grow p-8">
