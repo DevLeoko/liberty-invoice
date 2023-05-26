@@ -1,8 +1,8 @@
 <script lang="ts">
-	import Modal from './Modal.svelte';
-	export let zLevel = 50;
+	import Modal from './Modal.svelte'
+	export let zLevel = 50
 
-	export let title = '';
+	export let title = ''
 </script>
 
 <Modal on:exit {zLevel}>

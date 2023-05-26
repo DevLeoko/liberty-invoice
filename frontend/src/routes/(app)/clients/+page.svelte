@@ -1,34 +1,34 @@
 <script lang="ts">
-	import { trpc, type CreateClient } from '../../../lib/trpcClient';
-	import Skeleton from '../../../lib/components/basics/Skeleton.svelte';
-	import Button from '../../../lib/components/basics/Button.svelte';
-	import { emptyClient } from '../../../lib/utils/clientUtils';
-	import type { EditorSelection } from '../../../lib/components/basics/EditorModal.svelte';
-	import { createClientQuery, createUserSettingsQuery } from '../../../lib/tanQuery';
-	import ClientEditorModal from '../../../lib/components/editors/ClientEditorModal.svelte';
-	import { t } from '../../../lib/stores/settings';
+	import { trpc, type CreateClient } from '../../../lib/trpcClient'
+	import Skeleton from '../../../lib/components/basics/Skeleton.svelte'
+	import Button from '../../../lib/components/basics/Button.svelte'
+	import { emptyClient } from '../../../lib/utils/clientUtils'
+	import type { EditorSelection } from '../../../lib/components/basics/EditorModal.svelte'
+	import { createClientQuery, createUserSettingsQuery } from '../../../lib/tanQuery'
+	import ClientEditorModal from '../../../lib/components/editors/ClientEditorModal.svelte'
+	import { t } from '../../../lib/stores/settings'
 
-	const userSettings = createUserSettingsQuery();
-	const clients = createClientQuery();
+	const userSettings = createUserSettingsQuery()
+	const clients = createClientQuery()
 
-	let selected: EditorSelection<CreateClient> = null;
+	let selected: EditorSelection<CreateClient> = null
 
 	function startCreate() {
-		const defaults = $userSettings.data;
-		if (!defaults) return;
+		const defaults = $userSettings.data
+		if (!defaults) return
 
 		selected = {
-			entity: emptyClient(defaults)
-		};
+			entity: emptyClient(defaults),
+		}
 	}
 
 	async function selectClient(id: number) {
 		// TODO: add load indicator
-		const client = await trpc.client.read.query({ id });
+		const client = await trpc.client.read.query({ id })
 		selected = {
 			id,
-			entity: client
-		};
+			entity: client,
+		}
 	}
 </script>
 

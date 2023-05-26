@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { setLoggedOut } from '../../lib/stores/auth';
-	import { goto } from '$app/navigation';
-	import Button from '../../lib/components/basics/Button.svelte';
-	import { applicationLanguage, t } from '../../lib/stores/settings';
-	import { Locale } from '../../lib/translations/translations';
+	import { page } from '$app/stores'
+	import { setLoggedOut } from '../../lib/stores/auth'
+	import { goto } from '$app/navigation'
+	import Button from '../../lib/components/basics/Button.svelte'
+	import { applicationLanguage, t } from '../../lib/stores/settings'
+	import { Locale } from '../../lib/translations/translations'
 
 	function logout() {
-		setLoggedOut();
-		goto('/');
+		setLoggedOut()
+		goto('/')
 	}
 
 	// Uses google material icons
@@ -38,10 +38,10 @@
 			icon: 'settings',
 			href: '/settings',
 		},
-	] as const;
+	] as const
 
 	function changeLanguage() {
-		$applicationLanguage = $applicationLanguage === Locale.DE ? Locale.EN : Locale.DE;
+		$applicationLanguage = $applicationLanguage === Locale.DE ? Locale.EN : Locale.DE
 	}
 </script>
 

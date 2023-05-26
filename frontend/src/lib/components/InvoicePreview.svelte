@@ -1,17 +1,17 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-	import { getClientDisplayLines } from '../../../../shared/address-formatter';
-	import { getCurrency } from '../../../../shared/currencies';
-	import type { ReadInvoice } from '../trpcClient';
-	import Button from './basics/Button.svelte';
-	import { PUBLIC_BACKEND_URL } from '$env/static/public';
+	import { createEventDispatcher } from 'svelte'
+	import { getClientDisplayLines } from '../../../../shared/address-formatter'
+	import { getCurrency } from '../../../../shared/currencies'
+	import type { ReadInvoice } from '../trpcClient'
+	import Button from './basics/Button.svelte'
+	import { PUBLIC_BACKEND_URL } from '$env/static/public'
 
-	export let invoice: ReadInvoice;
+	export let invoice: ReadInvoice
 
-	const dispatchEvent = createEventDispatcher();
+	const dispatchEvent = createEventDispatcher()
 
-	$: remainingDays = Math.round((invoice.dueDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
-	$: currency = getCurrency(invoice.currency, 'de');
+	$: remainingDays = Math.round((invoice.dueDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+	$: currency = getCurrency(invoice.currency, 'de')
 </script>
 
 <div class="w-full">

@@ -1,43 +1,43 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { onMount } from 'svelte';
-	import Button from '../../../../../lib/components/basics/Button.svelte';
-	import Skeleton from '../../../../../lib/components/basics/Skeleton.svelte';
-	import InvoiceEditor from '../../../../../lib/components/editors/InvoiceEditor.svelte';
-	import { trpc, type CreateInvoice, type ReadInvoice } from '../../../../../lib/trpcClient';
-	import { logSuccess } from '../../../../../lib/stores/alerts';
+	import { page } from '$app/stores'
+	import { onMount } from 'svelte'
+	import Button from '../../../../../lib/components/basics/Button.svelte'
+	import Skeleton from '../../../../../lib/components/basics/Skeleton.svelte'
+	import InvoiceEditor from '../../../../../lib/components/editors/InvoiceEditor.svelte'
+	import { trpc, type CreateInvoice, type ReadInvoice } from '../../../../../lib/trpcClient'
+	import { logSuccess } from '../../../../../lib/stores/alerts'
 
-	const id = Number.parseInt($page.params.id);
+	const id = Number.parseInt($page.params.id)
 
-	let loadingSave = false;
-	let invoice: null | CreateInvoice = null;
+	let loadingSave = false
+	let invoice: null | CreateInvoice = null
 
 	onMount(async () => {
-		const invoiceData = await trpc.invoice.read.query(id);
+		const invoiceData = await trpc.invoice.read.query(id)
 
 		invoice = {
 			...invoiceData,
-			taxRateIds: invoiceData.taxRates.map((taxRate) => taxRate.id)
-		};
-	});
+			taxRateIds: invoiceData.taxRates.map((taxRate) => taxRate.id),
+		}
+	})
 
 	async function saveInvoice() {
 		if (!invoice) {
-			return;
+			return
 		}
 
-		loadingSave = true;
+		loadingSave = true
 
 		await trpc.invoice.update
 			.mutate({
 				id,
-				invoice
+				invoice,
 			})
 			.finally(() => {
-				loadingSave = false;
-			});
+				loadingSave = false
+			})
 
-		logSuccess('Invoice saved');
+		logSuccess('Invoice saved')
 	}
 </script>
 

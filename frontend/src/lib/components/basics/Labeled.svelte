@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher } from 'svelte'
 
-	export let label: string;
-	export let actionText = null as string | null;
+	export let label: string
+	export let actionText = null as string | null
 
-	const eventDispatcher = createEventDispatcher<{ action: void }>();
+	const eventDispatcher = createEventDispatcher<{ action: void }>()
 
-	let className = '';
+	let className = ''
 
-	export { className as class };
+	export { className as class }
 </script>
 
 <div class="flex flex-col {className}">

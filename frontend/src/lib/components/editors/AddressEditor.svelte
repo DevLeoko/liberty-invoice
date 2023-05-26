@@ -1,14 +1,14 @@
 <script lang="ts">
-	import type { CreateClient } from '../../trpcClient';
-	import Labeled from '../basics/Labeled.svelte';
+	import type { CreateClient } from '../../trpcClient'
+	import Labeled from '../basics/Labeled.svelte'
 
 	export let entity: {
-		street: string;
-		streetNumber: string;
-		city: string;
-		zip: string;
-		countryCode: string;
-	};
+		street: string
+		streetNumber: string
+		city: string
+		zip: string
+		countryCode: string
+	}
 </script>
 
 <!-- name: string;

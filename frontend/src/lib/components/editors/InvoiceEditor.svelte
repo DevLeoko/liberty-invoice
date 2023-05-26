@@ -1,20 +1,20 @@
 <script lang="ts">
-	import type { NullableProp } from '../../../types/utilities';
-	import { t } from '../../stores/settings';
-	import type { CreateInvoice } from '../../trpcClient';
-	import DateInput from '../basics/DateInput.svelte';
-	import Labeled from '../basics/Labeled.svelte';
-	import ClientSelector from '../ClientSelector.svelte';
-	import InvoiceItemsEditor from './InvoiceItemsEditor.svelte';
+	import type { NullableProp } from '../../../types/utilities'
+	import { t } from '../../stores/settings'
+	import type { CreateInvoice } from '../../trpcClient'
+	import DateInput from '../basics/DateInput.svelte'
+	import Labeled from '../basics/Labeled.svelte'
+	import ClientSelector from '../ClientSelector.svelte'
+	import InvoiceItemsEditor from './InvoiceItemsEditor.svelte'
 
-	export let invoice: NullableProp<CreateInvoice, 'clientId'>;
+	export let invoice: NullableProp<CreateInvoice, 'clientId'>
 
 	// const clients = createClientQuery();
 	// const userSettings = queryUserSettings();
 
 	$: dueDays = invoice.dueDate
 		? Math.round((invoice.dueDate.getTime() - invoice.date.getTime()) / (1000 * 60 * 60 * 24))
-		: 0;
+		: 0
 </script>
 
 <div class="flex flex-col max-w-2xl space-y-6">

@@ -1,36 +1,36 @@
 <script lang="ts">
-	import Button from '../../../lib/components/basics/Button.svelte';
-	import { logSuccess } from '../../../lib/stores/alerts';
-	import { trpc } from '../../../lib/trpcClient';
+	import Button from '../../../lib/components/basics/Button.svelte'
+	import { logSuccess } from '../../../lib/stores/alerts'
+	import { trpc } from '../../../lib/trpcClient'
 
-	let email = '';
-	let password = '';
-	let confirmPassword = '';
+	let email = ''
+	let password = ''
+	let confirmPassword = ''
 
-	let inputIssue = '';
+	let inputIssue = ''
 	$: {
 		if (email === '') {
-			inputIssue = 'Email is required';
+			inputIssue = 'Email is required'
 		} else if (password === '') {
-			inputIssue = 'Password is required';
+			inputIssue = 'Password is required'
 		} else if (confirmPassword === '') {
-			inputIssue = 'Confirm Password is required';
+			inputIssue = 'Confirm Password is required'
 		} else if (password !== confirmPassword) {
-			inputIssue = 'Passwords do not match';
+			inputIssue = 'Passwords do not match'
 		} else {
-			inputIssue = '';
+			inputIssue = ''
 		}
 	}
 
-	let loading = false;
+	let loading = false
 
 	async function register() {
-		loading = true;
+		loading = true
 		await trpc.auth.signUpWithPassword.mutate({ email, password }).finally(() => {
-			loading = false;
-		});
+			loading = false
+		})
 
-		logSuccess('Registered successfully');
+		logSuccess('Registered successfully')
 	}
 </script>
 

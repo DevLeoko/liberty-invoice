@@ -1,38 +1,38 @@
 <script lang="ts">
-	import { createEventDispatcher, tick } from 'svelte';
-	import type { CreateInvoiceItem } from '../../trpcClient';
-	import ConfirmationCard from '../basics/ConfirmationCard.svelte';
+	import { createEventDispatcher, tick } from 'svelte'
+	import type { CreateInvoiceItem } from '../../trpcClient'
+	import ConfirmationCard from '../basics/ConfirmationCard.svelte'
 
-	export let item: CreateInvoiceItem;
-	export let dummy = false;
+	export let item: CreateInvoiceItem
+	export let dummy = false
 
-	const dispatch = createEventDispatcher<{ remove: void }>();
+	const dispatch = createEventDispatcher<{ remove: void }>()
 
-	let showDescription = false;
-	let descriptionInput: HTMLTextAreaElement;
+	let showDescription = false
+	let descriptionInput: HTMLTextAreaElement
 
-	let showDeleteConfirmation = false;
+	let showDeleteConfirmation = false
 
 	function addDescription() {
-		showDescription = true;
+		showDescription = true
 		tick().then(() => {
-			descriptionInput.focus();
-		});
+			descriptionInput.focus()
+		})
 	}
 
 	function removeDescription() {
-		item.description = '';
-		showDescription = false;
+		item.description = ''
+		showDescription = false
 	}
 
 	function onRemove() {
-		showDeleteConfirmation = false;
-		dispatch('remove');
+		showDeleteConfirmation = false
+		dispatch('remove')
 	}
 
-	let className = '';
+	let className = ''
 
-	export { className as class };
+	export { className as class }
 </script>
 
 <tr class="align-top {className}">
@@ -88,14 +88,14 @@
 				<span
 					class="text-base text-red-500 align-middle cursor-pointer material-icons show-on-hover"
 					on:click|stopPropagation={() => {
-						showDeleteConfirmation = true;
+						showDeleteConfirmation = true
 					}}>close</span
 				>
 				{#if showDeleteConfirmation}
 					<ConfirmationCard
 						on:confirm={onRemove}
 						on:cancel={() => {
-							showDeleteConfirmation = false;
+							showDeleteConfirmation = false
 						}}
 					/>
 				{/if}

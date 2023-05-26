@@ -1,36 +1,36 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-	import ConfirmationCard from './ConfirmationCard.svelte';
+	import { createEventDispatcher } from 'svelte'
+	import ConfirmationCard from './ConfirmationCard.svelte'
 
-	export let requiresConfirmation = false;
-	export let confirmationOpen = false;
+	export let requiresConfirmation = false
+	export let confirmationOpen = false
 
-	export let loading = false;
-	export let disabled = false;
-	export let outlined = false;
-	export let gray = false;
-	export let snug = false;
-	export let red = false;
-	export let href: string | undefined = undefined;
-	export let target: undefined | '_blank' | '_self' | '_parent' | '_top' = undefined;
+	export let loading = false
+	export let disabled = false
+	export let outlined = false
+	export let gray = false
+	export let snug = false
+	export let red = false
+	export let href: string | undefined = undefined
+	export let target: undefined | '_blank' | '_self' | '_parent' | '_top' = undefined
 
-	let className = '';
+	let className = ''
 
-	export { className as class };
+	export { className as class }
 
-	const eventDispatcher = createEventDispatcher<{ click: MouseEvent }>();
+	const eventDispatcher = createEventDispatcher<{ click: MouseEvent }>()
 
 	function handleClick(event: MouseEvent) {
 		if (requiresConfirmation) {
-			confirmationOpen = true;
+			confirmationOpen = true
 		} else {
-			eventDispatcher('click', event);
+			eventDispatcher('click', event)
 		}
 	}
 
 	function handleConfirm(event: CustomEvent<MouseEvent>) {
-		confirmationOpen = false;
-		eventDispatcher('click', event.detail);
+		confirmationOpen = false
+		eventDispatcher('click', event.detail)
 	}
 </script>
 

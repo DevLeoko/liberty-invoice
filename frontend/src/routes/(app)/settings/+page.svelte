@@ -1,39 +1,39 @@
 <script lang="ts">
-	import { useQueryClient } from '@tanstack/svelte-query';
-	import Button from '../../../lib/components/basics/Button.svelte';
-	import Labeled from '../../../lib/components/basics/Labeled.svelte';
-	import Skeleton from '../../../lib/components/basics/Skeleton.svelte';
-	import ClientEditor from '../../../lib/components/editors/ClientEditor.svelte';
-	import { logSuccess } from '../../../lib/stores/alerts';
-	import { USER_SETTINGS_KEY, createUserSettingsQuery } from '../../../lib/tanQuery';
-	import { trpc } from '../../../lib/trpcClient';
-	import { t } from '../../../lib/stores/settings';
+	import { useQueryClient } from '@tanstack/svelte-query'
+	import Button from '../../../lib/components/basics/Button.svelte'
+	import Labeled from '../../../lib/components/basics/Labeled.svelte'
+	import Skeleton from '../../../lib/components/basics/Skeleton.svelte'
+	import ClientEditor from '../../../lib/components/editors/ClientEditor.svelte'
+	import { logSuccess } from '../../../lib/stores/alerts'
+	import { USER_SETTINGS_KEY, createUserSettingsQuery } from '../../../lib/tanQuery'
+	import { trpc } from '../../../lib/trpcClient'
+	import { t } from '../../../lib/stores/settings'
 
-	const userSettings = createUserSettingsQuery();
+	const userSettings = createUserSettingsQuery()
 
-	let userEditObject: typeof $userSettings.data = undefined;
+	let userEditObject: typeof $userSettings.data = undefined
 
-	const queryClient = useQueryClient();
+	const queryClient = useQueryClient()
 
 	$: {
-		userEditObject = $userSettings.data;
+		userEditObject = $userSettings.data
 	}
 
-	let loadingSave = false;
+	let loadingSave = false
 
 	async function onSave() {
-		if (!userEditObject) return;
+		if (!userEditObject) return
 
-		loadingSave = true;
+		loadingSave = true
 		await trpc.userSettings.update
 			.mutate({
 				id: userEditObject.id,
 				settings: userEditObject,
 			})
-			.finally(() => (loadingSave = false));
+			.finally(() => (loadingSave = false))
 
-		queryClient.invalidateQueries([USER_SETTINGS_KEY]);
-		logSuccess('Settings saved');
+		queryClient.invalidateQueries([USER_SETTINGS_KEY])
+		logSuccess('Settings saved')
 	}
 </script>
 

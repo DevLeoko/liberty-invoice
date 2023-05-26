@@ -1,5 +1,5 @@
-import { sveltekit } from '@sveltejs/kit/vite';
-import { defineConfig } from 'vite';
+import { sveltekit } from '@sveltejs/kit/vite'
+import { defineConfig } from 'vite'
 
 export default defineConfig({
 	plugins: [sveltekit()],
@@ -7,8 +7,8 @@ export default defineConfig({
 	css: {
 		preprocessorOptions: {
 			scss: {
-				additionalData: '@use "src/variables.scss" as *;'
-			}
-		}
-	}
-});
+				additionalData: '@use "src/variables.scss" as *;',
+			},
+		},
+	},
+})

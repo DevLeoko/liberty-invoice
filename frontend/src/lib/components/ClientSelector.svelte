@@ -1,33 +1,33 @@
 <script lang="ts">
-	import { t } from '../stores/settings';
-	import { createClientQuery, createUserSettingsQuery } from '../tanQuery';
-	import type { CreateClient } from '../trpcClient';
-	import { emptyClient } from '../utils/clientUtils';
-	import type { EditorSelection } from './basics/EditorModal.svelte';
-	import Skeleton from './basics/Skeleton.svelte';
-	import ClientEditor from './editors/ClientEditor.svelte';
-	import ClientEditorModal from './editors/ClientEditorModal.svelte';
+	import { t } from '../stores/settings'
+	import { createClientQuery, createUserSettingsQuery } from '../tanQuery'
+	import type { CreateClient } from '../trpcClient'
+	import { emptyClient } from '../utils/clientUtils'
+	import type { EditorSelection } from './basics/EditorModal.svelte'
+	import Skeleton from './basics/Skeleton.svelte'
+	import ClientEditor from './editors/ClientEditor.svelte'
+	import ClientEditorModal from './editors/ClientEditorModal.svelte'
 
-	export let clientId: number | null;
+	export let clientId: number | null
 
-	let createClient: EditorSelection<CreateClient> = null;
-	let userSettings = createUserSettingsQuery();
+	let createClient: EditorSelection<CreateClient> = null
+	let userSettings = createUserSettingsQuery()
 
 	function startCreate() {
-		if (!$userSettings.data) return;
-		clientId = null;
+		if (!$userSettings.data) return
+		clientId = null
 		createClient = {
-			entity: emptyClient($userSettings.data)
-		};
+			entity: emptyClient($userSettings.data),
+		}
 	}
 
 	$: {
 		if (clientId != null) {
-			createClient = null;
+			createClient = null
 		}
 	}
 
-	const clients = createClientQuery();
+	const clients = createClientQuery()
 </script>
 
 <ClientEditorModal bind:selected={createClient} />

@@ -1,39 +1,39 @@
 <script lang="ts">
-	import { tick } from 'svelte';
-	import type { CreateInvoiceItem } from '../../trpcClient';
-	import InvoiceItemEditorRow from './InvoiceItemEditorRow.svelte';
-	import { t } from '../../stores/settings';
+	import { tick } from 'svelte'
+	import type { CreateInvoiceItem } from '../../trpcClient'
+	import InvoiceItemEditorRow from './InvoiceItemEditorRow.svelte'
+	import { t } from '../../stores/settings'
 
-	export let items: CreateInvoiceItem[];
+	export let items: CreateInvoiceItem[]
 
 	function getEmptyItem() {
-		return { description: '', quantity: 0, discount: 0, name: '', unit: '', unitPrice: 0 };
+		return { description: '', quantity: 0, discount: 0, name: '', unit: '', unitPrice: 0 }
 	}
 
 	function addNewItem() {
-		items = [...items, getEmptyItem()];
+		items = [...items, getEmptyItem()]
 	}
 
 	function addNewAndFocusLast() {
-		addNewItem();
+		addNewItem()
 		tick().then(() => {
-			const table = document.getElementById('itemEditorTable') as HTMLTableElement;
-			const lastRow = table.rows[items.length];
+			const table = document.getElementById('itemEditorTable') as HTMLTableElement
+			const lastRow = table.rows[items.length]
 
-			const input = lastRow.querySelector('input') as HTMLInputElement;
-			input.focus();
-		});
+			const input = lastRow.querySelector('input') as HTMLInputElement
+			input.focus()
+		})
 	}
 
 	function removeItem(index: number) {
-		items = items.filter((_, i) => i != index);
+		items = items.filter((_, i) => i != index)
 
 		if (items.length == 0) {
-			addNewItem();
+			addNewItem()
 		}
 	}
 
-	$: itemSubtotal = items.reduce((acc, item) => acc + item.unitPrice * item.quantity, 0);
+	$: itemSubtotal = items.reduce((acc, item) => acc + item.unitPrice * item.quantity, 0)
 </script>
 
 <table class="w-full table-fixed" id="itemEditorTable">

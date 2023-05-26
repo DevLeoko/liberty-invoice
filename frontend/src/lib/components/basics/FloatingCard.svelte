@@ -1,29 +1,29 @@
 <script lang="ts">
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte'
 
-	const dispatch = createEventDispatcher<{ clickOutside: MouseEvent }>();
+	const dispatch = createEventDispatcher<{ clickOutside: MouseEvent }>()
 
-	let el: HTMLDivElement;
+	let el: HTMLDivElement
 
-	let placeBottom = false;
-	let placeLeft = false;
+	let placeBottom = false
+	let placeLeft = false
 	onMount(() => {
-		const { left, top, width } = el.getBoundingClientRect();
-		const windowWidth = window.innerWidth;
+		const { left, top, width } = el.getBoundingClientRect()
+		const windowWidth = window.innerWidth
 
 		if (top < 0) {
-			placeBottom = true;
+			placeBottom = true
 		}
 
 		if (left + width > windowWidth) {
-			placeLeft = true;
+			placeLeft = true
 		}
-	});
+	})
 
 	function onBodyClick(event: MouseEvent) {
 		// Check if the click was outside the card
 		if (!el.contains(event.target as Node)) {
-			dispatch('clickOutside', event);
+			dispatch('clickOutside', event)
 		}
 	}
 </script>

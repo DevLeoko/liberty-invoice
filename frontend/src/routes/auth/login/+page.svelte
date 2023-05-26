@@ -1,53 +1,53 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import Button from '../../../lib/components/basics/Button.svelte';
-	import { logSuccess } from '../../../lib/stores/alerts';
-	import { trpc } from '../../../lib/trpcClient';
-	import { setLoggedIn } from '../../../lib/stores/auth';
-	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte'
+	import Button from '../../../lib/components/basics/Button.svelte'
+	import { logSuccess } from '../../../lib/stores/alerts'
+	import { trpc } from '../../../lib/trpcClient'
+	import { setLoggedIn } from '../../../lib/stores/auth'
+	import { goto } from '$app/navigation'
 
-	let email = '';
-	let password = '';
+	let email = ''
+	let password = ''
 
-	let inputIssue = '';
+	let inputIssue = ''
 	$: {
 		if (email === '') {
-			inputIssue = 'Email is required';
+			inputIssue = 'Email is required'
 		} else if (password === '') {
-			inputIssue = 'Password is required';
+			inputIssue = 'Password is required'
 		} else {
-			inputIssue = '';
+			inputIssue = ''
 		}
 	}
 
 	onMount(async () => {
 		// Get token from url
-		const urlParams = new URLSearchParams(window.location.search);
-		const token = urlParams.get('token');
-		const urlEmail = urlParams.get('email');
+		const urlParams = new URLSearchParams(window.location.search)
+		const token = urlParams.get('token')
+		const urlEmail = urlParams.get('email')
 
 		if (token && urlEmail) {
-			email = urlEmail;
-			await trpc.auth.verifyEmail.mutate({ token, email: urlEmail });
-			logSuccess('Email verified successfully');
+			email = urlEmail
+			await trpc.auth.verifyEmail.mutate({ token, email: urlEmail })
+			logSuccess('Email verified successfully')
 
 			// Clear url params
-			window.history.replaceState({}, document.title, '/');
+			window.history.replaceState({}, document.title, '/')
 		}
-	});
+	})
 
-	let loading = false;
+	let loading = false
 
 	async function login() {
-		loading = true;
+		loading = true
 		await trpc.auth.loginWithPassword.mutate({ email, password }).finally(() => {
-			loading = false;
-		});
+			loading = false
+		})
 
 		// logSuccess('Logged in successfully');
-		setLoggedIn();
+		setLoggedIn()
 
-		goto('/dashboard');
+		goto('/dashboard')
 	}
 </script>
 

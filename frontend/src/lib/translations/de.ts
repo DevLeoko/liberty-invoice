@@ -1,5 +1,5 @@
-import { TRANSLATIONS_DE as SHARED_TRANSLATION_DE } from '../../../../shared/invoice-translations/de';
-import type { TranslationDictionary } from './translations';
+import { TRANSLATIONS_DE as SHARED_TRANSLATION_DE } from '../../../../shared/invoice-translations/de'
+import type { TranslationDictionary } from './translations'
 
 export const TRANSLATIONS_DE: TranslationDictionary = {
 	menu: {
@@ -92,4 +92,4 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 	},
 
 	...SHARED_TRANSLATION_DE,
-};
+}

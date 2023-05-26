@@ -1,4 +1,4 @@
-import { TRANSLATIONS_EN as SHARED_TRANSLATION_EN } from '../../../../shared/invoice-translations/en';
+import { TRANSLATIONS_EN as SHARED_TRANSLATION_EN } from '../../../../shared/invoice-translations/en'
 
 export const TRANSLATIONS_EN = {
 	menu: {
@@ -79,4 +79,4 @@ export const TRANSLATIONS_EN = {
 	},
 
 	...SHARED_TRANSLATION_EN,
-} as const;
+} as const

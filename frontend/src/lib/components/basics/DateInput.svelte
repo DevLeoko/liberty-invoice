@@ -1,13 +1,13 @@
 <script lang="ts">
-	export let date: Date | null;
+	export let date: Date | null
 
 	function onInput(event: Event) {
-		const target = event.target as HTMLInputElement;
-		const value = target.valueAsDate;
+		const target = event.target as HTMLInputElement
+		const value = target.valueAsDate
 
 		if (value) {
-			if (date) value.setHours(date.getHours(), date.getMinutes(), date.getSeconds());
-			date = value;
+			if (date) value.setHours(date.getHours(), date.getMinutes(), date.getSeconds())
+			date = value
 		}
 	}
 </script>

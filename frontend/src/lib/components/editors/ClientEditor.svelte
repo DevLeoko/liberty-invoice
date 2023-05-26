@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { t } from '../../stores/settings';
-	import type { CreateClient } from '../../trpcClient';
-	import Collapsable from '../basics/Collapsable.svelte';
-	import Labeled from '../basics/Labeled.svelte';
-	import AddressEditor from './AddressEditor.svelte';
+	import { t } from '../../stores/settings'
+	import type { CreateClient } from '../../trpcClient'
+	import Collapsable from '../basics/Collapsable.svelte'
+	import Labeled from '../basics/Labeled.svelte'
+	import AddressEditor from './AddressEditor.svelte'
 
-	export let entity: CreateClient;
-	export let large = false;
+	export let entity: CreateClient
+	export let large = false
 </script>
 
 <div class="grid grid-cols-2 gap-2">

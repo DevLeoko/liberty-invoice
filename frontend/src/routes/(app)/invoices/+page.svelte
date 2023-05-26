@@ -1,34 +1,34 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { PUBLIC_BACKEND_URL } from '$env/static/public';
-	import InvoicePreview from '../../../lib/components/InvoicePreview.svelte';
-	import Button from '../../../lib/components/basics/Button.svelte';
-	import SidePopup from '../../../lib/components/basics/SidePopup.svelte';
-	import Skeleton from '../../../lib/components/basics/Skeleton.svelte';
-	import { t } from '../../../lib/stores/settings';
-	import { createInvoiceQuery } from '../../../lib/tanQuery';
-	import { trpc, type ReadInvoice, type ListInvoice } from '../../../lib/trpcClient';
+	import { goto } from '$app/navigation'
+	import { PUBLIC_BACKEND_URL } from '$env/static/public'
+	import InvoicePreview from '../../../lib/components/InvoicePreview.svelte'
+	import Button from '../../../lib/components/basics/Button.svelte'
+	import SidePopup from '../../../lib/components/basics/SidePopup.svelte'
+	import Skeleton from '../../../lib/components/basics/Skeleton.svelte'
+	import { t } from '../../../lib/stores/settings'
+	import { createInvoiceQuery } from '../../../lib/tanQuery'
+	import { trpc, type ReadInvoice, type ListInvoice } from '../../../lib/trpcClient'
 
-	const invoices = createInvoiceQuery();
+	const invoices = createInvoiceQuery()
 
-	let previewInvoice: ReadInvoice | null = null;
-	let loadingPreview = false;
+	let previewInvoice: ReadInvoice | null = null
+	let loadingPreview = false
 
 	function createNew() {
 		// TODO: change button to link
-		goto('/invoices/new');
+		goto('/invoices/new')
 	}
 
 	async function openPreview(invoice: ListInvoice) {
-		loadingPreview = true;
+		loadingPreview = true
 		previewInvoice = await trpc.invoice.read.query(invoice.id).finally(() => {
-			loadingPreview = false;
-		});
+			loadingPreview = false
+		})
 	}
 
 	function closePreview() {
-		previewInvoice = null;
-		loadingPreview = false;
+		previewInvoice = null
+		loadingPreview = false
 	}
 </script>
 

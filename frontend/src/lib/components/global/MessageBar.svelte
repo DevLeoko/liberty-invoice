@@ -1,5 +1,5 @@
 <script context="module" lang="ts">
-	import { alerts, removeAlert } from '../../stores/alerts';
+	import { alerts, removeAlert } from '../../stores/alerts'
 </script>
 
 <div class="relative">

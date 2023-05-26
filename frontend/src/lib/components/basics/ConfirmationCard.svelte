@@ -1,22 +1,22 @@
 <script lang="ts">
-	import Button from './Button.svelte';
-	import { createEventDispatcher } from 'svelte';
-	import FloatingCard from './FloatingCard.svelte';
-	import { t } from '../../stores/settings';
+	import Button from './Button.svelte'
+	import { createEventDispatcher } from 'svelte'
+	import FloatingCard from './FloatingCard.svelte'
+	import { t } from '../../stores/settings'
 
 	const dispatchEvent = createEventDispatcher<{
-		confirm: MouseEvent;
-		cancel: MouseEvent;
-	}>();
+		confirm: MouseEvent
+		cancel: MouseEvent
+	}>()
 
 	function handleYes(event: CustomEvent<MouseEvent>) {
-		event.stopPropagation();
-		dispatchEvent('confirm', event.detail);
+		event.stopPropagation()
+		dispatchEvent('confirm', event.detail)
 	}
 
 	function handleNo(event: CustomEvent<MouseEvent>) {
-		event.stopPropagation();
-		dispatchEvent('cancel', event.detail);
+		event.stopPropagation()
+		dispatchEvent('cancel', event.detail)
 	}
 </script>
 

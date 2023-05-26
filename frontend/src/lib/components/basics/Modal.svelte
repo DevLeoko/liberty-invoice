@@ -1,23 +1,23 @@
 <script lang="ts">
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte'
 
-	export let zLevel = 40;
+	export let zLevel = 40
 
-	const dispatchEvent = createEventDispatcher();
+	const dispatchEvent = createEventDispatcher()
 
 	function handleKeydown(event: KeyboardEvent) {
 		if (event.key === 'Escape') {
-			dispatchEvent('exit');
+			dispatchEvent('exit')
 		}
 	}
 
 	onMount(() => {
-		document.addEventListener('keydown', handleKeydown);
+		document.addEventListener('keydown', handleKeydown)
 
 		return () => {
-			document.removeEventListener('keydown', handleKeydown);
-		};
-	});
+			document.removeEventListener('keydown', handleKeydown)
+		}
+	})
 </script>
 
 <div

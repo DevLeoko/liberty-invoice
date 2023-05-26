@@ -1,64 +1,64 @@
 <script lang="ts" context="module">
-	export type EditorSelection<E> = { entity: E; id?: number } | null;
+	export type EditorSelection<E> = { entity: E; id?: number } | null
 </script>
 
 <script lang="ts">
-	import type { TranslationPaths } from '../../translations/translations';
+	import type { TranslationPaths } from '../../translations/translations'
 
-	import { t } from '../../stores/settings';
+	import { t } from '../../stores/settings'
 
-	import { logSuccess } from '../../stores/alerts';
+	import { logSuccess } from '../../stores/alerts'
 
-	import type { SvelteComponentTyped } from 'svelte/internal';
-	import BasicModal from './BasicModal.svelte';
-	import Button from './Button.svelte';
+	import type { SvelteComponentTyped } from 'svelte/internal'
+	import BasicModal from './BasicModal.svelte'
+	import Button from './Button.svelte'
 
-	type E = $$Generic;
+	type E = $$Generic
 	type C = $$Generic<
 		typeof SvelteComponentTyped<{ entity: E; inputError?: string | null }, any, any>
-	>;
+	>
 
-	export let editor: C;
+	export let editor: C
 
-	let inputError: string | null = null;
-	let loadingSave = false;
-	let loadingDelete = false;
+	let inputError: string | null = null
+	let loadingSave = false
+	let loadingDelete = false
 
-	$: anyLoading = loadingSave || loadingDelete;
+	$: anyLoading = loadingSave || loadingDelete
 
-	export let name: string;
+	export let name: string
 
-	export let selected: EditorSelection<E> = null;
+	export let selected: EditorSelection<E> = null
 
-	export let onSave: (selected: { entity: E; id?: number }) => Promise<void>;
-	export let onDelete: (id: number) => Promise<void> = async () => {};
+	export let onSave: (selected: { entity: E; id?: number }) => Promise<void>
+	export let onDelete: (id: number) => Promise<void> = async () => {}
 
 	function performSave() {
-		loadingSave = true;
+		loadingSave = true
 		onSave(selected!)
 			.then(() => {
-				selected = null;
+				selected = null
 
-				logSuccess($t(`${name}.updated` as TranslationPaths));
+				logSuccess($t(`${name}.updated` as TranslationPaths))
 			})
 			.finally(() => {
-				loadingSave = false;
-			});
+				loadingSave = false
+			})
 	}
 
 	async function performDelete() {
-		loadingDelete = true;
+		loadingDelete = true
 		try {
-			await onDelete(selected!.id!);
-			selected = null;
+			await onDelete(selected!.id!)
+			selected = null
 
-			logSuccess($t(`${name}.deleted` as TranslationPaths));
+			logSuccess($t(`${name}.deleted` as TranslationPaths))
 		} finally {
-			loadingDelete = false;
+			loadingDelete = false
 		}
 	}
 
-	$: title = $t(`${name}.${selected?.id !== undefined ? 'update' : 'create'}` as TranslationPaths);
+	$: title = $t(`${name}.${selected?.id !== undefined ? 'update' : 'create'}` as TranslationPaths)
 </script>
 
 {#if selected}

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query';
-	import '../app.scss';
-	import MessageBar from '../lib/components/global/MessageBar.svelte';
+	import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query'
+	import '../app.scss'
+	import MessageBar from '../lib/components/global/MessageBar.svelte'
 
 	const queryClient = new QueryClient({
 		defaultOptions: {
@@ -10,10 +10,10 @@
 				refetchOnWindowFocus: false,
 				retry: false,
 				// This can be decreased for accounts with multiple users
-				staleTime: 1000 * 60 * 10
-			}
-		}
-	});
+				staleTime: 1000 * 60 * 10,
+			},
+		},
+	})
 </script>
 
 <QueryClientProvider client={queryClient}>

@@ -1,10 +1,10 @@
-import type { CreateClient } from '../trpcClient';
+import type { CreateClient } from '../trpcClient'
 
 export function emptyClient(
 	defaultValues: Pick<
 		CreateClient,
 		'defaultLanguage' | 'defaultCurrency' | 'defaultTaxRateId' | 'defaultDueDays'
-	>
+	>,
 ): CreateClient {
 	return {
 		name: '',
@@ -22,6 +22,6 @@ export function emptyClient(
 		zip: '',
 		countryCode: '',
 
-		...defaultValues
-	};
+		...defaultValues,
+	}
 }

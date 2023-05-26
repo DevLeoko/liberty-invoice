@@ -1,44 +1,44 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import Button from '../../../lib/components/basics/Button.svelte';
-	import { trpc } from '../../../lib/trpcClient';
-	import { logSuccess } from '../../../lib/stores/alerts';
-	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte'
+	import Button from '../../../lib/components/basics/Button.svelte'
+	import { trpc } from '../../../lib/trpcClient'
+	import { logSuccess } from '../../../lib/stores/alerts'
+	import { goto } from '$app/navigation'
 
-	let email = '';
-	let token = '';
-	let newPassword = '';
-	let confirmPassword = '';
+	let email = ''
+	let token = ''
+	let newPassword = ''
+	let confirmPassword = ''
 
-	let inputIssue = '';
+	let inputIssue = ''
 	$: {
 		if (newPassword === '') {
-			inputIssue = 'New password is required';
+			inputIssue = 'New password is required'
 		} else if (confirmPassword === '') {
-			inputIssue = 'Confirm new password is required';
+			inputIssue = 'Confirm new password is required'
 		} else if (newPassword !== confirmPassword) {
-			inputIssue = 'Passwords do not match';
+			inputIssue = 'Passwords do not match'
 		} else {
-			inputIssue = '';
+			inputIssue = ''
 		}
 	}
 
-	let loading = false;
+	let loading = false
 
 	async function resetPassword() {
-		loading = true;
+		loading = true
 		await trpc.auth.resetPassword.mutate({ email, token, password: newPassword }).finally(() => {
-			loading = false;
-		});
-		logSuccess('auth.PasswordResetSuccess');
-		goto('/');
+			loading = false
+		})
+		logSuccess('auth.PasswordResetSuccess')
+		goto('/')
 	}
 
 	onMount(() => {
-		const urlParams = new URLSearchParams(window.location.search);
-		email = urlParams.get('email') || '';
-		token = urlParams.get('token') || '';
-	});
+		const urlParams = new URLSearchParams(window.location.search)
+		email = urlParams.get('email') || ''
+		token = urlParams.get('token') || ''
+	})
 </script>
 
 <div class="flex flex-col">
