@@ -5,6 +5,7 @@
 	import Button from '../../../lib/components/basics/Button.svelte';
 	import SidePopup from '../../../lib/components/basics/SidePopup.svelte';
 	import Skeleton from '../../../lib/components/basics/Skeleton.svelte';
+	import { t } from '../../../lib/stores/settings';
 	import { createInvoiceQuery } from '../../../lib/tanQuery';
 	import { trpc, type ReadInvoice, type ListInvoice } from '../../../lib/trpcClient';
 
@@ -32,24 +33,26 @@
 </script>
 
 <div class="flex justify-between mb-4">
-	<h1 class="pageTitle">Invoices</h1>
-	<Button on:click={createNew}><span class="mr-1 material-icons">add</span> New invoice</Button>
+	<h1 class="pageTitle">{$t('menu.invoices')}</h1>
+	<Button on:click={createNew}
+		><span class="mr-1 material-icons">add</span> {$t('invoiceList.newInvoice')}</Button
+	>
 </div>
 
 {#if $invoices.isLoading}
 	<Skeleton class="w-24 h-12" />
 {:else if $invoices.isError}
-	<span>Something went wrong</span>
+	<span>{$t('general.error')}</span>
 {:else if $invoices.data.length === 0}
-	<div class="error">No invoices found</div>
+	<div class="error">{$t('invoiceList.noneFound')}}</div>
 {:else}
 	<div class="grid w-full grid-table-5">
-		<div class="text-left contents [&>*]:px-2">
-			<div>Invoice number</div>
-			<div>Client</div>
-			<div>Amount</div>
-			<div>Due date</div>
-			<div>Status</div>
+		<div class="text-left font-medium contents [&>*]:px-2">
+			<div>{$t('invoice.invoiceNumber')}</div>
+			<div>{$t('general.client')}</div>
+			<div>{$t('invoice.amount')}</div>
+			<div>{$t('invoice.dueDate')}</div>
+			<div>{$t('general.status')}</div>
 		</div>
 		{#each $invoices.data as invoice}
 			<a
@@ -58,11 +61,13 @@
 				on:click|preventDefault={() => openPreview(invoice)}
 				target="_blank"
 			>
-				<div>{invoice.invoiceNumber}</div>
+				<div class="rounded-l-sm">{invoice.invoiceNumber}</div>
 				<div>{invoice.client.name}</div>
 				<div>{invoice.amountWithTax}</div>
 				<div>{invoice.dueDate.toDateString()}</div>
-				<div>{invoice.amountPaid === invoice.amountWithTax ? 'Paid' : 'Unpaid'}</div>
+				<div class="rounded-r-sm">
+					{invoice.amountPaid === invoice.amountWithTax ? 'Paid' : 'Unpaid'}
+				</div>
 			</a>
 		{/each}
 	</div>

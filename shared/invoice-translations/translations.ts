@@ -23,7 +23,7 @@ export type KeyPath<T extends Tree> = {
   string;
 
 // Type to replace const string types with general string type recursively
-type ReplaceConst<T> = T extends string
+export type ReplaceConst<T> = T extends string
   ? string
   : { [K in keyof T]: ReplaceConst<T[K]> };
 
@@ -42,7 +42,7 @@ export function getTranslationDictionary(locale: Locale) {
 export function translate<T extends Tree>(
   dictionary: T,
   key: KeyPath<T>,
-  vars: Record<string, string> = {}
+  vars: Record<string, { toString(): string }> = {}
 ) {
   // Grab the translation from the translations object.
   let translation: Tree | string = dictionary;
@@ -63,7 +63,7 @@ export function translate<T extends Tree>(
   // Replace any passed in variables in the translation string.
   Object.keys(vars).map((k) => {
     const regex = new RegExp(`{{${k}}}`, "g");
-    text = text.replace(regex, vars[k]);
+    text = text.replace(regex, vars[k].toString());
   });
 
   return text;

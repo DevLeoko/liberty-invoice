@@ -26,4 +26,4 @@
 	}
 </script>
 
-<EditorModal editor={ClientEditor} name="Client" bind:selected {onSave} />
+<EditorModal editor={ClientEditor} name="clientEditorModal" bind:selected {onSave} />

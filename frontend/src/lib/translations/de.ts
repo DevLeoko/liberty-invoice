@@ -1,43 +1,95 @@
-import type { TranslationDictionary } from '../utils/translations';
+import { TRANSLATIONS_DE as SHARED_TRANSLATION_DE } from '../../../../shared/invoice-translations/de';
+import type { TranslationDictionary } from './translations';
 
 export const TRANSLATIONS_DE: TranslationDictionary = {
-	countries: {
-		AT: 'Österreich',
-		DE: 'Deutschland',
-		PL: 'Polen',
-		US: 'Vereinigte Staaten'
+	menu: {
+		dashboard: 'Übersicht',
+		invoices: 'Rechnungen',
+		clients: 'Kunden',
+		products: 'Produkte',
+		settings: 'Einstellungen',
+		logout: 'Abmelden',
 	},
-	invoice: {
-		invoice: 'Rechnung',
-		invoiceNumber: 'Rechnungsnummer',
-		invoiceDate: 'Rechnungsdatum',
-		dueDate: 'Fälligkeitsdatum',
 
-		asFreelancer: 'Tätig als Freiberufler',
+	invoiceList: {
+		newInvoice: 'Neue Rechnung',
+		noneFound: 'Keine Rechnungen gefunden.',
+		paid: 'Bezahlt',
+		unpaid: 'Unbezahlt',
+		partiallyPaid: '{{amount}} ausstehend',
+		dueInDays: '{{amount}} fällig in {{days}} Tagen',
+		dueInTomorrow: '{{amount}} fällig morgen',
+		dueToday: '{{amount}} fällig heute',
+		dueYesterday: '{{amount}} war fällig gestern',
+		dueInDaysOverdue: '{{amount}} überfällig seit {{days}} Tagen',
+	},
+	invoiceEditor: {
+		date: 'Datum',
+		due: 'Fällig',
+		dueIn: 'in {{days}} Tagen',
+		toggleSearch: 'Zu Suche umschalten',
+		note: 'Anmerkung',
+		create: 'Anlegen',
+	},
 
-		billedTo: 'Rechnungsempfänger',
-		dueText: '{{amount}} fällig am {{date}}',
-		vatId: 'USt-ID',
+	// clientEditorModal: {
+	// 	updated: 'Client updated',
+	// 	deleted: 'Client deleted',
+	// 	update: 'Update client',
+	// 	create: 'Create client'
+	// },
 
-		item: 'Artikel',
-		quantity: 'Menge',
-		unitPrice: 'Preis',
-		amount: 'Betrag',
-		subtotal: 'Zwischensumme',
-		tax: 'Steuer',
-		taxReverseCharge:
-			'<span>Steuerschuldschaft durch</span><br/> <span>Leistungsempfänger (Reverse Charge)</span>',
-		total: 'Gesamt',
-		page: 'Seite {{page}} von {{pages}}',
+	clientEditorModal: {
+		updated: 'Kunde gespeichert',
+		deleted: 'Kunde gelöscht',
+		update: 'Kunden bearbeiten',
+		create: 'Kunden anlegen',
+	},
 
-		bankingInfo: 'Bankverbindung',
-		paymentDetails: 'Zahlungsinformationen',
-		paymentDetailsLine1: 'Zahlbar innerhalb von {{days}} Tagen',
-		paymentDetailsLine3: 'Banküberweisung',
-		paymentDetailsLine2:
-			'<span>Bitte geben Sie die Rechnungsnummer</span><br/><span>als Verwendungszweck an</span>',
+	clientEditor: {
+		noneFound: 'Keine Kunden gefunden.',
+		newClient: 'Kunden anlegen',
+		companyName: 'Firmenname',
+		additionalLine: 'Zusatzzeile',
+		shorthand: 'Kürzel',
+		firstName: 'Vorname',
+		lastName: 'Nachname',
+		street: 'Straße',
+		streetNumber: 'Hausnummer',
+		city: 'Stadt',
+		zip: 'PLZ',
+		country: 'Land',
+		email: 'E-Mail',
+		phone: 'Telefon',
+		vatId: 'USt-IdNr.',
+		invoiceDefaults: 'Rechnungsvoreinstellungen',
+		defaultLanguage: 'Sprache',
+		defaultCurrency: 'Währung',
+		defaultDueDays: 'Zahlungsziel (Tage)',
+	},
 
-		deliveryDateNotice:
-			'<span>Soweit nicht anders angegeben, enspricht</span><br/><span> Lieferdatum dem Rechnungsdatum</span>'
-	}
+	settings: {
+		accountDetails: 'Ihre Geschäftsdaten',
+		companyLogo: 'Firmenlogo',
+		bankingDetails: 'Bankverbindung',
+		bankName: 'Bankname',
+		invoiceNumberFormatting: 'Rechnungsnummer Formatierung',
+		format: 'Format',
+		nextRunningNumber: 'Nächste Laufnummer',
+		uploadNew: 'Neues Logo hochladen',
+	},
+
+	general: {
+		client: 'Kunde',
+		status: 'Status',
+		error: 'Etwas ist schief gelaufen.',
+		cancel: 'Abbrechen',
+		save: 'Speichern',
+		delete: 'Löschen',
+		areYouSure: 'Sind Sie sicher?',
+		yes: 'Ja',
+		no: 'Nein',
+	},
+
+	...SHARED_TRANSLATION_DE,
 };

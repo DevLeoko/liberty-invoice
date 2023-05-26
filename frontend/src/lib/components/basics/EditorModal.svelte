@@ -3,6 +3,10 @@
 </script>
 
 <script lang="ts">
+	import type { TranslationPaths } from '../../translations/translations';
+
+	import { t } from '../../stores/settings';
+
 	import { logSuccess } from '../../stores/alerts';
 
 	import type { SvelteComponentTyped } from 'svelte/internal';
@@ -23,7 +27,6 @@
 	$: anyLoading = loadingSave || loadingDelete;
 
 	export let name: string;
-	export let title: string | null = null;
 
 	export let selected: EditorSelection<E> = null;
 
@@ -36,7 +39,7 @@
 			.then(() => {
 				selected = null;
 
-				logSuccess(`${name} gespeichert`);
+				logSuccess($t(`${name}.updated` as TranslationPaths));
 			})
 			.finally(() => {
 				loadingSave = false;
@@ -49,20 +52,17 @@
 			await onDelete(selected!.id!);
 			selected = null;
 
-			logSuccess(`${name} gelöscht`);
+			logSuccess($t(`${name}.deleted` as TranslationPaths));
 		} finally {
 			loadingDelete = false;
 		}
 	}
+
+	$: title = $t(`${name}.${selected?.id !== undefined ? 'update' : 'create'}` as TranslationPaths);
 </script>
 
 {#if selected}
-	<BasicModal
-		on:exit={() => (selected = null)}
-		title={title != null
-			? title
-			: `${name} ${selected.id !== undefined ? 'bearbeiten' : 'erstellen'}`}
-	>
+	<BasicModal on:exit={() => (selected = null)} {title}>
 		<svelte:component this={editor} bind:entity={selected.entity} bind:inputError />
 
 		{#if inputError}
@@ -77,16 +77,18 @@
 					requiresConfirmation
 					on:click={() => performDelete()}
 					class="mr-auto"
-					red>Löschen</Button
+					red>{$t('general.delete')}</Button
 				>
 			{/if}
 
-			<Button disabled={loadingSave} on:click={() => (selected = null)} gray>Abbrechen</Button>
+			<Button disabled={loadingSave} on:click={() => (selected = null)} gray
+				>{$t('general.cancel')}</Button
+			>
 			<Button
 				loading={loadingSave}
 				on:click={() => performSave()}
 				disabled={!!inputError || anyLoading}
-				class="ml-2">Speichern</Button
+				class="ml-2">{$t('general.save')}</Button
 			>
 		</div>
 	</BasicModal>

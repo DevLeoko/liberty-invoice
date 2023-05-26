@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { t } from '../../stores/settings';
 	import type { CreateClient } from '../../trpcClient';
 	import Collapsable from '../basics/Collapsable.svelte';
 	import Labeled from '../basics/Labeled.svelte';
@@ -8,45 +9,24 @@
 	export let large = false;
 </script>
 
-<!-- name: string;
-  shorthand      String
-  additionalLine String
-  firstName      String
-  lastName       String
-  contactPhone   String
-  contactEmail   String
-  vatNumber      String
-
-  street       String
-  streetNumber String
-  city         String
-  zip          String
-  countryCode  String
-
-  defaultLanguage  String
-  defaultCurrency  String
-  defaultTaxRate   TaxRate? @relation(fields: [defaultTaxRateId], references: [id])
-  defaultTaxRateId Int?
-  defaultDueDays   Int-->
-
 <div class="grid grid-cols-2 gap-2">
 	<div class="flex">
-		<Labeled label="Company name" class="flex-grow mr-2">
+		<Labeled label={$t('clientEditor.companyName')} class="flex-grow mr-2">
 			<input type="text" bind:value={entity.name} />
 		</Labeled>
-		<Labeled label="Shorthand" class="w-1/3">
+		<Labeled label={$t('clientEditor.shorthand')} class="w-1/3">
 			<input type="text" bind:value={entity.shorthand} />
 		</Labeled>
 	</div>
 
-	<Labeled label="Additional line">
+	<Labeled label={$t('clientEditor.additionalLine')}>
 		<input type="text" bind:value={entity.additionalLine} />
 	</Labeled>
 
-	<Labeled label="First name">
+	<Labeled label={$t('clientEditor.firstName')}>
 		<input type="text" bind:value={entity.firstName} />
 	</Labeled>
-	<Labeled label="Last name">
+	<Labeled label={$t('clientEditor.lastName')}>
 		<input type="text" bind:value={entity.lastName} />
 	</Labeled>
 
@@ -54,31 +34,35 @@
 		<AddressEditor bind:entity />
 	</div>
 
-	<Labeled label="Phone">
+	<Labeled label={$t('clientEditor.phone')}>
 		<input type="text" bind:value={entity.contactPhone} />
 	</Labeled>
-	<Labeled label="Email">
+	<Labeled label={$t('clientEditor.email')}>
 		<input type="text" bind:value={entity.contactEmail} />
 	</Labeled>
 
-	<Labeled label="VAT number" class="col-span-2">
+	<Labeled label={$t('clientEditor.vatId')} class="col-span-2">
 		<input type="text" bind:value={entity.vatNumber} />
 	</Labeled>
 
-	<Collapsable label="Invoice defaults" class="col-span-2 mt-2 bg-slate-100" flatten={large}>
+	<Collapsable
+		label={$t('clientEditor.invoiceDefaults')}
+		class="col-span-2 mt-2 bg-slate-100"
+		flatten={large}
+	>
 		{#if large}
-			<h2 class="!mb-0 pageSubTitle mt-2">Invoice defaults</h2>
+			<h2 class="!mb-0 pageSubTitle mt-2">{$t('clientEditor.invoiceDefaults')}</h2>
 		{/if}
 		<div class="grid w-full grid-cols-2 col-span-2 gap-2 my-2">
-			<Labeled label="Default language">
+			<Labeled label={$t('clientEditor.defaultLanguage')}>
 				<input type="text" bind:value={entity.defaultLanguage} />
 			</Labeled>
 
-			<Labeled label="Default currency">
+			<Labeled label={$t('clientEditor.defaultCurrency')}>
 				<input type="text" bind:value={entity.defaultCurrency} />
 			</Labeled>
 
-			<Labeled label="Default due days">
+			<Labeled label={$t('clientEditor.defaultDueDays')}>
 				<input type="text" bind:value={entity.defaultDueDays} />
 			</Labeled>
 		</div>

@@ -6,6 +6,7 @@
 	import type { EditorSelection } from '../../../lib/components/basics/EditorModal.svelte';
 	import { createClientQuery, createUserSettingsQuery } from '../../../lib/tanQuery';
 	import ClientEditorModal from '../../../lib/components/editors/ClientEditorModal.svelte';
+	import { t } from '../../../lib/stores/settings';
 
 	const userSettings = createUserSettingsQuery();
 	const clients = createClientQuery();
@@ -34,20 +35,22 @@
 <ClientEditorModal bind:selected />
 
 <div class="flex justify-between mb-4">
-	<h1 class="pageTitle">Clients</h1>
+	<h1 class="pageTitle">{$t('menu.clients')}</h1>
 	{#if $userSettings.isLoading}
 		<Skeleton class="h-9 w-36" />
 	{:else}
-		<Button on:click={startCreate}><span class="mr-1 material-icons">add</span> New client</Button>
+		<Button on:click={startCreate}
+			><span class="mr-1 material-icons">add</span> {$t('clientEditorModal.create')}</Button
+		>
 	{/if}
 </div>
 
 {#if $clients.isLoading}
 	<Skeleton class="w-24 h-12" />
 {:else if $clients.isError}
-	<span>Something went wrong</span>
+	<span>{$t('general.error')}</span>
 {:else if $clients.data.length === 0}
-	<span>No clients found</span>
+	<span>{$t('clientEditor.noneFound')}</span>
 {:else}
 	{#each $clients.data as client}
 		<div

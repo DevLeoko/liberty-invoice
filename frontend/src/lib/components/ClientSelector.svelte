@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { t } from '../stores/settings';
 	import { createClientQuery, createUserSettingsQuery } from '../tanQuery';
 	import type { CreateClient } from '../trpcClient';
 	import { emptyClient } from '../utils/clientUtils';
@@ -43,7 +44,7 @@
 				on:click={startCreate}
 			>
 				<span class="material-icons">add</span>
-				<span class="-mt-1 text-xs">New</span>
+				<span class="-mt-1 text-xs">{$t('invoiceEditor.create')}</span>
 			</div>
 			{#each $clients.data as client}
 				<div

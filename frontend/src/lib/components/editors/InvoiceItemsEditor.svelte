@@ -2,6 +2,7 @@
 	import { tick } from 'svelte';
 	import type { CreateInvoiceItem } from '../../trpcClient';
 	import InvoiceItemEditorRow from './InvoiceItemEditorRow.svelte';
+	import { t } from '../../stores/settings';
 
 	export let items: CreateInvoiceItem[];
 
@@ -37,10 +38,10 @@
 
 <table class="w-full table-fixed" id="itemEditorTable">
 	<tr class="text-sm">
-		<th class="w-1/2 font-semibold text-left">Item</th>
-		<th class="font-semibold text-left">Qty</th>
-		<th class="font-semibold text-left">Unit price</th>
-		<th class="font-semibold text-right">Amount</th>
+		<th class="w-1/2 font-semibold text-left">{$t('invoice.item')}</th>
+		<th class="font-semibold text-left">{$t('invoice.quantity')}</th>
+		<th class="font-semibold text-left">{$t('invoice.unitPrice')}</th>
+		<th class="font-semibold text-right">{$t('invoice.amount')}</th>
 		<th class="w-12" />
 	</tr>
 	{#each items as item, i (i)}
@@ -56,18 +57,18 @@
 	{/key}
 	<tr>
 		<td colspan="2" />
-		<td class="border-t border-gray-300">Subtotal</td>
+		<td class="border-t border-gray-300">{$t('invoice.subtotal')}</td>
 		<td class="text-right border-t border-gray-300">{itemSubtotal}</td>
 		<td />
 	</tr>
 	<tr>
 		<td colspan="2" />
-		<td colspan="2" class="text-sm">Tax be paid on reverse change basis</td>
+		<td colspan="2" class="text-sm">{$t('invoice.taxReverseCharge')}</td>
 		<td />
 	</tr>
 	<tr class="font-medium">
 		<td colspan="2" />
-		<td> Total </td>
+		<td> {$t('invoice.total')}</td>
 		<td class="text-right">{itemSubtotal}</td>
 		<td />
 	</tr>

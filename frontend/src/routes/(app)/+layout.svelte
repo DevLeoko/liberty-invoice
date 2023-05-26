@@ -3,6 +3,8 @@
 	import { setLoggedOut } from '../../lib/stores/auth';
 	import { goto } from '$app/navigation';
 	import Button from '../../lib/components/basics/Button.svelte';
+	import { applicationLanguage, t } from '../../lib/stores/settings';
+	import { Locale } from '../../lib/translations/translations';
 
 	function logout() {
 		setLoggedOut();
@@ -12,31 +14,35 @@
 	// Uses google material icons
 	const PAGES = [
 		{
-			name: 'Dashboard',
+			name: 'menu.dashboard',
 			icon: 'dashboard',
-			href: '/dashboard'
+			href: '/dashboard',
 		},
 		{
-			name: 'Invoices',
+			name: 'menu.invoices',
 			icon: 'receipt',
-			href: '/invoices'
+			href: '/invoices',
 		},
 		{
-			name: 'Clients',
+			name: 'menu.clients',
 			icon: 'people',
-			href: '/clients'
+			href: '/clients',
 		},
 		{
-			name: 'Products',
+			name: 'menu.products',
 			icon: 'inventory_2',
-			href: '/products'
+			href: '/products',
 		},
 		{
-			name: 'Settings',
+			name: 'menu.settings',
 			icon: 'settings',
-			href: '/settings'
-		}
-	];
+			href: '/settings',
+		},
+	] as const;
+
+	function changeLanguage() {
+		$applicationLanguage = $applicationLanguage === Locale.DE ? Locale.EN : Locale.DE;
+	}
 </script>
 
 <div class="flex max-w-screen-2xl">
@@ -55,12 +61,18 @@
 						{link.icon}
 					</span>
 					<span class="relative font-semibold">
-						{link.name}
+						{$t(link.name)}
 					</span>
 				</a>
 			{/each}
 		</nav>
-		<Button on:click={logout} outlined class="mt-auto mb-4">Logout</Button>
+		<Button on:click={logout} outlined class="mt-auto">{$t('menu.logout')}</Button>
+		<div class="flex justify-between mt-1 mb-4 text-xs text-gray-700">
+			<span>&copy; Liberty Invoice 2023</span>
+			<span class="underline cursor-pointer" on:click={changeLanguage}
+				>{$applicationLanguage.toUpperCase()}</span
+			>
+		</div>
 	</div>
 	<div class="flex-grow p-8">
 		<slot />

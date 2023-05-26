@@ -1,4 +1,4 @@
-import { TranslationDictionary } from "./translations";
+import type { TranslationDictionary } from "./translations";
 
 export const TRANSLATIONS_DE: TranslationDictionary = {
   langCode: "de-DE",

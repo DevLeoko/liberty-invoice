@@ -2,6 +2,7 @@
 	import Button from './Button.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import FloatingCard from './FloatingCard.svelte';
+	import { t } from '../../stores/settings';
 
 	const dispatchEvent = createEventDispatcher<{
 		confirm: MouseEvent;
@@ -20,7 +21,7 @@
 </script>
 
 <FloatingCard on:clickOutside={handleNo}>
-	<div class="mr-4">Are you sure?</div>
-	<Button snug red class="mr-2" on:click={handleYes}>Yes</Button>
-	<Button snug gray on:click={handleNo}>Cancel</Button>
+	<div class="mr-4">{$t('general.areYouSure')}</div>
+	<Button snug red class="mr-2" on:click={handleYes}>{$t('general.yes')}</Button>
+	<Button snug gray on:click={handleNo}>{$t('general.cancel')}</Button>
 </FloatingCard>

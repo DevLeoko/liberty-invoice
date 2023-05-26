@@ -7,6 +7,7 @@
 	import { logSuccess } from '../../../lib/stores/alerts';
 	import { USER_SETTINGS_KEY, createUserSettingsQuery } from '../../../lib/tanQuery';
 	import { trpc } from '../../../lib/trpcClient';
+	import { t } from '../../../lib/stores/settings';
 
 	const userSettings = createUserSettingsQuery();
 
@@ -27,7 +28,7 @@
 		await trpc.userSettings.update
 			.mutate({
 				id: userEditObject.id,
-				settings: userEditObject
+				settings: userEditObject,
 			})
 			.finally(() => (loadingSave = false));
 
@@ -36,7 +37,7 @@
 	}
 </script>
 
-<h1 class="pageTitle">Settings</h1>
+<h1 class="pageTitle">{$t('menu.settings')}</h1>
 
 {#if !userEditObject}
 	<Skeleton class="max-w-lg h-80" />
@@ -44,12 +45,12 @@
 	<div class="flex flex-col w-max">
 		<div class="flex space-x-8">
 			<div class="max-w-lg">
-				<h2 class="pageSubTitle">Your account details</h2>
+				<h2 class="pageSubTitle">{$t('settings.accountDetails')}</h2>
 				<ClientEditor bind:entity={userEditObject} large />
 			</div>
 
 			<div>
-				<h2 class="pageSubTitle">Company logo</h2>
+				<h2 class="pageSubTitle">{$t('settings.companyLogo')}</h2>
 				<div
 					class="h-48 overflow-hidden bg-center bg-no-repeat bg-contain border rounded-md w-80"
 					style="background-image: url({userEditObject.logoUrl}); background-size: 80%;"
@@ -58,14 +59,15 @@
 						class="flex items-center justify-center h-full transition-opacity bg-black opacity-0 bg-opacity-40 hover:opacity-100"
 					>
 						<div class="flex items-center font-semibold text-white">
-							<span class="text-sm material-icons">upload</span> Upload new
+							<span class="text-sm material-icons">upload</span>
+							{$t('settings.uploadNew')}
 						</div>
 					</div>
 				</div>
 
-				<h2 class="mt-4 pageSubTitle">Banking details</h2>
+				<h2 class="mt-4 pageSubTitle">{$t('settings.bankingDetails')}</h2>
 				<div class="grid grid-cols-2 gap-4">
-					<Labeled label="Bank name">
+					<Labeled label={$t('settings.bankName')}>
 						<input type="text" bind:value={userEditObject.bankName} />
 					</Labeled>
 
@@ -78,13 +80,13 @@
 					</Labeled>
 				</div>
 
-				<h2 class="mt-4 pageSubTitle">Invoice ID formatting</h2>
+				<h2 class="mt-4 pageSubTitle">{$t('settings.invoiceNumberFormatting')}</h2>
 				<div class="grid grid-cols-2 gap-4">
-					<Labeled label="Format">
+					<Labeled label={$t('settings.format')}>
 						<input type="text" bind:value={userEditObject.idFormat} />
 					</Labeled>
 
-					<Labeled label="Next running number">
+					<Labeled label={$t('settings.nextRunningNumber')}>
 						<input type="number" step="1" bind:value={userEditObject.nextPartialId} />
 					</Labeled>
 				</div>
@@ -92,7 +94,7 @@
 		</div>
 
 		<div class="flex justify-end mt-8">
-			<Button loading={loadingSave} on:click={onSave}>Save</Button>
+			<Button loading={loadingSave} on:click={onSave}>{$t('general.save')}</Button>
 		</div>
 	</div>
 {/if}
