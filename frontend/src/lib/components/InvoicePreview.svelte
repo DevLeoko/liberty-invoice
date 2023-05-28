@@ -4,7 +4,7 @@
 	import type { ReadInvoice } from '../trpcClient'
 	import Button from './basics/Button.svelte'
 	import { PUBLIC_BACKEND_URL } from '$env/static/public'
-	import { formatFloat, getCurrency } from '../stores/settings'
+	import { formatDate, formatFloat, getCurrency, t } from '../stores/settings'
 
 	export let invoice: ReadInvoice
 
@@ -12,6 +12,23 @@
 
 	$: remainingDays = Math.round((invoice.dueDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24))
 	$: currency = $getCurrency(invoice.currency)
+
+	let dueText = ''
+	$: {
+		let amount = `${currency.shorthand} ${$formatFloat(invoice.amountWithTax)}`
+
+		if (remainingDays > 1) {
+			dueText = $t('invoiceList.dueInDays', { amount, days: remainingDays })
+		} else if (remainingDays == 1) {
+			dueText = $t('invoiceList.dueTomorrow', { amount })
+		} else if (remainingDays == 0) {
+			dueText = $t('invoiceList.dueToday', { amount })
+		} else if (remainingDays == -1) {
+			dueText = $t('invoiceList.dueYesterday', { amount })
+		} else {
+			dueText = $t('invoiceList.dueInDaysOverdue', { amount, days: -remainingDays })
+		}
+	}
 </script>
 
 <div class="w-full">
@@ -20,7 +37,7 @@
 			><span
 				class="mr-1 -mb-0.5 text-2xl text-gray-400 material-icons cursor-pointer"
 				on:click={() => dispatchEvent('exit')}>arrow_back</span
-			> Invoice</b
+			>{$t('invoice.invoice')}</b
 		>
 		<span class="text-lg">{invoice.invoiceNumber}</span>
 	</div>
@@ -29,15 +46,15 @@
 <!-- TODO: w-full row of action buttons (Edit - Change status - Un-draft - Log payment - Download - Send) -->
 <div class="flex mb-4 space-x-2">
 	<Button class="flex-1" href="{PUBLIC_BACKEND_URL}/invoice/{invoice.id}/download" target="_blank"
-		>Download</Button
+		>{$t('general.download')}</Button
 	>
-	<Button class="flex-1" href="/invoices/{invoice.id}/edit">Edit</Button>
-	<Button class="flex-1">Sent</Button>
+	<Button class="flex-1" href="/invoices/{invoice.id}/edit">{$t('general.edit')}</Button>
+	<Button class="flex-1">{$t('general.send')}</Button>
 </div>
 
 <div class="flex items-start justify-between mt-4">
 	<div class="flex flex-col">
-		<b class="text-base">Billed to</b>
+		<b class="text-base">{$t('invoice.billedTo')}</b>
 		<div class="leading-tight">
 			{#each getClientDisplayLines(invoice.client, (str) => str) as line}
 				{#if line}
@@ -50,8 +67,8 @@
 	</div>
 
 	<div class="grid gap-x-4 grid-table-2">
-		<b>Invoice date</b> <span>{invoice.date.toDateString()}</span>
-		<b>Due date</b> <span>{invoice.dueDate.toDateString()}</span>
+		<b>{$t('invoice.invoiceDate')}</b> <span>{$formatDate(invoice.date)}</span>
+		<b>{$t('invoice.dueDate')}</b> <span>{$formatDate(invoice.dueDate)}</span>
 	</div>
 </div>
 
@@ -59,16 +76,15 @@
 	<p>{invoice.note}</p>
 {/if}
 
-<h3 class="mt-8 text-xl font-medium text-center">
-	{currency.shorthand}
-	{$formatFloat(invoice.amountWithTax)} due in {remainingDays} days
+<h3 class="mt-8 text-xl font-medium text-center {remainingDays < 0 ? 'text-orange-600' : ''}">
+	{dueText}
 </h3>
 
-<div class="grid w-full mt-8 gap-x-2 grid-table-4">
-	<b>Item</b>
-	<b>Qty</b>
-	<b>Unit price</b>
-	<b class="text-right">Total</b>
+<div class="grid w-full p-2 px-3 mt-8 shadow-md bg-neutral-50 gap-x-2 grid-table-4">
+	<b>{$t('invoice.item')}</b>
+	<b>{$t('invoice.quantity')}</b>
+	<b>{$t('invoice.unitPrice')}</b>
+	<b class="text-right">{$t('invoice.amount')}</b>
 
 	{#each invoice.items as item}
 		<div>{item.name}</div>
@@ -77,12 +93,12 @@
 		<div class="text-right">{currency.format(item.unitPrice * item.quantity)}</div>
 		{#if item.description}
 			<div class="col-span-4">
-				<div class="mb-2 text-sm text-gray-500">{item.description}</div>
+				<div class="mb-2 text-sm text-gray-500 whitespace-pre-wrap">{item.description}</div>
 			</div>
 		{/if}
 	{/each}
 
-	<div class="col-span-4 mt-4 font-semibold">
+	<div class="col-span-4 pt-2 mt-4 font-semibold border-t">
 		<!-- <div class="flex justify-between">
 			<div>Subtotal</div>
 			<div>{currency.format(invoice.amountWithTax)}</div>
@@ -92,7 +108,7 @@
 			<div>{currency.format(invoice.tax)}</div>
 		</div> -->
 		<div class="flex justify-between">
-			<div>Total</div>
+			<div>{$t('invoice.total')}</div>
 			<div>{currency.format(invoice.amountWithTax)}</div>
 		</div>
 	</div>

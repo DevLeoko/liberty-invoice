@@ -6,6 +6,7 @@
 	import InvoiceEditor from '../../../../../lib/components/editors/InvoiceEditor.svelte'
 	import { trpc, type CreateInvoice, type ReadInvoice } from '../../../../../lib/trpcClient'
 	import { logSuccess } from '../../../../../lib/stores/alerts'
+	import { goto } from '$app/navigation'
 
 	const id = Number.parseInt($page.params.id)
 
@@ -38,6 +39,7 @@
 			})
 
 		logSuccess('Invoice saved')
+		goto('/invoices')
 	}
 </script>
 

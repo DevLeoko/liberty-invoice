@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
-	import { PUBLIC_BACKEND_URL } from '$env/static/public'
 	import InvoicePreview from '../../../lib/components/InvoicePreview.svelte'
+	import InvoiceRow from '../../../lib/components/InvoiceRow.svelte'
 	import Button from '../../../lib/components/basics/Button.svelte'
 	import SidePopup from '../../../lib/components/basics/SidePopup.svelte'
 	import Skeleton from '../../../lib/components/basics/Skeleton.svelte'
-	import { getCurrency, t } from '../../../lib/stores/settings'
+	import { t } from '../../../lib/stores/settings'
 	import { createInvoiceQuery } from '../../../lib/tanQuery'
 	import { trpc, type ReadInvoice, type ListInvoice } from '../../../lib/trpcClient'
 
@@ -13,11 +13,6 @@
 
 	let previewInvoice: ReadInvoice | null = null
 	let loadingPreview = false
-
-	function createNew() {
-		// TODO: change button to link
-		goto('/invoices/new')
-	}
 
 	async function openPreview(invoice: ListInvoice) {
 		loadingPreview = true
@@ -34,7 +29,7 @@
 
 <div class="flex justify-between mb-4">
 	<h1 class="pageTitle">{$t('menu.invoices')}</h1>
-	<Button on:click={createNew}
+	<Button href="/invoices/new"
 		><span class="mr-1 material-icons">add</span> {$t('invoiceList.newInvoice')}</Button
 	>
 </div>
@@ -46,30 +41,17 @@
 {:else if $invoices.data.length === 0}
 	<div class="error">{$t('invoiceList.noneFound')}}</div>
 {:else}
-	<div class="grid w-full grid-table-5">
+	<div class="grid w-full grid-table-6">
 		<div class="text-left font-medium contents [&>*]:px-2">
 			<div>{$t('invoice.invoiceNumber')}</div>
 			<div>{$t('general.client')}</div>
 			<div>{$t('invoice.amount')}</div>
 			<div>{$t('invoice.dueDate')}</div>
 			<div>{$t('general.status')}</div>
+			<div />
 		</div>
 		{#each $invoices.data as invoice}
-			{@const currency = $getCurrency(invoice.currency)}
-			<a
-				class="contents my-row [&>*]:px-2 [&>*]:py-1"
-				href="{PUBLIC_BACKEND_URL}/invoice/{invoice.id}/download"
-				on:click|preventDefault={() => openPreview(invoice)}
-				target="_blank"
-			>
-				<div class="rounded-l-sm">{invoice.invoiceNumber}</div>
-				<div>{invoice.client.name}</div>
-				<div>{currency.format(invoice.amountWithTax)}</div>
-				<div>{invoice.dueDate.toDateString()}</div>
-				<div class="rounded-r-sm">
-					{invoice.amountPaid === invoice.amountWithTax ? 'Paid' : 'Unpaid'}
-				</div>
-			</a>
+			<InvoiceRow {invoice} on:click={() => openPreview(invoice)} />
 		{/each}
 	</div>
 
@@ -83,11 +65,3 @@
 		</SidePopup>
 	{/if}
 {/if}
-
-<style lang="scss">
-	.my-row:nth-child(even) {
-		& > * {
-			@apply bg-slate-200;
-		}
-	}
-</style>
