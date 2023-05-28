@@ -22,6 +22,10 @@
 
 	function handleClick(event: MouseEvent) {
 		if (requiresConfirmation) {
+			event.preventDefault()
+		}
+
+		if (requiresConfirmation) {
 			confirmationOpen = true
 		} else {
 			eventDispatcher('click', event)
@@ -45,14 +49,14 @@
 	class:snug
 	class:gray
 	class:red
-	on:click|stopPropagation={handleClick}
+	on:click={handleClick}
 >
 	{#if requiresConfirmation && confirmationOpen}
 		<ConfirmationCard on:confirm={handleConfirm} on:cancel={() => (confirmationOpen = false)} />
 	{/if}
 
 	{#if loading}
-		<div class="absolute inset-0 flex items-center justify-center">
+		<div class="absolute inset-0 flex items-center justify-center h-full">
 			<div class="lds-ellipsis">
 				<div />
 				<div />
@@ -61,7 +65,7 @@
 			</div>
 		</div>
 	{/if}
-	<div class:invisible={loading} class="flex items-center justify-center">
+	<div class:invisible={loading} class="flex items-center justify-center h-full">
 		<slot />
 	</div>
 </svelte:element>
