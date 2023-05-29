@@ -4,6 +4,8 @@
 	import FloatingCard from './FloatingCard.svelte'
 	import { t } from '../../stores/settings'
 
+	export let loading = false
+
 	const dispatchEvent = createEventDispatcher<{
 		confirm: MouseEvent
 		cancel: MouseEvent
@@ -22,6 +24,6 @@
 
 <FloatingCard on:clickOutside={handleNo}>
 	<div class="mr-4">{$t('general.areYouSure')}</div>
-	<Button snug red class="mr-2" on:click={handleYes}>{$t('general.yes')}</Button>
+	<Button snug red {loading} class="mr-2" on:click={handleYes}>{$t('general.yes')}</Button>
 	<Button snug gray on:click={handleNo}>{$t('general.cancel')}</Button>
 </FloatingCard>

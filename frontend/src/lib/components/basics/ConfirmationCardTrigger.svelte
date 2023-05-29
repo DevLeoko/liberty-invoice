@@ -2,6 +2,8 @@
 	import ConfirmationCard from './ConfirmationCard.svelte'
 
 	let showConfirmationCard = false
+
+	export let loading = false
 </script>
 
 <div class="relative">
@@ -10,6 +12,6 @@
 	</div>
 
 	{#if showConfirmationCard}
-		<ConfirmationCard on:cancel={() => (showConfirmationCard = false)} on:confirm />
+		<ConfirmationCard {loading} on:cancel={() => (showConfirmationCard = false)} on:confirm />
 	{/if}
 </div>

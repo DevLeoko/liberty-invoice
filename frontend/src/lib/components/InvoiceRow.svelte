@@ -1,17 +1,36 @@
 <script lang="ts">
 	import { PUBLIC_BACKEND_URL } from '$env/static/public'
-	import { createEventDispatcher } from 'svelte'
 	import { formatDate, getCurrency, t } from '../stores/settings'
-	import type { ListInvoice } from '../trpcClient'
+	import { trpc, type ListInvoice } from '../trpcClient'
 	import FloatingCardTrigger from './basics/FloatingCardTrigger.svelte'
 	import { goto } from '$app/navigation'
 	import ConfirmationCardTrigger from './basics/ConfirmationCardTrigger.svelte'
+	import { logSuccess } from '../stores/alerts'
+	import { useQueryClient } from '@tanstack/svelte-query'
+	import { INVOICE_KEYS } from '../tanQuery'
 
 	export let invoice: ListInvoice
 
 	$: currency = $getCurrency(invoice.currency)
 
-	const dispatchEvent = createEventDispatcher()
+	let loadingDelete = false
+
+	const queryClient = useQueryClient()
+
+	async function deleteInvoice() {
+		loadingDelete = true
+		await trpc.invoice.delete.mutate(invoice.id).finally(() => {
+			loadingDelete = false
+		})
+
+		logSuccess($t('invoiceList.deleted'))
+
+		queryClient.invalidateQueries(INVOICE_KEYS.read(invoice.id))
+		queryClient.setQueryData(INVOICE_KEYS.list(), (oldData?: { id: number }[]) => {
+			if (!oldData) return oldData
+			return oldData.filter((i) => i.id !== invoice.id)
+		})
+	}
 </script>
 
 <tr class="my-row [&>*]:px-2 [&>*]:py-1 cursor-pointer" on:click>
@@ -42,11 +61,9 @@
 						<span class="mr-1 text-sm material-icons">download</span>
 						{$t('general.download')}
 					</a>
-					<ConfirmationCardTrigger on:confirm={() => dispatchEvent('delete')}>
-						<div on:click={() => dispatchEvent('delete')}>
-							<span class="mr-1 text-sm material-icons">delete</span>
-							{$t('general.delete')}
-						</div>
+					<ConfirmationCardTrigger loading={loadingDelete} on:confirm={deleteInvoice}>
+						<span class="mr-1 text-sm material-icons">delete</span>
+						{$t('general.delete')}
 					</ConfirmationCardTrigger>
 				</div>
 			</FloatingCardTrigger>

@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte'
 	import Button from '../../../../lib/components/basics/Button.svelte'
 	import InvoiceEditor from '../../../../lib/components/editors/InvoiceEditor.svelte'
-	import { trpc, type CreateInvoice } from '../../../../lib/trpcClient'
+	import { trpc, type CreateInvoice, type ReadInvoice } from '../../../../lib/trpcClient'
 	import { parseInvoiceIdFormat } from '../../../../../../shared/invoice-ids'
 	import type { NullableProp } from '../../../../types/utilities'
 	import { INVOICE_KEYS, queryUserSettings } from '../../../../lib/tanQuery'
@@ -10,6 +10,7 @@
 	import { logError, logSuccess } from '../../../../lib/stores/alerts'
 	import { useQueryClient } from '@tanstack/svelte-query'
 	import { t } from '../../../../lib/stores/settings'
+	import { page } from '$app/stores'
 
 	let invoice: null | NullableProp<CreateInvoice, 'clientId'> = null
 	let partialId: null | number = null
@@ -21,9 +22,14 @@
 	const userSettingsPromise = queryUserSettings()
 
 	onMount(async () => {
-		const [partialIdData, userSettings] = await Promise.all([
+		const duplicateId = $page.url.searchParams.get('duplicate')
+		const duplicationDataFetch =
+			duplicateId != null ? trpc.invoice.read.query(Number.parseInt(duplicateId)) : null
+
+		const [partialIdData, userSettings, duplicationData] = await Promise.all([
 			trpc.invoice.getNextAvailablePartialInvoiceId.query(),
 			userSettingsPromise,
+			duplicationDataFetch,
 		])
 
 		const { idFormat, partialId: nextPartialId } = partialIdData
@@ -36,15 +42,18 @@
 		dueDate.setDate(dueDate.getDate() + userSettings.defaultDueDays)
 
 		invoice = {
-			invoiceNumber: format(partialId),
-			date: new Date(),
-			dueDate,
 			note: '',
 			clientId: null,
 			items: [],
 			taxRateIds: userSettings.defaultTaxRateId != null ? [userSettings.defaultTaxRateId] : [],
 			language: userSettings.defaultLanguage,
 			currency: userSettings.defaultCurrency,
+			...duplicationData,
+
+			// Don't overwrite this data when duplicating:
+			invoiceNumber: format(partialId),
+			date: new Date(),
+			dueDate,
 		}
 	})
 

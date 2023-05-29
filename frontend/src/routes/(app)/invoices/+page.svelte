@@ -50,7 +50,7 @@
 			<th>{$t('general.status')}</th>
 			<th />
 		</tr>
-		{#each $invoices.data as invoice}
+		{#each $invoices.data as invoice (invoice.id)}
 			<InvoiceRow {invoice} on:click={() => openPreview(invoice)} />
 		{/each}
 	</table>

@@ -27,6 +27,7 @@ export const TRANSLATIONS_EN = {
 		dueToday: '{{amount}} due today',
 		dueYesterday: '{{amount}} due yesterday',
 		dueInDaysOverdue: '{{amount}} overdue by {{days}} days',
+		deleted: 'Invoice deleted',
 	},
 	invoiceEditor: {
 		date: 'Date',

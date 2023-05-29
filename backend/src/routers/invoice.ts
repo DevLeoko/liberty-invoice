@@ -144,6 +144,29 @@ export const invoiceRouter = router({
       return updatedInvoice;
     }),
 
+  delete: protectedProcedure
+    .input(z.number().int())
+    .mutation(async ({ ctx, input }) => {
+      const invoice = await prisma.invoice.findUnique({
+        where: {
+          id: input,
+        },
+        select: {
+          userId: true,
+        },
+      });
+
+      if (invoice?.userId !== ctx.userId) {
+        throw new Error("error.invoice.notFound");
+      }
+
+      await prisma.invoice.delete({
+        where: {
+          id: input,
+        },
+      });
+    }),
+
   read: protectedProcedure
     .input(z.number().int())
     .query(async ({ input, ctx }) => {

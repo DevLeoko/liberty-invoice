@@ -28,6 +28,7 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		dueToday: '{{amount}} fällig heute',
 		dueYesterday: '{{amount}} war fällig gestern',
 		dueInDaysOverdue: '{{amount}} überfällig seit {{days}} Tagen',
+		deleted: 'Rechnung gelöscht',
 	},
 	invoiceEditor: {
 		date: 'Datum',

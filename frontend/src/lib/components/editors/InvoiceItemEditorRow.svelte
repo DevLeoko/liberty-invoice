@@ -12,7 +12,7 @@
 
 	const dispatch = createEventDispatcher<{ remove: void }>()
 
-	let showDescription = false
+	let showDescription = !!item.description
 	let descriptionInput: HTMLTextAreaElement
 
 	let showDeleteConfirmation = false
