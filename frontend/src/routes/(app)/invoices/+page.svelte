@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation'
 	import InvoicePreview from '../../../lib/components/InvoicePreview.svelte'
 	import InvoiceRow from '../../../lib/components/InvoiceRow.svelte'
 	import Button from '../../../lib/components/basics/Button.svelte'
@@ -7,7 +6,7 @@
 	import Skeleton from '../../../lib/components/basics/Skeleton.svelte'
 	import { t } from '../../../lib/stores/settings'
 	import { createInvoiceQuery } from '../../../lib/tanQuery'
-	import { trpc, type ReadInvoice, type ListInvoice } from '../../../lib/trpcClient'
+	import { trpc, type ListInvoice, type ReadInvoice } from '../../../lib/trpcClient'
 
 	const invoices = createInvoiceQuery()
 
@@ -27,7 +26,7 @@
 	}
 </script>
 
-<div class="flex justify-between mb-4">
+<div class="flex items-center justify-between mb-4">
 	<h1 class="pageTitle">{$t('menu.invoices')}</h1>
 	<Button href="/invoices/new"
 		><span class="mr-1 material-icons">add</span> {$t('invoiceList.newInvoice')}</Button

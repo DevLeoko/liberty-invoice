@@ -1,16 +1,17 @@
 <script lang="ts">
-	import { onMount } from 'svelte'
-	import Button from '../../../../lib/components/basics/Button.svelte'
-	import InvoiceEditor from '../../../../lib/components/editors/InvoiceEditor.svelte'
-	import { trpc, type CreateInvoice, type ReadInvoice } from '../../../../lib/trpcClient'
-	import { parseInvoiceIdFormat } from '../../../../../../shared/invoice-ids'
-	import type { NullableProp } from '../../../../types/utilities'
-	import { INVOICE_KEYS, queryUserSettings } from '../../../../lib/tanQuery'
-	import Skeleton from '../../../../lib/components/basics/Skeleton.svelte'
-	import { logError, logSuccess } from '../../../../lib/stores/alerts'
-	import { useQueryClient } from '@tanstack/svelte-query'
-	import { t } from '../../../../lib/stores/settings'
+	import { goto } from '$app/navigation'
 	import { page } from '$app/stores'
+	import { useQueryClient } from '@tanstack/svelte-query'
+	import { onMount } from 'svelte'
+	import { parseInvoiceIdFormat } from '../../../../../../shared/invoice-ids'
+	import Button from '../../../../lib/components/basics/Button.svelte'
+	import Skeleton from '../../../../lib/components/basics/Skeleton.svelte'
+	import InvoiceEditor from '../../../../lib/components/editors/InvoiceEditor.svelte'
+	import { logError, logSuccess } from '../../../../lib/stores/alerts'
+	import { t } from '../../../../lib/stores/settings'
+	import { INVOICE_KEYS, queryUserSettings } from '../../../../lib/tanQuery'
+	import { trpc, type CreateInvoice } from '../../../../lib/trpcClient'
+	import type { NullableProp } from '../../../../types/utilities'
 
 	let invoice: null | NullableProp<CreateInvoice, 'clientId'> = null
 	let partialId: null | number = null
@@ -65,7 +66,7 @@
 
 		loadingSave = true
 
-		await trpc.invoice.create
+		const res = await trpc.invoice.create
 			.mutate({
 				invoice: invoice as CreateInvoice,
 				partialId: partialId!,
@@ -76,13 +77,18 @@
 
 		queryClient.invalidateQueries(INVOICE_KEYS.list())
 		logSuccess('Invoice created')
+
+		goto(`/invoices/${res.id}/edit`)
 	}
 </script>
 
-<div class="flex justify-between mb-4">
-	<h1 class="pageTitle">{$t('invoiceList.newInvoice')}</h1>
+<div class="flex items-center justify-between mb-4">
+	<h1 class="pageTitle">
+		<span class="material-icons back-nav" on:click={() => goto('/invoices')}>arrow_back</span>
+		{$t('invoiceList.newInvoice')}
+	</h1>
 	<Button loading={loadingSave} on:click={createInvoice}
-		><span class="mr-1 material-icons">check</span> {$t('general.save')}</Button
+		><span class="mr-1 material-icons">check</span> {$t('general.create')}</Button
 	>
 </div>
 

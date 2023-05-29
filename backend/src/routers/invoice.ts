@@ -1,12 +1,40 @@
+import { Prisma } from "@prisma/client";
 import { z } from "zod";
-import { prisma } from "../prisma";
-import { protectedProcedure, router } from "../trpc";
-import { invoiceCreateSchema } from "./invoice-schemas";
+import { computeTotalWithTax } from "../../../shared/invoice-computations";
 import {
   claimInvoiceId,
   getNextAvailablePartialId,
 } from "../controller/invoice-ids";
-import { computeTotalWithTax } from "../../../shared/invoice-computations";
+import { prisma } from "../prisma";
+import { protectedProcedure, router } from "../trpc";
+import { invoiceCreateSchema } from "./invoice-schemas";
+
+const LIST_INVOICE_DEFAULT_INCLUDES = {
+  client: {
+    select: {
+      name: true,
+      firstName: true,
+      lastName: true,
+    },
+  },
+  items: true,
+  taxRates: true,
+} satisfies Prisma.InvoiceInclude;
+
+async function verifyInvoiceOwnership(invoiceId: number, userId: number) {
+  const invoice = await prisma.invoice.findUnique({
+    where: {
+      id: invoiceId,
+    },
+    select: {
+      userId: true,
+    },
+  });
+
+  if (invoice?.userId !== userId) {
+    throw new Error("error.invoice.notFound");
+  }
+}
 
 export const invoiceRouter = router({
   list: protectedProcedure.query(async ({ ctx }) => {
@@ -17,17 +45,7 @@ export const invoiceRouter = router({
       orderBy: {
         date: "desc",
       },
-      include: {
-        client: {
-          select: {
-            name: true,
-            firstName: true,
-            lastName: true,
-          },
-        },
-        items: true,
-        taxRates: true,
-      },
+      include: LIST_INVOICE_DEFAULT_INCLUDES,
     });
   }),
 
@@ -83,6 +101,8 @@ export const invoiceRouter = router({
         if (e.code === "P2002") {
           throw new Error("error.invoice.partialIdAlreadyClaimed");
         }
+
+        throw e;
       }
     }),
 
@@ -147,18 +167,7 @@ export const invoiceRouter = router({
   delete: protectedProcedure
     .input(z.number().int())
     .mutation(async ({ ctx, input }) => {
-      const invoice = await prisma.invoice.findUnique({
-        where: {
-          id: input,
-        },
-        select: {
-          userId: true,
-        },
-      });
-
-      if (invoice?.userId !== ctx.userId) {
-        throw new Error("error.invoice.notFound");
-      }
+      await verifyInvoiceOwnership(input, ctx.userId);
 
       await prisma.invoice.delete({
         where: {
@@ -186,6 +195,40 @@ export const invoiceRouter = router({
       }
 
       return invoice;
+    }),
+
+  finalize: protectedProcedure
+    .input(z.number().int())
+    .mutation(async ({ input, ctx }) => {
+      await verifyInvoiceOwnership(input, ctx.userId);
+
+      return await prisma.invoice.update({
+        where: {
+          id: input,
+        },
+        data: {
+          draft: false,
+        },
+        include: LIST_INVOICE_DEFAULT_INCLUDES,
+      });
+    }),
+
+  logPayment: protectedProcedure
+    .input(z.object({ id: z.number().int(), amount: z.number() }))
+    .mutation(async ({ input, ctx }) => {
+      await verifyInvoiceOwnership(input.id, ctx.userId);
+
+      return await prisma.invoice.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          amountPaid: {
+            increment: input.amount,
+          },
+        },
+        include: LIST_INVOICE_DEFAULT_INCLUDES,
+      });
     }),
 
   getNextAvailablePartialInvoiceId: protectedProcedure.query(

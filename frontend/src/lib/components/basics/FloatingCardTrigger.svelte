@@ -10,7 +10,11 @@
 	</div>
 
 	{#if showFloatingCard}
-		<FloatingCard on:clickOutside={() => (showFloatingCard = false)} class="cursor-default">
+		<FloatingCard
+			on:clickOutside={() => (showFloatingCard = false)}
+			on:click={() => (showFloatingCard = false)}
+			class="cursor-default"
+		>
 			<slot />
 		</FloatingCard>
 	{/if}

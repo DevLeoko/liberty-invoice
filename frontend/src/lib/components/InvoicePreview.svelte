@@ -1,10 +1,11 @@
 <script lang="ts">
+	import { PUBLIC_BACKEND_URL } from '$env/static/public'
 	import { createEventDispatcher } from 'svelte'
 	import { getClientDisplayLines } from '../../../../shared/address-formatter'
-	import type { ReadInvoice } from '../trpcClient'
-	import Button from './basics/Button.svelte'
-	import { PUBLIC_BACKEND_URL } from '$env/static/public'
 	import { formatDate, formatFloat, getCurrency, t } from '../stores/settings'
+	import type { ReadInvoice } from '../trpcClient'
+	import InvoiceStatusChip from './InvoiceStatusChip.svelte'
+	import Button from './basics/Button.svelte'
 
 	export let invoice: ReadInvoice
 
@@ -32,13 +33,12 @@
 </script>
 
 <div class="w-full">
-	<div class="flex justify-between mb-2 text-2xl">
-		<b class="flex items-center mr-6"
-			><span
-				class="mr-1 -mb-0.5 text-2xl text-gray-400 material-icons cursor-pointer"
-				on:click={() => dispatchEvent('exit')}>arrow_back</span
-			>{$t('invoice.invoice')}</b
-		>
+	<div class="flex items-center justify-between mb-2 text-2xl">
+		<b class="flex items-center mr-6">
+			<span class="back-nav material-icons" on:click={() => dispatchEvent('exit')}>arrow_back</span>
+			{$t('invoice.invoice')}
+		</b>
+		<InvoiceStatusChip {invoice} class="ml-auto mr-2" />
 		<span class="text-lg">{invoice.invoiceNumber}</span>
 	</div>
 </div>

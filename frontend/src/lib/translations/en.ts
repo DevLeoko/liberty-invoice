@@ -28,6 +28,21 @@ export const TRANSLATIONS_EN = {
 		dueYesterday: '{{amount}} due yesterday',
 		dueInDaysOverdue: '{{amount}} overdue by {{days}} days',
 		deleted: 'Invoice deleted',
+		finalized: 'Invoice finalized',
+		markedAsPaid: 'Invoice marked as paid',
+	},
+	invoiceStatus: {
+		draft: 'Draft',
+		paid: 'Paid',
+		dueInDays: 'Due in {{days}} days',
+		dueTomorrow: 'Due tomorrow',
+		dueToday: 'Due today',
+		overdue: 'Overdue',
+
+		finalize: 'Finalize',
+		sendAndFinalize: 'Send and finalize',
+
+		markAsPaid: 'Mark as paid',
 	},
 	invoiceEditor: {
 		date: 'Date',
@@ -81,6 +96,7 @@ export const TRANSLATIONS_EN = {
 		error: 'Something went wrong.',
 		cancel: 'Cancel',
 		save: 'Save',
+		create: 'Create',
 		duplicate: 'Duplicate',
 		delete: 'Delete',
 		edit: 'Edit',

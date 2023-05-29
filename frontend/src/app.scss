@@ -85,7 +85,7 @@ select:disabled:not(.plain) {
 }
 
 .pageTitle {
-	@apply text-2xl font-semibold mb-2;
+	@apply text-2xl font-semibold mb-2 flex items-center;
 }
 .pageSubTitle {
 	@apply text-lg mb-2;
@@ -98,10 +98,11 @@ input[type='number']::-webkit-outer-spin-button {
 	margin: 0;
 }
 
-.floating-actions {
-	& > div,
-	& > a {
-		@apply flex flex-row items-center px-1 hover:bg-gray-100 rounded-sm cursor-pointer -mx-1 transition-all duration-100;
-		width: calc(100% + 8px);
-	}
+.floating-action {
+	@apply flex flex-row items-center px-1 hover:bg-gray-100 rounded-sm cursor-pointer -mx-1 transition-all duration-100;
+	width: calc(100% + 8px);
+}
+
+.back-nav {
+	@apply mr-1 -mb-0.5 text-2xl text-gray-400 cursor-pointer;
 }

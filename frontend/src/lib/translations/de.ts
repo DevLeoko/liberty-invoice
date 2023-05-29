@@ -29,6 +29,8 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		dueYesterday: '{{amount}} war fällig gestern',
 		dueInDaysOverdue: '{{amount}} überfällig seit {{days}} Tagen',
 		deleted: 'Rechnung gelöscht',
+		finalized: 'Rechnung freigegeben',
+		markedAsPaid: 'Rechnung als bezahlt markiert',
 	},
 	invoiceEditor: {
 		date: 'Datum',
@@ -38,6 +40,20 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		note: 'Anmerkung',
 		create: 'Anlegen',
 		addDescription: 'Beschreibung hinzufügen',
+	},
+
+	invoiceStatus: {
+		draft: 'Entwurf',
+		paid: 'Bezahlt',
+		dueInDays: 'Fällig in {{days}} Tagen',
+		dueTomorrow: 'Fällig morgen',
+		dueToday: 'Fällig heute',
+		overdue: 'Überfällig',
+
+		finalize: 'Freigeben',
+		sendAndFinalize: 'Senden und freigeben',
+
+		markAsPaid: 'Als bezahlt markieren',
 	},
 
 	clientEditorModal: {
@@ -87,6 +103,7 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		cancel: 'Abbrechen',
 		download: 'Herunterladen',
 		edit: 'Bearbeiten',
+		create: 'Anlegen',
 		send: 'Senden',
 		duplicate: 'Kopieren',
 		save: 'Speichern',

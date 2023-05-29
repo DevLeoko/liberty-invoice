@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { trpc, type CreateClient } from '../../../lib/trpcClient'
-	import Skeleton from '../../../lib/components/basics/Skeleton.svelte'
 	import Button from '../../../lib/components/basics/Button.svelte'
-	import { emptyClient } from '../../../lib/utils/clientUtils'
 	import type { EditorSelection } from '../../../lib/components/basics/EditorModal.svelte'
-	import { createClientQuery, createUserSettingsQuery } from '../../../lib/tanQuery'
+	import Skeleton from '../../../lib/components/basics/Skeleton.svelte'
 	import ClientEditorModal from '../../../lib/components/editors/ClientEditorModal.svelte'
 	import { t } from '../../../lib/stores/settings'
+	import { createClientQuery, createUserSettingsQuery } from '../../../lib/tanQuery'
+	import { trpc, type CreateClient } from '../../../lib/trpcClient'
+	import { emptyClient } from '../../../lib/utils/clientUtils'
 
 	const userSettings = createUserSettingsQuery()
 	const clients = createClientQuery()
@@ -34,7 +34,7 @@
 
 <ClientEditorModal bind:selected />
 
-<div class="flex justify-between mb-4">
+<div class="flex items-center justify-between mb-4">
 	<h1 class="pageTitle">{$t('menu.clients')}</h1>
 	{#if $userSettings.isLoading}
 		<Skeleton class="h-9 w-36" />

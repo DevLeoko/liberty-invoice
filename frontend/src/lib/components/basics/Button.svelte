@@ -23,6 +23,7 @@
 	function handleClick(event: MouseEvent) {
 		if (requiresConfirmation) {
 			event.preventDefault()
+			event.stopPropagation()
 		}
 
 		if (requiresConfirmation) {
@@ -49,7 +50,7 @@
 	class:snug
 	class:gray
 	class:red
-	on:click|stopPropagation={handleClick}
+	on:click={handleClick}
 >
 	{#if requiresConfirmation && confirmationOpen}
 		<ConfirmationCard on:confirm={handleConfirm} on:cancel={() => (confirmationOpen = false)} />
@@ -79,7 +80,7 @@
 
 	button,
 	a {
-		@apply px-3 py-1;
+		@apply px-2 py-1;
 		background-color: var(--color);
 
 		&:hover {
