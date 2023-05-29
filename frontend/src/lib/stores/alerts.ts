@@ -1,3 +1,4 @@
+import { PUBLIC_IS_DEMO } from '$env/static/public'
 import { writable } from 'svelte/store'
 
 export interface Alert {
@@ -86,4 +87,8 @@ export function showErrors<T>(promise: Promise<T>): Promise<T> {
 		}
 		throw err
 	})
+}
+
+if (PUBLIC_IS_DEMO) {
+	logInfo('This page is only for demonstration purposes. Do not use it for real data.', 10000)
 }

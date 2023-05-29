@@ -35,5 +35,12 @@
   },
   "editor.codeActionsOnSave": {
     "source.organizeImports": true
+  },
+  "workbench.colorCustomizations": {
+    "tab.activeBorder": "#578a58",
+    "titleBar.activeBackground": "#578a58",
+    "titleBar.activeForeground": "#ffffff",
+    "statusBar.background": "#578a58",
+    "statusBar.foreground": "#ffffff"
   }
 }
