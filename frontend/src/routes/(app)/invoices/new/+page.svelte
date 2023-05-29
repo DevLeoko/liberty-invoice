@@ -5,7 +5,7 @@
 	import { trpc, type CreateInvoice } from '../../../../lib/trpcClient'
 	import { parseInvoiceIdFormat } from '../../../../../../shared/invoice-ids'
 	import type { NullableProp } from '../../../../types/utilities'
-	import { INVOICES_KEY, queryUserSettings } from '../../../../lib/tanQuery'
+	import { INVOICE_KEYS, queryUserSettings } from '../../../../lib/tanQuery'
 	import Skeleton from '../../../../lib/components/basics/Skeleton.svelte'
 	import { logError, logSuccess } from '../../../../lib/stores/alerts'
 	import { useQueryClient } from '@tanstack/svelte-query'
@@ -65,8 +65,7 @@
 				loadingSave = false
 			})
 
-		queryClient.invalidateQueries([INVOICES_KEY])
-
+		queryClient.invalidateQueries(INVOICE_KEYS.list())
 		logSuccess('Invoice created')
 	}
 </script>

@@ -42,13 +42,12 @@
 <svelte:body on:click={onBodyClick} />
 
 <div
-	class="absolute z-20 flex items-center px-3 py-2 my-1 text-black bg-white rounded-md shadow-sm w-max {className}"
+	class="absolute z-20 flex items-center px-3 py-2 my-1 text-black bg-white rounded-md shadow w-max {className}"
 	class:top-full={placeBottom}
 	class:bottom-full={!placeBottom}
 	class:right-0={placeLeft}
 	class:left-0={!placeLeft}
 	bind:this={el}
-	on:click|stopPropagation
 >
 	<slot />
 </div>

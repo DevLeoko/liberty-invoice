@@ -97,3 +97,11 @@ input[type='number']::-webkit-outer-spin-button {
 	-webkit-appearance: none;
 	margin: 0;
 }
+
+.floating-actions {
+	& > div,
+	& > a {
+		@apply flex flex-row items-center px-1 hover:bg-gray-100 rounded-sm cursor-pointer -mx-1 transition-all duration-100;
+		width: calc(100% + 8px);
+	}
+}

@@ -1,17 +1,17 @@
 <script lang="ts">
-	import { useQueryClient } from '@tanstack/svelte-query'
+	import { createMutation, useQueryClient } from '@tanstack/svelte-query'
 	import Button from '../../../lib/components/basics/Button.svelte'
 	import Labeled from '../../../lib/components/basics/Labeled.svelte'
 	import Skeleton from '../../../lib/components/basics/Skeleton.svelte'
 	import ClientEditor from '../../../lib/components/editors/ClientEditor.svelte'
 	import { logSuccess } from '../../../lib/stores/alerts'
-	import { USER_SETTINGS_KEY, createUserSettingsQuery } from '../../../lib/tanQuery'
-	import { trpc } from '../../../lib/trpcClient'
+	import { USER_SETTINGS_KEYS, createUserSettingsQuery } from '../../../lib/tanQuery'
+	import { trpc, type ReadUserSettings } from '../../../lib/trpcClient'
 	import { t } from '../../../lib/stores/settings'
 
 	const userSettings = createUserSettingsQuery()
 
-	let userEditObject: typeof $userSettings.data = undefined
+	let userEditObject: ReadUserSettings | undefined = undefined
 
 	const queryClient = useQueryClient()
 
@@ -19,21 +19,22 @@
 		userEditObject = $userSettings.data
 	}
 
-	let loadingSave = false
+	const updateSettings = createMutation({
+		mutationFn: async (settings: ReadUserSettings) => {
+			await trpc.userSettings.update.mutate({
+				id: settings.id,
+				settings,
+			})
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries(USER_SETTINGS_KEYS.all)
+			logSuccess('Settings saved')
+		},
+	})
 
 	async function onSave() {
 		if (!userEditObject) return
-
-		loadingSave = true
-		await trpc.userSettings.update
-			.mutate({
-				id: userEditObject.id,
-				settings: userEditObject,
-			})
-			.finally(() => (loadingSave = false))
-
-		queryClient.invalidateQueries([USER_SETTINGS_KEY])
-		logSuccess('Settings saved')
+		$updateSettings.mutate(userEditObject)
 	}
 </script>
 
@@ -94,7 +95,7 @@
 		</div>
 
 		<div class="flex justify-end mt-8">
-			<Button loading={loadingSave} on:click={onSave}>{$t('general.save')}</Button>
+			<Button loading={$updateSettings.isLoading} on:click={onSave}>{$t('general.save')}</Button>
 		</div>
 	</div>
 {/if}

@@ -1,34 +1,47 @@
 import { createQuery, useQueryClient } from '@tanstack/svelte-query'
 import { trpc } from './trpcClient'
 
-export const CLIENTS_KEY = 'clients'
-export const INVOICES_KEY = 'invoices'
-export const USER_SETTINGS_KEY = 'userSettings'
+export const INVOICE_KEYS = {
+	all: ['invoice'],
+	list: () => [...INVOICE_KEYS.all, 'list'],
+	read: (invoiceId: number) => [...INVOICE_KEYS.all, 'read', invoiceId],
+}
+
+export const CLIENT_KEYS = {
+	all: ['client'],
+	list: () => [...CLIENT_KEYS.all, 'list'],
+	read: (clientId: number) => [...CLIENT_KEYS.all, 'read', clientId],
+}
+
+export const USER_SETTINGS_KEYS = {
+	all: ['userSettings'],
+	read: () => [...USER_SETTINGS_KEYS.all, 'read'],
+}
 
 export function createClientQuery() {
 	return createQuery({
-		queryKey: [CLIENTS_KEY],
+		queryKey: CLIENT_KEYS.list(),
 		queryFn: () => trpc.client.list.query(),
 	})
 }
 
 export function createUserSettingsQuery() {
 	return createQuery({
-		queryKey: [USER_SETTINGS_KEY],
+		queryKey: USER_SETTINGS_KEYS.read(),
 		queryFn: () => trpc.userSettings.read.query(),
 	})
 }
 
 export function createInvoiceQuery() {
 	return createQuery({
-		queryKey: [INVOICES_KEY],
+		queryKey: INVOICE_KEYS.list(),
 		queryFn: () => trpc.invoice.list.query(),
 	})
 }
 
 export function queryUserSettings() {
 	return useQueryClient().fetchQuery({
-		queryKey: [USER_SETTINGS_KEY],
+		queryKey: USER_SETTINGS_KEYS.read(),
 		queryFn: () => trpc.userSettings.read.query(),
 	})
 }

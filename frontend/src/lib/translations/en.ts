@@ -85,6 +85,7 @@ export const TRANSLATIONS_EN = {
 		edit: 'Edit',
 		download: 'Download',
 		send: 'Send',
+		actions: 'Actions',
 		areYouSure: 'Are you sure?',
 		yes: 'Yes',
 		no: 'No',

@@ -20,7 +20,7 @@ app.use(cookieParser());
 
 app.use(authExpressMiddleware);
 
-app.get("/invoice/:invoiceId/download", invoiceDownloadHandler);
+app.get("/invoices/:invoiceId/download", invoiceDownloadHandler);
 
 app.use(
   "/trpc",

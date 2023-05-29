@@ -41,19 +41,19 @@
 {:else if $invoices.data.length === 0}
 	<div class="error">{$t('invoiceList.noneFound')}}</div>
 {:else}
-	<div class="grid w-full grid-table-6">
-		<div class="text-left font-medium contents [&>*]:px-2">
-			<div>{$t('invoice.invoiceNumber')}</div>
-			<div>{$t('general.client')}</div>
-			<div>{$t('invoice.amount')}</div>
-			<div>{$t('invoice.dueDate')}</div>
-			<div>{$t('general.status')}</div>
-			<div />
-		</div>
+	<table class="w-full">
+		<tr class="text-left font-medium contents [&>*]:px-2">
+			<th>{$t('invoice.invoiceNumber')}</th>
+			<th>{$t('general.client')}</th>
+			<th>{$t('invoice.amount')}</th>
+			<th>{$t('invoice.dueDate')}</th>
+			<th>{$t('general.status')}</th>
+			<th />
+		</tr>
 		{#each $invoices.data as invoice}
 			<InvoiceRow {invoice} on:click={() => openPreview(invoice)} />
 		{/each}
-	</div>
+	</table>
 
 	{#if loadingPreview || previewInvoice}
 		<SidePopup on:exit={closePreview} class="w-[600px]">

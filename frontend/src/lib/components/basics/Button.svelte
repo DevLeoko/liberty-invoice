@@ -49,7 +49,7 @@
 	class:snug
 	class:gray
 	class:red
-	on:click={handleClick}
+	on:click|stopPropagation={handleClick}
 >
 	{#if requiresConfirmation && confirmationOpen}
 		<ConfirmationCard on:confirm={handleConfirm} on:cancel={() => (confirmationOpen = false)} />

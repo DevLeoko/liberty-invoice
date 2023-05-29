@@ -7,6 +7,7 @@
 	import { trpc, type CreateInvoice, type ReadInvoice } from '../../../../../lib/trpcClient'
 	import { logSuccess } from '../../../../../lib/stores/alerts'
 	import { goto } from '$app/navigation'
+	import { t } from '../../../../../lib/stores/settings'
 
 	const id = Number.parseInt($page.params.id)
 
@@ -44,9 +45,9 @@
 </script>
 
 <div class="flex justify-between mb-4">
-	<h1 class="pageTitle">New invoice</h1>
+	<h1 class="pageTitle">{$t('invoice.invoice')}</h1>
 	<Button loading={loadingSave} on:click={saveInvoice}
-		><span class="mr-1 material-icons">check</span> Save</Button
+		><span class="mr-1 material-icons">check</span> {$t('general.save')}</Button
 	>
 </div>
 

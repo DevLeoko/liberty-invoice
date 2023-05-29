@@ -90,6 +90,7 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		duplicate: 'Kopieren',
 		save: 'Speichern',
 		delete: 'Löschen',
+		actions: 'Aktionen',
 		areYouSure: 'Sind Sie sicher?',
 		yes: 'Ja',
 		no: 'Nein',
