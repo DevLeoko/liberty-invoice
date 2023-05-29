@@ -4,12 +4,12 @@ import "dotenv-safe/config";
 
 process.env.TZ = "Europe/Vienna";
 
-import express from "express";
 import * as trpcExpress from "@trpc/server/adapters/express";
-import { appRouter } from "./routers/_app";
-import cors from "cors";
-import { authExpressMiddleware } from "./controller/auth-flows";
 import cookieParser from "cookie-parser";
+import cors from "cors";
+import express from "express";
+import { authExpressMiddleware } from "./controller/auth-flows";
+import { appRouter } from "./routers/_app";
 import { invoiceDownloadHandler } from "./routers/non-trpc/invoice-download";
 
 const app = express();
@@ -38,6 +38,6 @@ app.use(
   })
 );
 
-app.listen(8080, () => {
-  console.log("\n📄 Server ready on port 8080\n");
+app.listen(process.env.PORT, () => {
+  console.log(`\n📄 Server ready on port ${process.env.PORT}\n`);
 });

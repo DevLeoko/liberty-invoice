@@ -2,6 +2,7 @@ declare global {
   namespace NodeJS {
     interface ProcessEnv {
       NODE_ENV: string;
+      SMTP_PORT: string;
       DATABASE_URL: string;
       SMTP_HOST: string;
       SMTP_USERNAME: string;
