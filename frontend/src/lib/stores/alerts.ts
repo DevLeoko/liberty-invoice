@@ -1,5 +1,6 @@
 import { PUBLIC_IS_DEMO } from '$env/static/public'
 import { writable } from 'svelte/store'
+import type { TranslationPaths } from '../translations/translations'
 
 export interface Alert {
 	type: 'info' | 'error' | 'success'
@@ -53,7 +54,7 @@ export function removeAlert(index: number) {
 	})
 }
 
-export function logError(message: string, timeout = 5000) {
+export function logError(message: TranslationPaths, timeout = 5000) {
 	pushAlert({
 		message,
 		type: 'error',
@@ -61,7 +62,7 @@ export function logError(message: string, timeout = 5000) {
 	})
 }
 
-export function logInfo(message: string, timeout = 5000) {
+export function logInfo(message: TranslationPaths, timeout = 5000) {
 	pushAlert({
 		message,
 		type: 'info',
@@ -69,7 +70,7 @@ export function logInfo(message: string, timeout = 5000) {
 	})
 }
 
-export function logSuccess(message: string, timeout = 5000) {
+export function logSuccess(message: TranslationPaths, timeout = 5000) {
 	pushAlert({
 		message,
 		type: 'success',
@@ -83,12 +84,12 @@ export function showErrors<T>(promise: Promise<T>): Promise<T> {
 			logError(err.message.slice(1))
 		} else {
 			// TODO
-			logError('An error occurred')
+			logError('general.error')
 		}
 		throw err
 	})
 }
 
 if (PUBLIC_IS_DEMO) {
-	logInfo('This page is only for demonstration purposes. Do not use it for real data.', 10000)
+	logInfo('demo.alert', 10000)
 }

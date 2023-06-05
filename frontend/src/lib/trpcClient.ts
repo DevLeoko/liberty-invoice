@@ -1,14 +1,16 @@
+import { goto } from '$app/navigation'
 import { PUBLIC_BACKEND_URL } from '$env/static/public'
-import { createTRPCProxyClient, httpBatchLink, loggerLink, type TRPCLink } from '@trpc/client'
+import { createTRPCProxyClient, httpBatchLink, loggerLink } from '@trpc/client'
 import SuperJSON from 'superjson'
 import type { AppRouter, RouterInput, RouterOutput } from '../../../backend/src/routers/_app'
 import { logError } from './stores/alerts'
 import { setLoggedOut } from './stores/auth'
-import { goto } from '$app/navigation'
+import type { TranslationPaths } from './translations/translations'
 
 export type CreateClient = RouterInput['client']['create']
 
 export type ReadUserSettings = RouterOutput['userSettings']['read']
+export type UpdateUserSettings = RouterInput['userSettings']['update']
 
 export type CreateInvoice = RouterInput['invoice']['create']['invoice']
 
@@ -28,7 +30,7 @@ export const trpc = createTRPCProxyClient<AppRouter>({
 							setLoggedOut()
 							goto('/')
 						} else {
-							logError(data.result.message)
+							logError(data.result.message as TranslationPaths)
 						}
 					}
 				}

@@ -86,14 +86,27 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 	},
 
 	settings: {
-		accountDetails: 'Ihre Geschäftsdaten',
+		businessDetails: 'Geschäftsdaten',
+		businessDetailsText: 'Anschrift, Firmenlogo, Steuernummer und Bankverbindung',
+		invoiceDefaults: 'Rechnungsvoreinstellungen',
+		invoiceDefaultsText: 'Standardwerte für neue Rechnungen',
+		textFragments: 'Textbausteine',
+		textFragmentsText: 'Textbausteine für Rechnungen und E-Mails',
+		account: 'Dein Account',
+		accountText: 'E-Mail, Passwort und Sprache',
+		invoiceNumberFormat: 'Rechnungsnummer Formatierung',
+		invoiceNumberFormatText: 'Formatierung der Rechnungsnummer und nächste Laufnummer',
+		members: 'Teammitglieder',
+		membersText: 'Teammitglieder einladen und verwalten',
+
 		companyLogo: 'Firmenlogo',
 		bankingDetails: 'Bankverbindung',
 		bankName: 'Bankname',
-		invoiceNumberFormatting: 'Rechnungsnummer Formatierung',
 		format: 'Format',
 		nextRunningNumber: 'Nächste Laufnummer',
 		uploadNew: 'Neues Logo hochladen',
+
+		saved: 'Einstellungen gespeichert',
 	},
 
 	general: {
@@ -112,6 +125,15 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		areYouSure: 'Sind Sie sicher?',
 		yes: 'Ja',
 		no: 'Nein',
+	},
+
+	demo: {
+		alert:
+			'Diese Seite ist nur für Demonstrationszwecke. Bitte verwenden Sie sie nicht für echte Daten.',
+	},
+
+	error: {
+		sessionExpired: 'Seine Sitzung ist abgelaufen. Bitte melde dich neu an.',
 	},
 
 	...SHARED_TRANSLATION_DE,

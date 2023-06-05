@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { clientInputSchema } from "./client-schema";
-import { protectedProcedure, router } from "../trpc";
 import { prisma } from "../prisma";
+import { protectedProcedure, router } from "../trpc";
+import { clientInputSchema } from "./client-schema";
 
 const userSettingsInputSchema = clientInputSchema.extend({
   logoUrl: z.string(),
@@ -26,17 +26,14 @@ export const userSettingsRouter = router({
   }),
 
   update: protectedProcedure
-    .input(
-      z.object({ id: z.number(), settings: userSettingsInputSchema.partial() })
-    )
+    .input(userSettingsInputSchema.partial())
     .mutation(async ({ ctx, input }) => {
       return prisma.userSettings.updateMany({
         where: {
-          id: input.id,
           userId: ctx.userId,
         },
         data: {
-          ...input.settings,
+          ...input,
         },
       });
     }),

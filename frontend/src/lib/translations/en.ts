@@ -80,16 +80,31 @@ export const TRANSLATIONS_EN = {
 		defaultCurrency: 'Default currency',
 		defaultDueDays: 'Default due days',
 	},
+
 	settings: {
-		accountDetails: 'Your account details',
+		businessDetails: 'Business details',
+		businessDetailsText: 'Address, company logo, tax number and banking details',
+		invoiceDefaults: 'Invoice defaults',
+		invoiceDefaultsText: 'Default values for new invoices',
+		textFragments: 'Text fragments',
+		textFragmentsText: 'Text fragments for invoices and emails',
+		account: 'Your account',
+		accountText: 'Email, password and language',
+		invoiceNumberFormat: 'Invoice number format',
+		invoiceNumberFormatText: 'Invoice number format and next running number',
+		members: 'Team members',
+		membersText: 'Invite and manage team members',
+
+		saved: 'Settings saved',
+
 		companyLogo: 'Company logo',
 		bankingDetails: 'Banking details',
 		bankName: 'Bank name',
-		invoiceNumberFormatting: 'Invoice number formatting',
 		format: 'Format',
 		nextRunningNumber: 'Next running number',
 		uploadNew: 'Upload new',
 	},
+
 	general: {
 		client: 'Client',
 		status: 'Status',
@@ -106,6 +121,14 @@ export const TRANSLATIONS_EN = {
 		areYouSure: 'Are you sure?',
 		yes: 'Yes',
 		no: 'No',
+	},
+
+	demo: {
+		alert: 'This page is only for demonstration purposes. Do not use it for real data.',
+	},
+
+	error: {
+		sessionExpired: 'Your session expired',
 	},
 
 	...SHARED_TRANSLATION_EN,
