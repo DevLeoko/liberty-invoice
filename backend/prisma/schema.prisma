@@ -20,10 +20,11 @@ model User {
 
   userSettings UserSettings?
 
-  clients      Client[]
-  taxRates     TaxRate[]
-  invoices     Invoice[]
-  invoiceItems InvoiceItem[]
+  clients       Client[]
+  taxRates      TaxRate[]
+  invoices      Invoice[]
+  invoiceItems  InvoiceItem[]
+  textFragments TextFragment[]
 }
 
 model UserSettings {
@@ -110,7 +111,8 @@ model Client {
   defaultTaxRateId Int?
   defaultDueDays   Int
 
-  invoices Invoice[]
+  invoices      Invoice[]
+  textFragments TextFragment[]
 }
 
 model Invoice {
@@ -152,4 +154,17 @@ model InvoiceItem {
   unit        String
   unitPrice   Float
   discount    Float
+}
+
+model TextFragment {
+  id Int @id @default(autoincrement())
+
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+
+  language String?
+  client   Client? @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId Int?
+  key      String
+  value    String  @db.Text
 }
