@@ -26,6 +26,28 @@ export const clientRouter = router({
       return client;
     }),
 
+  readDefaults: protectedProcedure
+    .input(z.object({ id: z.number() }))
+    .query(async ({ ctx, input }) => {
+      const client = await prisma.client.findUnique({
+        where: {
+          id: input.id,
+        },
+        select: {
+          defaultCurrency: true,
+          defaultDueDays: true,
+          defaultLanguage: true,
+          defaultTaxRateId: true,
+          userId: true,
+        },
+      });
+
+      if (!client || client.userId !== ctx.userId)
+        throw new Error("error.client.notFound");
+
+      return client;
+    }),
+
   list: protectedProcedure.query(async ({ ctx }) => {
     return prisma.client.findMany({
       where: {

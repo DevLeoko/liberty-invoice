@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { NullableProp } from '../../../types/utilities'
 	import { getCurrency, t } from '../../stores/settings'
-	import type { CreateInvoice } from '../../trpcClient'
+	import { trpc, type CreateInvoice } from '../../trpcClient'
 	import DateInput from '../basics/DateInput.svelte'
 	import Labeled from '../basics/Labeled.svelte'
 	import ClientSelector from '../ClientSelector.svelte'
@@ -13,6 +13,23 @@
 
 	// const clients = createClientQuery();
 	// const userSettings = queryUserSettings();
+
+	function onClientChange(clientId: number) {
+		trpc.client.readDefaults.query({ id: clientId }).then((defaults) => {
+			invoice.currency = defaults.defaultCurrency
+			invoice.language = defaults.defaultLanguage
+			invoice.dueDate = new Date(
+				invoice.date.getTime() + defaults.defaultDueDays * 24 * 60 * 60 * 1000,
+			)
+			if (defaults.defaultTaxRateId != null) invoice.taxRateIds = [defaults.defaultTaxRateId]
+		})
+	}
+
+	$: {
+		if (invoice.clientId) {
+			onClientChange(invoice.clientId)
+		}
+	}
 
 	$: dueDays = invoice.dueDate
 		? Math.round((invoice.dueDate.getTime() - invoice.date.getTime()) / (1000 * 60 * 60 * 24))

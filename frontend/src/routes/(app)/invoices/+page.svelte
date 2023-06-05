@@ -38,7 +38,7 @@
 {:else if $invoices.isError}
 	<span>{$t('general.error')}</span>
 {:else if $invoices.data.length === 0}
-	<div class="error">{$t('invoiceList.noneFound')}}</div>
+	<div class="error">{$t('invoiceList.noneFound')}</div>
 {:else}
 	<table class="w-full">
 		<tr class="text-left font-medium contents [&>*]:px-2">

@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import {
   PdfBlueprint,
   PdfDocument,
@@ -11,16 +12,15 @@ import {
   ppTableRow,
   ppText,
 } from "painless-pdf";
+import { getClientDisplayLines } from "../../../../shared/address-formatter";
+import { getCurrency } from "../../../../shared/currencies";
 import {
   KeyPath,
   Locale,
   getTranslationDictionary,
   translate,
 } from "../../../../shared/invoice-translations/translations";
-import { getClientDisplayLines } from "../../../../shared/address-formatter";
 import { addAllRobotoFonts } from "./pdf-fonts";
-import { getCurrency } from "../../../../shared/currencies";
-import { Prisma } from "@prisma/client";
 
 export type Invoice = Prisma.InvoiceGetPayload<{
   include: {

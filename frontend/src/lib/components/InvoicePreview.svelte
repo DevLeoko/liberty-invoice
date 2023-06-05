@@ -45,7 +45,7 @@
 
 <!-- TODO: w-full row of action buttons (Edit - Change status - Un-draft - Log payment - Download - Send) -->
 <div class="flex mb-4 space-x-2">
-	<Button class="flex-1" href="{PUBLIC_BACKEND_URL}/invoice/{invoice.id}/download" target="_blank"
+	<Button class="flex-1" href="{PUBLIC_BACKEND_URL}/invoices/{invoice.id}/download" target="_blank"
 		>{$t('general.download')}</Button
 	>
 	<Button class="flex-1" href="/invoices/{invoice.id}/edit">{$t('general.edit')}</Button>

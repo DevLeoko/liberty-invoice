@@ -22,6 +22,9 @@ export function emptyClient(
 		zip: '',
 		countryCode: '',
 
-		...defaultValues,
+		defaultCurrency: defaultValues.defaultCurrency,
+		defaultLanguage: defaultValues.defaultLanguage,
+		defaultTaxRateId: defaultValues.defaultTaxRateId,
+		defaultDueDays: defaultValues.defaultDueDays,
 	}
 }
