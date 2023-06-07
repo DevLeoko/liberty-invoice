@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { t } from '../stores/settings'
 	import type { ListInvoice } from '../trpcClient'
+	import Chip from './basics/Chip.svelte'
 
 	export let invoice: ListInvoice
 
@@ -32,8 +33,6 @@
 	export { className as class }
 </script>
 
-<div
-	class="px-3 py-1 text-xs font-medium leading-none text-{chipColor} border border-{chipColor} w-max shadow-sm uppercase rounded-full bg-opacity-10 bg-{chipColor} {className}"
->
+<Chip class={className} color={chipColor}>
 	{statusText}
-</div>
+</Chip>

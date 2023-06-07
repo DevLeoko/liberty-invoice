@@ -1,6 +1,4 @@
-import type { User } from "@prisma/client";
 import { z } from "zod";
-import { publicProcedure, router } from "../trpc";
 import {
   loginWithPassword,
   requestPasswordReset,
@@ -8,6 +6,8 @@ import {
   signUpWithPassword,
   verifyMailToken,
 } from "../controller/auth-flows";
+import { prisma } from "../prisma";
+import { protectedProcedure, publicProcedure, router } from "../trpc";
 
 export const authRouter = router({
   loginWithPassword: publicProcedure
@@ -66,7 +66,36 @@ export const authRouter = router({
       })
     )
     .mutation(async ({ input }) => {
-      await requestPasswordReset(input.email);
+      const user = await prisma.user.findUnique({
+        where: { email: input.email },
+        select: { email: true },
+      });
+
+      if (user) {
+        await requestPasswordReset(input.email);
+      } // We don't want to leak if a user exists or not
+    }),
+
+  requestPasswordResetNoCaptcha: protectedProcedure
+    .input(z.object({ signOutAllDevices: z.boolean() }))
+    .mutation(async ({ ctx, input }) => {
+      const user = await prisma.user.findUnique({
+        where: { id: ctx.userId },
+        select: { email: true, passwordHash: true },
+      });
+
+      if (!user || !user.passwordHash) {
+        throw new Error("error.error");
+      }
+
+      if (input.signOutAllDevices) {
+        await prisma.user.update({
+          where: { id: ctx.userId },
+          data: { refreshSession: null },
+        });
+      }
+
+      await requestPasswordReset(user.email);
     }),
 
   resetPassword: publicProcedure
@@ -80,4 +109,17 @@ export const authRouter = router({
     .mutation(async ({ input }) => {
       await resetPassword(input);
     }),
+
+  me: protectedProcedure.query(async ({ ctx }) => {
+    const user = await prisma.user.findUnique({
+      where: { id: ctx.userId },
+      select: { email: true, passwordHash: true },
+    });
+
+    if (!user) {
+      throw new Error("error.error");
+    }
+
+    return { email: user.email, isPasswordAccount: !!user.passwordHash };
+  }),
 });

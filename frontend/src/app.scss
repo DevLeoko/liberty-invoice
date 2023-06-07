@@ -85,7 +85,7 @@ select:disabled:not(.plain) {
 }
 
 .pageTitle {
-	@apply text-2xl font-semibold mb-2 flex items-center;
+	@apply text-2xl font-semibold mb-4 flex items-center;
 }
 .pageSubTitle {
 	@apply text-lg mb-2;

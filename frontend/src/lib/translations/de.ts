@@ -157,6 +157,20 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 
 		noAccount: 'Sie haben noch keinen Account?',
 		alreadyHaveAnAccount: 'Sie haben bereits einen Account?',
+
+		canNotChangeEmail:
+			'Sie können Ihre E-Mail-Adresse nicht ändern - bitte kontaktieren Sie uns, wenn Sie Hilfe benötigen.',
+		passwordResetRequested:
+			'Wir haben Ihnen eine E-Mail mit einem Link zum Zurücksetzen Ihres Passworts gesendet.',
+		passwordResetPotentiallyRequested:
+			'Wenn Sie ein Konto bei uns haben, haben wir Ihnen eine E-Mail mit einem Link zum Zurücksetzen Ihres Passworts gesendet.',
+		passwordReset: 'Passwort zurücksetzen',
+		passwordResetInfo:
+			'Wenn Sie ein Passwort zurücksetzen, wird Ihnen eine E-Mail mit einem Link zum Zurücksetzen Ihres Passworts gesendet. Sie können wählen, ob Sie alle angemeldeten Geräte abmelden möchten oder nicht. Angemeldete Geräte können innerhalb einer Stunde weiterhin auf das Konto zugreifen.',
+		oAuthAccountChip: 'Google-Konto',
+		oAuthPasswordInfo:
+			'Sie verwenden Google OAuth. Sie können Ihr Passwort ändern, indem Sie Ihr Google-Passwort ändern.',
+		signOutAllDevices: 'Alle Geräte abmelden',
 	},
 
 	error: {

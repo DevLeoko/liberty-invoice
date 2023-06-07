@@ -152,6 +152,20 @@ export const TRANSLATIONS_EN = {
 
 		noAccount: "Don't have an account?",
 		alreadyHaveAnAccount: 'Already have an account?',
+
+		canNotChangeEmail:
+			'You can not change your email address - please get in touch if you have any issues.',
+
+		passwordResetRequested: 'We sent you an email with a link to reset your password.',
+		passwordResetPotentiallyRequested:
+			'If you have an account with us, we sent you an email with a link to reset your password.',
+		passwordReset: 'Reset password',
+		passwordResetInfo:
+			'When requesting a password reset, you will be sent an email with a link to reset your password. You can choose whether to sign out all signed in devices or not. Signed in devices can still access the account for up to an hour.',
+		oAuthAccountChip: 'Google account',
+		oAuthPasswordInfo:
+			'You are using google oauth. You can change your password by changing your google password.',
+		signOutAllDevices: 'Sign out all devices',
 	},
 
 	error: {
