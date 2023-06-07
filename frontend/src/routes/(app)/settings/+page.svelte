@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { logInfo } from '../../../lib/stores/alerts'
-	import { t } from '../../../lib/stores/settings'
+	import { logInfo, t } from '../../../lib/stores/settings'
 </script>
 
 <div class="grid max-w-lg grid-cols-2 gap-4">
@@ -32,7 +31,7 @@
 			{$t('settings.invoiceNumberFormatText')}
 		</p>
 	</a>
-	<article on:click={() => logInfo('Not implemented')}>
+	<article on:click={() => $logInfo('general.error')}>
 		<h2><span class="material-icons">people</span>{$t('settings.members')}</h2>
 		<p>
 			{$t('settings.membersText')}<br />

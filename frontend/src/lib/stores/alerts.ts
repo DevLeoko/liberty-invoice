@@ -1,6 +1,6 @@
 import { PUBLIC_IS_DEMO } from '$env/static/public'
-import { writable } from 'svelte/store'
-import type { TranslationPaths } from '../translations/translations'
+import { get, writable } from 'svelte/store'
+import { logError, logInfo } from './settings'
 
 export interface Alert {
 	type: 'info' | 'error' | 'success'
@@ -54,7 +54,7 @@ export function removeAlert(index: number) {
 	})
 }
 
-export function logError(message: TranslationPaths, timeout = 5000) {
+export function logErrorStatic(message: string, timeout = 5000) {
 	pushAlert({
 		message,
 		type: 'error',
@@ -62,7 +62,7 @@ export function logError(message: TranslationPaths, timeout = 5000) {
 	})
 }
 
-export function logInfo(message: TranslationPaths, timeout = 5000) {
+export function logInfoStatic(message: string, timeout = 5000) {
 	pushAlert({
 		message,
 		type: 'info',
@@ -70,7 +70,7 @@ export function logInfo(message: TranslationPaths, timeout = 5000) {
 	})
 }
 
-export function logSuccess(message: TranslationPaths, timeout = 5000) {
+export function logSuccessStatic(message: string, timeout = 5000) {
 	pushAlert({
 		message,
 		type: 'success',
@@ -81,15 +81,15 @@ export function logSuccess(message: TranslationPaths, timeout = 5000) {
 export function showErrors<T>(promise: Promise<T>): Promise<T> {
 	return promise.catch((err) => {
 		if (err.message?.startsWith('+')) {
-			logError(err.message.slice(1))
+			get(logError)(err.message.slice(1))
 		} else {
 			// TODO
-			logError('general.error')
+			get(logError)('general.error')
 		}
 		throw err
 	})
 }
 
 if (PUBLIC_IS_DEMO) {
-	logInfo('demo.alert', 10000)
+	get(logInfo)(`demo.alert`, {}, 10000)
 }

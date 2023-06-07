@@ -40,6 +40,8 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		note: 'Anmerkung',
 		create: 'Anlegen',
 		addDescription: 'Beschreibung hinzufügen',
+		created: 'Rechnung angelegt',
+		clientRequired: 'Sie müssen einen Kunden auswählen',
 	},
 
 	invoiceStatus: {
@@ -57,6 +59,7 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 	},
 
 	clientEditorModal: {
+		created: 'Kunde angelegt',
 		updated: 'Kunde gespeichert',
 		deleted: 'Kunde gelöscht',
 		update: 'Kunden bearbeiten',
@@ -125,11 +128,35 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		areYouSure: 'Sind Sie sicher?',
 		yes: 'Ja',
 		no: 'Nein',
+		savedChanges: 'Änderungen gespeichert',
 	},
 
 	demo: {
 		alert:
 			'Diese Seite ist nur für Demonstrationszwecke. Bitte verwenden Sie sie nicht für echte Daten.',
+	},
+
+	auth: {
+		emailVerified: 'E-Mail-Adresse bestätigt',
+		passwordResetSuccess: 'Passwort erfolgreich zurückgesetzt',
+		registrationMailSent: 'Registrierungsmail versendet',
+
+		register: 'Registrieren',
+		login: 'Anmelden',
+		resetPassword: 'Passwort zurücksetzen',
+		email: 'E-Mail',
+		password: 'Passwort',
+		passwordRepeat: 'Passwort wiederholen',
+		newPassword: 'Neues Passwort',
+		newPasswordRepeat: 'Neues Passwort wiederholen',
+
+		emailRequired: 'E-Mail-Adresse ist erforderlich',
+		newPasswordRequired: 'Neues Passwort ist erforderlich',
+		passwordRequired: 'Passwort ist erforderlich',
+		passwordsDoNotMatch: 'Passwörter stimmen nicht überein',
+
+		noAccount: 'Sie haben noch keinen Account?',
+		alreadyHaveAnAccount: 'Sie haben bereits einen Account?',
 	},
 
 	error: {

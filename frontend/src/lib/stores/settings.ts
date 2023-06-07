@@ -1,7 +1,8 @@
 import { derived, writable } from 'svelte/store'
-import { Locale, LOCALES, TRANSLATIONS, type TranslationPaths } from '../translations/translations'
-import { translate } from '../../../../shared/invoice-translations/translations'
 import { getCurrency as getCurrencyUtil } from '../../../../shared/currencies'
+import { translate } from '../../../../shared/invoice-translations/translations'
+import { LOCALES, Locale, TRANSLATIONS, type TranslationPaths } from '../translations/translations'
+import { logErrorStatic, logInfoStatic, logSuccessStatic } from './alerts'
 
 // Get browser language.
 function getApplicationLanguage(): Locale {
@@ -27,6 +28,27 @@ export const t = derived(
 	($applicationLanguage) =>
 		(key: TranslationPaths, vars?: Record<string, { toString(): string }>) =>
 			translate(TRANSLATIONS[$applicationLanguage], key, vars),
+)
+
+export const logError = derived(
+	t,
+	($t) =>
+		(key: TranslationPaths, vars?: Record<string, { toString(): string }>, timeout?: number) =>
+			logErrorStatic($t(key, vars), timeout),
+)
+
+export const logInfo = derived(
+	t,
+	($t) =>
+		(key: TranslationPaths, vars?: Record<string, { toString(): string }>, timeout?: number) =>
+			logInfoStatic($t(key, vars), timeout),
+)
+
+export const logSuccess = derived(
+	t,
+	($t) =>
+		(key: TranslationPaths, vars?: Record<string, { toString(): string }>, timeout?: number) =>
+			logSuccessStatic($t(key, vars), timeout),
 )
 
 export const formatFloat = derived(

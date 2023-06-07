@@ -5,8 +5,7 @@
 	import Button from '../../../../../lib/components/basics/Button.svelte'
 	import Skeleton from '../../../../../lib/components/basics/Skeleton.svelte'
 	import InvoiceEditor from '../../../../../lib/components/editors/InvoiceEditor.svelte'
-	import { logSuccess } from '../../../../../lib/stores/alerts'
-	import { t } from '../../../../../lib/stores/settings'
+	import { logSuccess, t } from '../../../../../lib/stores/settings'
 	import { trpc, type CreateInvoice } from '../../../../../lib/trpcClient'
 
 	const id = Number.parseInt($page.params.id)
@@ -39,7 +38,7 @@
 				loadingSave = false
 			})
 
-		logSuccess('Invoice saved')
+		$logSuccess('general.savedChanges')
 		goto('/invoices')
 	}
 </script>

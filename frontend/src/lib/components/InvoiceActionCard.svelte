@@ -2,8 +2,7 @@
 	import { goto } from '$app/navigation'
 	import { PUBLIC_BACKEND_URL } from '$env/static/public'
 	import { useQueryClient } from '@tanstack/svelte-query'
-	import { logSuccess } from '../stores/alerts'
-	import { t } from '../stores/settings'
+	import { logSuccess, t } from '../stores/settings'
 	import { INVOICE_KEYS } from '../tanQuery'
 	import { trpc, type ListInvoice } from '../trpcClient'
 	import CardActionButton from './basics/CardActionButton.svelte'
@@ -25,7 +24,7 @@
 			loadingDelete = false
 		})
 
-		logSuccess($t('invoiceList.deleted'))
+		$logSuccess('invoiceList.deleted')
 
 		queryClient.invalidateQueries(INVOICE_KEYS.read(invoice.id))
 		queryClient.setQueryData(INVOICE_KEYS.list(), (oldData?: { id: number }[]) => {
@@ -42,7 +41,7 @@
 			loadingFinalize = false
 		})
 
-		logSuccess($t('invoiceList.finalized'))
+		$logSuccess('invoiceList.finalized')
 
 		queryClient.invalidateQueries(INVOICE_KEYS.read(invoice.id))
 		queryClient.setQueryData(INVOICE_KEYS.list(), (oldData?: { id: number }[]) => {
@@ -64,7 +63,7 @@
 				loadingMarkAsPaid = false
 			})
 
-		logSuccess($t('invoiceList.markedAsPaid'))
+		$logSuccess('invoiceList.markedAsPaid')
 
 		queryClient.invalidateQueries(INVOICE_KEYS.read(invoice.id))
 		queryClient.setQueryData(INVOICE_KEYS.list(), (oldData?: { id: number }[]) => {

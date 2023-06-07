@@ -52,8 +52,11 @@ export const TRANSLATIONS_EN = {
 		note: 'Note',
 		create: 'New',
 		addDescription: 'Add description',
+		clientRequired: 'You need to select a client',
+		created: 'Invoice created',
 	},
 	clientEditorModal: {
+		created: 'Client created',
 		updated: 'Client updated',
 		deleted: 'Client deleted',
 		update: 'Update client',
@@ -121,10 +124,34 @@ export const TRANSLATIONS_EN = {
 		areYouSure: 'Are you sure?',
 		yes: 'Yes',
 		no: 'No',
+		savedChanges: 'Saved changes',
 	},
 
 	demo: {
 		alert: 'This page is only for demonstration purposes. Do not use it for real data.',
+	},
+
+	auth: {
+		emailVerified: 'Your email address has been verified.',
+		passwordResetSuccess: 'Your password has been reset.',
+		registrationMailSent: 'Registration mail sent.',
+
+		register: 'Register',
+		login: 'Login',
+		resetPassword: 'Reset password',
+		email: 'Email',
+		password: 'Password',
+		passwordRepeat: 'Repeat password',
+		newPassword: 'New password',
+		newPasswordRepeat: 'Repeat new password',
+
+		emailRequired: 'Email is required',
+		passwordRequired: 'Password is required',
+		passwordsDoNotMatch: 'Passwords do not match',
+		newPasswordRequired: 'New password is required',
+
+		noAccount: "Don't have an account?",
+		alreadyHaveAnAccount: 'Already have an account?',
 	},
 
 	error: {

@@ -7,8 +7,7 @@
 	import Button from '../../../../lib/components/basics/Button.svelte'
 	import Skeleton from '../../../../lib/components/basics/Skeleton.svelte'
 	import InvoiceEditor from '../../../../lib/components/editors/InvoiceEditor.svelte'
-	import { logError, logSuccess } from '../../../../lib/stores/alerts'
-	import { t } from '../../../../lib/stores/settings'
+	import { logError, logSuccess, t } from '../../../../lib/stores/settings'
 	import { INVOICE_KEYS, queryUserSettings } from '../../../../lib/tanQuery'
 	import { trpc, type CreateInvoice } from '../../../../lib/trpcClient'
 	import type { NullableProp } from '../../../../types/utilities'
@@ -60,7 +59,7 @@
 
 	async function createInvoice() {
 		if (!invoice || invoice.clientId == null) {
-			logError('You need to select a client')
+			$logError('invoiceEditor.clientRequired')
 			return
 		}
 
@@ -76,7 +75,7 @@
 			})
 
 		queryClient.invalidateQueries(INVOICE_KEYS.list())
-		logSuccess('Invoice created')
+		$logSuccess('invoiceEditor.created')
 
 		goto(`/invoices/${res.id}/edit`)
 	}

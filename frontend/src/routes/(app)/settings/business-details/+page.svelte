@@ -3,8 +3,7 @@
 	import Labeled from '../../../../lib/components/basics/Labeled.svelte'
 	import Skeleton from '../../../../lib/components/basics/Skeleton.svelte'
 	import ClientEditor from '../../../../lib/components/editors/ClientEditor.svelte'
-	import { logSuccess } from '../../../../lib/stores/alerts'
-	import { t } from '../../../../lib/stores/settings'
+	import { logSuccess, t } from '../../../../lib/stores/settings'
 	import {
 		createUserSettingsQuery,
 		createUserSettingsUpdateMutation,
@@ -22,7 +21,7 @@
 	async function onSave() {
 		if (!userEditObject) return
 		await $updateSettings.mutateAsync(userEditObject)
-		logSuccess('settings.saved')
+		$logSuccess('settings.saved')
 	}
 </script>
 

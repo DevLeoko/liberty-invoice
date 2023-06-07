@@ -5,9 +5,7 @@
 <script lang="ts">
 	import type { TranslationPaths } from '../../translations/translations'
 
-	import { t } from '../../stores/settings'
-
-	import { logSuccess } from '../../stores/alerts'
+	import { logSuccess, t } from '../../stores/settings'
 
 	import type { SvelteComponentTyped } from 'svelte/internal'
 	import BasicModal from './BasicModal.svelte'
@@ -39,7 +37,7 @@
 			.then(() => {
 				selected = null
 
-				logSuccess($t(`${name}.updated` as TranslationPaths))
+				$logSuccess(`${name}.updated` as TranslationPaths)
 			})
 			.finally(() => {
 				loadingSave = false
@@ -52,7 +50,7 @@
 			await onDelete(selected!.id!)
 			selected = null
 
-			logSuccess($t(`${name}.deleted` as TranslationPaths))
+			$logSuccess(`${name}.deleted` as TranslationPaths)
 		} finally {
 			loadingDelete = false
 		}
