@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation'
 	import { PUBLIC_RECAPTCHA_SITE_KEY } from '$env/static/public'
 	import { onMount } from 'svelte'
 	import Button from '../../../lib/components/basics/Button.svelte'
@@ -7,17 +8,11 @@
 	import { trpc } from '../../../lib/trpcClient'
 
 	let email = ''
-	let password = ''
-	let confirmPassword = ''
 
 	let inputIssue: '' | TranslationPaths = ''
 	$: {
 		if (email === '') {
 			inputIssue = 'auth.emailRequired'
-		} else if (password === '') {
-			inputIssue = 'auth.passwordRequired'
-		} else if (confirmPassword === '' || password !== confirmPassword) {
-			inputIssue = 'auth.passwordsDoNotMatch'
 		} else {
 			inputIssue = ''
 		}
@@ -25,26 +20,26 @@
 
 	let loading = false
 
-	async function register(token: string) {
+	async function resetPassword(token: string) {
 		loading = true
-		await trpc.auth.signUpWithPassword.mutate({ email, password, token }).finally(() => {
+		await trpc.auth.requestPasswordReset.mutate({ email, token }).finally(() => {
 			loading = false
 		})
 
-		$logSuccess('auth.registrationMailSent')
+		$logSuccess('auth.passwordResetPotentiallyRequested', {}, 10000)
 	}
 
 	onMount(() => {
 		// @ts-ignore
-		window.registerCallback = register
+		window.resetPasswordCallback = resetPassword
 
 		return () => {
 			// @ts-ignore
-			delete window.registerCallback
+			delete window.resetPasswordCallback
 		}
 	})
 
-	function registerClick() {
+	function resetPasswordClick() {
 		// @ts-ignore
 		grecaptcha.execute()
 	}
@@ -55,30 +50,25 @@
 </svelte:head>
 
 <div class="flex flex-col">
-	<h1 class="text-3xl font-semibold text-slate-700">{$t('auth.register')}</h1>
+	<div class="flex items-center">
+		<span class="material-icons back-nav" on:click={() => goto('/auth/login')}>arrow_back</span>
+		<h1 class="text-3xl font-semibold text-slate-700">{$t('auth.forgetPasswordTitle')}</h1>
+	</div>
+	<p>
+		{$t('auth.forgotPasswordInfo')}
+	</p>
+
 	<span class="text-orange-400">
 		{inputIssue ? $t(inputIssue) : ''}&nbsp;
 	</span>
 	<input type="text" placeholder={$t('auth.email')} class="mt-2" bind:value={email} />
-	<input type="password" placeholder={$t('auth.password')} class="mt-2" bind:value={password} />
-	<input
-		type="password"
-		placeholder={$t('auth.passwordRepeat')}
-		class="mt-2"
-		bind:value={confirmPassword}
-	/>
 	<div
 		class="z-30 g-recaptcha"
 		data-sitekey={PUBLIC_RECAPTCHA_SITE_KEY}
-		data-callback="registerCallback"
+		data-callback="resetPasswordCallback"
 		data-size="invisible"
 	/>
-	<Button {loading} disabled={!!inputIssue} on:click={registerClick} class="mt-4"
-		>{$t('auth.register')}</Button
+	<Button {loading} disabled={!!inputIssue} on:click={resetPasswordClick} class="mt-4"
+		>{$t('auth.forgotPasswordButton')}</Button
 	>
-
-	<div class="mt-4">
-		<span>{$t('auth.alreadyHaveAnAccount')}</span>
-		<a href="/auth/login" class="text-blue-500">{$t('auth.login')}</a>
-	</div>
 </div>

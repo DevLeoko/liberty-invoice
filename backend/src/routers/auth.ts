@@ -8,6 +8,7 @@ import {
 } from "../controller/auth-flows";
 import { prisma } from "../prisma";
 import { protectedProcedure, publicProcedure, router } from "../trpc";
+import { verifyRecaptcha } from "../utils/recaptcha";
 
 export const authRouter = router({
   loginWithPassword: publicProcedure
@@ -39,11 +40,14 @@ export const authRouter = router({
   signUpWithPassword: publicProcedure
     .input(
       z.object({
+        token: z.string(),
         email: z.string().email(),
         password: z.string(),
       })
     )
     .mutation(async ({ input, ctx }) => {
+      if (!verifyRecaptcha(input.token)) throw new Error("error.failedCaptcha");
+
       await signUpWithPassword(input.email, input.password);
     }),
 
@@ -63,9 +67,12 @@ export const authRouter = router({
     .input(
       z.object({
         email: z.string().email(),
+        token: z.string(),
       })
     )
     .mutation(async ({ input }) => {
+      if (!verifyRecaptcha(input.token)) throw new Error("error.failedCaptcha");
+
       const user = await prisma.user.findUnique({
         where: { email: input.email },
         select: { email: true },

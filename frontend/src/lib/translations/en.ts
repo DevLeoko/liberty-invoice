@@ -152,6 +152,11 @@ export const TRANSLATIONS_EN = {
 
 		noAccount: "Don't have an account?",
 		alreadyHaveAnAccount: 'Already have an account?',
+		forgotPassword: 'Forgot your password?',
+		forgetPasswordTitle: 'Forgot password',
+		forgotPasswordInfo:
+			'Enter your email address and we will send you a link to reset your password.',
+		forgotPasswordButton: 'Send reset link',
 
 		canNotChangeEmail:
 			'You can not change your email address - please get in touch if you have any issues.',

@@ -158,6 +158,12 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		noAccount: 'Sie haben noch keinen Account?',
 		alreadyHaveAnAccount: 'Sie haben bereits einen Account?',
 
+		forgotPassword: 'Passwort vergessen?',
+		forgetPasswordTitle: 'Passwort vergessen',
+		forgotPasswordInfo:
+			'Geben Sie Ihre E-Mail-Adresse ein und wir senden Ihnen einen Link zum Zurücksetzen Ihres Passworts.',
+		forgotPasswordButton: 'Link senden',
+
 		canNotChangeEmail:
 			'Sie können Ihre E-Mail-Adresse nicht ändern - bitte kontaktieren Sie uns, wenn Sie Hilfe benötigen.',
 		passwordResetRequested:

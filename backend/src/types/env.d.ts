@@ -10,6 +10,7 @@ declare global {
       SMTP_PORT: string;
       SMTP_SENDER: string;
       JWT_SECRET: string;
+      RECAPTCHA_SECRET_KEY: string;
       SIGN_IN_URL: string;
       RESET_PASSWORD_URL: string;
       CORS_ORIGIN: string;

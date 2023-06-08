@@ -61,6 +61,9 @@
 	>
 
 	<div class="mt-4">
+		<a href="/auth/reset-password" class="text-blue-500">{$t('auth.forgotPassword')}</a>
+	</div>
+	<div>
 		<span>{$t('auth.noAccount')}</span>
 		<a href="/auth/register" class="text-blue-500">{$t('auth.register')}</a>
 	</div>
