@@ -179,6 +179,33 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		signOutAllDevices: 'Alle Geräte abmelden',
 	},
 
+	textFragments: {
+		defaults: {
+			mail: {
+				invoiceSubject: 'Rechnung {invoiceNumber}',
+				invoiceText:
+					'Guten Tag {clientName},\n\nanbei erhalten Sie Ihre Rechnung {invoiceNumber} über {invoiceTotal}.\n\nMit freundlichen Grüßen,\n{businessName}',
+			},
+			invoice: {
+				note: '',
+				footerNote: 'Soweit nicht anders angegeben, enspricht Lieferdatum dem Rechnungsdatum',
+				paymentNote: 'Bitte geben Sie die Rechnungsnummer als Verwendungszweck an',
+			},
+		},
+
+		name: {
+			mail: {
+				invoiceSubject: 'Rechnung E-Mail: Betreff',
+				invoiceText: 'Rechnung E-Mail: Text',
+			},
+			invoice: {
+				note: 'Rechnung: Standard Anmerkung',
+				footerNote: 'Rechnung: Fußnotiz',
+				paymentNote: 'Rechnung: Zahlungsanmerkung',
+			},
+		},
+	},
+
 	error: {
 		sessionExpired: 'Seine Sitzung ist abgelaufen. Bitte melde dich neu an.',
 	},

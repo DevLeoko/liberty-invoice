@@ -173,6 +173,33 @@ export const TRANSLATIONS_EN = {
 		signOutAllDevices: 'Sign out all devices',
 	},
 
+	textFragments: {
+		defaults: {
+			mail: {
+				invoiceSubject: 'Invoice {invoiceNumber}',
+				invoiceText:
+					'Dear {clientName},\n\nPlease find attached your invoice {invoiceNumber} for {invoiceTotal}.\n\nKind regards,\n{businessName}',
+			},
+			invoice: {
+				note: '',
+				footerNote: 'Delivery date corresponds to invoice date, unless stated otherwise',
+				paymentNote: 'Please use the invoice number as reference',
+			},
+		},
+
+		name: {
+			mail: {
+				invoiceSubject: 'Invoice email: Subject',
+				invoiceText: 'Invoice email: Text',
+			},
+			invoice: {
+				note: 'Invoice: Default invoice note',
+				footerNote: 'Invoice: Footer note',
+				paymentNote: 'Invoice: Payment note',
+			},
+		},
+	},
+
 	error: {
 		sessionExpired: 'Your session expired',
 	},

@@ -2,10 +2,12 @@
 	import FloatingCard from './FloatingCard.svelte'
 
 	let showFloatingCard = false
+
+	export let triggerClass = ''
 </script>
 
 <div class="relative">
-	<div on:click={() => (showFloatingCard = true)}>
+	<div on:click={() => (showFloatingCard = true)} class="cursor-pointer {triggerClass}">
 		<slot name="trigger" />
 	</div>
 
