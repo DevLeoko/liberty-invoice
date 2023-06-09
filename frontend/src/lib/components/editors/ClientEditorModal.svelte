@@ -1,29 +1,25 @@
 <script lang="ts">
-	import { useQueryClient } from '@tanstack/svelte-query'
+	import { createClientCreateMutation, createClientUpdateMutation } from '../../controller/client'
 	import { logSuccess } from '../../stores/settings'
-	import { CLIENT_KEYS } from '../../tanQuery'
-	import { trpc, type CreateClient } from '../../trpcClient'
+	import type { CreateClient } from '../../trpcClient'
 	import type { EditorSelection } from '../basics/EditorModal.svelte'
 	import EditorModal from '../basics/EditorModal.svelte'
 	import ClientEditor from './ClientEditor.svelte'
 
-	const queryClient = useQueryClient()
-
 	export let selected: EditorSelection<CreateClient> = null
+
+	const updateClient = createClientUpdateMutation()
+	const createClient = createClientCreateMutation()
 
 	async function onSave() {
 		if (selected) {
 			if (selected.id === undefined) {
-				await trpc.client.create.mutate(selected.entity)
+				await createClient(selected.entity)
 				$logSuccess('clientEditorModal.created')
 			} else {
-				await trpc.client.update.mutate({ id: selected.id, client: selected.entity })
+				await updateClient({ id: selected.id, client: selected.entity })
 				$logSuccess('clientEditorModal.updated')
-
-				queryClient.invalidateQueries(CLIENT_KEYS.read(selected.id))
 			}
-
-			queryClient.invalidateQueries(CLIENT_KEYS.list())
 			selected = null
 		}
 	}

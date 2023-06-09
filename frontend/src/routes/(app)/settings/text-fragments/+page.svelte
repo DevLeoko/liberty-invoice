@@ -1,5 +1,5 @@
 <script lang="ts">
-	import TextFragmentsEditor from '../../../../lib/components/editors/TextFragmentsEditor.svelte'
+	import TextFragmentEditor from '../../../../lib/components/editors/TextFragmentEditor.svelte'
 	import { TEXT_FRAGMENT_NAMES } from '../../../../lib/controller/text-fragment'
 	import { applicationLanguage } from '../../../../lib/stores/settings'
 
@@ -8,6 +8,6 @@
 
 <div class="flex flex-col max-w-md space-y-4">
 	{#each TEXT_FRAGMENT_NAMES as fragmentName}
-		<TextFragmentsEditor {fragmentName} bind:fragmentLanguage />
+		<TextFragmentEditor {fragmentName} bind:fragmentLanguage />
 	{/each}
 </div>

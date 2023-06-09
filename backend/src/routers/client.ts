@@ -17,6 +17,12 @@ export const clientRouter = router({
               id: true,
             },
           },
+          textFragments: {
+            select: {
+              key: true,
+              value: true,
+            },
+          },
         },
       });
 
@@ -69,6 +75,16 @@ export const clientRouter = router({
       return prisma.client.create({
         data: {
           ...input,
+          textFragments: {
+            createMany: {
+              data: input.textFragments.map((fragment) => ({
+                userId: ctx.userId,
+                key: fragment.key,
+                value: fragment.value,
+                language: null,
+              })),
+            },
+          },
           userId: ctx.userId,
         },
       });
@@ -83,9 +99,28 @@ export const clientRouter = router({
           userId: ctx.userId,
         },
         data: {
-          ...input.client,
+          ...{ ...input.client, textFragments: undefined },
         },
       });
+
+      if (input.client?.textFragments) {
+        await prisma.textFragment.deleteMany({
+          where: {
+            clientId: input.id,
+            userId: ctx.userId,
+          },
+        });
+
+        await prisma.textFragment.createMany({
+          data: input.client.textFragments.map((fragment) => ({
+            clientId: input.id,
+            key: fragment.key,
+            value: fragment.value,
+            language: null,
+            userId: ctx.userId,
+          })),
+        });
+      }
     }),
 
   delete: protectedProcedure

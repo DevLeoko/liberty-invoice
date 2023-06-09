@@ -86,6 +86,8 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		defaultLanguage: 'Sprache',
 		defaultCurrency: 'Währung',
 		defaultDueDays: 'Zahlungsziel (Tage)',
+
+		overrideTextFragments: 'Textbausteine',
 	},
 
 	settings: {

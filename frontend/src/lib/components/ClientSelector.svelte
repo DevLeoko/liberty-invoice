@@ -1,11 +1,11 @@
 <script lang="ts">
+	import { createClientQuery } from '../controller/client'
+	import { createUserSettingsQuery } from '../controller/tanQuery'
 	import { t } from '../stores/settings'
-	import { createClientQuery, createUserSettingsQuery } from '../tanQuery'
 	import type { CreateClient } from '../trpcClient'
 	import { emptyClient } from '../utils/clientUtils'
 	import type { EditorSelection } from './basics/EditorModal.svelte'
 	import Skeleton from './basics/Skeleton.svelte'
-	import ClientEditor from './editors/ClientEditor.svelte'
 	import ClientEditorModal from './editors/ClientEditorModal.svelte'
 
 	export let clientId: number | null

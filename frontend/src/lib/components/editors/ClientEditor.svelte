@@ -4,6 +4,7 @@
 	import Collapsable from '../basics/Collapsable.svelte'
 	import Labeled from '../basics/Labeled.svelte'
 	import AddressEditor from './AddressEditor.svelte'
+	import ClientTextFragmentEditor from './ClientTextFragmentEditor.svelte'
 	import InvoiceDefaultsEditor from './InvoiceDefaultsEditor.svelte'
 
 	export let entity: CreateClient
@@ -61,4 +62,15 @@
 			</div>
 		</Collapsable>
 	{/if}
+
+	<Collapsable
+		label={$t('clientEditor.overrideTextFragments')}
+		class="col-span-2 mt-2 bg-slate-100"
+		flatten={large}
+	>
+		<ClientTextFragmentEditor
+			bind:fragments={entity.textFragments}
+			clientLanguage={entity.defaultLanguage}
+		/>
+	</Collapsable>
 </div>

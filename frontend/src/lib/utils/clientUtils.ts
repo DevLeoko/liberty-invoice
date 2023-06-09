@@ -26,5 +26,7 @@ export function emptyClient(
 		defaultLanguage: defaultValues.defaultLanguage,
 		defaultTaxRateId: defaultValues.defaultTaxRateId,
 		defaultDueDays: defaultValues.defaultDueDays,
+
+		textFragments: [],
 	}
 }

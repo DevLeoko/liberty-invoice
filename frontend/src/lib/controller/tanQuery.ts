@@ -7,22 +7,9 @@ export const INVOICE_KEYS = {
 	read: (invoiceId: number) => [...INVOICE_KEYS.all, 'read', invoiceId],
 }
 
-export const CLIENT_KEYS = {
-	all: ['client'],
-	list: () => [...CLIENT_KEYS.all, 'list'],
-	read: (clientId: number) => [...CLIENT_KEYS.all, 'read', clientId],
-}
-
 export const USER_SETTINGS_KEYS = {
 	all: ['userSettings'],
 	read: () => [...USER_SETTINGS_KEYS.all, 'read'],
-}
-
-export function createClientQuery() {
-	return createQuery({
-		queryKey: CLIENT_KEYS.list(),
-		queryFn: () => trpc.client.list.query(),
-	})
 }
 
 export function createUserSettingsQuery() {

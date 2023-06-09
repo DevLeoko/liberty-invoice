@@ -51,12 +51,10 @@
 <div class="!flex items-center input-style group relative {!countryCode ? '!ring-orange-300' : ''}">
 	<input type="string" class="outline-none" bind:value={search} />
 	<FloatingCard class="hidden group-focus-within:block" preferBottom>
-		<div class="flex flex-col items-start overflow-y-auto max-h-64">
-			{#each filteredCountries as country}
-				<div class="cursor-pointer" on:mousedown={() => (countryCode = country.code)}>
-					{@html highlight(country.name, search)}
-				</div>
-			{/each}
-		</div>
+		{#each filteredCountries as country}
+			<div class="cursor-pointer floating-action" on:mousedown={() => (countryCode = country.code)}>
+				{@html highlight(country.name, search)}
+			</div>
+		{/each}
 	</FloatingCard>
 </div>

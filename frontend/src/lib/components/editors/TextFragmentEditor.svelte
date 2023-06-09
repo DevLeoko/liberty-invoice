@@ -17,15 +17,12 @@
 		fragmentLanguage,
 		`textFragmentDefaults.${fragmentName}` as TranslationPaths,
 	)
-	// $: tFragmentNames = TEXT_FRAGMENT_NAMES.map((f) =>
-	// 	$t(`textFragments.name.${f}` as TranslationPaths),
-	// )
 
 	$: availableVariables = getAvailableVariables(fragmentName)
 
 	let fragmentText = ''
 	let fragmentTextSaved = ''
-	$: fragmentTextQuery = createTextFragmentListQuery(fragmentName, fragmentLanguage)
+	$: fragmentTextQuery = createTextFragmentListQuery(fragmentName, fragmentLanguage, null)
 
 	function updateFragmentText(text: string) {
 		fragmentText = text
@@ -54,28 +51,6 @@
 >
 	<div class="flex items-center justify-between">
 		<span class="font-medium">{tFragmentName}</span>
-		<!-- <FloatingCardTrigger>
-			<svelte:fragment slot="trigger">
-				<span
-					class="font-medium underline decoration-dashed decoration-1 underline-offset-4 decoration-gray-500"
-					>{tFragmentName}</span
-				>
-			</svelte:fragment>
-
-			<div class="flex flex-col">
-				{#each tFragmentNames as name, i}
-					<div
-						class="floating-action {TEXT_FRAGMENT_NAMES[i] == fragmentName
-							? 'text-blue-500 font-medium'
-							: ''}"
-						on:click={() => (fragmentName = TEXT_FRAGMENT_NAMES[i])}
-					>
-						{name}
-					</div>
-				{/each}
-			</div>
-		</FloatingCardTrigger> -->
-
 		<LanguageSelectorPopup
 			bind:selected={fragmentLanguage}
 			class="underline decoration-dashed underline-offset-2 decoration-1"

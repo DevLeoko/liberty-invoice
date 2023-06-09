@@ -11,11 +11,12 @@ export const TEXT_FRAGMENT_NAMES = [
 
 export const TEXT_FRAGMENT_KEYS = {
 	all: ['textFragment'],
-	lists: () => [...TEXT_FRAGMENT_KEYS.all, 'list'],
-	listDefaults: (language: string) => [...TEXT_FRAGMENT_KEYS.lists(), { language }],
-	listForClient: (clientId: number, language: string, keys: string[]) => [
-		...TEXT_FRAGMENT_KEYS.lists(),
-		{ clientId, language, keys },
+	allList: () => [...TEXT_FRAGMENT_KEYS.all, 'list'],
+	listDefaults: (language: string) => [...TEXT_FRAGMENT_KEYS.allList(), { language }],
+	allListForClient: (clientId: number) => [...TEXT_FRAGMENT_KEYS.allList(), 'client', clientId],
+	listForClient: (clientId: number, language: string, keys: string[] | undefined) => [
+		...TEXT_FRAGMENT_KEYS.allListForClient(clientId),
+		{ language, keys },
 	],
 }
 
@@ -29,12 +30,24 @@ export function getAvailableVariables(fragmentName: string) {
 	return ''
 }
 
-export function createTextFragmentListQuery(key: string, language: string) {
-	return createQuery({
-		queryKey: TEXT_FRAGMENT_KEYS.listDefaults(language),
-		queryFn: () => trpc.textFragment.listDefaults.query({ language }),
-		select: (data) => data.find((textFragment) => textFragment.key === key),
-	})
+export function createTextFragmentListQuery(
+	key: string,
+	language: string,
+	clientId: number | null,
+) {
+	if (clientId === null) {
+		return createQuery({
+			queryKey: TEXT_FRAGMENT_KEYS.listDefaults(language),
+			queryFn: () => trpc.textFragment.listDefaults.query({ language }),
+			select: (data) => data.find((textFragment) => textFragment.key === key),
+		})
+	} else {
+		return createQuery({
+			queryKey: TEXT_FRAGMENT_KEYS.listForClient(clientId, language, undefined),
+			queryFn: () => trpc.textFragment.listForClient.query({ clientId, language }),
+			select: (data) => data.find((textFragment) => textFragment.key === key),
+		})
+	}
 }
 
 export function createTextFragmentUpsertMutation() {
@@ -48,7 +61,7 @@ export function createTextFragmentUpsertMutation() {
 			clientId,
 		})
 
-		queryClient.setQueriesData(TEXT_FRAGMENT_KEYS.lists(), (oldData?: ListTextFragment[]) => {
+		queryClient.setQueriesData(TEXT_FRAGMENT_KEYS.allList(), (oldData?: ListTextFragment[]) => {
 			if (!oldData) return oldData
 
 			const exists = oldData.some(
@@ -83,7 +96,7 @@ export function createTextFragmentDeleteMutation() {
 	return async (key: string, language: string, clientId: number | null) => {
 		await trpc.textFragment.delete.mutate({ key, language, clientId })
 
-		queryClient.setQueriesData(TEXT_FRAGMENT_KEYS.lists(), (oldData?: ListTextFragment[]) => {
+		queryClient.setQueriesData(TEXT_FRAGMENT_KEYS.allList(), (oldData?: ListTextFragment[]) => {
 			if (!oldData) return oldData
 
 			return oldData.filter(

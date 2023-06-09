@@ -82,6 +82,8 @@ export const TRANSLATIONS_EN = {
 		defaultLanguage: 'Default language',
 		defaultCurrency: 'Default currency',
 		defaultDueDays: 'Default due days',
+
+		overrideTextFragments: 'Text fragments',
 	},
 
 	settings: {
