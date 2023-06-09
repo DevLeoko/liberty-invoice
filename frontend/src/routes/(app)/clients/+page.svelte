@@ -3,8 +3,8 @@
 	import type { EditorSelection } from '../../../lib/components/basics/EditorModal.svelte'
 	import Skeleton from '../../../lib/components/basics/Skeleton.svelte'
 	import ClientEditorModal from '../../../lib/components/editors/ClientEditorModal.svelte'
+	import { createClientQuery, createUserSettingsQuery } from '../../../lib/controller/tanQuery'
 	import { t } from '../../../lib/stores/settings'
-	import { createClientQuery, createUserSettingsQuery } from '../../../lib/tanQuery'
 	import { trpc, type CreateClient } from '../../../lib/trpcClient'
 	import { emptyClient } from '../../../lib/utils/clientUtils'
 

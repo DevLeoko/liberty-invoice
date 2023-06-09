@@ -51,11 +51,12 @@ export function translate<T extends Tree>(
   const keys = key.split(".");
   // Loop through the keys and grab the translation.
   for (const k of keys) {
-    translation = (translation as Tree)[k];
-  }
+    if ((translation as Tree)[k] == undefined) {
+      console.error(`Translation not found for key: ${key}`);
+      return key;
+    }
 
-  if (!translation || !translation.length) {
-    throw new Error(`Translation not found for key: ${key}`);
+    translation = (translation as Tree)[k];
   }
 
   let text = translation as string;

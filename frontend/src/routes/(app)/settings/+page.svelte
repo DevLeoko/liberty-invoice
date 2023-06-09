@@ -31,7 +31,7 @@
 			{$t('settings.invoiceNumberFormatText')}
 		</p>
 	</a>
-	<article on:click={() => $logInfo('general.error')}>
+	<article on:click={() => $logInfo('general.error')} class="opacity-50">
 		<h2><span class="material-icons">people</span>{$t('settings.members')}</h2>
 		<p>
 			{$t('settings.membersText')}<br />

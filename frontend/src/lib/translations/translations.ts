@@ -1,4 +1,8 @@
-import type { KeyPath, ReplaceConst } from '../../../../shared/invoice-translations/translations'
+import {
+	translate as basicTranslate,
+	type KeyPath,
+	type ReplaceConst,
+} from '../../../../shared/invoice-translations/translations'
 import { TRANSLATIONS_DE } from './de'
 import { TRANSLATIONS_EN } from './en'
 
@@ -16,4 +20,12 @@ export type TranslationDictionary = ReplaceConst<typeof TRANSLATIONS_EN>
 export const TRANSLATIONS: Record<Locale, TranslationDictionary> = {
 	[Locale.EN]: TRANSLATIONS_EN,
 	de: TRANSLATIONS_DE,
+}
+
+export function translate(
+	language: Locale,
+	key: TranslationPaths,
+	vars?: Record<string, { toString(): string }>,
+) {
+	return basicTranslate(TRANSLATIONS[language], key, vars)
 }

@@ -125,6 +125,8 @@ export const TRANSLATIONS_EN = {
 		yes: 'Yes',
 		no: 'No',
 		savedChanges: 'Saved changes',
+		languages: 'Languages',
+		unsavedChanges: 'Unsaved changes',
 	},
 
 	demo: {
@@ -174,19 +176,7 @@ export const TRANSLATIONS_EN = {
 	},
 
 	textFragments: {
-		defaults: {
-			mail: {
-				invoiceSubject: 'Invoice {invoiceNumber}',
-				invoiceText:
-					'Dear {clientName},\n\nPlease find attached your invoice {invoiceNumber} for {invoiceTotal}.\n\nKind regards,\n{businessName}',
-			},
-			invoice: {
-				note: '',
-				footerNote: 'Delivery date corresponds to invoice date, unless stated otherwise',
-				paymentNote: 'Please use the invoice number as reference',
-			},
-		},
-
+		availableVariables: 'Available variables',
 		name: {
 			mail: {
 				invoiceSubject: 'Invoice email: Subject',

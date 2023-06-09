@@ -129,6 +129,8 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		yes: 'Ja',
 		no: 'Nein',
 		savedChanges: 'Änderungen gespeichert',
+		languages: 'Sprachen',
+		unsavedChanges: 'Ungespeicherte Änderungen',
 	},
 
 	demo: {
@@ -180,19 +182,7 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 	},
 
 	textFragments: {
-		defaults: {
-			mail: {
-				invoiceSubject: 'Rechnung {invoiceNumber}',
-				invoiceText:
-					'Guten Tag {clientName},\n\nanbei erhalten Sie Ihre Rechnung {invoiceNumber} über {invoiceTotal}.\n\nMit freundlichen Grüßen,\n{businessName}',
-			},
-			invoice: {
-				note: '',
-				footerNote: 'Soweit nicht anders angegeben, enspricht Lieferdatum dem Rechnungsdatum',
-				paymentNote: 'Bitte geben Sie die Rechnungsnummer als Verwendungszweck an',
-			},
-		},
-
+		availableVariables: 'Verfügbare Variablen',
 		name: {
 			mail: {
 				invoiceSubject: 'Rechnung E-Mail: Betreff',

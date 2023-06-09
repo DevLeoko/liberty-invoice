@@ -4,8 +4,8 @@
 	import Button from '../../../lib/components/basics/Button.svelte'
 	import SidePopup from '../../../lib/components/basics/SidePopup.svelte'
 	import Skeleton from '../../../lib/components/basics/Skeleton.svelte'
+	import { createInvoiceQuery } from '../../../lib/controller/tanQuery'
 	import { t } from '../../../lib/stores/settings'
-	import { createInvoiceQuery } from '../../../lib/tanQuery'
 	import { trpc, type ListInvoice, type ReadInvoice } from '../../../lib/trpcClient'
 
 	const invoices = createInvoiceQuery()

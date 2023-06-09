@@ -7,8 +7,8 @@
 	import Button from '../../../../lib/components/basics/Button.svelte'
 	import Skeleton from '../../../../lib/components/basics/Skeleton.svelte'
 	import InvoiceEditor from '../../../../lib/components/editors/InvoiceEditor.svelte'
+	import { INVOICE_KEYS, queryUserSettings } from '../../../../lib/controller/tanQuery'
 	import { logError, logSuccess, t } from '../../../../lib/stores/settings'
-	import { INVOICE_KEYS, queryUserSettings } from '../../../../lib/tanQuery'
 	import { trpc, type CreateInvoice } from '../../../../lib/trpcClient'
 	import type { NullableProp } from '../../../../types/utilities'
 

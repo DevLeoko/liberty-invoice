@@ -1,5 +1,5 @@
 import { createMutation, createQuery, useQueryClient } from '@tanstack/svelte-query'
-import { trpc, type UpdateUserSettings } from './trpcClient'
+import { trpc, type UpdateUserSettings } from '../trpcClient'
 
 export const INVOICE_KEYS = {
 	all: ['invoice'],

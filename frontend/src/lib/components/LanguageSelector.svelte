@@ -6,7 +6,7 @@
 </script>
 
 <div class="flex flex-col space-y-1">
-	<b>Languages</b>
+	<b>{$t('general.languages')}</b>
 
 	{#each Object.values(Locale) as language}
 		<div

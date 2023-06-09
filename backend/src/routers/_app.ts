@@ -2,14 +2,16 @@ import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 import { router } from "../trpc";
 import { authRouter } from "./auth";
 import { clientRouter } from "./client";
-import { userSettingsRouter } from "./user-settings";
 import { invoiceRouter } from "./invoice";
+import { textFragmentRouter } from "./text-fragment";
+import { userSettingsRouter } from "./user-settings";
 
 export const appRouter = router({
   auth: authRouter,
   client: clientRouter,
   userSettings: userSettingsRouter,
   invoice: invoiceRouter,
+  textFragment: textFragmentRouter,
 });
 
 export type AppRouter = typeof appRouter;

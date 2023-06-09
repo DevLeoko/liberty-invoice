@@ -42,4 +42,19 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
     deliveryDateNotice:
       "Soweit nicht anders angegeben, enspricht Lieferdatum dem Rechnungsdatum",
   },
+
+  textFragmentDefaults: {
+    mail: {
+      invoiceSubject: "Rechnung {invoiceNumber}",
+      invoiceText:
+        "Guten Tag {clientName},\n\nanbei erhalten Sie Ihre Rechnung {invoiceNumber} über {invoiceTotal}.\n\nMit freundlichen Grüßen,\n{businessName}",
+    },
+    invoice: {
+      note: "",
+      footerNote:
+        "Soweit nicht anders angegeben, enspricht Lieferdatum dem Rechnungsdatum",
+      paymentNote:
+        "Bitte geben Sie die Rechnungsnummer als Verwendungszweck an",
+    },
+  },
 };

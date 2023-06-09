@@ -3,11 +3,11 @@
 	import Labeled from '../../../../lib/components/basics/Labeled.svelte'
 	import Skeleton from '../../../../lib/components/basics/Skeleton.svelte'
 	import ClientEditor from '../../../../lib/components/editors/ClientEditor.svelte'
-	import { logSuccess, t } from '../../../../lib/stores/settings'
 	import {
 		createUserSettingsQuery,
 		createUserSettingsUpdateMutation,
-	} from '../../../../lib/tanQuery'
+	} from '../../../../lib/controller/tanQuery'
+	import { logSuccess, t } from '../../../../lib/stores/settings'
 	import type { ReadUserSettings } from '../../../../lib/trpcClient'
 
 	const userSettings = createUserSettingsQuery()

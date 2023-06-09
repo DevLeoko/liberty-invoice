@@ -1,7 +1,6 @@
 import { derived, writable } from 'svelte/store'
 import { getCurrency as getCurrencyUtil } from '../../../../shared/currencies'
-import { translate } from '../../../../shared/invoice-translations/translations'
-import { LOCALES, Locale, TRANSLATIONS, type TranslationPaths } from '../translations/translations'
+import { LOCALES, Locale, translate, type TranslationPaths } from '../translations/translations'
 import { logErrorStatic, logInfoStatic, logSuccessStatic } from './alerts'
 
 // Get browser language.
@@ -27,7 +26,7 @@ export const t = derived(
 	applicationLanguage,
 	($applicationLanguage) =>
 		(key: TranslationPaths, vars?: Record<string, { toString(): string }>) =>
-			translate(TRANSLATIONS[$applicationLanguage], key, vars),
+			translate($applicationLanguage, key, vars),
 )
 
 export const logError = derived(

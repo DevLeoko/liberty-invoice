@@ -37,4 +37,18 @@ export const TRANSLATIONS_EN = {
     deliveryDateNotice:
       "Delivery date corresponds to invoice date, unless stated otherwise ",
   },
+
+  textFragmentDefaults: {
+    mail: {
+      invoiceSubject: "Invoice {invoiceNumber}",
+      invoiceText:
+        "Dear {clientName},\n\nPlease find attached your invoice {invoiceNumber} for {invoiceTotal}.\n\nKind regards,\n{businessName}",
+    },
+    invoice: {
+      note: "",
+      footerNote:
+        "Delivery date corresponds to invoice date, unless stated otherwise",
+      paymentNote: "Please use the invoice number as reference",
+    },
+  },
 } as const;

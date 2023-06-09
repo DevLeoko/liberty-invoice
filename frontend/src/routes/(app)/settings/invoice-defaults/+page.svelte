@@ -2,11 +2,11 @@
 	import Button from '../../../../lib/components/basics/Button.svelte'
 	import Skeleton from '../../../../lib/components/basics/Skeleton.svelte'
 	import InvoiceDefaultsEditor from '../../../../lib/components/editors/InvoiceDefaultsEditor.svelte'
-	import { logSuccess, t } from '../../../../lib/stores/settings'
 	import {
 		createUserSettingsQuery,
 		createUserSettingsUpdateMutation,
-	} from '../../../../lib/tanQuery'
+	} from '../../../../lib/controller/tanQuery'
+	import { logSuccess, t } from '../../../../lib/stores/settings'
 	import type { ReadUserSettings } from '../../../../lib/trpcClient'
 
 	const userSettings = createUserSettingsQuery()
