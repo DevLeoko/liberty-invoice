@@ -2,7 +2,7 @@
 	import Button from '../../../../lib/components/basics/Button.svelte'
 	import Labeled from '../../../../lib/components/basics/Labeled.svelte'
 	import Skeleton from '../../../../lib/components/basics/Skeleton.svelte'
-	import ClientEditor from '../../../../lib/components/editors/ClientEditor.svelte'
+	import ClientBaseDataEditor from '../../../../lib/components/editors/ClientBaseDataEditor.svelte'
 	import {
 		createUserSettingsQuery,
 		createUserSettingsUpdateMutation,
@@ -32,13 +32,13 @@
 		<div class="flex space-x-8">
 			<div class="max-w-lg">
 				<h2 class="pageSubTitle">{$t('settings.businessDetails')}</h2>
-				<ClientEditor bind:entity={userEditObject} large hideInvoiceDefaults />
+				<ClientBaseDataEditor bind:entity={userEditObject} />
 			</div>
 
-			<div>
+			<div class="flex flex-col">
 				<h2 class="pageSubTitle">{$t('settings.companyLogo')}</h2>
 				<div
-					class="h-48 overflow-hidden bg-center bg-no-repeat bg-contain border rounded-md w-80"
+					class="w-full h-48 overflow-hidden bg-center bg-no-repeat bg-contain border rounded-md"
 					style="background-image: url({userEditObject.logoUrl}); background-size: 80%; "
 				>
 					<div
@@ -51,7 +51,7 @@
 					</div>
 				</div>
 
-				<h2 class="mt-4 pageSubTitle">{$t('settings.bankingDetails')}</h2>
+				<h2 class="mt-auto pageSubTitle">{$t('settings.bankingDetails')}</h2>
 				<div class="grid grid-cols-2 gap-4">
 					<Labeled label={$t('settings.bankName')}>
 						<input type="text" bind:value={userEditObject.bankName} />
