@@ -20,6 +20,7 @@ import {
   getTranslationDictionary,
   translate,
 } from "../../../../shared/invoice-translations/translations";
+import { getFinalTextFragment } from "../../controller/text-fragments";
 import { addAllRobotoFonts } from "./pdf-fonts";
 
 export type Invoice = Prisma.InvoiceGetPayload<{
@@ -55,6 +56,13 @@ interface Address {
 export async function buildInvoicePdf(invoice: Invoice) {
   const account = invoice.user.userSettings!;
   const client = invoice.client;
+
+  const [footerNote, paymentNote] = await getFinalTextFragment({
+    keys: ["invoice.footerNote", "invoice.paymentNote"],
+    language: invoice.language as Locale,
+    clientId: invoice.clientId,
+    userId: invoice.userId,
+  });
 
   function getTotal() {
     return invoice.items.reduce(
@@ -172,7 +180,7 @@ export async function buildInvoicePdf(invoice: Invoice) {
                 days: client.defaultDueDays.toString(),
               })
             ),
-            ppText(t("invoice.paymentDetailsLine2")),
+            ppText(paymentNote),
             ppText(t("invoice.paymentDetailsLine3")),
           ],
           {
@@ -182,7 +190,7 @@ export async function buildInvoicePdf(invoice: Invoice) {
 
         ppColumn(
           [
-            ppText(t("invoice.deliveryDateNotice")),
+            ppText(footerNote),
             "spacer",
             ppText(
               t("invoice.page", {

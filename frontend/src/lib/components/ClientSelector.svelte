@@ -15,7 +15,7 @@
 
 	function startCreate() {
 		if (!$userSettings.data) return
-		clientId = null
+		// clientId = null
 		createClient = {
 			entity: emptyClient($userSettings.data),
 		}

@@ -49,7 +49,18 @@ export const textFragmentRouter = router({
         },
       });
 
-      return textFragments;
+      const clientFragments = textFragments.filter(
+        (textFragment) => textFragment.clientId === clientId
+      );
+      const defaultFragments = textFragments.filter(
+        (textFragment) =>
+          textFragment.clientId === null &&
+          !clientFragments.some(
+            (clientFragment) => clientFragment.key === textFragment.key
+          )
+      );
+
+      return [...clientFragments, ...defaultFragments];
     }),
 
   delete: protectedProcedure

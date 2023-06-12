@@ -69,3 +69,13 @@ export function translate<T extends Tree>(
 
   return text;
 }
+
+export type ServerTranslationPath = KeyPath<(typeof TRANSLATIONS)[Locale.EN]>;
+
+export function translateServer(
+  locale: Locale,
+  key: ServerTranslationPath,
+  vars?: any
+) {
+  return translate(getTranslationDictionary(locale), key, vars);
+}

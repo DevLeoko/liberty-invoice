@@ -1,18 +1,24 @@
 <script lang="ts">
+	import { readable } from 'svelte/store'
 	import type { NullableProp } from '../../../types/utilities'
+	import {
+		createFinalTextFragmentQuery,
+		parseInvoiceTextFragment,
+	} from '../../controller/text-fragment'
 	import { getCurrency, t } from '../../stores/settings'
 	import { trpc, type CreateInvoice } from '../../trpcClient'
+	import ClientSelector from '../ClientSelector.svelte'
 	import DateInput from '../basics/DateInput.svelte'
 	import Labeled from '../basics/Labeled.svelte'
-	import ClientSelector from '../ClientSelector.svelte'
 	import InvoiceItemsEditor from './InvoiceItemsEditor.svelte'
 
 	export let invoice: NullableProp<CreateInvoice, 'clientId'>
+	export let createMode = false
 
 	$: currency = $getCurrency(invoice.currency) || $getCurrency('USD')
 
-	// const clients = createClientQuery();
-	// const userSettings = queryUserSettings();
+	$: clientId = invoice.clientId
+	$: invoiceLanguage = invoice.language
 
 	function onClientChange(clientId: number) {
 		trpc.client.readDefaults.query({ id: clientId }).then((defaults) => {
@@ -26,8 +32,26 @@
 	}
 
 	$: {
-		if (invoice.clientId) {
-			onClientChange(invoice.clientId)
+		if (clientId != null) {
+			onClientChange(clientId)
+		}
+	}
+
+	$: defaultNoteQuery =
+		clientId == null || !createMode
+			? readable(null)
+			: createFinalTextFragmentQuery('invoice.note', invoiceLanguage, clientId)
+
+	function updateInvoiceNote(note: string, invoiceDate: Date, dueDate: Date) {
+		invoice.note = parseInvoiceTextFragment(note, $t('langCode'), {
+			dueDate,
+			invoiceDate,
+		})
+	}
+
+	$: {
+		if ($defaultNoteQuery != null) {
+			updateInvoiceNote($defaultNoteQuery, invoice.date, invoice.dueDate)
 		}
 	}
 

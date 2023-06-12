@@ -92,7 +92,7 @@
 </div>
 
 {#if invoice != null}
-	<InvoiceEditor bind:invoice />
+	<InvoiceEditor bind:invoice createMode />
 {:else}
 	<Skeleton class="h-16" />
 {/if}
