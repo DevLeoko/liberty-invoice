@@ -1,7 +1,7 @@
-import { NextFunction, Request, Response } from "express";
-import { Authenticator } from "../utils/authenticator";
-import { prisma } from "../prisma";
 import { Prisma } from "@prisma/client";
+import { NextFunction, Request, Response } from "express";
+import { prisma } from "../prisma";
+import { Authenticator } from "../utils/authenticator";
 import { sendMail } from "../utils/mailer";
 
 const authenticator = new Authenticator<{ userId: number }>(
@@ -25,6 +25,8 @@ export async function authExpressMiddleware(
   res: Response,
   next: NextFunction
 ) {
+  console.log("authExpressMiddleware", req.path);
+
   const token = req.cookies?.accessToken;
 
   if (!token) return next();

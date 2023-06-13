@@ -7,7 +7,6 @@ declare global {
       SMTP_HOST: string;
       SMTP_USERNAME: string;
       SMTP_PASSWORD: string;
-      SMTP_PORT: string;
       SMTP_SENDER: string;
       JWT_SECRET: string;
       RECAPTCHA_SECRET_KEY: string;
@@ -19,4 +18,4 @@ declare global {
   }
 }
 
-export {}
+export {};

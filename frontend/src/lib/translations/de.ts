@@ -112,6 +112,9 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		uploadNew: 'Neues Logo hochladen',
 
 		saved: 'Einstellungen gespeichert',
+
+		uploading: 'Hochladen...',
+		uploaded: 'Logo hochgeladen',
 	},
 
 	general: {

@@ -7,10 +7,15 @@ process.env.TZ = "Europe/Vienna";
 import * as trpcExpress from "@trpc/server/adapters/express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
+import multer from "multer";
 import { authExpressMiddleware } from "./controller/auth-flows";
 import { appRouter } from "./routers/_app";
 import { invoiceDownloadHandler } from "./routers/non-trpc/invoice-download";
+import {
+  logoUploadHandler,
+  logoViewHandler,
+} from "./routers/non-trpc/logo-handler";
 
 const app = express();
 
@@ -20,7 +25,25 @@ app.use(cookieParser());
 
 app.use(authExpressMiddleware);
 
-app.get("/invoices/:invoiceId/download", invoiceDownloadHandler);
+function asyncHandler(
+  fn: (req: Request, res: Response, next: NextFunction) => Promise<any>
+) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    Promise.resolve(fn(req, res, next)).catch(next);
+  };
+}
+
+app.get("/invoices/:invoiceId/download", asyncHandler(invoiceDownloadHandler));
+app.post(
+  "/logo/upload",
+  multer({
+    limits: {
+      fileSize: 1024 * 1024 * 2,
+    },
+  }).single("file"),
+  asyncHandler(logoUploadHandler)
+);
+app.get("/logo", asyncHandler(logoViewHandler));
 
 app.use(
   "/trpc",

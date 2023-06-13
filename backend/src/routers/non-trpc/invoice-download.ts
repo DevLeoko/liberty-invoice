@@ -9,6 +9,11 @@ const downloadQuerySchema = z.object({
 });
 
 export async function invoiceDownloadHandler(req: Request, res: Response) {
+  if (!req.userId) {
+    res.status(401).send("Unauthorized");
+    return;
+  }
+
   const query = downloadQuerySchema.parse({
     ...req.query,
     invoiceId: req.params.invoiceId,

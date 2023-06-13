@@ -1,4 +1,5 @@
 <script lang="ts">
+	import LogoUpload from '../../../../lib/components/LogoUpload.svelte'
 	import Button from '../../../../lib/components/basics/Button.svelte'
 	import Labeled from '../../../../lib/components/basics/Labeled.svelte'
 	import Skeleton from '../../../../lib/components/basics/Skeleton.svelte'
@@ -37,19 +38,7 @@
 
 			<div class="flex flex-col">
 				<h2 class="pageSubTitle">{$t('settings.companyLogo')}</h2>
-				<div
-					class="w-full h-48 overflow-hidden bg-center bg-no-repeat bg-contain border rounded-md"
-					style="background-image: url({userEditObject.logoUrl}); background-size: 80%; "
-				>
-					<div
-						class="flex items-center justify-center h-full transition-opacity opacity-0 cursor-pointer bg-slate-500 bg-opacity-80 hover:opacity-100"
-					>
-						<div class="flex items-center font-semibold text-white">
-							<span class="text-sm material-icons">upload</span>
-							{$t('settings.uploadNew')}
-						</div>
-					</div>
-				</div>
+				<LogoUpload fileName={userEditObject.logoUrl} />
 
 				<h2 class="mt-auto pageSubTitle">{$t('settings.bankingDetails')}</h2>
 				<div class="grid grid-cols-2 gap-4">

@@ -108,6 +108,9 @@ export const TRANSLATIONS_EN = {
 		format: 'Format',
 		nextRunningNumber: 'Next running number',
 		uploadNew: 'Upload new',
+
+		uploading: 'Uploading...',
+		uploaded: 'Upload successful',
 	},
 
 	general: {

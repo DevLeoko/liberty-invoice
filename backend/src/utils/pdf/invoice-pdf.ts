@@ -1,4 +1,6 @@
 import { Prisma } from "@prisma/client";
+import { readFile } from "fs/promises";
+import imageSize from "image-size";
 import {
   PdfBlueprint,
   PdfDocument,
@@ -12,6 +14,7 @@ import {
   ppTableRow,
   ppText,
 } from "painless-pdf";
+import { promisify } from "util";
 import { getClientDisplayLines } from "../../../../shared/address-formatter";
 import { getCurrency } from "../../../../shared/currencies";
 import {
@@ -22,6 +25,8 @@ import {
 } from "../../../../shared/invoice-translations/translations";
 import { getFinalTextFragment } from "../../controller/text-fragments";
 import { addAllRobotoFonts } from "./pdf-fonts";
+
+const imageSizeAsync = promisify(imageSize);
 
 export type Invoice = Prisma.InvoiceGetPayload<{
   include: {
@@ -97,13 +102,23 @@ export async function buildInvoicePdf(invoice: Invoice) {
     });
   const currency = getCurrency(invoice.currency, numberFormatter);
 
-  async function fetchLogo() {
-    return fetch(account.logoUrl).then((res) => res.arrayBuffer());
+  async function ppCompanyLogo() {
+    const logoPath = `${process.env.FILE_STORAGE_PATH}/logos/${account.logoUrl}`;
+
+    const imageSize = await imageSizeAsync(logoPath);
+
+    const file = await readFile(logoPath, { encoding: "base64" });
+
+    return ppImage({
+      base64: file,
+      fileType: "PNG",
+      originalHeight: imageSize?.height ?? 0,
+      originalWidth: imageSize?.width ?? 0,
+      width: 60,
+    });
   }
 
   async function ppHeader() {
-    const logoBase64 = Buffer.from(await fetchLogo()).toString("base64");
-
     return ppRow(
       [
         ppColumn([
@@ -132,13 +147,7 @@ export async function buildInvoicePdf(invoice: Invoice) {
             },
           }),
         ]),
-        ppImage({
-          base64: logoBase64,
-          fileType: "PNG",
-          originalHeight: 133,
-          originalWidth: 491,
-          width: 60,
-        }),
+        await ppCompanyLogo(),
       ],
       {
         mainAxisAlignment: "space-between",
