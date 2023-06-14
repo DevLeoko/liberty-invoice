@@ -31,6 +31,12 @@
 			{$t('settings.invoiceNumberFormatText')}
 		</p>
 	</a>
+	<a href="/settings/tax-rates">
+		<h2><span class="material-icons">percent</span>{$t('settings.taxRates')}</h2>
+		<p>
+			{$t('settings.taxRatesText')}
+		</p>
+	</a>
 	<article on:click={() => $logInfo('general.error')} class="opacity-50">
 		<h2><span class="material-icons">people</span>{$t('settings.members')}</h2>
 		<p>

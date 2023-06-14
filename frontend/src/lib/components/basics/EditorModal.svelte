@@ -1,5 +1,11 @@
 <script lang="ts" context="module">
 	export type EditorSelection<E> = { entity: E; id?: number } | null
+
+	// Required language properties
+	// updated:
+	// deleted:
+	// create:
+	// update:
 </script>
 
 <script lang="ts">

@@ -103,6 +103,8 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		invoiceNumberFormatText: 'Formatierung der Rechnungsnummer und nächste Laufnummer',
 		members: 'Teammitglieder',
 		membersText: 'Teammitglieder einladen und verwalten',
+		taxRates: 'Steuersätze',
+		taxRatesText: 'Steuersätze verwalten',
 
 		companyLogo: 'Firmenlogo',
 		bankingDetails: 'Bankverbindung',

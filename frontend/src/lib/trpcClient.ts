@@ -24,6 +24,10 @@ export type ReadMe = RouterOutput['auth']['me']
 export type ListTextFragment = RouterOutput['textFragment']['listDefaults'][0]
 export type UpsertTextFragment = RouterInput['textFragment']['upsert']
 
+export type CreateTaxRate = RouterInput['taxRate']['create']
+export type ListTaxRate = RouterOutput['taxRate']['list'][0]
+export type UpdateTaxRate = RouterInput['taxRate']['update']
+
 export const trpc = createTRPCProxyClient<AppRouter>({
 	transformer: SuperJSON,
 	links: [

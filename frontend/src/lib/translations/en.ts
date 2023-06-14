@@ -99,6 +99,8 @@ export const TRANSLATIONS_EN = {
 		invoiceNumberFormatText: 'Invoice number format and next running number',
 		members: 'Team members',
 		membersText: 'Invite and manage team members',
+		taxRates: 'Tax rates',
+		taxRatesText: 'Manage tax rates',
 
 		saved: 'Settings saved',
 
@@ -111,6 +113,23 @@ export const TRANSLATIONS_EN = {
 
 		uploading: 'Uploading...',
 		uploaded: 'Upload successful',
+	},
+
+	taxRates: {
+		name: 'Name',
+		displayText: 'Display text',
+		rate: 'Rate',
+		taxRate: 'Tax rate',
+
+		updated: 'Tax rate updated',
+		deleted: 'Tax rate deleted',
+		create: 'Create tax rate',
+		update: 'Update tax rate',
+
+		newTaxRate: 'New tax rate',
+
+		rateOutOfRange: 'Rate must be between 0 and 100',
+		nameAndDisplayTextRequired: 'Name and display text are required',
 	},
 
 	general: {

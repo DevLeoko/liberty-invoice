@@ -25,8 +25,6 @@ export async function authExpressMiddleware(
   res: Response,
   next: NextFunction
 ) {
-  console.log("authExpressMiddleware", req.path);
-
   const token = req.cookies?.accessToken;
 
   if (!token) return next();

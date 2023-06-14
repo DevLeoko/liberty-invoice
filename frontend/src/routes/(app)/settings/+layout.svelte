@@ -12,6 +12,7 @@
 		else if ($page.url.pathname.includes('invoice-numbering'))
 			title = $t('settings.invoiceNumberFormat')
 		else if ($page.url.pathname.includes('text-fragments')) title = $t('settings.textFragments')
+		else if ($page.url.pathname.includes('tax-rates')) title = $t('settings.taxRates')
 		else title = $t('menu.settings')
 	}
 </script>
