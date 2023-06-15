@@ -58,7 +58,7 @@
 			{#each $taxRates.data as taxRate}
 				<div
 					class="flex items-center px-2 py-1 bg-gray-200 cursor-pointer hover:bg-gray-300"
-					on:click={() => (selected = { id: taxRate.id, entity: taxRate })}
+					on:click={() => (selected = { id: taxRate.id, entity: { ...taxRate } })}
 				>
 					<div class="font-medium text-center w-14">
 						<span>
