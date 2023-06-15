@@ -4,7 +4,7 @@
 	import type { CreateClient } from '../../trpcClient'
 	import CurrencyInput from '../CurrencyInput.svelte'
 	import LanguageSelector from '../LanguageSelector.svelte'
-	import FloatingCard from '../basics/FloatingCard.svelte'
+	import FloatingCardTrigger from '../basics/FloatingCardTrigger.svelte'
 	import Labeled from '../basics/Labeled.svelte'
 
 	export let entity: Pick<
@@ -12,27 +12,19 @@
 		'defaultCurrency' | 'defaultTaxRateId' | 'defaultDueDays' | 'defaultLanguage'
 	>
 
-	let showLanguageSelector = false
-
 	$: languageName = $t(`language.${entity.defaultLanguage}` as TranslationPaths)
 </script>
 
 <Labeled label={$t('clientEditor.defaultLanguage')}>
-	<div
-		class="cursor-pointer input-style"
-		on:click|stopPropagation={() => (showLanguageSelector = true)}
-	>
-		{languageName}
-		{#if showLanguageSelector}
-			<FloatingCard
-				preferBottom
-				on:clickOutside={() => (showLanguageSelector = false)}
-				on:click={() => (showLanguageSelector = false)}
-			>
-				<LanguageSelector bind:selected={entity.defaultLanguage} />
-			</FloatingCard>
-		{/if}
-	</div>
+	<FloatingCardTrigger>
+		<svelte:fragment slot="trigger">
+			<div class="cursor-pointer input-style">
+				{languageName}
+			</div>
+		</svelte:fragment>
+
+		<LanguageSelector bind:selected={entity.defaultLanguage} />
+	</FloatingCardTrigger>
 </Labeled>
 
 <Labeled label={$t('clientEditor.defaultCurrency')}>
