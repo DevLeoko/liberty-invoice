@@ -10,7 +10,7 @@
 
 	{#each Object.values(Locale) as language}
 		<div
-			class="flex items-center cursor-pointer {selected == language
+			class="floating-action flex items-center cursor-pointer {selected == language
 				? 'font-medium text-blue-500'
 				: ''}"
 			on:click={() => (selected = language)}

@@ -1,10 +1,13 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
 	import { PUBLIC_BACKEND_URL } from '$env/static/public'
-	import { useQueryClient } from '@tanstack/svelte-query'
-	import { INVOICE_KEYS } from '../controller/tanQuery'
+	import {
+		createInvoiceDeleteMutation,
+		createInvoiceFinalizeMutation,
+		createInvoiceLogPaymentMutation,
+	} from '../controller/invoice'
 	import { logSuccess, t } from '../stores/settings'
-	import { trpc, type ListInvoice } from '../trpcClient'
+	import type { ListInvoice } from '../trpcClient'
 	import CardActionButton from './basics/CardActionButton.svelte'
 	import ConfirmationCardTrigger from './basics/ConfirmationCardTrigger.svelte'
 
@@ -14,62 +17,46 @@
 	let loadingFinalize = false
 	let loadingMarkAsPaid = false
 
-	const queryClient = useQueryClient()
+	const invoiceDeleteMutation = createInvoiceDeleteMutation()
 
 	async function deleteInvoice() {
 		if (loadingDelete) return
 
 		loadingDelete = true
-		await trpc.invoice.delete.mutate(invoice.id).finally(() => {
+		await invoiceDeleteMutation(invoice.id).finally(() => {
 			loadingDelete = false
 		})
 
 		$logSuccess('invoiceList.deleted')
-
-		queryClient.invalidateQueries(INVOICE_KEYS.read(invoice.id))
-		queryClient.setQueryData(INVOICE_KEYS.list(), (oldData?: { id: number }[]) => {
-			if (!oldData) return oldData
-			return oldData.filter((i) => i.id !== invoice.id)
-		})
 	}
+
+	const invoiceFinalizeMutation = createInvoiceFinalizeMutation()
 
 	async function finalizeInvoice() {
 		if (loadingFinalize) return
 
 		loadingFinalize = true
-		const newListInvoice = await trpc.invoice.finalize.mutate(invoice.id).finally(() => {
+		await invoiceFinalizeMutation(invoice.id).finally(() => {
 			loadingFinalize = false
 		})
 
 		$logSuccess('invoiceList.finalized')
-
-		queryClient.invalidateQueries(INVOICE_KEYS.read(invoice.id))
-		queryClient.setQueryData(INVOICE_KEYS.list(), (oldData?: { id: number }[]) => {
-			if (!oldData) return oldData
-			return oldData.map((i) => (i.id === invoice.id ? newListInvoice : i))
-		})
 	}
+
+	const logPaymentMutation = createInvoiceLogPaymentMutation()
 
 	async function markAsPaid() {
 		if (loadingMarkAsPaid) return
 
 		loadingMarkAsPaid = true
-		const newListInvoice = await trpc.invoice.logPayment
-			.mutate({
-				id: invoice.id,
-				amount: invoice.amountWithTax - invoice.amountPaid,
-			})
-			.finally(() => {
-				loadingMarkAsPaid = false
-			})
+		await logPaymentMutation({
+			id: invoice.id,
+			amount: invoice.amountWithTax - invoice.amountPaid,
+		}).finally(() => {
+			loadingMarkAsPaid = false
+		})
 
 		$logSuccess('invoiceList.markedAsPaid')
-
-		queryClient.invalidateQueries(INVOICE_KEYS.read(invoice.id))
-		queryClient.setQueryData(INVOICE_KEYS.list(), (oldData?: { id: number }[]) => {
-			if (!oldData) return oldData
-			return oldData.map((i) => (i.id === invoice.id ? newListInvoice : i))
-		})
 	}
 </script>
 

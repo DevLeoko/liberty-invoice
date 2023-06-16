@@ -82,6 +82,7 @@ export const TRANSLATIONS_EN = {
 		defaultLanguage: 'Default language',
 		defaultCurrency: 'Default currency',
 		defaultDueDays: 'Default due days',
+		defaultTaxRate: 'Default tax rate',
 
 		overrideTextFragments: 'Text fragments',
 	},
@@ -130,6 +131,10 @@ export const TRANSLATIONS_EN = {
 
 		rateOutOfRange: 'Rate must be between 0 and 100',
 		nameAndDisplayTextRequired: 'Name and display text are required',
+
+		manageInSettingsPre: 'Manage tax rates in the ',
+		manageInSettingsLink: 'settings',
+		manageInSettingsPost: '.',
 	},
 
 	general: {

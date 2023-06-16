@@ -4,7 +4,7 @@
 	import Skeleton from '../../../lib/components/basics/Skeleton.svelte'
 	import ClientEditorModal from '../../../lib/components/editors/ClientEditorModal.svelte'
 	import { createClientQuery } from '../../../lib/controller/client'
-	import { createUserSettingsQuery } from '../../../lib/controller/tanQuery'
+	import { createUserSettingsQuery } from '../../../lib/controller/user-settings'
 	import { t } from '../../../lib/stores/settings'
 	import { trpc, type CreateClient } from '../../../lib/trpcClient'
 	import { emptyClient } from '../../../lib/utils/clientUtils'

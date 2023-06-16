@@ -88,6 +88,10 @@
 	</Labeled>
 
 	<div>
-		<InvoiceItemsEditor {currency} bind:items={invoice.items} />
+		<InvoiceItemsEditor
+			{currency}
+			bind:items={invoice.items}
+			bind:taxRateIds={invoice.taxRateIds}
+		/>
 	</div>
 </div>

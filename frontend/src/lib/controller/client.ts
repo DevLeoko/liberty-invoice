@@ -15,6 +15,7 @@ export function createClientQuery() {
 	})
 }
 
+// TODO: need to also invalidate invoice queries - they also include client data
 export function createClientUpdateMutation() {
 	const queryClient = useQueryClient()
 

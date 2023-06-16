@@ -8,7 +8,11 @@ export function computeTotalExcludingTax(invoice: {
 
 export function computeTotalWithTax(invoice: {
   items: { unitPrice: number; quantity: number }[];
+  taxRates: { rate: number }[];
 }) {
-  // TODO: implement
-  return computeTotalExcludingTax(invoice);
+  const withoutTax = computeTotalExcludingTax(invoice);
+
+  return invoice.taxRates.reduce((total, taxRate) => {
+    return total + withoutTax * (taxRate.rate / 100);
+  }, withoutTax);
 }

@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
 	import { page } from '$app/stores'
-	import { useQueryClient } from '@tanstack/svelte-query'
 	import { onMount } from 'svelte'
 	import { parseInvoiceIdFormat } from '../../../../../../shared/invoice-ids'
 	import Button from '../../../../lib/components/basics/Button.svelte'
 	import Skeleton from '../../../../lib/components/basics/Skeleton.svelte'
 	import InvoiceEditor from '../../../../lib/components/editors/InvoiceEditor.svelte'
-	import { INVOICE_KEYS, queryUserSettings } from '../../../../lib/controller/tanQuery'
+	import { createInvoiceCreateMutation } from '../../../../lib/controller/invoice'
+	import { queryUserSettings } from '../../../../lib/controller/user-settings'
 	import { logError, logSuccess, t } from '../../../../lib/stores/settings'
 	import { trpc, type CreateInvoice } from '../../../../lib/trpcClient'
 	import type { NullableProp } from '../../../../types/utilities'
@@ -16,8 +16,6 @@
 	let partialId: null | number = null
 
 	let loadingSave = false
-
-	const queryClient = useQueryClient()
 
 	const userSettingsPromise = queryUserSettings()
 
@@ -57,6 +55,8 @@
 		}
 	})
 
+	const invoiceCreateMutation = createInvoiceCreateMutation()
+
 	async function createInvoice() {
 		if (!invoice || invoice.clientId == null) {
 			$logError('invoiceEditor.clientRequired')
@@ -65,16 +65,13 @@
 
 		loadingSave = true
 
-		const res = await trpc.invoice.create
-			.mutate({
-				invoice: invoice as CreateInvoice,
-				partialId: partialId!,
-			})
-			.finally(() => {
-				loadingSave = false
-			})
+		const res = await invoiceCreateMutation({
+			invoice: invoice as CreateInvoice,
+			partialId: partialId!,
+		}).finally(() => {
+			loadingSave = false
+		})
 
-		queryClient.invalidateQueries(INVOICE_KEYS.list())
 		$logSuccess('invoiceEditor.created')
 
 		goto(`/invoices/${res.id}/edit`)

@@ -7,7 +7,7 @@
 	import {
 		createUserSettingsQuery,
 		createUserSettingsUpdateMutation,
-	} from '../../../../lib/controller/tanQuery'
+	} from '../../../../lib/controller/user-settings'
 	import { logSuccess, t } from '../../../../lib/stores/settings'
 	import type { ReadUserSettings } from '../../../../lib/trpcClient'
 

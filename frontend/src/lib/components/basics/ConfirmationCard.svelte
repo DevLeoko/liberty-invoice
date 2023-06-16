@@ -1,8 +1,8 @@
 <script lang="ts">
-	import Button from './Button.svelte'
 	import { createEventDispatcher } from 'svelte'
-	import FloatingCard from './FloatingCard.svelte'
 	import { t } from '../../stores/settings'
+	import Button from './Button.svelte'
+	import FloatingCard from './FloatingCard.svelte'
 
 	export let loading = false
 
@@ -22,7 +22,7 @@
 	}
 </script>
 
-<FloatingCard on:clickOutside={handleNo}>
+<FloatingCard on:clickOutside={handleNo} preferTop>
 	<div class="mr-4">{$t('general.areYouSure')}</div>
 	<Button snug red {loading} class="mr-2" on:click={handleYes}>{$t('general.yes')}</Button>
 	<Button snug gray on:click={handleNo}>{$t('general.cancel')}</Button>

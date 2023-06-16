@@ -1,12 +1,15 @@
 <script lang="ts">
 	import { tick } from 'svelte'
+	import type { FullCurrency } from '../../../../../shared/currencies'
+	import { createTaxRateListQuery } from '../../controller/tax-rate'
+	import { t } from '../../stores/settings'
 	import type { CreateInvoiceItem } from '../../trpcClient'
 	import InvoiceItemEditorRow from './InvoiceItemEditorRow.svelte'
-	import { t } from '../../stores/settings'
-	import type { FullCurrency } from '../../../../../shared/currencies'
+	import InvoiceTaxRateEditor from './InvoiceTaxRateEditor.svelte'
 
 	export let currency: FullCurrency
 	export let items: CreateInvoiceItem[]
+	export let taxRateIds: number[]
 
 	function getEmptyItem() {
 		return { description: '', quantity: 0, discount: 0, name: '', unit: '', unitPrice: 0 }
@@ -35,7 +38,13 @@
 		}
 	}
 
+	const taxRates = createTaxRateListQuery()
+	$: selectedTaxRate = $taxRates.data?.find((taxRate) => taxRate.id === taxRateIds[0]) ?? null
+
 	$: itemSubtotal = items.reduce((acc, item) => acc + item.unitPrice * item.quantity, 0)
+
+	$: taxRate = (selectedTaxRate?.rate ?? 0) / 100
+	$: tax = itemSubtotal * taxRate
 </script>
 
 <table class="w-full table-fixed" id="itemEditorTable">
@@ -66,13 +75,17 @@
 	</tr>
 	<tr>
 		<td colspan="2" />
-		<td colspan="2" class="text-sm">{$t('invoice.taxReverseCharge')}</td>
+		<td colspan="2">
+			<InvoiceTaxRateEditor bind:taxRateId={taxRateIds[0]}>
+				{currency.format(tax)}
+			</InvoiceTaxRateEditor>
+		</td>
 		<td />
 	</tr>
 	<tr class="font-medium">
 		<td colspan="2" />
 		<td> {$t('invoice.total')}</td>
-		<td class="text-right">{currency.format(itemSubtotal)}</td>
+		<td class="text-right">{currency.format(itemSubtotal + tax)}</td>
 		<td />
 	</tr>
 </table>

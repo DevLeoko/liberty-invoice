@@ -86,6 +86,7 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		defaultLanguage: 'Sprache',
 		defaultCurrency: 'Währung',
 		defaultDueDays: 'Zahlungsziel (Tage)',
+		defaultTaxRate: 'Steuersatz',
 
 		overrideTextFragments: 'Textbausteine',
 	},
@@ -117,6 +118,27 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 
 		uploading: 'Hochladen...',
 		uploaded: 'Logo hochgeladen',
+	},
+
+	taxRates: {
+		name: 'Name',
+		displayText: 'Anzeigetext',
+		rate: 'Prozentsatz',
+		taxRate: 'Steuersatz',
+
+		updated: 'Steuersatz aktualisiert',
+		deleted: 'Steuersatz gelöscht',
+		create: 'Steuersatz erstellen',
+		update: 'Steuersatz aktualisieren',
+
+		newTaxRate: 'Neuer Steuersatz',
+
+		rateOutOfRange: 'Prozentsatz muss zwischen 0 und 100 liegen',
+		nameAndDisplayTextRequired: 'Name und Anzeigetext sind erforderlich',
+
+		manageInSettingsPre: 'Verwalten Sie die Steuersätze in ',
+		manageInSettingsLink: 'den Einstellungen',
+		manageInSettingsPost: '.',
 	},
 
 	general: {

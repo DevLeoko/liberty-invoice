@@ -2,6 +2,7 @@
 	import FloatingCard from './FloatingCard.svelte'
 
 	let showFloatingCard = false
+	export let preferTop = false
 
 	export let triggerClass = ''
 </script>
@@ -13,6 +14,7 @@
 
 	{#if showFloatingCard}
 		<FloatingCard
+			{preferTop}
 			on:clickOutside={() => (showFloatingCard = false)}
 			on:click={() => (showFloatingCard = false)}
 			class="cursor-default"

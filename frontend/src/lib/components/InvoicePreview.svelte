@@ -2,6 +2,7 @@
 	import { PUBLIC_BACKEND_URL } from '$env/static/public'
 	import { createEventDispatcher } from 'svelte'
 	import { getClientDisplayLines } from '../../../../shared/address-formatter'
+	import { createTaxRateListQuery } from '../controller/tax-rate'
 	import { formatDate, formatFloat, getCurrency, t } from '../stores/settings'
 	import type { ReadInvoice } from '../trpcClient'
 	import InvoiceStatusChip from './InvoiceStatusChip.svelte'
@@ -30,6 +31,10 @@
 			dueText = $t('invoiceList.dueInDaysOverdue', { amount, days: -remainingDays })
 		}
 	}
+
+	const taxRates = createTaxRateListQuery()
+	$: selectedTaxRate =
+		$taxRates.data?.find((taxRate) => taxRate.id === invoice.taxRates[0]?.id) ?? null
 </script>
 
 <div class="w-full">
@@ -99,14 +104,20 @@
 	{/each}
 
 	<div class="col-span-4 pt-2 mt-4 font-semibold border-t">
-		<!-- <div class="flex justify-between">
-			<div>Subtotal</div>
-			<div>{currency.format(invoice.amountWithTax)}</div>
-		</div>
-		<div class="flex justify-between">
-			<div>Tax ({invoice.taxRate}%)</div>
-			<div>{currency.format(invoice.tax)}</div>
-		</div> -->
+		{#if selectedTaxRate}
+			<div class="flex justify-between">
+				<div>{$t('invoice.subtotal')}</div>
+				<div>{currency.format(invoice.amountWithoutTax)}</div>
+			</div>
+			<div class="flex justify-between">
+				{#if selectedTaxRate.rate > 0}
+					<div>{selectedTaxRate.displayText} ({selectedTaxRate.rate}%)</div>
+					<div>{currency.format(invoice.amountWithTax - invoice.amountWithoutTax)}</div>
+				{:else}
+					<div class="text-xs">{selectedTaxRate.displayText}</div>
+				{/if}
+			</div>
+		{/if}
 		<div class="flex justify-between">
 			<div>{$t('invoice.total')}</div>
 			<div>{currency.format(invoice.amountWithTax)}</div>

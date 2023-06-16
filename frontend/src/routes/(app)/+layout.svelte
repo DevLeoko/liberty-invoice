@@ -1,19 +1,16 @@
 <script lang="ts">
-	import { page } from '$app/stores'
-	import { setLoggedOut } from '../../lib/stores/auth'
 	import { goto } from '$app/navigation'
-	import Button from '../../lib/components/basics/Button.svelte'
-	import { applicationLanguage, t } from '../../lib/stores/settings'
-	import { Locale } from '../../lib/translations/translations'
-	import FloatingCard from '../../lib/components/basics/FloatingCard.svelte'
+	import { page } from '$app/stores'
 	import LanguageSelector from '../../lib/components/LanguageSelector.svelte'
+	import Button from '../../lib/components/basics/Button.svelte'
+	import FloatingCardTrigger from '../../lib/components/basics/FloatingCardTrigger.svelte'
+	import { setLoggedOut } from '../../lib/stores/auth'
+	import { applicationLanguage, t } from '../../lib/stores/settings'
 
 	function logout() {
 		setLoggedOut()
 		goto('/')
 	}
-
-	let showLanguageSelector = false
 
 	// Uses google material icons
 	const PAGES = [
@@ -43,10 +40,6 @@
 			href: '/settings',
 		},
 	] as const
-
-	function changeLanguage() {
-		$applicationLanguage = $applicationLanguage === Locale.DE ? Locale.EN : Locale.DE
-	}
 </script>
 
 <div class="flex max-w-screen-2xl">
@@ -74,21 +67,15 @@
 		<div class="flex justify-between mt-1 mb-4 text-xs text-gray-700">
 			<span>&copy; Liberty Invoice 2023</span>
 
-			<span
-				class="relative underline cursor-pointer"
-				on:click|stopPropagation={() => (showLanguageSelector = true)}
-			>
-				{$applicationLanguage.toUpperCase()}
+			<FloatingCardTrigger preferTop>
+				<svelte:fragment slot="trigger">
+					<span class="underline">
+						{$applicationLanguage.toUpperCase()}
+					</span>
+				</svelte:fragment>
 
-				{#if showLanguageSelector}
-					<FloatingCard
-						on:clickOutside={() => (showLanguageSelector = false)}
-						on:click={() => (showLanguageSelector = false)}
-					>
-						<LanguageSelector bind:selected={$applicationLanguage} />
-					</FloatingCard>
-				{/if}
-			</span>
+				<LanguageSelector bind:selected={$applicationLanguage} />
+			</FloatingCardTrigger>
 		</div>
 	</div>
 	<div class="flex-grow p-8">

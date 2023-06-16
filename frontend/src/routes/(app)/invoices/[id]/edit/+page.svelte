@@ -5,6 +5,7 @@
 	import Button from '../../../../../lib/components/basics/Button.svelte'
 	import Skeleton from '../../../../../lib/components/basics/Skeleton.svelte'
 	import InvoiceEditor from '../../../../../lib/components/editors/InvoiceEditor.svelte'
+	import { createInvoiceUpdateMutation } from '../../../../../lib/controller/invoice'
 	import { logSuccess, t } from '../../../../../lib/stores/settings'
 	import { trpc, type CreateInvoice } from '../../../../../lib/trpcClient'
 
@@ -22,6 +23,8 @@
 		}
 	})
 
+	const invoiceUpdateMutation = createInvoiceUpdateMutation()
+
 	async function saveInvoice() {
 		if (!invoice) {
 			return
@@ -29,14 +32,12 @@
 
 		loadingSave = true
 
-		await trpc.invoice.update
-			.mutate({
-				id,
-				invoice,
-			})
-			.finally(() => {
-				loadingSave = false
-			})
+		await invoiceUpdateMutation({
+			id,
+			invoice,
+		}).finally(() => {
+			loadingSave = false
+		})
 
 		$logSuccess('general.savedChanges')
 		goto('/invoices')

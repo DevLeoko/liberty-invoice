@@ -6,7 +6,7 @@
 
 	let el: HTMLDivElement
 
-	export let preferBottom = false
+	export let preferTop = false
 
 	let placeBottom = false
 	let placeLeft = false
@@ -14,7 +14,7 @@
 		const { left, top, width, height } = el.getBoundingClientRect()
 		const windowWidth = window.innerWidth
 
-		if (preferBottom) {
+		if (!preferTop) {
 			// Is enough space below?
 			if (top + height <= window.innerHeight) {
 				placeBottom = true

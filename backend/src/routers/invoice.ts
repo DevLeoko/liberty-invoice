@@ -1,6 +1,9 @@
 import { Prisma } from "@prisma/client";
 import { z } from "zod";
-import { computeTotalWithTax } from "../../../shared/invoice-computations";
+import {
+  computeTotalExcludingTax,
+  computeTotalWithTax,
+} from "../../../shared/invoice-computations";
 import {
   claimInvoiceId,
   getNextAvailablePartialId,
@@ -18,7 +21,11 @@ const LIST_INVOICE_DEFAULT_INCLUDES = {
     },
   },
   items: true,
-  taxRates: true,
+  taxRates: {
+    select: {
+      id: true,
+    },
+  },
 } satisfies Prisma.InvoiceInclude;
 
 async function verifyInvoiceOwnership(invoiceId: number, userId: number) {
@@ -87,13 +94,23 @@ export const invoiceRouter = router({
                 userId: ctx.userId,
               })),
             },
-            amountWithTax: computeTotalWithTax(invoice),
+            amountWithoutTax: computeTotalExcludingTax(invoice),
+            amountWithTax: computeTotalWithTax({
+              ...invoice,
+              taxRates: await prisma.taxRate.findMany({
+                where: { id: { in: invoice.taxRateIds } },
+              }),
+            }),
             amountPaid: 0,
           },
           include: {
             client: true,
             items: true,
-            taxRates: true,
+            taxRates: {
+              select: {
+                id: true,
+              },
+            },
           },
         });
       } catch (e: any) {
@@ -152,12 +169,22 @@ export const invoiceRouter = router({
               userId: ctx.userId,
             })),
           },
-          amountWithTax: computeTotalWithTax(invoice),
+          amountWithoutTax: computeTotalExcludingTax(invoice),
+          amountWithTax: computeTotalWithTax({
+            ...invoice,
+            taxRates: await prisma.taxRate.findMany({
+              where: { id: { in: invoice.taxRateIds } },
+            }),
+          }),
         },
         include: {
           client: true,
           items: true,
-          taxRates: true,
+          taxRates: {
+            select: {
+              id: true,
+            },
+          },
         },
       });
 
@@ -186,7 +213,11 @@ export const invoiceRouter = router({
         include: {
           client: true,
           items: true,
-          taxRates: true,
+          taxRates: {
+            select: {
+              id: true,
+            },
+          },
         },
       });
 

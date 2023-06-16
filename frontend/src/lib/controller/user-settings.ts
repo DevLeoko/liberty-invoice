@@ -1,12 +1,6 @@
 import { createMutation, createQuery, useQueryClient } from '@tanstack/svelte-query'
 import { trpc, type UpdateUserSettings } from '../trpcClient'
 
-export const INVOICE_KEYS = {
-	all: ['invoice'],
-	list: () => [...INVOICE_KEYS.all, 'list'],
-	read: (invoiceId: number) => [...INVOICE_KEYS.all, 'read', invoiceId],
-}
-
 export const USER_SETTINGS_KEYS = {
 	all: ['userSettings'],
 	read: () => [...USER_SETTINGS_KEYS.all, 'read'],
@@ -28,13 +22,6 @@ export function createUserSettingsUpdateMutation() {
 		onSuccess: () => {
 			queryClient.invalidateQueries(USER_SETTINGS_KEYS.all)
 		},
-	})
-}
-
-export function createInvoiceQuery() {
-	return createQuery({
-		queryKey: INVOICE_KEYS.list(),
-		queryFn: () => trpc.invoice.list.query(),
 	})
 }
 

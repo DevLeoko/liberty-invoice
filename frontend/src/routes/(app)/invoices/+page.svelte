@@ -4,7 +4,7 @@
 	import Button from '../../../lib/components/basics/Button.svelte'
 	import SidePopup from '../../../lib/components/basics/SidePopup.svelte'
 	import Skeleton from '../../../lib/components/basics/Skeleton.svelte'
-	import { createInvoiceQuery } from '../../../lib/controller/tanQuery'
+	import { createInvoiceQuery } from '../../../lib/controller/invoice'
 	import { t } from '../../../lib/stores/settings'
 	import { trpc, type ListInvoice, type ReadInvoice } from '../../../lib/trpcClient'
 
@@ -15,6 +15,7 @@
 
 	async function openPreview(invoice: ListInvoice) {
 		loadingPreview = true
+		// TODO: maybe replace with tan query in the future
 		previewInvoice = await trpc.invoice.read.query(invoice.id).finally(() => {
 			loadingPreview = false
 		})

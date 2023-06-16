@@ -4,6 +4,7 @@
 	import type { CreateClient } from '../../trpcClient'
 	import CurrencyInput from '../CurrencyInput.svelte'
 	import LanguageSelector from '../LanguageSelector.svelte'
+	import TaxRateInput from '../TaxRateInput.svelte'
 	import FloatingCardTrigger from '../basics/FloatingCardTrigger.svelte'
 	import Labeled from '../basics/Labeled.svelte'
 
@@ -33,4 +34,8 @@
 
 <Labeled label={$t('clientEditor.defaultDueDays')}>
 	<input type="text" bind:value={entity.defaultDueDays} />
+</Labeled>
+
+<Labeled label={$t('clientEditor.defaultTaxRate')}>
+	<TaxRateInput bind:taxRateId={entity.defaultTaxRateId} />
 </Labeled>
