@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createClientQuery } from '../controller/client'
-	import { createUserSettingsQuery } from '../controller/tanQuery'
+	import { createUserSettingsQuery } from '../controller/user-settings'
 	import { t } from '../stores/settings'
 	import type { CreateClient } from '../trpcClient'
 	import { emptyClient } from '../utils/clientUtils'
