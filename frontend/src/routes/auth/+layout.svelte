@@ -21,17 +21,17 @@
 			<span>&copy; Liberty Invoice 2023</span>
 
 			<a
-				href="{$t('langCodeShort')}/legal/tos"
+				href="https://liberty-invoice.com/{$t('langCodeShort')}/legal/tos"
 				class="transition-colors duration-300 text-slate-500 hover:text-blue-500:text-blue-500"
 				>{$t('auth.legalLinks.termsOfService')}</a
 			>
 			<a
-				href="{$t('langCodeShort')}/legal/privacy-policy"
+				href="https://liberty-invoice.com/{$t('langCodeShort')}/legal/privacy-policy"
 				class="transition-colors duration-300 text-slate-500 hover:text-blue-500:text-blue-500"
 				>{$t('auth.legalLinks.privacyPolicy')}</a
 			>
 			<a
-				href="{$t('langCodeShort')}/legal/notice"
+				href="https://liberty-invoice.com/{$t('langCodeShort')}/legal/notice"
 				class="transition-colors duration-300 text-slate-500 hover:text-blue-500:text-blue-500"
 				>{$t('auth.legalLinks.impressum')}</a
 			>
