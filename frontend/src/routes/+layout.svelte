@@ -16,6 +16,10 @@
 	})
 </script>
 
+<svelte:head>
+	<title>Liberty Invoice</title>
+</svelte:head>
+
 <QueryClientProvider client={queryClient}>
 	<MessageBar />
 	<slot />

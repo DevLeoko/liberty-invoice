@@ -163,11 +163,26 @@ export const TRANSLATIONS_EN = {
 	},
 
 	auth: {
+		legalLinks: {
+			termsOfService: 'Terms Of Service',
+			privacyPolicy: 'Privacy Policy',
+			impressum: 'Legal Notice',
+		},
+
 		or: '- or -',
 
 		emailVerified: 'Your email address has been verified.',
 		passwordResetSuccess: 'Your password has been reset.',
 		registrationMailSent: 'Verification mail sent - please check your inbox.',
+
+		agreeTo: 'By signing up, you agree to the ',
+		termsOfService: 'Terms of Service',
+		and: ' and ',
+		privacyPolicy: 'Privacy Policy',
+
+		agreeToTermsRequired: 'Required to sign up',
+
+		agreeToMarketing: 'I want to receive emails about new features and updates',
 
 		register: 'Sign Up',
 		login: 'Login',

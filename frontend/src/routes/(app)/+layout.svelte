@@ -43,9 +43,14 @@
 </script>
 
 <div class="flex max-w-screen-2xl">
-	<div class="flex flex-col w-48 h-screen px-4 pt-8 bg-white">
+	<div class="flex flex-col h-screen px-4 pt-8 bg-white w-60">
 		<!-- <img src="" alt="logo" class="self-center w-2/3" /> -->
-		<h2 class="text-lg font-bold">Liberty Invoice</h2>
+		<a class="flex items-center" href="/">
+			<img class="h-6" src="/logo.svg" alt="logo" />
+			<h2 class="ml-2 font-sans text-lg tracking-widest uppercase text-slate-800">
+				Liberty Invoice
+			</h2>
+		</a>
 		<nav class="flex flex-col mt-6">
 			{#each PAGES as link (link.href)}
 				{@const active = $page.url.pathname.startsWith(link.href)}

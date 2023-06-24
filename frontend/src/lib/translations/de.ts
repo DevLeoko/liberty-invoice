@@ -174,6 +174,13 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		passwordResetSuccess: 'Passwort erfolgreich zurückgesetzt',
 		registrationMailSent: 'Registrierungsmail versendet',
 
+		agreeTo: 'Durch die Registrierung akzeptieren Sie die ',
+		termsOfService: 'Nutzungsbedingungen',
+		and: ' und ',
+		privacyPolicy: 'Datenschutzbestimmungen',
+		agreeToTermsRequired: 'Zur Anmeldung erforderlich',
+		agreeToMarketing: 'Ich möchte E-Mails über neue Funktionen und Updates erhalten',
+
 		register: 'Registrieren',
 		login: 'Anmelden',
 		resetPassword: 'Passwort zurücksetzen',
@@ -212,6 +219,12 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		oAuthPasswordInfo:
 			'Sie verwenden Google OAuth. Sie können Ihr Passwort ändern, indem Sie Ihr Google-Passwort ändern.',
 		signOutAllDevices: 'Alle Geräte abmelden',
+
+		legalLinks: {
+			termsOfService: 'Nutzungsbedingungen',
+			privacyPolicy: 'Datenschutz',
+			impressum: 'Impressum',
+		},
 	},
 
 	textFragments: {
