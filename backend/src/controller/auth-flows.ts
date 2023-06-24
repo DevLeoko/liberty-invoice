@@ -97,7 +97,8 @@ async function updateUserRefreshSession(
 
 export async function loginWithGoogle(
   token: string,
-  createAccountIfNotFound = false
+  createAccountIfNotFound: boolean,
+  marketingEmails?: boolean
 ): Promise<{ accessToken: string; refreshToken: string }> {
   const email = await fetchEmailFromGoogleToken(token);
 
@@ -110,7 +111,7 @@ export async function loginWithGoogle(
   if (!user) {
     if (!createAccountIfNotFound) throw new Error("error.userNotFound");
 
-    user = await createUser(email, null, true);
+    user = await createUser(email, null, true, marketingEmails ?? false);
   }
 
   const { accessToken, refreshSession, refreshToken } =
@@ -160,10 +161,14 @@ export async function loginWithPassword(
   return { accessToken: data.accessToken, refreshToken: data.refreshToken };
 }
 
-export async function signUpWithPassword(email: string, password: string) {
+export async function signUpWithPassword(
+  email: string,
+  password: string,
+  marketingEmails: boolean
+) {
   email = email.toLowerCase();
 
-  await createUser(email, password, false);
+  await createUser(email, password, false, marketingEmails);
 
   const mailToken = authenticator.generateMailToken(email);
   const verifyUrl = `${process.env.SIGN_IN_URL}?token=${encodeURIComponent(
@@ -195,7 +200,8 @@ export async function verifyMailToken(token: string, email: string) {
 async function createUser(
   email: string,
   password: string | null,
-  isEmailVerified: boolean
+  isEmailVerified: boolean,
+  marketingEmails: boolean
 ) {
   try {
     return await prisma.user.create({
@@ -205,7 +211,7 @@ async function createUser(
           password != null ? await authenticator.hashPassword(password) : null,
         isEmailVerified,
         userSettings: {
-          create: getDefaultUserSettings(),
+          create: { ...getDefaultUserSettings(), marketingEmails },
         },
       },
     });

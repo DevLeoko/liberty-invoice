@@ -14,6 +14,8 @@ const userSettingsInputSchema = clientInputSchema.extend({
   partialIdDate: z.date(),
   enableTaxPerItem: z.boolean(),
   enableMultilingual: z.boolean(),
+
+  marketingEmails: z.boolean(),
 });
 
 export const userSettingsRouter = router({

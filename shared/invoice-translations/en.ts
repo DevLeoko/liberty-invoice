@@ -1,4 +1,5 @@
 export const TRANSLATIONS_EN = {
+  langCodeShort: "en",
   langCode: "en-US",
   countries: {
     AT: "Austria",

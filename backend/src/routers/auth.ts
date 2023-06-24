@@ -44,12 +44,13 @@ export const authRouter = router({
         token: z.string(),
         email: z.string().email(),
         password: z.string(),
+        marketingEmails: z.boolean(),
       })
     )
     .mutation(async ({ input, ctx }) => {
       if (!verifyRecaptcha(input.token)) throw new Error("error.failedCaptcha");
 
-      await signUpWithPassword(input.email, input.password);
+      await signUpWithPassword(input.email, input.password, input.marketingEmails);
     }),
 
   loginWithGoogle: publicProcedure
@@ -57,12 +58,14 @@ export const authRouter = router({
       z.object({
         token: z.string(),
         createAccountIfNotFound: z.boolean(),
+        marketingEmails: z.boolean().optional(),
       })
     )
     .mutation(async ({ input, ctx }) => {
       const { accessToken, refreshToken } = await loginWithGoogle(
         input.token,
-        input.createAccountIfNotFound
+        input.createAccountIfNotFound,
+        input.marketingEmails
       );
 
       ctx.res.cookie("refreshToken", refreshToken, {

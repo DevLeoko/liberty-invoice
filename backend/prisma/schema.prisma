@@ -67,6 +67,8 @@ model UserSettings {
 
   enableTaxPerItem   Boolean
   enableMultilingual Boolean
+
+  marketingEmails Boolean @default(false)
 }
 
 model TaxRate {

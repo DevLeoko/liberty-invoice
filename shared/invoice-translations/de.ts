@@ -1,6 +1,7 @@
 import type { TranslationDictionary } from "./translations";
 
 export const TRANSLATIONS_DE: TranslationDictionary = {
+  langCodeShort: "de",
   langCode: "de-DE",
   countries: {
     AT: "Österreich",

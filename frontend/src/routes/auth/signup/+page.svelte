@@ -12,6 +12,9 @@
 	let password = ''
 	let confirmPassword = ''
 
+	let agreedToTerms = false
+	let agreedToMarketing = false
+
 	let inputIssue: '' | TranslationPaths = ''
 	let showIssue = false
 	$: {
@@ -42,9 +45,11 @@
 
 	async function register(token: string) {
 		loading = true
-		await trpc.auth.signUpWithPassword.mutate({ email, password, token }).finally(() => {
-			loading = false
-		})
+		await trpc.auth.signUpWithPassword
+			.mutate({ email, password, token, marketingEmails: agreedToMarketing })
+			.finally(() => {
+				loading = false
+			})
 
 		$logSuccess('auth.registrationMailSent')
 	}
@@ -52,7 +57,11 @@
 	async function signUpWithGoogle(response: any) {
 		loading = true
 		await trpc.auth.loginWithGoogle
-			.mutate({ token: response.credential, createAccountIfNotFound: true })
+			.mutate({
+				token: response.credential,
+				createAccountIfNotFound: true,
+				marketingEmails: agreedToMarketing,
+			})
 			.finally(() => {
 				loading = false
 			})
@@ -76,7 +85,7 @@
 	})
 
 	function registerClick() {
-		if (inputIssue) {
+		if (inputIssue || !agreedToTerms) {
 			showIssue = true
 			return
 		}
@@ -123,11 +132,11 @@
 		data-context="signup"
 		data-ux_mode="popup"
 		data-callback="signUpWithGoogleCallback"
-		data-itp_support="true"
+		data-auto_prompt="false"
 	/>
 
 	<div
-		class="g_id_signin"
+		class="g_id_signin {!agreedToTerms ? 'opacity-50 pointer-events-none' : ''}"
 		data-type="standard"
 		data-shape="rectangular"
 		data-theme="outline"
@@ -137,6 +146,44 @@
 		data-logo_alignment="center"
 		data-width="350"
 	/>
+
+	<!-- ToS and Marketing checkbox -->
+	<div class="leading-tight">
+		<div class="flex items-center mt-2">
+			<input
+				type="checkbox"
+				class="w-4 h-4 mr-2 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
+				bind:checked={agreedToTerms}
+			/>
+			<div>
+				<div>&nbsp;</div>
+				<span class="text-sm text-gray-500">
+					{$t('auth.agreeTo')}
+					<a href="https://liberty-invoice.com/{$t('langCodeShort')}/legal/terms"
+						>{$t('auth.termsOfService')}</a
+					>
+					{$t('auth.and')}
+					<a href="https://liberty-invoice.com/{$t('langCodeShort')}/legal/privacy"
+						>{$t('auth.privacyPolicy')}</a
+					>
+				</span>
+				<div class="text-sm text-red-500">
+					{#if !agreedToTerms}
+						{$t('auth.agreeToTermsRequired')}
+					{/if} &nbsp;
+				</div>
+			</div>
+		</div>
+
+		<div class="flex items-center mt-2">
+			<input
+				type="checkbox"
+				class="w-4 h-4 mr-2 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
+				bind:checked={agreedToMarketing}
+			/>
+			<span class="text-sm text-gray-500">{$t('auth.agreeToMarketing')}</span>
+		</div>
+	</div>
 
 	<div class="mt-4">
 		<span>{$t('auth.alreadyHaveAnAccount')}</span>
