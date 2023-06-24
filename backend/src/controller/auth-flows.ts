@@ -1,8 +1,11 @@
 import { Prisma } from "@prisma/client";
 import { NextFunction, Request, Response } from "express";
+import { OAuth2Client } from "google-auth-library";
 import { prisma } from "../prisma";
 import { Authenticator } from "../utils/authenticator";
 import { sendMail } from "../utils/mailer";
+
+const googleOAuth = new OAuth2Client(process.env.GOOGLE_AUTH_CLIENT_ID);
 
 const authenticator = new Authenticator<{ userId: number }>(
   process.env.JWT_SECRET
@@ -59,6 +62,70 @@ export async function authExpressMiddleware(
   next();
 }
 
+async function fetchEmailFromGoogleToken(token: string) {
+  const res = await googleOAuth
+    .verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_AUTH_CLIENT_ID,
+    })
+    .catch(() => {
+      throw new Error("error.googleAuthFailed");
+    });
+
+  const payload = res.getPayload();
+  if (!payload) throw new Error("error.googleAuthFailed");
+
+  const email = payload.email?.toLowerCase();
+  if (!email) throw new Error("error.googleAuthFailed");
+
+  return email;
+}
+
+async function updateUserRefreshSession(
+  userId: number,
+  refreshSession: string
+) {
+  await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      refreshSession,
+    },
+  });
+}
+
+export async function loginWithGoogle(
+  token: string,
+  createAccountIfNotFound = false
+): Promise<{ accessToken: string; refreshToken: string }> {
+  const email = await fetchEmailFromGoogleToken(token);
+
+  let user = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
+
+  if (!user) {
+    if (!createAccountIfNotFound) throw new Error("error.userNotFound");
+
+    user = await createUser(email, null, true);
+  }
+
+  const { accessToken, refreshSession, refreshToken } =
+    authenticator.directLogin(
+      { userId: user.id },
+      user.refreshSession ?? undefined
+    );
+
+  if (!user.refreshSession) {
+    await updateUserRefreshSession(user.id, refreshSession);
+  }
+
+  return { accessToken, refreshToken };
+}
+
 export async function loginWithPassword(
   email: string,
   password: string
@@ -87,14 +154,7 @@ export async function loginWithPassword(
   if (!success) throw new Error("error.invalidEmailOrPassword");
 
   if (!user.refreshSession) {
-    await prisma.user.update({
-      where: {
-        id: user.id,
-      },
-      data: {
-        refreshSession: data.refreshSession,
-      },
-    });
+    await updateUserRefreshSession(user.id, data.refreshSession);
   }
 
   return { accessToken: data.accessToken, refreshToken: data.refreshToken };
@@ -134,14 +194,15 @@ export async function verifyMailToken(token: string, email: string) {
 
 async function createUser(
   email: string,
-  password: string,
+  password: string | null,
   isEmailVerified: boolean
 ) {
   try {
     return await prisma.user.create({
       data: {
         email,
-        passwordHash: await authenticator.hashPassword(password),
+        passwordHash:
+          password != null ? await authenticator.hashPassword(password) : null,
         isEmailVerified,
         userSettings: {
           create: getDefaultUserSettings(),

@@ -77,11 +77,11 @@ export class Authenticator<T extends Record<string, any>> {
 
     return {
       success: true,
-      data: this.login(data, existingRefreshSession),
+      data: this.directLogin(data, existingRefreshSession),
     };
   }
 
-  private login(data: T, existingRefreshSession: string | undefined) {
+  directLogin(data: T, existingRefreshSession: string | undefined) {
     const refreshSession =
       existingRefreshSession || this.generateRandomString(32);
     const accessToken = this.generateAccessToken(data);

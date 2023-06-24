@@ -1,5 +1,6 @@
 import { z } from "zod";
 import {
+  loginWithGoogle,
   loginWithPassword,
   requestPasswordReset,
   resetPassword,
@@ -49,6 +50,32 @@ export const authRouter = router({
       if (!verifyRecaptcha(input.token)) throw new Error("error.failedCaptcha");
 
       await signUpWithPassword(input.email, input.password);
+    }),
+
+  loginWithGoogle: publicProcedure
+    .input(
+      z.object({
+        token: z.string(),
+        createAccountIfNotFound: z.boolean(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const { accessToken, refreshToken } = await loginWithGoogle(
+        input.token,
+        input.createAccountIfNotFound
+      );
+
+      ctx.res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
+      });
+
+      ctx.res.cookie("accessToken", accessToken, {
+        httpOnly: true,
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
+      });
     }),
 
   verifyEmail: publicProcedure

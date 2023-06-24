@@ -168,6 +168,8 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 	},
 
 	auth: {
+		or: '- oder -',
+
 		emailVerified: 'E-Mail-Adresse bestätigt',
 		passwordResetSuccess: 'Passwort erfolgreich zurückgesetzt',
 		registrationMailSent: 'Registrierungsmail versendet',
@@ -184,6 +186,8 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		emailRequired: 'E-Mail-Adresse ist erforderlich',
 		newPasswordRequired: 'Neues Passwort ist erforderlich',
 		passwordRequired: 'Passwort ist erforderlich',
+		passwordNotSecure:
+			'Das Passwort muss mindestens 8 Zeichen lang sein und mindestens eine Zahl und einen Buchstaben enthalten',
 		passwordsDoNotMatch: 'Passwörter stimmen nicht überein',
 
 		noAccount: 'Sie haben noch keinen Account?',

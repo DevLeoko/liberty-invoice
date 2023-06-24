@@ -163,11 +163,13 @@ export const TRANSLATIONS_EN = {
 	},
 
 	auth: {
+		or: '- or -',
+
 		emailVerified: 'Your email address has been verified.',
 		passwordResetSuccess: 'Your password has been reset.',
-		registrationMailSent: 'Registration mail sent.',
+		registrationMailSent: 'Verification mail sent - please check your inbox.',
 
-		register: 'Register',
+		register: 'Sign Up',
 		login: 'Login',
 		resetPassword: 'Reset password',
 		email: 'Email',
@@ -178,6 +180,8 @@ export const TRANSLATIONS_EN = {
 
 		emailRequired: 'Email is required',
 		passwordRequired: 'Password is required',
+		passwordNotSecure:
+			'Password has to be at least 8 characters long and contain at least one number and one letter',
 		passwordsDoNotMatch: 'Passwords do not match',
 		newPasswordRequired: 'New password is required',
 

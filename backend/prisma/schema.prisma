@@ -131,7 +131,7 @@ model Invoice {
   currency      String
   language      String
   taxRates      TaxRate[]
-  note          String
+  note          String    @db.Text
 
   amountWithoutTax Float
   amountWithTax    Float
