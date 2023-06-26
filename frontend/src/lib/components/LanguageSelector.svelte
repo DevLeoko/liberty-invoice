@@ -20,7 +20,7 @@
 			)}
 		</div>
 	{/each}
-	<div class="flex items-center">
+	<!-- <div class="flex items-center">
 		<img src={`/flags/pl.svg`} class="h-3.5 mr-2" alt="flag" />{$t(`language.pl`)}
-	</div>
+	</div> -->
 </div>

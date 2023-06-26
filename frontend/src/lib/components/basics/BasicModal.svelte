@@ -6,7 +6,7 @@
 </script>
 
 <Modal on:exit {zLevel}>
-	<div class="flex flex-col p-6 pt-4 bg-white rounded-md" style="width: 600px">
+	<div class="flex flex-col p-6 pt-4 bg-white rounded-md" style="width: 600px;">
 		<h2 class="mb-2 text-lg">
 			<slot name="title">
 				{title}

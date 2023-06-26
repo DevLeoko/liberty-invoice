@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { cloneDeep } from 'lodash'
 	import LogoUpload from '../../../../lib/components/LogoUpload.svelte'
 	import Button from '../../../../lib/components/basics/Button.svelte'
 	import Labeled from '../../../../lib/components/basics/Labeled.svelte'
@@ -15,9 +16,12 @@
 	const updateSettings = createUserSettingsUpdateMutation()
 
 	let userEditObject: ReadUserSettings | undefined = undefined
-	$: {
-		userEditObject = $userSettings.data
+
+	function updateData(data?: ReadUserSettings) {
+		if (data) userEditObject = cloneDeep(data)
 	}
+
+	$: updateData($userSettings.data)
 
 	async function onSave() {
 		if (!userEditObject) return
@@ -38,7 +42,7 @@
 
 			<div class="flex flex-col">
 				<h2 class="pageSubTitle">{$t('settings.companyLogo')}</h2>
-				<LogoUpload fileName={userEditObject.logoUrl} />
+				<LogoUpload />
 
 				<h2 class="mt-auto pageSubTitle">{$t('settings.bankingDetails')}</h2>
 				<div class="grid grid-cols-2 gap-4">

@@ -3,6 +3,10 @@
 	import Button from '../../../../lib/components/basics/Button.svelte'
 	import Chip from '../../../../lib/components/basics/Chip.svelte'
 	import Skeleton from '../../../../lib/components/basics/Skeleton.svelte'
+	import {
+		createUserSettingsQuery,
+		createUserSettingsUpdateMutation,
+	} from '../../../../lib/controller/user-settings'
 	import { logSuccess, t } from '../../../../lib/stores/settings'
 	import { trpc, type ReadMe } from '../../../../lib/trpcClient'
 
@@ -26,10 +30,30 @@
 				loadingPasswordReset = false
 			})
 	}
+
+	const userSettings = createUserSettingsQuery()
+	const updateSettings = createUserSettingsUpdateMutation()
+
+	let loadingConsentUpdate = false
+
+	async function toggleMarketingConsent() {
+		if (!$userSettings.data) return
+
+		loadingConsentUpdate = true
+		await $updateSettings
+			.mutateAsync({
+				marketingEmails: !$userSettings.data.marketingEmails,
+			})
+			.finally(() => {
+				loadingConsentUpdate = false
+			})
+
+		$logSuccess('settings.saved')
+	}
 </script>
 
 <div class="flex flex-col max-w-md">
-	{#if !myData}
+	{#if !myData || !$userSettings.data}
 		<Skeleton class="h-20 max-w-md" />
 	{:else}
 		<div class="px-3 py-2 mt-2 bg-gray-200">
@@ -40,7 +64,7 @@
 		<div class="px-3 py-2 mt-2 bg-gray-200">
 			{#if myData.isPasswordAccount}
 				<b>{$t('auth.password')}</b>
-				<p class="text-sm">
+				<p class="text-sm whitespace-pre-wrap">
 					{$t('auth.passwordResetInfo')}
 				</p>
 
@@ -62,6 +86,21 @@
 
 				<i class="text-sm text-gray-500">{$t('auth.oAuthPasswordInfo')}</i>
 			{/if}
+		</div>
+
+		<div class="px-3 py-2 mt-2 bg-gray-200">
+			<b>{$t('settings.marketingConsent')}</b>
+			<div class="flex items-center {loadingConsentUpdate ? 'opacity-50' : ''}">
+				<input
+					id="marketingConsent"
+					type="checkbox"
+					checked={$userSettings.data.marketingEmails}
+					on:change={toggleMarketingConsent}
+				/>
+				<label for="marketingConsent" class="ml-1 text-sm cursor-pointer"
+					>{$t('settings.marketingConsentText')}</label
+				>
+			</div>
 		</div>
 	{/if}
 </div>

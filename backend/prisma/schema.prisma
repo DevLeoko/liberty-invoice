@@ -159,6 +159,19 @@ model InvoiceItem {
   discount    Float
 }
 
+// model Product {
+//   id Int @id @default(autoincrement())
+
+//   user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   userId Int
+
+//   name        String
+//   description String
+//   unit        String
+//   unitPrice   Float
+
+// }
+
 model TextFragment {
   id Int @id @default(autoincrement())
 

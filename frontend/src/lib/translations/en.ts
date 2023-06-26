@@ -114,6 +114,9 @@ export const TRANSLATIONS_EN = {
 
 		uploading: 'Uploading...',
 		uploaded: 'Upload successful',
+
+		marketingConsent: 'Marketing consent',
+		marketingConsentText: 'I agree to receive marketing emails from Liberty Invoice',
 	},
 
 	taxRates: {
@@ -216,7 +219,7 @@ export const TRANSLATIONS_EN = {
 			'If you have an account with us, we sent you an email with a link to reset your password.',
 		passwordReset: 'Reset password',
 		passwordResetInfo:
-			'When requesting a password reset, you will be sent an email with a link to reset your password. You can choose whether to sign out all signed in devices or not. Signed in devices can still access the account for up to an hour.',
+			'When requesting a password reset, you will be sent an email with a link to reset your password. \n\nYou can choose whether to sign out all signed in devices or not. Signed in devices can still access the account for up to an hour.',
 		oAuthAccountChip: 'Google account',
 		oAuthPasswordInfo:
 			'You are using google oauth. You can change your password by changing your google password.',

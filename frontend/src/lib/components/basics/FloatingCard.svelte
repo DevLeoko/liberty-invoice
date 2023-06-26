@@ -50,7 +50,7 @@
 	class:left-0={!placeLeft}
 	bind:this={el}
 	on:click
-	transition:fly={{ duration: 100, y: 10 }}
+	transition:fly|local={{ duration: 100, y: 10 }}
 >
 	<slot />
 </div>

@@ -118,6 +118,9 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 
 		uploading: 'Hochladen...',
 		uploaded: 'Logo hochgeladen',
+
+		marketingConsent: 'Marketing-Einwilligung',
+		marketingConsentText: 'Ich möchte über Neuigkeiten und Updates informiert werden.',
 	},
 
 	taxRates: {
@@ -214,7 +217,7 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 			'Wenn Sie ein Konto bei uns haben, haben wir Ihnen eine E-Mail mit einem Link zum Zurücksetzen Ihres Passworts gesendet.',
 		passwordReset: 'Passwort zurücksetzen',
 		passwordResetInfo:
-			'Wenn Sie ein Passwort zurücksetzen, wird Ihnen eine E-Mail mit einem Link zum Zurücksetzen Ihres Passworts gesendet. Sie können wählen, ob Sie alle angemeldeten Geräte abmelden möchten oder nicht. Angemeldete Geräte können innerhalb einer Stunde weiterhin auf das Konto zugreifen.',
+			'Zum Zurücksetzten Ihres Passwortes, erhalten Sie eine E-Mail, mit einem Link durch den Sie ein neues Passwort festlegen können. \n\nSie können wählen, ob Sie alle angemeldeten Geräte abmelden möchten. Angemeldete Geräte können innerhalb einer Stunde weiterhin auf das Konto zugreifen.',
 		oAuthAccountChip: 'Google-Konto',
 		oAuthPasswordInfo:
 			'Sie verwenden Google OAuth. Sie können Ihr Passwort ändern, indem Sie Ihr Google-Passwort ändern.',

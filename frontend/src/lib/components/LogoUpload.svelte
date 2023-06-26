@@ -1,13 +1,19 @@
 <script lang="ts">
 	import { PUBLIC_BACKEND_URL } from '$env/static/public'
+	import { createUserSettingsQuery } from '../controller/user-settings'
 	import { logError, logInfo, logSuccess, t } from '../stores/settings'
 
-	export let fileName: string
+	const userSettings = createUserSettingsQuery()
+
+	$: fileName = $userSettings.data?.logoUrl ?? ''
 
 	let fileInput: HTMLInputElement
 	let reloadToken = '-'
 
 	$: fileExtension = fileName.split('.').pop()
+	$: logoUrl = fileExtension
+		? `${PUBLIC_BACKEND_URL}/logo?extension=${fileExtension}&rand=${reloadToken}`
+		: ''
 
 	async function uploadLogo() {
 		const file = fileInput.files ? fileInput.files[0] : null
@@ -17,6 +23,7 @@
 		$logInfo('settings.uploading')
 		const formData = new FormData()
 		formData.append('file', file)
+		// TODO: probably have to invalidate the cache here
 		const response = await fetch(`${PUBLIC_BACKEND_URL}/logo/upload`, {
 			method: 'POST',
 			body: formData,
@@ -39,8 +46,8 @@
 	on:change={uploadLogo}
 />
 <div
-	class="w-full h-48 overflow-hidden bg-center bg-no-repeat bg-contain border rounded-md"
-	style="background-image: url({`${PUBLIC_BACKEND_URL}/logo?extension=${fileExtension}&rand=${reloadToken}`}); background-size: 80%;"
+	class="w-full overflow-hidden bg-center bg-no-repeat bg-contain border rounded-md h-28"
+	style="background-image: url({logoUrl}); background-size: 80%;"
 	on:click={() => fileInput.click()}
 >
 	<div
