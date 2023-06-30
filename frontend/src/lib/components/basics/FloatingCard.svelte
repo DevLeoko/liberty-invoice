@@ -43,7 +43,7 @@
 <svelte:body on:click|capture={onBodyClick} />
 
 <div
-	class="absolute z-20 flex items-center px-3 py-2 my-1 text-black bg-white rounded-md shadow w-max {className}"
+	class="absolute z-30 flex items-center px-3 py-2 my-1 text-black bg-white rounded-md shadow w-max {className}"
 	class:top-full={placeBottom}
 	class:bottom-full={!placeBottom}
 	class:right-0={placeLeft}
