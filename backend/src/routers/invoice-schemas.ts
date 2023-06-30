@@ -6,7 +6,8 @@ export const invoiceItemCreateSchema = z.object({
   quantity: z.number(),
   unit: z.string(),
   unitPrice: z.number(),
-  discount: z.number(),
+
+  productId: z.number().nullable(),
 });
 
 export const invoiceCreateSchema = z.object({

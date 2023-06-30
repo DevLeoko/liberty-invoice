@@ -1,5 +1,6 @@
 import { createQuery, useQueryClient } from '@tanstack/svelte-query'
 import { trpc } from '../trpcClient'
+import { PRODUCT_KEYS } from './product'
 import { STATS_KEYS } from './stats'
 
 export const INVOICE_KEYS = {
@@ -74,6 +75,14 @@ export function createInvoiceFinalizeMutation() {
 			if (!oldData) return oldData
 			return oldData.map((i) => (i.id === invoiceId ? res : i))
 		})
+
+		const productIds = res.items.map((i) => i.productId).filter((i) => i !== null) as number[]
+		if (productIds.length > 0) {
+			queryClient.invalidateQueries(PRODUCT_KEYS.list())
+			for (const productId of productIds) {
+				queryClient.invalidateQueries(PRODUCT_KEYS.read(productId))
+			}
+		}
 
 		return res
 	}

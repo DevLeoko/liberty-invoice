@@ -66,6 +66,14 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		create: 'Kunden anlegen',
 	},
 
+	productEditorModal: {
+		created: 'Produkt angelegt',
+		updated: 'Produkt gespeichert',
+		deleted: 'Produkt gelöscht',
+		update: 'Produkt bearbeiten',
+		create: 'Produkt anlegen',
+	},
+
 	clientEditor: {
 		noneFound: 'Keine Kunden gefunden.',
 		newClient: 'Kunden anlegen',
@@ -89,6 +97,34 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		defaultTaxRate: 'Steuersatz',
 
 		overrideTextFragments: 'Textbausteine',
+	},
+
+	// productEditor: {
+	// 	name: 'Name',
+	// 	description: 'Description',
+	// 	unitPrice: 'Unit price',
+	// 	unit: 'Unit (e.g. pcs, kg, h)',
+	// 	currency: 'Currency',
+
+	// 	noneFound: 'No products found.',
+	// 	trackStock: 'Track stocked quantity',
+	// 	stockedQuantity: 'Stocked quantity',
+	// 	trackStockExplain:
+	// 		'If you enable this option, the stocked quantity will be decreased by the quantity of each invoice item linked to the product when the invoice is finalized.',
+	// },
+
+	productEditor: {
+		name: 'Name',
+		description: 'Beschreibung',
+		unitPrice: 'Preis',
+		unit: 'Einheit (z.B. Stk, kg, h)',
+		currency: 'Währung',
+
+		noneFound: 'Keine Produkte gefunden.',
+		trackStock: 'Lagerbestand verwalten',
+		stockedQuantity: 'Lagerbestand',
+		trackStockExplain:
+			'Wenn Sie diese Option aktivieren, wird der Lagerbestand bei jeder Rechnung, die freigegeben wird und die das Produkt enthält, um die Menge des Rechnungsartikels verringert.',
 	},
 
 	settings: {

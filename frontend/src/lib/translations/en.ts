@@ -62,6 +62,15 @@ export const TRANSLATIONS_EN = {
 		update: 'Update client',
 		create: 'Create client',
 	},
+
+	productEditorModal: {
+		created: 'Product created',
+		updated: 'Product updated',
+		deleted: 'Product deleted',
+		update: 'Update product',
+		create: 'Create product',
+	},
+
 	clientEditor: {
 		noneFound: 'No clients found.',
 		newClient: 'New Client',
@@ -85,6 +94,20 @@ export const TRANSLATIONS_EN = {
 		defaultTaxRate: 'Default tax rate',
 
 		overrideTextFragments: 'Text fragments',
+	},
+
+	productEditor: {
+		name: 'Name',
+		description: 'Description',
+		unitPrice: 'Unit price',
+		unit: 'Unit (e.g. pcs, kg, h)',
+		currency: 'Currency',
+
+		noneFound: 'No products found.',
+		trackStock: 'Track stocked quantity',
+		stockedQuantity: 'Stocked quantity',
+		trackStockExplain:
+			'If you enable this option, the stocked quantity will be decreased by the quantity of each invoice item linked to the product when the invoice is finalized.',
 	},
 
 	settings: {

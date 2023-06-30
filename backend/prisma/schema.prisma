@@ -26,6 +26,7 @@ model User {
   invoices      Invoice[]
   invoiceItems  InvoiceItem[]
   textFragments TextFragment[]
+  Product       Product[]
 }
 
 model UserSettings {
@@ -152,26 +153,32 @@ model InvoiceItem {
   invoice   Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
   invoiceId Int
 
+  product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  productId Int?
+
   name        String
   description String
   quantity    Float
   unit        String
   unitPrice   Float
-  discount    Float
 }
 
-// model Product {
-//   id Int @id @default(autoincrement())
+model Product {
+  id Int @id @default(autoincrement())
 
-//   user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
-//   userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
 
-//   name        String
-//   description String
-//   unit        String
-//   unitPrice   Float
+  name        String
+  description String
+  unit        String
+  unitPrice   Float
+  currency    String
 
-// }
+  stockedUnits Float?
+
+  invoiceItems InvoiceItem[]
+}
 
 model TextFragment {
   id Int @id @default(autoincrement())

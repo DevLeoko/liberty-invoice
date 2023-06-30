@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { cloneDeep } from 'lodash'
 	import Button from '../../../lib/components/basics/Button.svelte'
 	import type { EditorSelection } from '../../../lib/components/basics/EditorModal.svelte'
 	import Skeleton from '../../../lib/components/basics/Skeleton.svelte'
@@ -28,7 +29,7 @@
 		const client = await trpc.client.read.query({ id })
 		selected = {
 			id,
-			entity: client,
+			entity: cloneDeep(client),
 		}
 	}
 </script>

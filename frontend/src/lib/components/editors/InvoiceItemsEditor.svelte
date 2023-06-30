@@ -12,7 +12,7 @@
 	export let taxRateIds: number[]
 
 	function getEmptyItem() {
-		return { description: '', quantity: 0, discount: 0, name: '', unit: '', unitPrice: 0 }
+		return { description: '', quantity: 0, name: '', unit: '', unitPrice: 0, productId: null }
 	}
 
 	function addNewItem() {

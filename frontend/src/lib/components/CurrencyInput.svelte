@@ -17,7 +17,7 @@
 			? '!bg-orange-300'
 			: ''}"
 	/>
-	<input type="string" class="outline-none" bind:value />
+	<input type="string" class="min-w-0 outline-none" bind:value />
 	<FloatingCard class="hidden overflow-y-auto group-focus-within:block max-h-64">
 		{#each CURRENCIES.filter((c) => c.shorthand
 				.toLowerCase()

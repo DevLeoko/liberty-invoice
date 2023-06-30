@@ -41,7 +41,7 @@
 {:else if $invoices.data.length === 0}
 	<div class="error">{$t('invoiceList.noneFound')}</div>
 {:else}
-	<div class="overflow-x-auto">
+	<div class="py-2 overflow-x-auto md:overflow-x-visible">
 		<table class="w-full">
 			<tr class="text-left font-medium contents [&>*]:px-2">
 				<th>{$t('invoice.invoiceNumber')}</th>
