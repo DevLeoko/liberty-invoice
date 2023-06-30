@@ -5,6 +5,7 @@
 	import FloatingCard from './FloatingCard.svelte'
 
 	export let loading = false
+	export let preferLeft = false
 
 	const dispatchEvent = createEventDispatcher<{
 		confirm: MouseEvent
@@ -22,7 +23,7 @@
 	}
 </script>
 
-<FloatingCard on:clickOutside={handleNo} preferTop>
+<FloatingCard on:clickOutside={handleNo} preferTop {preferLeft}>
 	<div class="mr-4">{$t('general.areYouSure')}</div>
 	<Button snug red {loading} class="mr-2" on:click={handleYes}>{$t('general.yes')}</Button>
 	<Button snug gray on:click={handleNo}>{$t('general.cancel')}</Button>

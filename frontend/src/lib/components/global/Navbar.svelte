@@ -72,7 +72,7 @@
 				href={link.href}
 				class="flex items-center px-2 py-1 my-2 rounded-sm hover:bg-slate-100"
 				class:bg-slate-100={active}
-				class:opacity-60={!active}
+				class:text-slate-700={!active}
 			>
 				<span class="material-icons mr-2 !text-lg relative">
 					{link.icon}

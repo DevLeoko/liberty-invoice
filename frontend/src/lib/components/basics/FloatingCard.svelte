@@ -7,6 +7,7 @@
 	let el: HTMLDivElement
 
 	export let preferTop = false
+	export let preferLeft = false
 
 	let placeBottom = false
 	let placeLeft = false
@@ -23,7 +24,12 @@
 			placeBottom = true
 		}
 
-		if (left + width > windowWidth) {
+		if (!preferLeft) {
+			// Is enough space to the right?
+			if (left + width > windowWidth) {
+				placeLeft = true
+			}
+		} else if (left < 0) {
 			placeLeft = true
 		}
 	})

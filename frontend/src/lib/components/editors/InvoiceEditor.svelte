@@ -38,14 +38,14 @@
 </script>
 
 <div class="flex flex-col max-w-2xl space-y-6">
-	<div class="flex space-x-3">
-		<Labeled label={$t('invoice.invoiceNumber')}>
+	<div class="flex flex-wrap gap-3">
+		<Labeled label={$t('invoice.invoiceNumber')} class="mr-auto">
 			<div class="flex items-center">
 				<input type="text" bind:value={invoice.invoiceNumber} disabled />
 				<span class="material-icons input-icon">edit</span>
 			</div>
 		</Labeled>
-		<Labeled label={$t('invoiceEditor.date')} class="!ml-auto">
+		<Labeled label={$t('invoiceEditor.date')}>
 			<DateInput bind:date={invoice.date} />
 		</Labeled>
 		<Labeled
@@ -64,11 +64,13 @@
 		<InvoiceNoteEditor {invoice} {createMode} bind:note={invoice.note} />
 	</Labeled>
 
-	<div>
-		<InvoiceItemsEditor
-			{currency}
-			bind:items={invoice.items}
-			bind:taxRateIds={invoice.taxRateIds}
-		/>
+	<div class="pl-2 -ml-2 overflow-x-auto md:overflow-x-visible">
+		<div class="min-w-[600px]">
+			<InvoiceItemsEditor
+				{currency}
+				bind:items={invoice.items}
+				bind:taxRateIds={invoice.taxRateIds}
+			/>
+		</div>
 	</div>
 </div>

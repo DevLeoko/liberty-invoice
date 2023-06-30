@@ -4,6 +4,8 @@
 	let showConfirmationCard = false
 
 	export let loading = false
+
+	export let preferLeft = false
 </script>
 
 <div class="relative">
@@ -12,6 +14,11 @@
 	</div>
 
 	{#if showConfirmationCard}
-		<ConfirmationCard {loading} on:cancel={() => (showConfirmationCard = false)} on:confirm />
+		<ConfirmationCard
+			{loading}
+			on:cancel={() => (showConfirmationCard = false)}
+			{preferLeft}
+			on:confirm
+		/>
 	{/if}
 </div>

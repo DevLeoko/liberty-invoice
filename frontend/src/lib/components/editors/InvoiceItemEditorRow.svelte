@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { createEventDispatcher, tick } from 'svelte'
-	import type { CreateInvoiceItem } from '../../trpcClient'
-	import ConfirmationCard from '../basics/ConfirmationCard.svelte'
 	import type { FullCurrency } from '../../../../../shared/currencies'
 	import { t } from '../../stores/settings'
+	import type { CreateInvoiceItem } from '../../trpcClient'
+	import ConfirmationCard from '../basics/ConfirmationCard.svelte'
 
 	export let item: CreateInvoiceItem
 	export let dummy = false
@@ -60,7 +60,7 @@
 		</div>
 		{#if !showDescription}
 			<div
-				class="absolute z-10 -mt-1 text-sm text-gray-500 cursor-pointer show-on-focus"
+				class="absolute z-10 -mt-1 text-sm text-gray-500 cursor-pointer show-on-focus show-on-focus-mobile"
 				on:click={addDescription}
 			>
 				<b>+</b>
@@ -99,6 +99,7 @@
 				{#if showDeleteConfirmation}
 					<ConfirmationCard
 						on:confirm={onRemove}
+						preferLeft
 						on:cancel={() => {
 							showDeleteConfirmation = false
 						}}
@@ -122,6 +123,26 @@
 
 	.show-on-focus {
 		@apply opacity-0;
+	}
+
+	// Style for sceens small then md
+	@media (max-width: 767px) {
+		input:not(.plain),
+		.input-style {
+			@apply ring-1 bg-white bg-opacity-40 ring-opacity-70;
+		}
+
+		.show-on-hover {
+			@apply opacity-100;
+		}
+
+		.show-on-focus {
+			@apply opacity-100;
+		}
+
+		.show-on-focus-mobile {
+			@apply opacity-0;
+		}
 	}
 
 	tr:hover {
