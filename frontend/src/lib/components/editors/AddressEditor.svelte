@@ -12,7 +12,7 @@
 	}
 </script>
 
-<div class="grid grid-cols-2 gap-2">
+<div class="grid grid-cols-1 xs:grid-cols-2 gap-2">
 	<Labeled label={$t('clientEditor.street')}>
 		<input type="text" bind:value={entity.street} />
 	</Labeled>

@@ -2,7 +2,7 @@
 	import { logInfo, t } from '../../../lib/stores/settings'
 </script>
 
-<div class="grid max-w-lg grid-cols-2 gap-4">
+<div class="grid max-w-lg grid-cols-1 xs:grid-cols-2 gap-4">
 	<a href="/settings/account">
 		<h2>
 			<span class="material-icons">person</span>

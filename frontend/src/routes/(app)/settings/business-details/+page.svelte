@@ -34,7 +34,7 @@
 	<Skeleton class="max-w-lg h-80" />
 {:else}
 	<div class="flex flex-col w-max">
-		<div class="flex space-x-8">
+		<div class="flex flex-col space-y-8 xl:space-y-0 xl:space-x-8 xl:flex-row">
 			<div class="max-w-lg">
 				<h2 class="pageSubTitle">{$t('settings.businessDetails')}</h2>
 				<ClientBaseDataEditor bind:entity={userEditObject} />
@@ -44,8 +44,8 @@
 				<h2 class="pageSubTitle">{$t('settings.companyLogo')}</h2>
 				<LogoUpload />
 
-				<h2 class="mt-auto pageSubTitle">{$t('settings.bankingDetails')}</h2>
-				<div class="grid grid-cols-2 gap-4">
+				<h2 class="pt-8 mt-auto pageSubTitle">{$t('settings.bankingDetails')}</h2>
+				<div class="grid grid-cols-1 gap-4 xs:grid-cols-2">
 					<Labeled label={$t('settings.bankName')}>
 						<input type="text" bind:value={userEditObject.bankName} />
 					</Labeled>
@@ -54,7 +54,7 @@
 						<input type="text" bind:value={userEditObject.bic} />
 					</Labeled>
 
-					<Labeled label="IBAN" class="col-span-2">
+					<Labeled label="IBAN" class="xs:col-span-2">
 						<input type="text" bind:value={userEditObject.iban} />
 					</Labeled>
 				</div>

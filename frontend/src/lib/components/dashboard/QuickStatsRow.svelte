@@ -14,7 +14,7 @@
 	})
 </script>
 
-<div class="flex items-center justify-between">
+<div class="flex flex-wrap items-center justify-between gap-4">
 	{#if !$statsQuery?.data || !currency}
 		<Skeleton class="w-full h-16" />
 	{:else}
@@ -25,7 +25,7 @@
 			value={currency.format($statsQuery.data.revenueThisMonth)}
 		/>
 
-		<div class="bg-gray-300 w-[1px] self-stretch">&nbsp;</div>
+		<div class="bg-gray-300 w-[1px] self-stretch hidden xl:block">&nbsp;</div>
 
 		<!-- Invoices this month -->
 		<QuickStatsBox
@@ -34,7 +34,7 @@
 			value={$formatInt($statsQuery.data.invoicesThisMonth)}
 		/>
 
-		<div class="bg-gray-300 w-[1px] self-stretch">&nbsp;</div>
+		<div class="bg-gray-300 w-[1px] self-stretch hidden xl:block">&nbsp;</div>
 
 		<!-- Outstanding invoices -->
 		<QuickStatsBox
@@ -43,7 +43,7 @@
 			value={$formatInt($statsQuery.data.outstandingInvoices)}
 		/>
 
-		<div class="bg-gray-300 w-[1px] self-stretch">&nbsp;</div>
+		<div class="bg-gray-300 w-[1px] self-stretch hidden xl:block">&nbsp;</div>
 
 		<!-- Overdue invoices -->
 		<QuickStatsBox

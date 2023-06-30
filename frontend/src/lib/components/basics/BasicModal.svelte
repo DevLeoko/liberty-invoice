@@ -6,13 +6,15 @@
 </script>
 
 <Modal on:exit {zLevel}>
-	<div class="flex flex-col p-6 pt-4 bg-white rounded-md" style="width: 600px;">
+	<div class="flex flex-col max-h-screen p-6 pt-4 bg-white rounded-md" style="width: 600px;">
 		<h2 class="mb-2 text-lg">
 			<slot name="title">
 				{title}
 			</slot>
 		</h2>
-		<slot />
+		<div class="flex-grow overflow-y-auto">
+			<slot />
+		</div>
 		<div class="flex justify-end pt-4">
 			<slot name="action" />
 		</div>

@@ -38,8 +38,8 @@
 <h2 class="my-2 text-xl font-semibold">{$t('gettingStarted.stepVatTitle')}</h2>
 <p class="mb-4">{$t('gettingStarted.stepVatText')}</p>
 
-<div class="grid grid-cols-2 gap-4">
-	<Labeled label={$t('clientEditor.vatId')} class="col-span-2">
+<div class="grid grid-cols-1 xs:grid-cols-2 gap-4">
+	<Labeled label={$t('clientEditor.vatId')} class="xs:col-span-2">
 		<input type="text" bind:value={vatNumber} />
 	</Labeled>
 
@@ -51,7 +51,7 @@
 		<input type="text" bind:value={bic} />
 	</Labeled>
 
-	<Labeled label="IBAN" class="col-span-2">
+	<Labeled label="IBAN" class="xs:col-span-2">
 		<input type="text" bind:value={iban} />
 	</Labeled>
 </div>

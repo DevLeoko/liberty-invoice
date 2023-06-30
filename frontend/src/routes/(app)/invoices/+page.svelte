@@ -41,19 +41,21 @@
 {:else if $invoices.data.length === 0}
 	<div class="error">{$t('invoiceList.noneFound')}</div>
 {:else}
-	<table class="w-full">
-		<tr class="text-left font-medium contents [&>*]:px-2">
-			<th>{$t('invoice.invoiceNumber')}</th>
-			<th>{$t('general.client')}</th>
-			<th>{$t('invoice.amount')}</th>
-			<th>{$t('invoice.dueDate')}</th>
-			<th>{$t('general.status')}</th>
-			<th />
-		</tr>
-		{#each $invoices.data as invoice (invoice.id)}
-			<InvoiceRow {invoice} on:click={() => openPreview(invoice)} />
-		{/each}
-	</table>
+	<div class="overflow-x-auto">
+		<table class="w-full">
+			<tr class="text-left font-medium contents [&>*]:px-2">
+				<th>{$t('invoice.invoiceNumber')}</th>
+				<th>{$t('general.client')}</th>
+				<th>{$t('invoice.amount')}</th>
+				<th>{$t('invoice.dueDate')}</th>
+				<th>{$t('general.status')}</th>
+				<th />
+			</tr>
+			{#each $invoices.data as invoice (invoice.id)}
+				<InvoiceRow {invoice} on:click={() => openPreview(invoice)} />
+			{/each}
+		</table>
+	</div>
 
 	{#if loadingPreview || previewInvoice}
 		<SidePopup on:exit={closePreview} class="w-[600px]">

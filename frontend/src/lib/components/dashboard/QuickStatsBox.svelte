@@ -4,7 +4,7 @@
 	export let value: string
 </script>
 
-<div class="flex items-center">
+<div class="flex items-center w-60">
 	<div class="flex items-center justify-center w-12 h-12 bg-gray-200 rounded-md">
 		<span class="material-icons-outlined">
 			{icon}

@@ -8,12 +8,14 @@
 
 <h1 class="pageTitle">Dashboard</h1>
 
-{#if !gettingStatedHidden}
-	<GettingStartedSection />
+<div class="flex flex-col min-w-0">
+	{#if !gettingStatedHidden}
+		<GettingStartedSection />
 
+		<hr class="my-4" />
+	{/if}
+
+	<QuickStatsRow />
 	<hr class="my-4" />
-{/if}
-
-<QuickStatsRow />
-<hr class="my-4" />
-<RevenueChart />
+	<RevenueChart />
+</div>

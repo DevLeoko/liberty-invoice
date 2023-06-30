@@ -18,7 +18,7 @@
 	}
 </script>
 
-<div class="grid grid-cols-2 gap-2">
+<div class="grid grid-cols-1 xs:grid-cols-2 gap-2">
 	<Labeled label={$t('taxRates.name')}>
 		<input type="text" bind:value={entity.name} />
 	</Labeled>

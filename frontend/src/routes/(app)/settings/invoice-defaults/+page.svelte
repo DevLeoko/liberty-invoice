@@ -28,7 +28,7 @@
 	<Skeleton class="max-w-lg h-80" />
 {:else}
 	<div class="flex flex-col w-max">
-		<div class="grid grid-cols-2 gap-4">
+		<div class="grid grid-cols-1 xs:grid-cols-2 gap-4">
 			<InvoiceDefaultsEditor bind:entity={userEditObject} />
 		</div>
 

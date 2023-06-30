@@ -42,7 +42,9 @@
 	}
 </script>
 
-<div class="flex flex-col items-center w-[32rem] p-6 rounded-md getting-started">
+<div
+	class="flex flex-col items-center w-[32rem] p-6 rounded-md max-h-screen overflow-y-auto getting-started"
+>
 	<svelte:component this={STEP_COMPONENTS[step]} bind:this={activeStepComp} />
 
 	<ProgressDots totalSteps={STEP_COMPONENTS.length} {step} class="mt-12" />

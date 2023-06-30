@@ -28,7 +28,7 @@
 <p class="mb-4">{$t('gettingStarted.stepDefaultText')}</p>
 
 {#if userEditObject}
-	<div class="grid grid-cols-2 gap-2">
+	<div class="grid grid-cols-1 xs:grid-cols-2 gap-2">
 		<InvoiceDefaultsEditor bind:entity={userEditObject} />
 	</div>
 {/if}

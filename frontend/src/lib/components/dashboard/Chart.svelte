@@ -42,7 +42,7 @@
 	$: showValues = showIndex == null ? [] : data.map((d) => d.values[showIndex!])
 </script>
 
-<div class="w-full" bind:this={container}>
+<div class="max-w-full overflow-x-auto" bind:this={container}>
 	<div class="relative">
 		<svg {width} {height}>
 			<defs>

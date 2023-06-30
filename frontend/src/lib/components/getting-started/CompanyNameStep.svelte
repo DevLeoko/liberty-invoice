@@ -38,8 +38,8 @@
 	{$t('gettingStarted.stepNameText')}
 </p>
 
-<div class="grid grid-cols-2 gap-2">
-	<Labeled label={$t('clientEditor.companyName')} class="col-span-2">
+<div class="grid grid-cols-1 xs:grid-cols-2 gap-2">
+	<Labeled label={$t('clientEditor.companyName')} class="xs:col-span-2">
 		<input type="text" bind:value={companyName} />
 	</Labeled>
 
@@ -50,7 +50,7 @@
 		<input type="text" bind:value={lastName} />
 	</Labeled>
 
-	<Labeled label={$t('settings.companyLogo')} class="col-span-2">
+	<Labeled label={$t('settings.companyLogo')} class="xs:col-span-2">
 		<LogoUpload />
 	</Labeled>
 </div>

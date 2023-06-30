@@ -15,20 +15,20 @@
 
 	<Collapsable
 		label={$t('clientEditor.invoiceDefaults')}
-		class="col-span-2 mt-2 bg-slate-100"
+		class="xs:col-span-2 mt-2 bg-slate-100"
 		flatten={large}
 	>
 		{#if large}
 			<h2 class="!mb-0 pageSubTitle mt-2">{$t('clientEditor.invoiceDefaults')}</h2>
 		{/if}
-		<div class="grid w-full grid-cols-2 col-span-2 gap-2 my-2">
+		<div class="grid w-full grid-cols-1 xs:grid-cols-2 xs:col-span-2 gap-2 my-2">
 			<InvoiceDefaultsEditor bind:entity />
 		</div>
 	</Collapsable>
 
 	<Collapsable
 		label={$t('clientEditor.overrideTextFragments')}
-		class="col-span-2 mt-2 bg-slate-100"
+		class="xs:col-span-2 mt-2 bg-slate-100"
 		flatten={large}
 	>
 		<ClientTextFragmentEditor

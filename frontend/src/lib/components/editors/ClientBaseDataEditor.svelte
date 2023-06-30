@@ -8,7 +8,7 @@
 	export let entity: Omit<CreateClient, 'textFragments'>
 </script>
 
-<div class="grid grid-cols-2 gap-2">
+<div class="grid grid-cols-1 gap-2 xs:grid-cols-2">
 	<div class="flex">
 		<Labeled label={$t('clientEditor.companyName')} class="flex-grow mr-2">
 			<input type="text" bind:value={entity.name} />
@@ -29,7 +29,7 @@
 		<input type="text" bind:value={entity.lastName} />
 	</Labeled>
 
-	<div class="col-span-2 my-6">
+	<div class="my-6 xs:col-span-2">
 		<AddressEditor bind:entity />
 	</div>
 
@@ -40,7 +40,7 @@
 		<input type="text" bind:value={entity.contactEmail} />
 	</Labeled>
 
-	<Labeled label={$t('clientEditor.vatId')} class="col-span-2">
+	<Labeled label={$t('clientEditor.vatId')} class="xs:col-span-2">
 		<input type="text" bind:value={entity.vatNumber} />
 	</Labeled>
 </div>
