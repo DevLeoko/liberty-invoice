@@ -16,6 +16,7 @@ import {
   logoUploadHandler,
   logoViewHandler,
 } from "./routers/non-trpc/logo-handler";
+import { setupCurrencies } from "./utils/currencySetup";
 
 const app = express();
 
@@ -60,6 +61,10 @@ app.use(
     },
   })
 );
+
+setupCurrencies().then(() => {
+  console.log("✅ Currencies setup");
+});
 
 app.listen(process.env.PORT, () => {
   console.log(`\n📄 Server ready on port ${process.env.PORT}\n`);

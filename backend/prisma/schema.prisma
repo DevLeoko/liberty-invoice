@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fieldReference"]
 }
 
 datasource db {
@@ -183,4 +184,12 @@ model TextFragment {
   clientId Int?
   key      String
   value    String  @db.Text
+}
+
+model CurrencyExchangeRates {
+  toCurrency   String
+  fromCurrency String
+  rate         Float
+
+  @@id([toCurrency, fromCurrency])
 }
