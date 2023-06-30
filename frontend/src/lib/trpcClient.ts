@@ -28,6 +28,8 @@ export type CreateTaxRate = RouterInput['taxRate']['create']
 export type ListTaxRate = RouterOutput['taxRate']['list'][0]
 export type UpdateTaxRate = RouterInput['taxRate']['update']
 
+export type ReadAggregationStats = RouterOutput['stats']['aggregations']
+
 export const trpc = createTRPCProxyClient<AppRouter>({
 	transformer: SuperJSON,
 	links: [

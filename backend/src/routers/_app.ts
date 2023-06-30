@@ -3,6 +3,7 @@ import { router } from "../trpc";
 import { authRouter } from "./auth";
 import { clientRouter } from "./client";
 import { invoiceRouter } from "./invoice";
+import { statsRouter } from "./stats";
 import { taxRateRouter } from "./tax-rate";
 import { textFragmentRouter } from "./text-fragment";
 import { userSettingsRouter } from "./user-settings";
@@ -14,6 +15,7 @@ export const appRouter = router({
   invoice: invoiceRouter,
   textFragment: textFragmentRouter,
   taxRate: taxRateRouter,
+  stats: statsRouter,
 });
 
 export type AppRouter = typeof appRouter;

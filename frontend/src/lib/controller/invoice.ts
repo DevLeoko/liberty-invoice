@@ -1,5 +1,6 @@
 import { createQuery, useQueryClient } from '@tanstack/svelte-query'
 import { trpc } from '../trpcClient'
+import { STATS_KEYS } from './stats'
 
 export const INVOICE_KEYS = {
 	all: ['invoice'],
@@ -32,6 +33,7 @@ export function createInvoiceDeleteMutation() {
 			return oldData.filter((invoice) => invoice.id !== invoiceId)
 		})
 		queryClient.invalidateQueries(INVOICE_KEYS.read(invoiceId))
+		queryClient.invalidateQueries(STATS_KEYS.all)
 
 		return res
 	}
@@ -44,6 +46,7 @@ export function createInvoiceUpdateMutation() {
 		const res = await trpc.invoice.update.mutate(data)
 		queryClient.invalidateQueries(INVOICE_KEYS.read(data.id))
 		queryClient.invalidateQueries(INVOICE_KEYS.list())
+		queryClient.invalidateQueries(STATS_KEYS.all)
 
 		return res
 	}
@@ -55,6 +58,7 @@ export function createInvoiceCreateMutation() {
 	return async (data: Parameters<typeof trpc.invoice.create.mutate>[0]) => {
 		const res = await trpc.invoice.create.mutate(data)
 		queryClient.invalidateQueries(INVOICE_KEYS.list())
+		queryClient.invalidateQueries(STATS_KEYS.all)
 
 		return res
 	}
@@ -85,6 +89,7 @@ export function createInvoiceLogPaymentMutation() {
 			if (!oldData) return oldData
 			return oldData.map((i) => (i.id === data.id ? res : i))
 		})
+		queryClient.invalidateQueries(STATS_KEYS.all)
 
 		return res
 	}

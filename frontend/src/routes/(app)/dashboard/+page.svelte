@@ -1,4 +1,5 @@
 <script lang="ts">
+	import QuickStatsRow from '../../../lib/components/dashboard/QuickStatsRow.svelte'
 	import GettingStartedSection from '../../../lib/components/getting-started/GettingStartedSection.svelte'
 
 	const gettingStatedHidden = localStorage.getItem('gettingStartedHidden') == 'true'
@@ -11,3 +12,4 @@
 
 	<hr class="my-4" />
 {/if}
+<QuickStatsRow />

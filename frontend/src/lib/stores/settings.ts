@@ -56,6 +56,8 @@ export const formatFloat = derived(
 		value.toLocaleString($t('langCode'), { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
 )
 
+export const formatInt = derived(t, ($t) => (value: number) => value.toLocaleString($t('langCode')))
+
 export const formatDate = derived(
 	t,
 	($t) => (date: Date) =>
