@@ -35,8 +35,8 @@
 	}
 </script>
 
-<h2 class="my-2 text-xl font-semibold">VAT-Id and payment details</h2>
-<p class="mb-4">These details will be used on your invoices.</p>
+<h2 class="my-2 text-xl font-semibold">{$t('gettingStarted.stepVatTitle')}</h2>
+<p class="mb-4">{$t('gettingStarted.stepVatText')}</p>
 
 <div class="grid grid-cols-2 gap-4">
 	<Labeled label={$t('clientEditor.vatId')} class="col-span-2">

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher, type ComponentType, type SvelteComponentTyped } from 'svelte'
+	import { t } from '../../stores/settings'
 	import Button from '../basics/Button.svelte'
 	import ProgressDots from '../basics/ProgressDots.svelte'
 	import AddressStep from './AddressStep.svelte'
@@ -49,19 +50,19 @@
 	<div class="flex justify-between w-full mt-4">
 		<Button gray outlined on:click={previousStep}>
 			{#if step == 0}
-				Close
+				{$t('general.close')}
 			{:else}
 				<span class="mr-1 text-sm material-icons">arrow_back</span>
-				Back
+				{$t('general.back')}
 			{/if}
 		</Button>
 
 		<Button loading={loadingNext} on:click={nextStep}>
 			{step == 0
-				? 'Get started'
+				? $t('gettingStarted.getStarted')
 				: step == STEP_COMPONENTS.length - 1
-				? 'Finish'
-				: 'Save and continue'}
+				? $t('gettingStarted.finish')
+				: $t('gettingStarted.saveAndContinue')}
 		</Button>
 	</div>
 </div>

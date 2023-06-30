@@ -33,10 +33,9 @@
 	}
 </script>
 
-<h2 class="my-2 text-xl font-semibold">Business name and logo</h2>
+<h2 class="my-2 text-xl font-semibold">{$t('gettingStarted.stepNameTitle')}</h2>
 <p class="mb-4">
-	Almost all inputs in Liberty Invoice are optional. You are issuing invoices as a private person?
-	No problem, you can just leave the business name empty.
+	{$t('gettingStarted.stepNameText')}
 </p>
 
 <div class="grid grid-cols-2 gap-2">

@@ -150,6 +150,8 @@ export const TRANSLATIONS_EN = {
 		duplicate: 'Duplicate',
 		delete: 'Delete',
 		edit: 'Edit',
+		close: 'Close',
+		back: 'Back',
 		download: 'Download',
 		send: 'Send',
 		actions: 'Actions',
@@ -163,6 +165,51 @@ export const TRANSLATIONS_EN = {
 
 	demo: {
 		alert: 'This page is only for demonstration purposes. Do not use it for real data.',
+	},
+
+	gettingStarted: {
+		welcome: 'Welcome to Liberty Invoice!',
+		checklist: {
+			text: 'To use the full potential of Liberty Invoice you should specify:',
+			businessName: 'Your business name',
+			address: 'Your address',
+			bankingDetails: 'Your banking details',
+		},
+		getStarted: 'Get started',
+		finish: 'Finish',
+		saveAndContinue: 'Save and continue',
+
+		stepWelcomeTitle: 'Welcome to Liberty Invoice',
+		stepWelcomeText:
+			"Let's get you started with Liberty Invoice. All information that you provide here can later be changed in the settings.",
+
+		stepNameTitle: 'Business name and logo',
+		stepNameText:
+			'Almost all inputs in Liberty Invoice are optional. You are issuing invoices as a private person? No problem, you can just leave the business name empty.',
+
+		stepAddressTitle: 'Business address',
+		stepAddressText: 'This address will be displayed on your invoices.',
+
+		stepVatTitle: 'VAT-Id and payment details',
+		stepVatText: 'These details will be used on your invoices.',
+
+		stepDefaultTitle: 'Invoice defaults',
+		stepDefaultText: 'You can also adjust these for each client and each invoice.',
+
+		allDone: {
+			title: 'All done!',
+			text: "You're all set up! You can now create your first invoice.",
+			cta1: 'Make sure to join our',
+			cta2: 'Discord server',
+			cta3: 'to get the latest updates and to give feedback.',
+		},
+	},
+
+	dashboard: {
+		revenueThisMonth: 'Revenue this month',
+		outstandingInvoices: 'Outstanding invoices',
+		overdueInvoices: 'Overdue invoices',
+		invoicesThisMonth: 'Invoices this month',
 	},
 
 	auth: {

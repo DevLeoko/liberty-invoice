@@ -163,11 +163,59 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		savedChanges: 'Änderungen gespeichert',
 		languages: 'Sprachen',
 		unsavedChanges: 'Ungespeicherte Änderungen',
+		back: 'Zurück',
+		close: 'Schließen',
 	},
 
 	demo: {
 		alert:
 			'Diese Seite ist nur für Demonstrationszwecke. Bitte verwenden Sie sie nicht für echte Daten.',
+	},
+
+	gettingStarted: {
+		welcome: 'Willkommen bei Liberty Invoice!',
+		checklist: {
+			text: 'Um das volle Potenzial von Liberty Invoice nutzen zu können, sollten Sie folgende Angaben machen:',
+			businessName: 'Ihren Firmennamen',
+			address: 'Ihre Adresse',
+			bankingDetails: 'Ihre Bankverbindung',
+		},
+		getStarted: 'Los gehts',
+		finish: 'Fertig',
+		saveAndContinue: 'Speichern und fortfahren',
+
+		stepWelcomeTitle: 'Willkommen bei Liberty Invoice',
+		stepWelcomeText:
+			'Wir gehen Schritt für Schritt durch die Einrichtung von Liberty Invoice. Alle Angaben, die Sie hier machen, können Sie später in den Einstellungen ändern.',
+
+		stepNameTitle: 'Firmenname und Logo',
+		stepNameText:
+			'Fast alle Eingaben in Liberty Invoice sind optional. Sie stellen Rechnungen als Privatperson aus? Kein Problem, Sie können den Firmennamen einfach leer lassen.',
+
+		stepAddressTitle: 'Firmenadresse',
+		stepAddressText: 'Diese Adresse wird auf Ihren Rechnungen angezeigt.',
+
+		stepVatTitle: 'USt-Id und Zahlungsdetails',
+		stepVatText: 'Diese Angaben werden auf Ihren Rechnungen verwendet.',
+
+		stepDefaultTitle: 'Standardwerte für Rechnungen',
+		stepDefaultText:
+			'Diese Werte können Sie auch für jeden Kunden und jede Rechnung einzeln anpassen.',
+
+		allDone: {
+			title: "Das war's auch schon!",
+			text: 'Sie können jetzt Ihre erste Rechnung erstellen.',
+			cta1: 'Besuchen Sie auch unseren',
+			cta2: 'Discord-Server',
+			cta3: 'um immer auf dem neuesten Stand zu bleiben und Feedback zu geben.',
+		},
+	},
+
+	dashboard: {
+		revenueThisMonth: 'Umsatz diesen Monat',
+		outstandingInvoices: 'Offene Rechnungen',
+		overdueInvoices: 'Überfällige Rechnungen',
+		invoicesThisMonth: 'Rechnungen diesen Monat',
 	},
 
 	auth: {

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { createUserSettingsQuery } from '../../controller/user-settings'
+	import { t } from '../../stores/settings'
 	import Button from '../basics/Button.svelte'
 	import Modal from '../basics/Modal.svelte'
 	import GettingStartedView from './GettingStartedView.svelte'
@@ -38,11 +39,10 @@
 	}
 </script>
 
-<h2 class="flex items-center pageSubTitle">Welcome to Liberty Invoice!</h2>
+<h2 class="flex items-center pageSubTitle">{$t('gettingStarted.welcome')}</h2>
 
 <div class="text-gray-500">
-	To use the full potential of Liberty Invoice you should specify:
-
+	{$t('gettingStarted.checklist.text')}
 	<div class="flex flex-col my-2">
 		{#each specifiedKeys as key}
 			<div class="flex items-center {!specified[key] ? 'text-gray-500' : ' text-lime-500'}">
@@ -54,18 +54,18 @@
 					{/if}
 				</span>
 				{#if key == 'businessName'}
-					Your business name
+					{$t('gettingStarted.checklist.businessName')}
 				{:else if key == 'address'}
-					Your address
+					{$t('gettingStarted.checklist.address')}
 				{:else if key == 'bankingDetails'}
-					Your banking details
+					{$t('gettingStarted.checklist.bankingDetails')}
 				{/if}
 			</div>
 		{/each}
 	</div>
 
-	<Button class="mt-3" outlined on:click={() => (gettingStartedModalOpen = true)}
-		>Get started</Button
+	<Button class="mt-3" outlined on:click={() => (gettingStartedModalOpen = true)}>
+		{$t('gettingStarted.getStarted')}</Button
 	>
 </div>
 

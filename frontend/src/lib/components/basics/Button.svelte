@@ -121,7 +121,7 @@
 			color: var(--color);
 
 			&:hover {
-				background-color: theme('colors.stone.100');
+				background-color: rgba(0, 0, 0, 0.05);
 			}
 		}
 	}

@@ -4,6 +4,7 @@
 		createUserSettingsQuery,
 		createUserSettingsUpdateMutation,
 	} from '../../controller/user-settings'
+	import { t } from '../../stores/settings'
 	import type { ReadUserSettings } from '../../trpcClient'
 	import InvoiceDefaultsEditor from '../editors/InvoiceDefaultsEditor.svelte'
 
@@ -23,8 +24,8 @@
 	}
 </script>
 
-<h2 class="my-2 text-xl font-semibold">Invoice defaults</h2>
-<p class="mb-4">You can also adjust these for each client and each invoice.</p>
+<h2 class="my-2 text-xl font-semibold">{$t('gettingStarted.stepDefaultTitle')}</h2>
+<p class="mb-4">{$t('gettingStarted.stepDefaultText')}</p>
 
 {#if userEditObject}
 	<div class="grid grid-cols-2 gap-2">

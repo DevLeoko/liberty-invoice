@@ -4,6 +4,7 @@
 		createUserSettingsQuery,
 		createUserSettingsUpdateMutation,
 	} from '../../controller/user-settings'
+	import { t } from '../../stores/settings'
 	import type { ReadUserSettings } from '../../trpcClient'
 	import AddressEditor from '../editors/AddressEditor.svelte'
 
@@ -23,8 +24,8 @@
 	}
 </script>
 
-<h2 class="my-2 text-xl font-semibold">Business address</h2>
-<p class="mb-4">This address will be used on your invoices.</p>
+<h2 class="my-2 text-xl font-semibold">{$t('gettingStarted.stepAddressTitle')}</h2>
+<p class="mb-4">{$t('gettingStarted.stepAddressText')}</p>
 
 {#if userEditObject}
 	<AddressEditor bind:entity={userEditObject} />

@@ -79,7 +79,7 @@ export const statsRouter = router({
         invoicesThisMonth: results[0],
         outstandingInvoices: results[1],
         overdueInvoices: results[2],
-        revenueThisMonth: results[3][0].sum,
+        revenueThisMonth: results[3][0].sum ?? 0,
       };
     }),
 });

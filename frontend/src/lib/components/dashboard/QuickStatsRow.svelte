@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createAggregationStatsQuery } from '../../controller/stats'
 	import { queryUserSettings } from '../../controller/user-settings'
-	import { formatInt, getCurrency } from '../../stores/settings'
+	import { formatInt, getCurrency, t } from '../../stores/settings'
 	import Skeleton from '../basics/Skeleton.svelte'
 	import QuickStatsBox from './QuickStatsBox.svelte'
 
@@ -21,7 +21,7 @@
 		<!-- Revenue this month -->
 		<QuickStatsBox
 			icon="payments"
-			title="Revenue this month"
+			title={$t('dashboard.revenueThisMonth')}
 			value={currency.format($statsQuery.data.revenueThisMonth)}
 		/>
 
@@ -30,7 +30,7 @@
 		<!-- Invoices this month -->
 		<QuickStatsBox
 			icon="receipt_long"
-			title="Invoices this month"
+			title={$t('dashboard.invoicesThisMonth')}
 			value={$formatInt($statsQuery.data.invoicesThisMonth)}
 		/>
 
@@ -39,7 +39,7 @@
 		<!-- Outstanding invoices -->
 		<QuickStatsBox
 			icon="pending_actions"
-			title="Outstanding invoices"
+			title={$t('dashboard.outstandingInvoices')}
 			value={$formatInt($statsQuery.data.outstandingInvoices)}
 		/>
 
@@ -48,7 +48,7 @@
 		<!-- Overdue invoices -->
 		<QuickStatsBox
 			icon="assignment_late"
-			title="Overdue invoices"
+			title={$t('dashboard.overdueInvoices')}
 			value={$formatInt($statsQuery.data.overdueInvoices)}
 		/>
 	{/if}
