@@ -4,6 +4,7 @@
 	import { createProductListFetcher, createProductListQuery } from '../../controller/product'
 	import { t } from '../../stores/settings'
 	import type { CreateInvoiceItem } from '../../trpcClient'
+	import { sleep } from '../../utils/sleep'
 	import ProductSelector from '../ProductSelector.svelte'
 	import ConfirmationCard from '../basics/ConfirmationCard.svelte'
 	import InvoiceItemProductIndicator from './InvoiceItemProductIndicator.svelte'
@@ -28,7 +29,9 @@
 
 	function addDescription() {
 		showDescription = true
-		tick().then(() => {
+		tick().then(async () => {
+			// We are using mosedown to add the description but the click event will unfocus the input if we don't wait
+			await sleep(100)
 			descriptionInput.focus()
 		})
 	}
@@ -41,6 +44,12 @@
 	function onRemove() {
 		showDeleteConfirmation = false
 		dispatch('remove')
+	}
+
+	$: {
+		if (item.description) {
+			showDescription = true
+		}
 	}
 
 	async function useProductData() {
@@ -100,7 +109,7 @@
 		{#if !showDescription}
 			<div
 				class="absolute z-10 -mt-1 text-sm text-gray-500 cursor-pointer show-on-focus show-on-focus-mobile"
-				on:click={addDescription}
+				on:mousedown={addDescription}
 			>
 				<b>+</b>
 				{$t('invoiceEditor.addDescription')}

@@ -54,6 +54,22 @@ export const TRANSLATIONS_EN = {
 		addDescription: 'Add description',
 		clientRequired: 'You need to select a client',
 		created: 'Invoice created',
+
+		product: {
+			products: 'Products:',
+			noMatching: 'No matching products found',
+			addAsNew: 'Add as new product:',
+			unit: 'unit',
+			linkedTo: 'Linked to product:',
+			remainingUnits: 'Remaining units:',
+			unlink: 'Unlink',
+			itemDiffers: 'Position differs from the product data:',
+			nameDiffers: 'Name differs',
+			descriptionDiffers: 'Description differs',
+			unitPriceDiffers: 'Unit price differs',
+			unitDiffers: 'Unit differs',
+			updateProduct: 'Update product',
+		},
 	},
 	clientEditorModal: {
 		created: 'Client created',

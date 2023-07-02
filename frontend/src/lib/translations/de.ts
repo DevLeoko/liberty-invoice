@@ -42,6 +42,22 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		addDescription: 'Beschreibung hinzufügen',
 		created: 'Rechnung angelegt',
 		clientRequired: 'Sie müssen einen Kunden auswählen',
+
+		product: {
+			products: 'Produkte:',
+			noMatching: 'Keine passenden Produkte gefunden',
+			addAsNew: 'Als neues Produkt hinzufügen:',
+			unit: 'Einheit',
+			linkedTo: 'Verknüpft mit Produkt:',
+			remainingUnits: 'Verbleibende Einheiten:',
+			unlink: 'Verknüpfung aufheben',
+			itemDiffers: 'Position weicht von verknüpftem Produkt ab:',
+			nameDiffers: 'Name weicht ab',
+			descriptionDiffers: 'Beschreibung weicht ab',
+			unitPriceDiffers: 'Preis weicht ab',
+			unitDiffers: 'Einheit weicht ab',
+			updateProduct: 'Produkt aktualisieren',
+		},
 	},
 
 	invoiceStatus: {

@@ -1,5 +1,5 @@
 import { createQuery, useQueryClient } from '@tanstack/svelte-query'
-import { trpc, type CreateProduct, type ListProduct } from '../trpcClient'
+import { trpc, type CreateProduct, type ListProduct, type UpdateProduct } from '../trpcClient'
 
 export const PRODUCT_KEYS = {
 	all: ['product'],
@@ -34,7 +34,7 @@ export function createProductCreateMutation() {
 export function createProductUpdateMutation() {
 	const queryClient = useQueryClient()
 
-	return async (data: { id: number; product: CreateProduct }) => {
+	return async (data: { id: number; product: UpdateProduct }) => {
 		const newProduct = await trpc.product.update.mutate(data)
 
 		queryClient.setQueriesData(PRODUCT_KEYS.list(), (oldData?: ListProduct[]) => {

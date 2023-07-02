@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { createProductUpdateMutation } from '../../controller/product'
+	import { logSuccess, t } from '../../stores/settings'
 	import type { CreateInvoiceItem, ListProduct } from '../../trpcClient'
 	import Button from '../basics/Button.svelte'
 	import FloatingCardTrigger from '../basics/FloatingCardTrigger.svelte'
@@ -21,6 +23,26 @@
 		if (product.unitPrice !== item.unitPrice) differProperties.push('unitPrice')
 		if (product.description !== item.description) differProperties.push('description')
 	}
+
+	let loadingUpdate = false
+	const updateProductMutation = createProductUpdateMutation()
+
+	async function updateProduct() {
+		loadingUpdate = true
+		await updateProductMutation({
+			id: product.id,
+			product: {
+				name: item.name,
+				unitPrice: item.unitPrice,
+				unit: item.unit,
+				description: item.description,
+			},
+		}).finally(() => {
+			loadingUpdate = false
+		})
+
+		$logSuccess('productEditorModal.updated')
+	}
 </script>
 
 <FloatingCardTrigger>
@@ -34,11 +56,12 @@
 
 	<div class="flex flex-col">
 		<div>
-			Linked to product: <b>{product.name}</b>
+			{$t('invoiceEditor.product.linkedTo')} <b>{product.name}</b>
 		</div>
 		{#if product.stockedUnits != null}
 			<div>
-				Remaining units: {product.stockedUnits}
+				{$t('invoiceEditor.product.remainingUnits')}
+				{product.stockedUnits}
 				{product.unit}
 			</div>
 		{/if}
@@ -48,29 +71,31 @@
 			class="mt-1"
 			on:click={() => {
 				productId = null
-			}}>Unlink</Button
+			}}>{$t('invoiceEditor.product.unlink')}</Button
 		>
 
 		{#if !isSynced}
 			<hr class="my-2" />
 			<div class="mb-2 leading-snug">
-				<div class="">Position differs from the product data:</div>
+				<div class="">{$t('invoiceEditor.product.itemDiffers')}</div>
 				<div class="flex flex-col italic text-orange-500">
 					{#each differProperties as prop}
 						{#if prop === 'name'}
-							<div>Name differs</div>
+							<div>{$t('invoiceEditor.product.nameDiffers')}</div>
 						{:else if prop === 'unit'}
-							<div>Unit differs</div>
+							<div>{$t('invoiceEditor.product.unitDiffers')}</div>
 						{:else if prop === 'unitPrice'}
-							<div>Unit price differs</div>
+							<div>{$t('invoiceEditor.product.unitPriceDiffers')}</div>
 						{:else if prop === 'description'}
-							<div>Description differs</div>
+							<div>{$t('invoiceEditor.product.descriptionDiffers')}</div>
 						{/if}
 					{/each}
 				</div>
 			</div>
 
-			<Button snug>Update product</Button>
+			<Button snug on:click={updateProduct} loading={loadingUpdate}
+				>{$t('invoiceEditor.product.updateProduct')}</Button
+			>
 		{/if}
 	</div>
 </FloatingCardTrigger>

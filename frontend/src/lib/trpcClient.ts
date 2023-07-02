@@ -31,6 +31,7 @@ export type UpdateTaxRate = RouterInput['taxRate']['update']
 export type ReadAggregationStats = RouterOutput['stats']['aggregations']
 
 export type CreateProduct = RouterInput['product']['create']
+export type UpdateProduct = RouterInput['product']['update']['product']
 export type ListProduct = RouterOutput['product']['list'][0]
 export type ReadProduct = RouterOutput['product']['read']
 

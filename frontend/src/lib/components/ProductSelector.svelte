@@ -2,7 +2,7 @@
 	import { createEventDispatcher } from 'svelte'
 	import type { FullCurrency } from '../../../../shared/currencies'
 	import { createProductCreateMutation, createProductListQuery } from '../controller/product'
-	import { logSuccess } from '../stores/settings'
+	import { logSuccess, t } from '../stores/settings'
 	import type { CreateInvoiceItem } from '../trpcClient'
 	import { htmlHighlight } from '../utils/htmlHighlight'
 	import FloatingCard from './basics/FloatingCard.svelte'
@@ -51,9 +51,9 @@
 {#if productId == null}
 	<FloatingCard preferTop>
 		<div class="flex flex-col w-48">
-			<b>Products:</b>
+			<b>{$t('invoiceEditor.product.products')}</b>
 			{#if matchingProducts.length == 0}
-				<span class="text-sm text-gray-500">No matching products found</span>
+				<span class="text-sm text-gray-500">{$t('invoiceEditor.product.noMatching')}</span>
 			{:else}
 				{#each matchingProducts.slice(0, 7) as product}
 					<div
@@ -64,14 +64,15 @@
 							{@html htmlHighlight(product.name, item.name)}
 						</div>
 						<div>
-							{currency.format(product.unitPrice)} /{product.unit || 'unit'}
+							{currency.format(product.unitPrice)} /{product.unit ||
+								$t('invoiceEditor.product.unit')}
 						</div>
 					</div>
 				{/each}
 			{/if}
 			{#if item.name}
 				<hr class="my-2" />
-				<b>Add as new product:</b>
+				<b>{$t('invoiceEditor.product.addAsNew')}</b>
 				{#if loadingCreate}
 					<Skeleton class="w-full h-4" />
 				{:else}
@@ -81,7 +82,7 @@
 							{item.name}
 						</div>
 						<div>
-							{currency.format(item.unitPrice)} /{item.unit || 'unit'}
+							{currency.format(item.unitPrice)} /{item.unit || $t('invoiceEditor.product.unit')}}
 						</div>
 					</div>
 				{/if}
