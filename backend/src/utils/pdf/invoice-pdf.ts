@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import { readFile } from "fs/promises";
+import fs from "fs/promises";
 import imageSize from "image-size";
 import {
   PdfBlueprint,
@@ -105,9 +105,14 @@ export async function buildInvoicePdf(invoice: Invoice) {
   async function ppCompanyLogo() {
     const logoPath = `${process.env.FILE_STORAGE_PATH}/logos/${account.logoUrl}`;
 
+    // Check if file exists
+    if (!(await fs.stat(logoPath).catch(() => false))) {
+      return ppText("");
+    }
+
     const imageSize = await imageSizeAsync(logoPath);
 
-    const file = await readFile(logoPath, { encoding: "base64" });
+    const file = await fs.readFile(logoPath, { encoding: "base64" });
 
     return ppImage({
       base64: file,
