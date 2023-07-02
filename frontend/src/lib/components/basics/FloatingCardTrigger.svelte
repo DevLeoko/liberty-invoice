@@ -1,7 +1,7 @@
 <script lang="ts">
 	import FloatingCard from './FloatingCard.svelte'
 
-	let showFloatingCard = false
+	export let showFloatingCard = false
 	export let preferTop = false
 
 	export let triggerClass = ''

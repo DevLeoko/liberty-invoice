@@ -1,0 +1,76 @@
+<script lang="ts">
+	import type { CreateInvoiceItem, ListProduct } from '../../trpcClient'
+	import Button from '../basics/Button.svelte'
+	import FloatingCardTrigger from '../basics/FloatingCardTrigger.svelte'
+
+	export let product: ListProduct
+	export let item: CreateInvoiceItem
+	export let productId: number | null
+
+	$: isSynced =
+		product.name === item.name &&
+		product.unit === item.unit &&
+		product.unitPrice === item.unitPrice &&
+		product.description === item.description
+
+	let differProperties: string[] = []
+	$: {
+		differProperties = []
+		if (product.name !== item.name) differProperties.push('name')
+		if (product.unit !== item.unit) differProperties.push('unit')
+		if (product.unitPrice !== item.unitPrice) differProperties.push('unitPrice')
+		if (product.description !== item.description) differProperties.push('description')
+	}
+</script>
+
+<FloatingCardTrigger>
+	<svelte:fragment slot="trigger">
+		<span
+			class="text-sm transform translate-y-[2px] cursor-pointer material-icons"
+			class:text-gray-600={isSynced}
+			class:text-orange-400={!isSynced}>inventory_2</span
+		>
+	</svelte:fragment>
+
+	<div class="flex flex-col">
+		<div>
+			Linked to product: <b>{product.name}</b>
+		</div>
+		{#if product.stockedUnits != null}
+			<div>
+				Remaining units: {product.stockedUnits}
+				{product.unit}
+			</div>
+		{/if}
+		<Button
+			gray
+			snug
+			class="mt-1"
+			on:click={() => {
+				productId = null
+			}}>Unlink</Button
+		>
+
+		{#if !isSynced}
+			<hr class="my-2" />
+			<div class="mb-2 leading-snug">
+				<div class="">Position differs from the product data:</div>
+				<div class="flex flex-col italic text-orange-500">
+					{#each differProperties as prop}
+						{#if prop === 'name'}
+							<div>Name differs</div>
+						{:else if prop === 'unit'}
+							<div>Unit differs</div>
+						{:else if prop === 'unitPrice'}
+							<div>Unit price differs</div>
+						{:else if prop === 'description'}
+							<div>Description differs</div>
+						{/if}
+					{/each}
+				</div>
+			</div>
+
+			<Button snug>Update product</Button>
+		{/if}
+	</div>
+</FloatingCardTrigger>

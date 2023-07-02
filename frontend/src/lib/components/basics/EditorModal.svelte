@@ -41,9 +41,13 @@
 		loadingSave = true
 		onSave(selected!)
 			.then(() => {
-				selected = null
+				if (selected!.id === undefined) {
+					$logSuccess(`${name}.created` as TranslationPaths)
+				} else {
+					$logSuccess(`${name}.updated` as TranslationPaths)
+				}
 
-				$logSuccess(`${name}.updated` as TranslationPaths)
+				selected = null
 			})
 			.finally(() => {
 				loadingSave = false

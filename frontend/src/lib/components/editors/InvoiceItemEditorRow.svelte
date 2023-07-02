@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { createEventDispatcher, tick } from 'svelte'
 	import type { FullCurrency } from '../../../../../shared/currencies'
+	import { createProductListFetcher, createProductListQuery } from '../../controller/product'
 	import { t } from '../../stores/settings'
 	import type { CreateInvoiceItem } from '../../trpcClient'
+	import ProductSelector from '../ProductSelector.svelte'
 	import ConfirmationCard from '../basics/ConfirmationCard.svelte'
+	import InvoiceItemProductIndicator from './InvoiceItemProductIndicator.svelte'
 
 	export let item: CreateInvoiceItem
 	export let dummy = false
@@ -11,6 +14,12 @@
 	export let currency: FullCurrency
 
 	const dispatch = createEventDispatcher<{ remove: void }>()
+
+	const products = createProductListQuery()
+	const fetchProducts = createProductListFetcher()
+	$: product = $products.data?.find((p) => p.id === item.productId)
+
+	let isFocused = false
 
 	let showDescription = !!item.description
 	let descriptionInput: HTMLTextAreaElement
@@ -34,15 +43,45 @@
 		dispatch('remove')
 	}
 
+	async function useProductData() {
+		const products = await fetchProducts()
+		const product = products.find((p) => p.id === item.productId)
+		if (!product) return
+
+		item.name = product.name
+		item.unit = product.unit
+		item.unitPrice = product.unitPrice
+		item.description = product.description
+	}
+
 	let className = ''
 
 	export { className as class }
 </script>
 
-<tr class="align-top {className}">
+<tr
+	class="align-top {className}"
+	on:focusin={() => (isFocused = true)}
+	on:focusout={() => (isFocused = false)}
+>
 	<td class="pr-2" on:focusin>
 		<div class="-ml-2 input-style">
-			<input type="text" class="w-full plain" bind:value={item.name} />
+			{#if isFocused}
+				<ProductSelector
+					bind:productId={item.productId}
+					{item}
+					{currency}
+					on:select={useProductData}
+				/>
+			{/if}
+			<div class="flex items-center">
+				{#if product != null}
+					<div class="pr-1 mr-1 show-on-hover-border-r">
+						<InvoiceItemProductIndicator {item} {product} bind:productId={item.productId} />
+					</div>
+				{/if}
+				<input type="text" class="w-full plain" bind:value={item.name} />
+			</div>
 			{#if showDescription}
 				<div class="relative flex pt-1 border-t">
 					<textarea
@@ -87,9 +126,9 @@
 	<td class="pt-1.5">
 		{#if !dummy}
 			<div class="relative flex justify-end">
-				<span class="text-base align-middle cursor-pointer material-icons show-on-hover"
+				<!-- <span class="text-base align-middle cursor-pointer material-icons show-on-hover"
 					>more_vert</span
-				>
+				> -->
 				<span
 					class="text-base text-red-500 align-middle cursor-pointer material-icons show-on-hover"
 					on:click|stopPropagation={() => {
@@ -118,11 +157,15 @@
 	}
 
 	.show-on-hover {
-		@apply opacity-0;
+		@apply opacity-0 pointer-events-none;
 	}
 
 	.show-on-focus {
-		@apply opacity-0;
+		@apply opacity-0 pointer-events-none;
+	}
+
+	.show-on-hover-border-r {
+		@apply border-r border-r-transparent;
 	}
 
 	// Style for sceens small then md
@@ -133,15 +176,19 @@
 		}
 
 		.show-on-hover {
-			@apply opacity-100;
+			@apply opacity-100 pointer-events-auto;
+		}
+
+		.show-on-hover-border-r {
+			@apply border-r-gray-300;
 		}
 
 		.show-on-focus {
-			@apply opacity-100;
+			@apply opacity-100 pointer-events-auto;
 		}
 
 		.show-on-focus-mobile {
-			@apply opacity-0;
+			@apply opacity-0 pointer-events-none;
 		}
 	}
 
@@ -152,7 +199,11 @@
 		}
 
 		.show-on-hover {
-			@apply opacity-50;
+			@apply opacity-50 pointer-events-auto;
+		}
+
+		.show-on-hover-border-r {
+			@apply border-r-gray-300;
 		}
 	}
 
@@ -163,11 +214,15 @@
 		}
 
 		.show-on-hover {
-			@apply opacity-100;
+			@apply opacity-100 pointer-events-auto;
 		}
 
 		.show-on-focus {
-			@apply opacity-100;
+			@apply opacity-100 pointer-events-auto;
+		}
+
+		.show-on-hover-border-r {
+			@apply border-r-gray-300;
 		}
 	}
 </style>

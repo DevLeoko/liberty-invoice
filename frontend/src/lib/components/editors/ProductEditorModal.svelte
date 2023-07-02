@@ -3,7 +3,6 @@
 		createProductCreateMutation,
 		createProductUpdateMutation,
 	} from '../../controller/product'
-	import { logSuccess } from '../../stores/settings'
 	import type { CreateProduct } from '../../trpcClient'
 	import type { EditorSelection } from '../basics/EditorModal.svelte'
 	import EditorModal from '../basics/EditorModal.svelte'
@@ -18,12 +17,9 @@
 		if (selected) {
 			if (selected.id === undefined) {
 				await createProduct(selected.entity)
-				$logSuccess('productEditorModal.created')
 			} else {
 				await updateProduct({ id: selected.id, product: selected.entity })
-				$logSuccess('productEditorModal.updated')
 			}
-			selected = null
 		}
 	}
 </script>

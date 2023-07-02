@@ -85,6 +85,10 @@ select:disabled:not(.plain) {
 	@apply z-10 w-8 -ml-8 text-base text-center text-gray-600 border-l border-gray-300 hover:text-gray-600;
 }
 
+.input-icon-left {
+	@apply z-10 w-8 -mr-8 text-base text-center text-gray-600 border-r border-gray-300 hover:text-gray-600;
+}
+
 .pageTitle {
 	@apply text-2xl font-semibold mb-4 flex items-center;
 }

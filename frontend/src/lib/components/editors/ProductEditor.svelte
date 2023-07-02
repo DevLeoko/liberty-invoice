@@ -35,13 +35,13 @@
 		<textarea bind:value={entity.description} />
 	</Labeled>
 	<Labeled label={$t('productEditor.unitPrice')}>
-		<input type="text" bind:value={entity.unitPrice} />
-	</Labeled>
-	<Labeled label={$t('productEditor.unit')}>
-		<input type="text" bind:value={entity.unit} />
+		<input type="number" bind:value={entity.unitPrice} />
 	</Labeled>
 	<Labeled label={$t('productEditor.currency')}>
 		<CurrencyInput bind:value={entity.currency} />
+	</Labeled>
+	<Labeled label={$t('productEditor.unit')}>
+		<input type="text" bind:value={entity.unit} />
 	</Labeled>
 
 	<div class="flex items-center mt-2 xs:col-span-3">

@@ -233,15 +233,48 @@ export const invoiceRouter = router({
     .mutation(async ({ input, ctx }) => {
       await verifyInvoiceOwnership(input, ctx.userId);
 
-      return await prisma.invoice.update({
+      const products = await prisma.invoiceItem.findMany({
         where: {
-          id: input,
+          invoiceId: input,
+          product: {
+            stockedUnits: {
+              not: {
+                equals: null,
+              },
+            },
+          },
         },
-        data: {
-          draft: false,
+        select: {
+          quantity: true,
+          productId: true,
         },
-        include: LIST_INVOICE_DEFAULT_INCLUDES,
       });
+
+      const results = await prisma.$transaction([
+        ...products.map((product) =>
+          prisma.product.update({
+            where: {
+              id: product.productId!,
+            },
+            data: {
+              stockedUnits: {
+                decrement: product.quantity,
+              },
+            },
+          })
+        ),
+        prisma.invoice.update({
+          where: {
+            id: input,
+          },
+          data: {
+            draft: false,
+          },
+          include: LIST_INVOICE_DEFAULT_INCLUDES,
+        }),
+      ]);
+
+      return results[results.length - 1];
     }),
 
   logPayment: protectedProcedure

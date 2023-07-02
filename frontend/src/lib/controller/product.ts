@@ -69,3 +69,8 @@ export function createProductDeleteMutation() {
 		return id
 	}
 }
+
+export function createProductListFetcher() {
+	const queryClient = useQueryClient()
+	return () => queryClient.fetchQuery(PRODUCT_KEYS.list(), () => trpc.product.list.query())
+}
