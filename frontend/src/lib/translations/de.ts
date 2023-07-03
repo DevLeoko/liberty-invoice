@@ -103,6 +103,7 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		city: 'Stadt',
 		zip: 'PLZ',
 		country: 'Land',
+		noMatchingCountries: 'Keine passenden Länder gefunden',
 		email: 'E-Mail',
 		phone: 'Telefon',
 		vatId: 'USt-IdNr.',

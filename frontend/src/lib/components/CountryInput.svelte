@@ -50,11 +50,15 @@
 
 <div class="!flex items-center input-style group relative {!countryCode ? '!ring-orange-300' : ''}">
 	<input type="string" class="outline-none" bind:value={search} />
-	<FloatingCard class="hidden group-focus-within:block">
+	<FloatingCard class="hidden overflow-x-hidden overflow-y-auto group-focus-within:block max-h-60">
 		{#each filteredCountries as country}
 			<div class="cursor-pointer floating-action" on:mousedown={() => (countryCode = country.code)}>
 				{@html highlight(country.name, search)}
 			</div>
 		{/each}
+
+		{#if filteredCountries.length == 0}
+			<div class="text-sm text-gray-500">{$t('clientEditor.noMatchingCountries')}</div>
+		{/if}
 	</FloatingCard>
 </div>

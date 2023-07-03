@@ -100,6 +100,7 @@ export const TRANSLATIONS_EN = {
 		city: 'City',
 		zip: 'ZIP',
 		country: 'Country',
+		noMatchingCountries: 'No matching countries found',
 		email: 'Email',
 		phone: 'Phone',
 		vatId: 'VAT ID',
