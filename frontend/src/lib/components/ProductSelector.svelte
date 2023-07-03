@@ -82,7 +82,7 @@
 							{item.name}
 						</div>
 						<div>
-							{currency.format(item.unitPrice)} /{item.unit || $t('invoiceEditor.product.unit')}}
+							{currency.format(item.unitPrice)} /{item.unit || $t('invoiceEditor.product.unit')}
 						</div>
 					</div>
 				{/if}

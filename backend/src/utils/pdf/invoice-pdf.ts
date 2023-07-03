@@ -18,6 +18,10 @@ import { promisify } from "util";
 import { getClientDisplayLines } from "../../../../shared/address-formatter";
 import { getCurrency } from "../../../../shared/currencies";
 import {
+  computeTotalExcludingTax,
+  computeTotalWithTax,
+} from "../../../../shared/invoice-computations";
+import {
   KeyPath,
   Locale,
   getTranslationDictionary,
@@ -68,13 +72,6 @@ export async function buildInvoicePdf(invoice: Invoice) {
     clientId: invoice.clientId,
     userId: invoice.userId,
   });
-
-  function getTotal() {
-    return invoice.items.reduce(
-      (acc, item) => acc + item.quantity * item.unitPrice,
-      0
-    );
-  }
 
   const dictionary = getTranslationDictionary(invoice.language as Locale);
   const t = (key: KeyPath<typeof dictionary>, vars?: Record<string, string>) =>
@@ -253,7 +250,9 @@ export async function buildInvoicePdf(invoice: Invoice) {
       ppSizedBox({ height: 10 }),
       ppText(
         t("invoice.dueText", {
-          amount: `${currency.shorthand} ${formatFloat(getTotal())}`,
+          amount: `${currency.shorthand} ${formatFloat(
+            computeTotalWithTax(invoice)
+          )}`,
           date: formatDate(invoice.dueDate),
         }),
         {
@@ -283,12 +282,14 @@ export async function buildInvoicePdf(invoice: Invoice) {
   function ppItemListTotal() {
     let startGray = invoice.items.length % 2 == 0;
 
+    const withoutTax = computeTotalExcludingTax(invoice);
+
     return ppColumn(
       [
         ppRow(
           [
             ppText(t("invoice.subtotal")),
-            ppText(`${currency.format(getTotal())}`),
+            ppText(`${currency.format(withoutTax)}`),
           ],
           {
             mainAxisAlignment: "space-between",
@@ -299,18 +300,32 @@ export async function buildInvoicePdf(invoice: Invoice) {
             },
           }
         ),
-        ppRow([ppText(t("invoice.taxReverseCharge"))], {
-          width: { relative: 1 },
-          div: {
-            padding: 2,
-            backgroundColor: !startGray ? "#f3f7fc" : undefined,
-          },
+        ...invoice.taxRates.map((taxRate, i) => {
+          const grayRow = i % 2 == (startGray ? 1 : 0);
+
+          return ppRow(
+            taxRate.rate == 0
+              ? [ppText(taxRate.displayText)]
+              : [
+                  ppText(`${taxRate.displayText} (${taxRate.rate}%)`),
+                  ppText(
+                    `${currency.format(withoutTax * (taxRate.rate / 100))}`
+                  ),
+                ],
+            {
+              width: { relative: 1 },
+              div: {
+                padding: 2,
+                backgroundColor: grayRow ? "#f3f7fc" : undefined,
+              },
+            }
+          );
         }),
         ppHr(),
         ppRow(
           [
             ppText(t("invoice.total")),
-            ppText(`${currency.format(getTotal())}`),
+            ppText(`${currency.format(computeTotalWithTax(invoice))}`),
           ],
           {
             mainAxisAlignment: "space-between",
