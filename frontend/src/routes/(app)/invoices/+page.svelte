@@ -25,6 +25,10 @@
 		previewInvoice = null
 		loadingPreview = false
 	}
+
+	$: sortedInvoices = [...($invoices.data || [])].sort((a, b) =>
+		b.invoiceNumber.localeCompare(a.invoiceNumber),
+	)
 </script>
 
 <div class="flex items-center justify-between mb-4">
@@ -51,7 +55,7 @@
 				<th>{$t('general.status')}</th>
 				<th />
 			</tr>
-			{#each $invoices.data as invoice (invoice.id)}
+			{#each sortedInvoices as invoice (invoice.id)}
 				<InvoiceRow {invoice} on:click={() => openPreview(invoice)} />
 			{/each}
 		</table>

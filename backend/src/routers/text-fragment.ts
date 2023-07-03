@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { prisma } from "../prisma";
 import { protectedProcedure, router } from "../trpc";
+import { TError } from "../utils/TError";
 
 export const textFragmentRouter = router({
   listDefaults: protectedProcedure
@@ -95,7 +96,7 @@ export const textFragmentRouter = router({
       const { language, clientId, key, value } = input;
 
       if (language && clientId) {
-        throw new Error("error.invalidInput");
+        throw new TError("error.invalidInput");
       }
 
       const textFragment = await prisma.textFragment.findMany({

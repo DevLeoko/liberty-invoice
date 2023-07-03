@@ -101,4 +101,33 @@ export const TRANSLATIONS_EN = {
       paymentNote: "Please use the invoice number as reference",
     },
   },
+
+  error: {
+    sessionExpired: "Your session expired",
+    internalServerError: "Something went wrong, please try again later.",
+    notAuthenticated: "You are not logged in.",
+    googleAuthFailed: "Google authentication failed.",
+    noLinkedAccount:
+      "There is no account linked to this email address. Please sign up.",
+    invalidEmailOrPassword: "Invalid email or password.",
+    emailNotVerified: "Your email address has not been verified.",
+    notPasswordAccount: "Please use the Google login for this account.",
+    invalidToken: "This link is expired or invalid.",
+    emailAlreadyInUse: "This email address is already in use.",
+    failedCaptcha: "Captcha failed.",
+    invalidInput: "Invalid input.",
+
+    client: {
+      notFound: "Client not found.",
+    },
+
+    invoice: {
+      notFound: "Invoice not found.",
+      partialIdAlreadyClaimed: "This invoice id is already claimed.",
+    },
+
+    product: {
+      notFound: "Product not found.",
+    },
+  },
 } as const;

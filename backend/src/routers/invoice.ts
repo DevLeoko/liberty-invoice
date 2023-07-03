@@ -10,6 +10,7 @@ import {
 } from "../controller/invoice-ids";
 import { prisma } from "../prisma";
 import { protectedProcedure, router } from "../trpc";
+import { TError } from "../utils/TError";
 import { invoiceCreateSchema } from "./invoice-schemas";
 
 const LIST_INVOICE_DEFAULT_INCLUDES = {
@@ -39,7 +40,7 @@ async function verifyInvoiceOwnership(invoiceId: number, userId: number) {
   });
 
   if (invoice?.userId !== userId) {
-    throw new Error("error.invoice.notFound");
+    throw new TError("error.invoice.notFound");
   }
 }
 
@@ -69,7 +70,7 @@ export const invoiceRouter = router({
       if (partialId != undefined) {
         const success = await claimInvoiceId(ctx.userId, partialId);
         if (!success) {
-          throw new Error("error.invoice.partialIdAlreadyClaimed");
+          throw new TError("error.invoice.partialIdAlreadyClaimed");
         }
       }
 
@@ -116,7 +117,7 @@ export const invoiceRouter = router({
       } catch (e: any) {
         // Duplicate invoice number
         if (e.code === "P2002") {
-          throw new Error("error.invoice.partialIdAlreadyClaimed");
+          throw new TError("error.invoice.partialIdAlreadyClaimed");
         }
 
         throw e;
@@ -143,7 +144,7 @@ export const invoiceRouter = router({
       });
 
       if (existingInvoice?.userId !== ctx.userId) {
-        throw new Error("error.invoice.notFound");
+        throw new TError("error.invoice.notFound");
       }
 
       const updatedInvoice = await prisma.invoice.update({
@@ -158,7 +159,7 @@ export const invoiceRouter = router({
           currency: invoice.currency,
           language: invoice.language,
           taxRates: {
-            connect: invoice.taxRateIds.map((id) => ({ id })),
+            set: invoice.taxRateIds.map((id) => ({ id })),
           },
           note: invoice.note,
           items: {
@@ -222,7 +223,7 @@ export const invoiceRouter = router({
       });
 
       if (invoice?.userId !== ctx.userId) {
-        throw new Error("error.invoice.notFound");
+        throw new TError("error.invoice.notFound");
       }
 
       return invoice;

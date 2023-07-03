@@ -2,6 +2,7 @@ import { Prisma } from "@prisma/client";
 import { NextFunction, Request, Response } from "express";
 import { OAuth2Client } from "google-auth-library";
 import { prisma } from "../prisma";
+import { TError } from "../utils/TError";
 import { Authenticator } from "../utils/authenticator";
 import { sendMail } from "../utils/mailer";
 
@@ -69,14 +70,14 @@ async function fetchEmailFromGoogleToken(token: string) {
       audience: process.env.GOOGLE_AUTH_CLIENT_ID,
     })
     .catch(() => {
-      throw new Error("error.googleAuthFailed");
+      throw new TError("error.googleAuthFailed");
     });
 
   const payload = res.getPayload();
-  if (!payload) throw new Error("error.googleAuthFailed");
+  if (!payload) throw new TError("error.googleAuthFailed");
 
   const email = payload.email?.toLowerCase();
-  if (!email) throw new Error("error.googleAuthFailed");
+  if (!email) throw new TError("error.googleAuthFailed");
 
   return email;
 }
@@ -109,7 +110,7 @@ export async function loginWithGoogle(
   });
 
   if (!user) {
-    if (!createAccountIfNotFound) throw new Error("error.userNotFound");
+    if (!createAccountIfNotFound) throw new TError("error.noLinkedAccount");
 
     user = await createUser(email, null, true, marketingEmails ?? false);
   }
@@ -139,11 +140,11 @@ export async function loginWithPassword(
     },
   });
 
-  if (!user) throw new Error("error.invalidEmailOrPassword");
+  if (!user) throw new TError("error.invalidEmailOrPassword");
 
-  if (!user.isEmailVerified) throw new Error("error.emailNotVerified");
+  if (!user.isEmailVerified) throw new TError("error.emailNotVerified");
 
-  if (!user.passwordHash) throw new Error("error.notPasswordAccount");
+  if (!user.passwordHash) throw new TError("error.notPasswordAccount");
 
   const { success, data } = await authenticator.loginWithPassword(
     user.passwordHash,
@@ -152,7 +153,7 @@ export async function loginWithPassword(
     user.refreshSession ?? undefined
   );
 
-  if (!success) throw new Error("error.invalidEmailOrPassword");
+  if (!success) throw new TError("error.invalidEmailOrPassword");
 
   if (!user.refreshSession) {
     await updateUserRefreshSession(user.id, data.refreshSession);
@@ -185,7 +186,7 @@ export async function verifyMailToken(token: string, email: string) {
   email = email.toLowerCase();
 
   const isValid = authenticator.verifyMailToken(token, email);
-  if (!isValid) throw new Error("error.invalidToken");
+  if (!isValid) throw new TError("error.invalidToken");
 
   await prisma.user.update({
     where: {
@@ -217,7 +218,7 @@ async function createUser(
     });
   } catch (e: any) {
     if (e.code === "P2002") {
-      throw new Error("error.emailAlreadyInUse");
+      throw new TError("error.emailAlreadyInUse");
     }
 
     throw e;
@@ -283,7 +284,7 @@ export async function resetPassword({
   email = email.toLowerCase();
 
   const isValid = authenticator.verifyMailToken(token, email);
-  if (!isValid) throw new Error("error.invalidToken");
+  if (!isValid) throw new TError("error.invalidToken");
 
   const user = await prisma.user.findUnique({
     where: {
@@ -291,7 +292,7 @@ export async function resetPassword({
     },
   });
 
-  if (!user) throw new Error("error.invalidToken");
+  if (!user) throw new TError("error.invalidToken");
 
   await prisma.user.update({
     where: {

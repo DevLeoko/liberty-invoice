@@ -336,9 +336,5 @@ export const TRANSLATIONS_EN = {
 		},
 	},
 
-	error: {
-		sessionExpired: 'Your session expired',
-	},
-
 	...SHARED_TRANSLATION_EN,
 } as const

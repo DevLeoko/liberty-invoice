@@ -107,4 +107,36 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
         "Bitte geben Sie die Rechnungsnummer als Verwendungszweck an",
     },
   },
+
+  error: {
+    sessionExpired:
+      "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
+    internalServerError:
+      "Etwas ist schief gelaufen. Bitte versuchen Sie es später erneut.",
+    notAuthenticated: "Sie sind nicht angemeldet.",
+    googleAuthFailed: "Google-Anmeldung fehlgeschlagen.",
+    noLinkedAccount:
+      "Es ist kein Konto mit dieser E-Mail-Adresse verknüpft. Bitte registrieren Sie sich.",
+    invalidEmailOrPassword: "Ungültige E-Mail-Adresse oder Passwort.",
+    emailNotVerified: "Ihre E-Mail-Adresse wurde noch nicht bestätigt.",
+    notPasswordAccount:
+      "Bitte verwenden Sie die Google-Anmeldung für dieses Konto.",
+    invalidToken: "Dieser Link ist abgelaufen oder ungültig.",
+    emailAlreadyInUse: "Diese E-Mail-Adresse wird bereits verwendet.",
+    failedCaptcha: "Captcha fehlgeschlagen.",
+    invalidInput: "Ungültige Eingabe.",
+
+    client: {
+      notFound: "Kunde nicht gefunden.",
+    },
+
+    invoice: {
+      notFound: "Rechnung nicht gefunden.",
+      partialIdAlreadyClaimed: "Diese Rechnungsnummer ist bereits vergeben.",
+    },
+
+    product: {
+      notFound: "Produkt nicht gefunden.",
+    },
+  },
 };

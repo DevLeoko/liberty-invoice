@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { prisma } from "../prisma";
 import { protectedProcedure, router } from "../trpc";
+import { TError } from "../utils/TError";
 
 export const taxRateRouter = router({
   list: protectedProcedure.query(async ({ ctx }) => {
@@ -45,7 +46,7 @@ export const taxRateRouter = router({
       });
 
       if (!taxRate || taxRate.userId !== ctx.userId) {
-        throw new Error("error.error");
+        throw new TError("error.internalServerError");
       }
 
       return prisma.taxRate.update({

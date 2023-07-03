@@ -2,6 +2,7 @@ import { z } from "zod";
 import { CURRENCIES } from "../../../shared/currencies";
 import { prisma } from "../prisma";
 import { protectedProcedure, router } from "../trpc";
+import { TError } from "../utils/TError";
 
 const ALLOWED_CURRENCIES = CURRENCIES.map((c) => c.shorthand);
 
@@ -104,7 +105,7 @@ export const statsRouter = router({
         interval === "month" ? daysBetween / 30 : daysBetween;
 
       if (intervalsBetween > 60) {
-        throw new Error("error.invalidInput");
+        throw new TError("error.invalidInput");
       }
 
       if (interval == "day") {

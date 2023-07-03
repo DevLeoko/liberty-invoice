@@ -59,7 +59,7 @@
 {:else}
 	{#each $products.data as product}
 		<div
-			class="h-16 p-2 mt-2 rounded-sm cursor-pointer w-36 bg-slate-300 hover:bg-slate-400"
+			class="p-2 mt-2 rounded-sm cursor-pointer w-72 bg-slate-200 hover:bg-slate-300"
 			on:click={() => selectProduct(product.id)}
 		>
 			<h3 class="text-lg font-semibold">

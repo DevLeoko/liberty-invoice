@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { prisma } from "../prisma";
 import { protectedProcedure, router } from "../trpc";
+import { TError } from "../utils/TError";
 import { clientInputSchema } from "./client-schema";
 
 export const clientRouter = router({
@@ -27,7 +28,7 @@ export const clientRouter = router({
       });
 
       if (!client || client.user.id !== ctx.userId)
-        throw new Error("error.client.notFound");
+        throw new TError("error.client.notFound");
 
       return client;
     }),
@@ -49,7 +50,7 @@ export const clientRouter = router({
       });
 
       if (!client || client.userId !== ctx.userId)
-        throw new Error("error.client.notFound");
+        throw new TError("error.client.notFound");
 
       return client;
     }),

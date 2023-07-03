@@ -1,5 +1,6 @@
 import { parseInvoiceIdFormat } from "../../../shared/invoice-ids";
 import { prisma } from "../prisma";
+import { TError } from "../utils/TError";
 
 // Fetching next invoice id:
 // - Get current partial id and date
@@ -34,7 +35,7 @@ export async function getNextAvailablePartialId(
     where: { userId },
   });
 
-  if (!userSettings) throw new Error("error.user.notFound");
+  if (!userSettings) throw new TError("error.internalServerError");
 
   const { nextPartialId, partialIdDate, idFormat } = userSettings;
 

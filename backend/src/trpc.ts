@@ -1,6 +1,7 @@
 import { initTRPC } from "@trpc/server";
 import { Response } from "express";
 import SuperJSON from "superjson";
+import { TError } from "./utils/TError";
 
 const t = initTRPC.context<{ userId?: number; res: Response }>().create({
   transformer: SuperJSON,
@@ -8,7 +9,7 @@ const t = initTRPC.context<{ userId?: number; res: Response }>().create({
 
 const isAuthenticated = t.middleware(({ next, ctx }) => {
   if (ctx.userId == undefined) {
-    throw new Error("error.notAuthenticated");
+    throw new TError("error.notAuthenticated");
   }
 
   return next({

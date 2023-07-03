@@ -354,9 +354,5 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		},
 	},
 
-	error: {
-		sessionExpired: 'Seine Sitzung ist abgelaufen. Bitte melde dich neu an.',
-	},
-
 	...SHARED_TRANSLATION_DE,
 }

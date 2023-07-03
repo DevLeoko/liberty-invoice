@@ -2,6 +2,7 @@ import { z } from "zod";
 import { CURRENCIES } from "../../../shared/currencies";
 import { prisma } from "../prisma";
 import { protectedProcedure, router } from "../trpc";
+import { TError } from "../utils/TError";
 
 export const productInputSchema = z.object({
   name: z.string(),
@@ -30,7 +31,7 @@ export const productRouter = router({
       });
 
       if (!product || product.user.id !== ctx.userId)
-        throw new Error("error.product.notFound");
+        throw new TError("error.product.notFound");
 
       return product;
     }),
@@ -62,7 +63,7 @@ export const productRouter = router({
       });
 
       if (!product || product.userId !== ctx.userId)
-        throw new Error("error.product.notFound");
+        throw new TError("error.product.notFound");
 
       return await prisma.product.update({
         where: {

@@ -9,6 +9,7 @@ import {
 } from "../controller/auth-flows";
 import { prisma } from "../prisma";
 import { protectedProcedure, publicProcedure, router } from "../trpc";
+import { TError } from "../utils/TError";
 import { verifyRecaptcha } from "../utils/recaptcha";
 
 export const authRouter = router({
@@ -48,9 +49,14 @@ export const authRouter = router({
       })
     )
     .mutation(async ({ input, ctx }) => {
-      if (!verifyRecaptcha(input.token)) throw new Error("error.failedCaptcha");
+      if (!verifyRecaptcha(input.token))
+        throw new TError("error.failedCaptcha");
 
-      await signUpWithPassword(input.email, input.password, input.marketingEmails);
+      await signUpWithPassword(
+        input.email,
+        input.password,
+        input.marketingEmails
+      );
     }),
 
   loginWithGoogle: publicProcedure
@@ -101,7 +107,8 @@ export const authRouter = router({
       })
     )
     .mutation(async ({ input }) => {
-      if (!verifyRecaptcha(input.token)) throw new Error("error.failedCaptcha");
+      if (!verifyRecaptcha(input.token))
+        throw new TError("error.failedCaptcha");
 
       const user = await prisma.user.findUnique({
         where: { email: input.email },
@@ -122,7 +129,7 @@ export const authRouter = router({
       });
 
       if (!user || !user.passwordHash) {
-        throw new Error("error.error");
+        throw new TError("error.internalServerError");
       }
 
       if (input.signOutAllDevices) {
@@ -154,7 +161,7 @@ export const authRouter = router({
     });
 
     if (!user) {
-      throw new Error("error.error");
+      throw new TError("error.internalServerError");
     }
 
     return { email: user.email, isPasswordAccount: !!user.passwordHash };
