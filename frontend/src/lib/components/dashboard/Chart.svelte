@@ -1,6 +1,7 @@
 <script lang="ts">
 	import * as d3 from 'd3'
 	import { onMount } from 'svelte'
+	import { formatInt } from '../../stores/settings'
 
 	export let labels: string[]
 	export let data: {
@@ -12,7 +13,7 @@
 	export let marginTop = 20
 	export let marginRight = 20
 	export let marginBottom = 30
-	export let marginLeft = 40
+	export let marginLeft = 50
 
 	let container = null as HTMLDivElement | null
 
@@ -129,7 +130,7 @@
 				class="text-xs text-gray-500 {showIndex == i
 					? 'bg-gray-100'
 					: ''} px-2 py-1 rounded-md -ml-6 w-12 text-center z-10"
-				style="position: absolute; left: {x(i)}px; bottom: 10px"
+				style="position: absolute; left: {x(i)}px; bottom: 0px"
 			>
 				{label}
 			</div>
@@ -147,10 +148,10 @@
 
 		{#each y.ticks() as tick}
 			<div
-				class="left-0 w-6 -mt-2 text-xs text-right text-gray-500"
+				class="left-0 w-10 -mt-2 text-xs text-right text-gray-500"
 				style="position: absolute; top: {y(tick)}px"
 			>
-				{tick}
+				{$formatInt(tick)}
 			</div>
 		{/each}
 	</div>

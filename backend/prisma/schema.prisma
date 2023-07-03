@@ -130,8 +130,8 @@ model Invoice {
 
   draft         Boolean   @default(true)
   invoiceNumber String    @unique
-  date          DateTime
-  dueDate       DateTime
+  date          DateTime  @db.Date()
+  dueDate       DateTime  @db.Date()
   currency      String
   language      String
   taxRates      TaxRate[]

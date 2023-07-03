@@ -249,6 +249,14 @@ export const TRANSLATIONS_EN = {
 		outstandingInvoices: 'Outstanding invoices',
 		overdueInvoices: 'Overdue invoices',
 		invoicesThisMonth: 'Invoices this month',
+
+		revenueChart: {
+			title: 'Revenue - by invoice date',
+			thisYear: 'This year',
+			lastYear: 'Last year',
+			thisMonth: 'This month',
+			lastMonth: 'Last month',
+		},
 	},
 
 	auth: {

@@ -268,6 +268,14 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		outstandingInvoices: 'Offene Rechnungen',
 		overdueInvoices: 'Überfällige Rechnungen',
 		invoicesThisMonth: 'Rechnungen diesen Monat',
+
+		revenueChart: {
+			title: 'Umsatz - nach Rechnungsdatum',
+			thisYear: 'Dieses Jahr',
+			lastYear: 'Letztes Jahr',
+			thisMonth: 'Dieser Monat',
+			lastMonth: 'Letzter Monat',
+		},
 	},
 
 	auth: {

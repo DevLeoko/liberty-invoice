@@ -82,4 +82,55 @@ export const statsRouter = router({
         revenueThisMonth: results[3][0].sum ?? 0,
       };
     }),
+
+  revenue: protectedProcedure
+    .input(
+      z.object({
+        baseCurrency: z.enum(["USD", ...ALLOWED_CURRENCIES]),
+        from: z.date(),
+        to: z.date(),
+        interval: z.enum(["month", "day"]),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { baseCurrency, from, to, interval } = input;
+
+      // from and to should be max 60 intervals apart
+      const daysBetween = Math.ceil(
+        (to.getTime() - from.getTime()) / (1000 * 60 * 60 * 24)
+      );
+
+      const intervalsBetween =
+        interval === "month" ? daysBetween / 30 : daysBetween;
+
+      if (intervalsBetween > 60) {
+        throw new Error("error.invalidInput");
+      }
+
+      if (interval == "day") {
+        return await prisma.$queryRaw<
+          { sum: number; date: Date }[]
+        >`SELECT SUM(IF(currency = ${baseCurrency}, amountWithoutTax, amountWithoutTax * currencyexchangerates.rate)) as sum, date
+        FROM invoice 
+        LEFT JOIN currencyexchangerates ON invoice.currency = currencyexchangerates.fromCurrency AND currencyexchangerates.toCurrency = ${baseCurrency} 
+        WHERE userId = ${ctx.userId} AND date >= ${from} AND date <= ${to}
+        GROUP BY date`;
+      } else {
+        const results = await prisma.$queryRaw<
+          { sum: number; date: string }[]
+        >`SELECT SUM(IF(currency = ${baseCurrency}, amountWithoutTax, amountWithoutTax * currencyexchangerates.rate)) as sum, CONCAT(YEAR(date), '-', MONTH(date)) as date
+        FROM invoice 
+        LEFT JOIN currencyexchangerates ON invoice.currency = currencyexchangerates.fromCurrency AND currencyexchangerates.toCurrency = ${baseCurrency} 
+        WHERE userId = ${ctx.userId} AND date >= ${from} AND date <= ${to}
+        GROUP BY CONCAT(YEAR(date), '-', MONTH(date))`;
+
+        return results.map((r) => {
+          const [year, month] = r.date.split("-");
+          return {
+            sum: r.sum,
+            date: new Date(parseInt(year), parseInt(month) - 1),
+          };
+        });
+      }
+    }),
 });
