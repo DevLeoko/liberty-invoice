@@ -64,9 +64,9 @@ export const statsRouter = router({
 
       const revenueThisMonth = prisma.$queryRaw<
         { sum: number }[]
-      >`SELECT SUM(IF(currency = ${baseCurrency}, amountWithoutTax, amountWithoutTax * currencyexchangerates.rate)) as sum 
+      >`SELECT SUM(IF(currency = ${baseCurrency}, amountWithoutTax, amountWithoutTax * CurrencyExchangeRates.rate)) as sum 
       FROM Invoice 
-      LEFT JOIN currencyexchangerates ON invoice.currency = currencyexchangerates.fromCurrency AND currencyexchangerates.toCurrency = ${baseCurrency} 
+      LEFT JOIN CurrencyExchangeRates ON invoice.currency = CurrencyExchangeRates.fromCurrency AND CurrencyExchangeRates.toCurrency = ${baseCurrency} 
       WHERE userId = ${ctx.userId} AND date >= ${thisMonth} AND date < ${nextMonth}`;
 
       const results = await Promise.all([
@@ -111,17 +111,17 @@ export const statsRouter = router({
       if (interval == "day") {
         return await prisma.$queryRaw<
           { sum: number; date: Date }[]
-        >`SELECT SUM(IF(currency = ${baseCurrency}, amountWithoutTax, amountWithoutTax * currencyexchangerates.rate)) as sum, date
+        >`SELECT SUM(IF(currency = ${baseCurrency}, amountWithoutTax, amountWithoutTax * CurrencyExchangeRates.rate)) as sum, date
         FROM Invoice 
-        LEFT JOIN currencyexchangerates ON invoice.currency = currencyexchangerates.fromCurrency AND currencyexchangerates.toCurrency = ${baseCurrency} 
+        LEFT JOIN CurrencyExchangeRates ON invoice.currency = CurrencyExchangeRates.fromCurrency AND CurrencyExchangeRates.toCurrency = ${baseCurrency} 
         WHERE userId = ${ctx.userId} AND date >= ${from} AND date <= ${to}
         GROUP BY date`;
       } else {
         const results = await prisma.$queryRaw<
           { sum: number; date: string }[]
-        >`SELECT SUM(IF(currency = ${baseCurrency}, amountWithoutTax, amountWithoutTax * currencyexchangerates.rate)) as sum, CONCAT(YEAR(date), '-', MONTH(date)) as date
+        >`SELECT SUM(IF(currency = ${baseCurrency}, amountWithoutTax, amountWithoutTax * CurrencyExchangeRates.rate)) as sum, CONCAT(YEAR(date), '-', MONTH(date)) as date
         FROM Invoice 
-        LEFT JOIN currencyexchangerates ON invoice.currency = currencyexchangerates.fromCurrency AND currencyexchangerates.toCurrency = ${baseCurrency} 
+        LEFT JOIN CurrencyExchangeRates ON invoice.currency = CurrencyExchangeRates.fromCurrency AND CurrencyExchangeRates.toCurrency = ${baseCurrency} 
         WHERE userId = ${ctx.userId} AND date >= ${from} AND date <= ${to}
         GROUP BY CONCAT(YEAR(date), '-', MONTH(date))`;
 
