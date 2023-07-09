@@ -5,7 +5,11 @@
 	import Button from '../../../../lib/components/basics/Button.svelte'
 	import Skeleton from '../../../../lib/components/basics/Skeleton.svelte'
 	import InvoiceEditor from '../../../../lib/components/editors/InvoiceEditor.svelte'
-	import { createInvoiceCreateMutation, queryInvoiceRead } from '../../../../lib/controller/invoice'
+	import {
+		createInvoiceCreateMutation,
+		previewInvoice,
+		queryInvoiceRead,
+	} from '../../../../lib/controller/invoice'
 	import { queryUserSettings } from '../../../../lib/controller/user-settings'
 	import { logError, logSuccess, t } from '../../../../lib/stores/settings'
 	import { trpc, type CreateInvoice } from '../../../../lib/trpcClient'
@@ -77,6 +81,15 @@
 
 		goto(`/invoices/${res.id}/edit`)
 	}
+
+	function openPdfPreview() {
+		if (!invoice || invoice.clientId == null) {
+			$logError('invoiceEditor.clientRequired')
+			return
+		}
+
+		previewInvoice(invoice as CreateInvoice)
+	}
 </script>
 
 <div class="flex items-center justify-between mb-4">
@@ -84,6 +97,9 @@
 		<span class="material-icons back-nav" on:click={() => goto('/invoices')}>arrow_back</span>
 		{$t('invoiceList.newInvoice')}
 	</h1>
+	<Button gray on:click={openPdfPreview} class="ml-auto mr-2"
+		>{$t('invoiceEditor.previewPdf')}</Button
+	>
 	<Button loading={loadingSave} on:click={createInvoice}
 		><span class="mr-1 material-icons">check</span> {$t('general.create')}</Button
 	>

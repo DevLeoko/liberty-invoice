@@ -42,6 +42,7 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		addDescription: 'Beschreibung hinzufügen',
 		created: 'Rechnung angelegt',
 		clientRequired: 'Sie müssen einen Kunden auswählen',
+		previewPdf: 'PDF-Vorschau',
 
 		product: {
 			products: 'Produkte:',

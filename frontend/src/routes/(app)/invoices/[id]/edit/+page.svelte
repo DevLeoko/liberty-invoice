@@ -7,6 +7,7 @@
 	import InvoiceEditor from '../../../../../lib/components/editors/InvoiceEditor.svelte'
 	import {
 		createInvoiceUpdateMutation,
+		previewInvoice,
 		queryInvoiceRead,
 	} from '../../../../../lib/controller/invoice'
 	import { logSuccess, t } from '../../../../../lib/stores/settings'
@@ -43,6 +44,14 @@
 		$logSuccess('general.savedChanges')
 		goto('/invoices')
 	}
+
+	function openPdfPreview() {
+		if (!invoice) {
+			return
+		}
+
+		previewInvoice(invoice)
+	}
 </script>
 
 <div class="flex items-center justify-between mb-4">
@@ -53,9 +62,15 @@
 			<span class="font-normal">&nbsp;{invoice.invoiceNumber}</span>
 		{/if}
 	</h1>
-	<Button loading={loadingSave} on:click={saveInvoice}
-		><span class="mr-1 material-icons">check</span> {$t('general.save')}</Button
-	>
+
+	{#if invoice != null}
+		<Button gray on:click={openPdfPreview} class="ml-auto mr-2"
+			>{$t('invoiceEditor.previewPdf')}</Button
+		>
+		<Button loading={loadingSave} on:click={saveInvoice}
+			><span class="mr-1 material-icons">check</span> {$t('general.save')}</Button
+		>
+	{/if}
 </div>
 
 {#if invoice != null}

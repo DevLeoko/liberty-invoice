@@ -15,6 +15,7 @@ import {
   ppText,
 } from "painless-pdf";
 import { promisify } from "util";
+import { z } from "zod";
 import { getClientDisplayLines } from "../../../../shared/address-formatter";
 import { getCurrency } from "../../../../shared/currencies";
 import {
@@ -28,6 +29,7 @@ import {
   translate,
 } from "../../../../shared/invoice-translations/translations";
 import { getFinalTextFragment } from "../../controller/text-fragments";
+import { invoiceItemCreateSchema } from "../../routers/invoice-schemas";
 import { addAllRobotoFonts } from "./pdf-fonts";
 
 const imageSizeAsync = promisify(imageSize);
@@ -62,7 +64,17 @@ interface Address {
   countryCode: string;
 }
 
-export async function buildInvoicePdf(invoice: Invoice) {
+export async function buildInvoicePdf(
+  invoice: Omit<
+    Invoice,
+    | "id"
+    | "draft"
+    | "amountPaid"
+    | "amountWithoutTax"
+    | "amountWithTax"
+    | "items"
+  > & { items: z.output<typeof invoiceItemCreateSchema>[] }
+) {
   const account = invoice.user.userSettings!;
   const client = invoice.client;
 

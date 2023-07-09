@@ -1,5 +1,7 @@
+import { PUBLIC_BACKEND_URL } from '$env/static/public'
 import { createQuery, useQueryClient } from '@tanstack/svelte-query'
-import { trpc, type ReadInvoice } from '../trpcClient'
+import SuperJSON from 'superjson'
+import { trpc, type CreateInvoice, type ReadInvoice } from '../trpcClient'
 import { PRODUCT_KEYS } from './product'
 import { STATS_KEYS } from './stats'
 
@@ -122,4 +124,25 @@ export function createInvoiceLogPaymentMutation() {
 
 		return res
 	}
+}
+
+export function previewInvoice(invoice: CreateInvoice) {
+	// Make a post request to the server to generate a pdf
+	const url = `${PUBLIC_BACKEND_URL}/invoices/preview?action=inline`
+
+	const form = document.createElement('form')
+	form.method = 'POST'
+	form.action = url
+	form.target = '_blank'
+	form.style.display = 'none'
+
+	const input = document.createElement('input')
+	input.type = 'hidden'
+	input.name = 'invoice'
+	input.value = SuperJSON.stringify(invoice)
+
+	form.appendChild(input)
+	document.body.appendChild(form)
+	form.submit()
+	document.body.removeChild(form)
 }
