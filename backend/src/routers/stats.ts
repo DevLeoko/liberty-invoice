@@ -66,7 +66,7 @@ export const statsRouter = router({
         { sum: number }[]
       >`SELECT SUM(IF(currency = ${baseCurrency}, amountWithoutTax, amountWithoutTax * CurrencyExchangeRates.rate)) as sum 
       FROM Invoice 
-      LEFT JOIN CurrencyExchangeRates ON invoice.currency = CurrencyExchangeRates.fromCurrency AND CurrencyExchangeRates.toCurrency = ${baseCurrency} 
+      LEFT JOIN CurrencyExchangeRates ON Invoice.currency = CurrencyExchangeRates.fromCurrency AND CurrencyExchangeRates.toCurrency = ${baseCurrency} 
       WHERE userId = ${ctx.userId} AND date >= ${thisMonth} AND date < ${nextMonth}`;
 
       const results = await Promise.all([
@@ -113,7 +113,7 @@ export const statsRouter = router({
           { sum: number; date: Date }[]
         >`SELECT SUM(IF(currency = ${baseCurrency}, amountWithoutTax, amountWithoutTax * CurrencyExchangeRates.rate)) as sum, date
         FROM Invoice 
-        LEFT JOIN CurrencyExchangeRates ON invoice.currency = CurrencyExchangeRates.fromCurrency AND CurrencyExchangeRates.toCurrency = ${baseCurrency} 
+        LEFT JOIN CurrencyExchangeRates ON Invoice.currency = CurrencyExchangeRates.fromCurrency AND CurrencyExchangeRates.toCurrency = ${baseCurrency} 
         WHERE userId = ${ctx.userId} AND date >= ${from} AND date <= ${to}
         GROUP BY date`;
       } else {
@@ -121,7 +121,7 @@ export const statsRouter = router({
           { sum: number; date: string }[]
         >`SELECT SUM(IF(currency = ${baseCurrency}, amountWithoutTax, amountWithoutTax * CurrencyExchangeRates.rate)) as sum, CONCAT(YEAR(date), '-', MONTH(date)) as date
         FROM Invoice 
-        LEFT JOIN CurrencyExchangeRates ON invoice.currency = CurrencyExchangeRates.fromCurrency AND CurrencyExchangeRates.toCurrency = ${baseCurrency} 
+        LEFT JOIN CurrencyExchangeRates ON Invoice.currency = CurrencyExchangeRates.fromCurrency AND CurrencyExchangeRates.toCurrency = ${baseCurrency} 
         WHERE userId = ${ctx.userId} AND date >= ${from} AND date <= ${to}
         GROUP BY CONCAT(YEAR(date), '-', MONTH(date))`;
 
