@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Button from '../../../../lib/components/basics/Button.svelte'
+	import Chip from '../../../../lib/components/basics/Chip.svelte'
 	import type { EditorSelection } from '../../../../lib/components/basics/EditorModal.svelte'
 	import EditorModal from '../../../../lib/components/basics/EditorModal.svelte'
 	import Skeleton from '../../../../lib/components/basics/Skeleton.svelte'
@@ -10,7 +11,7 @@
 		createTaxRateListQuery,
 		createTaxRateUpdateMutation,
 	} from '../../../../lib/controller/tax-rate'
-	import { t } from '../../../../lib/stores/settings'
+	import { t, translateIfFound } from '../../../../lib/stores/settings'
 	import type { CreateTaxRate } from '../../../../lib/trpcClient'
 
 	const taxRates = createTaxRateListQuery()
@@ -56,21 +57,35 @@
 		<div class="flex flex-col space-y-4">
 			<!-- {JSON.stringify($taxRates.data)} -->
 			{#each $taxRates.data as taxRate}
+				{@const systemTaxRate = taxRate.name.startsWith('taxRate.')}
+
 				<div
 					class="flex items-center px-2 py-1 bg-gray-200 cursor-pointer hover:bg-gray-300"
-					on:click={() => (selected = { id: taxRate.id, entity: { ...taxRate } })}
+					on:click={systemTaxRate
+						? () => {}
+						: () => (selected = { id: taxRate.id, entity: { ...taxRate } })}
 				>
-					<div class="font-medium text-center w-14">
+					<div class="font-medium text-center min-w-[56px]">
 						<span>
 							{taxRate.rate}%
 						</span>
 					</div>
-					<div class="pl-3 border-l border-gray-400">
-						<h3>{taxRate.name}</h3>
-						<p class="mb-1 text-sm leading-tight">{taxRate.displayText}</p>
+					<div class="flex flex-col min-w-0 pl-3 overflow-hidden border-l border-gray-400">
+						<h3>
+							{$translateIfFound(taxRate.name, 'taxRate')}
+						</h3>
+						<p class="mb-1 text-sm leading-tight">
+							{$translateIfFound(taxRate.displayText, 'taxRate')}
+						</p>
+
+						{#if systemTaxRate}
+							<Chip snug class="mb-1">Multi-lingual</Chip>
+						{/if}
 					</div>
 
-					<span class="ml-auto text-base material-icons">edit</span>
+					{#if !systemTaxRate}
+						<span class="ml-auto text-base material-icons">edit</span>
+					{/if}
 				</div>
 			{/each}
 

@@ -1,24 +1,25 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
 	import { page } from '$app/stores'
-	import { onMount } from 'svelte'
+	import { cloneDeep } from 'lodash'
 	import Button from '../../../../../lib/components/basics/Button.svelte'
 	import Skeleton from '../../../../../lib/components/basics/Skeleton.svelte'
 	import InvoiceEditor from '../../../../../lib/components/editors/InvoiceEditor.svelte'
-	import { createInvoiceUpdateMutation } from '../../../../../lib/controller/invoice'
+	import {
+		createInvoiceUpdateMutation,
+		queryInvoiceRead,
+	} from '../../../../../lib/controller/invoice'
 	import { logSuccess, t } from '../../../../../lib/stores/settings'
-	import { trpc, type CreateInvoice } from '../../../../../lib/trpcClient'
+	import type { CreateInvoice } from '../../../../../lib/trpcClient'
 
 	const id = Number.parseInt($page.params.id)
 
 	let loadingSave = false
 	let invoice: null | CreateInvoice = null
 
-	onMount(async () => {
-		const invoiceData = await trpc.invoice.read.query(id)
-
+	queryInvoiceRead(id).then((invoiceData) => {
 		invoice = {
-			...invoiceData,
+			...cloneDeep(invoiceData),
 			taxRateIds: invoiceData.taxRates.map((taxRate) => taxRate.id),
 		}
 	})

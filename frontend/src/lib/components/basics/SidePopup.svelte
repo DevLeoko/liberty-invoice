@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher, onMount } from 'svelte'
-	import { fade, fly } from 'svelte/transition'
+	import { fly } from 'svelte/transition'
 
 	export let zLevel = 40
 
@@ -25,7 +25,7 @@
 	export { className as class }
 </script>
 
-<div
+<!-- <div
 	class="fixed top-0 left-0 flex items-stretch justify-end w-screen h-screen bg-blur"
 	style:z-index={zLevel}
 	on:click|self={() => dispatchEvent('exit')}
@@ -38,6 +38,12 @@
 	>
 		<slot />
 	</div>
+</div> -->
+<div
+	class="fixed top-0 right-0 h-screen flex flex-col p-6 pt-4 bg-white rounded-l-lg shadow-lg {className}"
+	transition:fly={{ x: 400, duration: 100 }}
+>
+	<slot />
 </div>
 
 <style>

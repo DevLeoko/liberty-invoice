@@ -1,12 +1,11 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
 	import { page } from '$app/stores'
-	import { onMount } from 'svelte'
 	import { parseInvoiceIdFormat } from '../../../../../../shared/invoice-ids'
 	import Button from '../../../../lib/components/basics/Button.svelte'
 	import Skeleton from '../../../../lib/components/basics/Skeleton.svelte'
 	import InvoiceEditor from '../../../../lib/components/editors/InvoiceEditor.svelte'
-	import { createInvoiceCreateMutation } from '../../../../lib/controller/invoice'
+	import { createInvoiceCreateMutation, queryInvoiceRead } from '../../../../lib/controller/invoice'
 	import { queryUserSettings } from '../../../../lib/controller/user-settings'
 	import { logError, logSuccess, t } from '../../../../lib/stores/settings'
 	import { trpc, type CreateInvoice } from '../../../../lib/trpcClient'
@@ -19,10 +18,10 @@
 
 	const userSettingsPromise = queryUserSettings()
 
-	onMount(async () => {
+	async function init() {
 		const duplicateId = $page.url.searchParams.get('duplicate')
 		const duplicationDataFetch =
-			duplicateId != null ? trpc.invoice.read.query(Number.parseInt(duplicateId)) : null
+			duplicateId != null ? queryInvoiceRead(Number.parseInt(duplicateId)) : null
 
 		const [partialIdData, userSettings, duplicationData] = await Promise.all([
 			trpc.invoice.getNextAvailablePartialInvoiceId.query(),
@@ -53,7 +52,9 @@
 			date: new Date(),
 			dueDate,
 		}
-	})
+	}
+
+	init()
 
 	const invoiceCreateMutation = createInvoiceCreateMutation()
 

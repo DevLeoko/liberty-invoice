@@ -29,6 +29,16 @@ export const t = derived(
 			translate($applicationLanguage, key, vars),
 )
 
+export const translateIfFound = derived(t, ($t) => {
+	return (string: string, base: string, vars?: Record<string, { toString(): string }>) => {
+		if (string.startsWith(`${base}.`)) {
+			return $t(string as TranslationPaths, vars)
+		} else {
+			return string
+		}
+	}
+})
+
 export const logError = derived(
 	t,
 	($t) =>

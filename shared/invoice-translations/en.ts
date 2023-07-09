@@ -74,7 +74,6 @@ export const TRANSLATIONS_EN = {
     amount: "Amount",
     subtotal: "Subtotal",
     tax: "Tax",
-    taxReverseCharge: "Tax be paid on reverse change basis",
     total: "Total",
     page: "Page {{page}} of {{pages}}",
 
@@ -100,6 +99,11 @@ export const TRANSLATIONS_EN = {
         "Delivery date corresponds to invoice date, unless stated otherwise",
       paymentNote: "Please use the invoice number as reference",
     },
+  },
+
+  taxRate: {
+    reverseChargeName: "Reverse charge",
+    reverseCharge: "Tax be paid on reverse change basis",
   },
 
   error: {

@@ -76,8 +76,6 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
     amount: "Betrag",
     subtotal: "Zwischensumme",
     tax: "Steuer",
-    taxReverseCharge:
-      "Steuerschuldschaft durch Leistungsempfänger (Reverse Charge)",
     total: "Gesamt",
     page: "Seite {{page}} von {{pages}}",
 
@@ -106,6 +104,12 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
       paymentNote:
         "Bitte geben Sie die Rechnungsnummer als Verwendungszweck an",
     },
+  },
+
+  taxRate: {
+    reverseChargeName: "Reverse Charge",
+    reverseCharge:
+      "Steuerschuldschaft durch Leistungsempfänger (Reverse Charge)",
   },
 
   error: {

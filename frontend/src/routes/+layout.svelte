@@ -18,6 +18,7 @@
 
 <svelte:head>
 	<title>Liberty Invoice</title>
+	<!-- TODO: This should be adjusted per page for better UX -->
 </svelte:head>
 
 <QueryClientProvider client={queryClient}>

@@ -3,7 +3,7 @@
 	import { createEventDispatcher } from 'svelte'
 	import { getClientDisplayLines } from '../../../../shared/address-formatter'
 	import { createTaxRateListQuery } from '../controller/tax-rate'
-	import { formatDate, formatFloat, getCurrency, t } from '../stores/settings'
+	import { formatDate, formatFloat, getCurrency, t, translateIfFound } from '../stores/settings'
 	import type { ReadInvoice } from '../trpcClient'
 	import InvoiceStatusChip from './InvoiceStatusChip.svelte'
 	import Button from './basics/Button.svelte'
@@ -40,7 +40,7 @@
 <div class="w-full">
 	<div class="flex items-center justify-between mb-2 text-2xl">
 		<b class="flex items-center mr-6">
-			<span class="back-nav material-icons" on:click={() => dispatchEvent('exit')}>arrow_back</span>
+			<span class="back-nav material-icons" on:click={() => dispatchEvent('exit')}>close</span>
 			{$t('invoice.invoice')}
 		</b>
 		<InvoiceStatusChip {invoice} class="ml-auto mr-2" />
@@ -111,10 +111,12 @@
 			</div>
 			<div class="flex justify-between">
 				{#if selectedTaxRate.rate > 0}
-					<div>{selectedTaxRate.displayText} ({selectedTaxRate.rate}%)</div>
+					<div>
+						{$translateIfFound(selectedTaxRate.displayText, 'taxRate')} ({selectedTaxRate.rate}%)
+					</div>
 					<div>{currency.format(invoice.amountWithTax - invoice.amountWithoutTax)}</div>
 				{:else}
-					<div class="text-xs">{selectedTaxRate.displayText}</div>
+					<div class="text-xs">{$translateIfFound(selectedTaxRate.displayText, 'taxRate')}</div>
 				{/if}
 			</div>
 		{/if}

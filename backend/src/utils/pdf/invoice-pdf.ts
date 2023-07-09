@@ -303,11 +303,17 @@ export async function buildInvoicePdf(invoice: Invoice) {
         ...invoice.taxRates.map((taxRate, i) => {
           const grayRow = i % 2 == (startGray ? 1 : 0);
 
+          let taxRateText = taxRate.displayText;
+
+          if (taxRateText.startsWith("taxRate.")) {
+            taxRateText = t(taxRateText as any);
+          }
+
           return ppRow(
             taxRate.rate == 0
-              ? [ppText(taxRate.displayText)]
+              ? [ppText(taxRateText)]
               : [
-                  ppText(`${taxRate.displayText} (${taxRate.rate}%)`),
+                  ppText(`${taxRateText} (${taxRate.rate}%)`),
                   ppText(
                     `${currency.format(withoutTax * (taxRate.rate / 100))}`
                   ),

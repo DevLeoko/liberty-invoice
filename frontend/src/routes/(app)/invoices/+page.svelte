@@ -4,19 +4,21 @@
 	import Button from '../../../lib/components/basics/Button.svelte'
 	import SidePopup from '../../../lib/components/basics/SidePopup.svelte'
 	import Skeleton from '../../../lib/components/basics/Skeleton.svelte'
-	import { createInvoiceQuery } from '../../../lib/controller/invoice'
+	import { createInvoiceQuery, createInvoiceReadFetcher } from '../../../lib/controller/invoice'
 	import { t } from '../../../lib/stores/settings'
-	import { trpc, type ListInvoice, type ReadInvoice } from '../../../lib/trpcClient'
+	import type { ListInvoice, ReadInvoice } from '../../../lib/trpcClient'
 
 	const invoices = createInvoiceQuery()
 
 	let previewInvoice: ReadInvoice | null = null
 	let loadingPreview = false
 
+	const fetchInvoice = createInvoiceReadFetcher()
+
 	async function openPreview(invoice: ListInvoice) {
 		loadingPreview = true
 		// TODO: maybe replace with tan query in the future
-		previewInvoice = await trpc.invoice.read.query(invoice.id).finally(() => {
+		previewInvoice = await fetchInvoice(invoice.id).finally(() => {
 			loadingPreview = false
 		})
 	}

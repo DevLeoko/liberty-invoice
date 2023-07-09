@@ -1,5 +1,5 @@
 import { createQuery, useQueryClient } from '@tanstack/svelte-query'
-import { trpc } from '../trpcClient'
+import { trpc, type ReadInvoice } from '../trpcClient'
 import { PRODUCT_KEYS } from './product'
 import { STATS_KEYS } from './stats'
 
@@ -23,6 +23,24 @@ export function createInvoiceReadQuery(invoiceId: number) {
 	})
 }
 
+export function queryInvoiceRead(invoiceId: number) {
+	return useQueryClient().fetchQuery({
+		queryKey: INVOICE_KEYS.read(invoiceId),
+		queryFn: () => trpc.invoice.read.query(invoiceId),
+	})
+}
+
+export function createInvoiceReadFetcher() {
+	const queryClient = useQueryClient()
+
+	return (invoiceId: number) => {
+		return queryClient.fetchQuery({
+			queryKey: INVOICE_KEYS.read(invoiceId),
+			queryFn: () => trpc.invoice.read.query(invoiceId),
+		})
+	}
+}
+
 export function createInvoiceDeleteMutation() {
 	const queryClient = useQueryClient()
 
@@ -44,8 +62,8 @@ export function createInvoiceUpdateMutation() {
 	const queryClient = useQueryClient()
 
 	return async (data: Parameters<typeof trpc.invoice.update.mutate>[0]) => {
-		const res = await trpc.invoice.update.mutate(data)
-		queryClient.invalidateQueries(INVOICE_KEYS.read(data.id))
+		const res: ReadInvoice = await trpc.invoice.update.mutate(data)
+		queryClient.setQueryData(INVOICE_KEYS.read(res.id), res)
 		queryClient.invalidateQueries(INVOICE_KEYS.list())
 		queryClient.invalidateQueries(STATS_KEYS.all)
 
@@ -57,7 +75,9 @@ export function createInvoiceCreateMutation() {
 	const queryClient = useQueryClient()
 
 	return async (data: Parameters<typeof trpc.invoice.create.mutate>[0]) => {
-		const res = await trpc.invoice.create.mutate(data)
+		const res: ReadInvoice = await trpc.invoice.create.mutate(data)
+
+		queryClient.setQueryData(INVOICE_KEYS.read(res.id), res)
 		queryClient.invalidateQueries(INVOICE_KEYS.list())
 		queryClient.invalidateQueries(STATS_KEYS.all)
 
@@ -71,11 +91,11 @@ export function createInvoiceFinalizeMutation() {
 	return async (invoiceId: number) => {
 		const res = await trpc.invoice.finalize.mutate(invoiceId)
 		queryClient.invalidateQueries(INVOICE_KEYS.read(invoiceId))
+
 		queryClient.setQueryData(INVOICE_KEYS.list(), (oldData?: { id: number }[]) => {
 			if (!oldData) return oldData
 			return oldData.map((i) => (i.id === invoiceId ? res : i))
 		})
-
 		const productIds = res.items.map((i) => i.productId).filter((i) => i !== null) as number[]
 		if (productIds.length > 0) {
 			queryClient.invalidateQueries(PRODUCT_KEYS.list())

@@ -46,7 +46,13 @@
 	async function register(token: string) {
 		loading = true
 		await trpc.auth.signUpWithPassword
-			.mutate({ email, password, token, marketingEmails: agreedToMarketing })
+			.mutate({
+				email,
+				password,
+				token,
+				marketingEmails: agreedToMarketing,
+				langCode: $applicationLanguage,
+			})
 			.finally(() => {
 				loading = false
 			})
@@ -61,6 +67,7 @@
 				token: response.credential,
 				createAccountIfNotFound: true,
 				marketingEmails: agreedToMarketing,
+				langCode: $applicationLanguage,
 			})
 			.finally(() => {
 				loading = false

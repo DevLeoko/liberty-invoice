@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createTaxRateListQuery } from '../controller/tax-rate'
-	import { t } from '../stores/settings'
+	import { t, translateIfFound } from '../stores/settings'
 	export let selectedId: number | null
 
 	const taxRates = createTaxRateListQuery()
@@ -17,7 +17,7 @@
 			>
 				<div class="w-12 font-medium text-center">{taxRate.rate}%</div>
 				<div class="w-[2px] h-3 bg-gray-300 rounded-sm mr-2" />
-				{taxRate.name}
+				{$translateIfFound(taxRate.name, 'taxRate')}
 			</div>
 		{/each}
 		<span class="pt-2 text-sm text-gray-500">

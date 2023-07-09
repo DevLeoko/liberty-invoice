@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { Prisma, Product } from "@prisma/client";
 import { z } from "zod";
 import {
   computeTotalExcludingTax,
@@ -21,6 +21,16 @@ const LIST_INVOICE_DEFAULT_INCLUDES = {
       lastName: true,
     },
   },
+  items: true,
+  taxRates: {
+    select: {
+      id: true,
+    },
+  },
+} satisfies Prisma.InvoiceInclude;
+
+const READ_INVOICE_DEFAULT_INCLUDES = {
+  client: true,
   items: true,
   taxRates: {
     select: {
@@ -104,15 +114,7 @@ export const invoiceRouter = router({
             }),
             amountPaid: 0,
           },
-          include: {
-            client: true,
-            items: true,
-            taxRates: {
-              select: {
-                id: true,
-              },
-            },
-          },
+          include: READ_INVOICE_DEFAULT_INCLUDES,
         });
       } catch (e: any) {
         // Duplicate invoice number
@@ -178,15 +180,7 @@ export const invoiceRouter = router({
             }),
           }),
         },
-        include: {
-          client: true,
-          items: true,
-          taxRates: {
-            select: {
-              id: true,
-            },
-          },
-        },
+        include: READ_INVOICE_DEFAULT_INCLUDES,
       });
 
       return updatedInvoice;
@@ -211,15 +205,7 @@ export const invoiceRouter = router({
         where: {
           id: input,
         },
-        include: {
-          client: true,
-          items: true,
-          taxRates: {
-            select: {
-              id: true,
-            },
-          },
-        },
+        include: READ_INVOICE_DEFAULT_INCLUDES,
       });
 
       if (invoice?.userId !== ctx.userId) {
@@ -251,7 +237,7 @@ export const invoiceRouter = router({
         },
       });
 
-      const results = await prisma.$transaction([
+      const updateQueries = [
         ...products.map((product) =>
           prisma.product.update({
             where: {
@@ -273,9 +259,15 @@ export const invoiceRouter = router({
           },
           include: LIST_INVOICE_DEFAULT_INCLUDES,
         }),
-      ]);
+      ];
 
-      return results[results.length - 1];
+      const results = await prisma.$transaction(updateQueries);
+
+      // TODO: This should just be `as Prisma.InvoiceGetPayload<{ include: LIST_INVOICE_DEFAULT_INCLUDES }>` but it gives an type error
+      return results[results.length - 1] as Exclude<
+        (typeof results)[0],
+        Product
+      >;
     }),
 
   logPayment: protectedProcedure
@@ -296,6 +288,7 @@ export const invoiceRouter = router({
       });
     }),
 
+  // Todo: this only works if invoice date is in the current interval!
   getNextAvailablePartialInvoiceId: protectedProcedure.query(
     async ({ ctx }) => {
       return await getNextAvailablePartialId(ctx.userId);

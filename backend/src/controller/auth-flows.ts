@@ -99,7 +99,8 @@ async function updateUserRefreshSession(
 export async function loginWithGoogle(
   token: string,
   createAccountIfNotFound: boolean,
-  marketingEmails?: boolean
+  marketingEmails?: boolean,
+  langCode?: string
 ): Promise<{ accessToken: string; refreshToken: string }> {
   const email = await fetchEmailFromGoogleToken(token);
 
@@ -112,7 +113,13 @@ export async function loginWithGoogle(
   if (!user) {
     if (!createAccountIfNotFound) throw new TError("error.noLinkedAccount");
 
-    user = await createUser(email, null, true, marketingEmails ?? false);
+    user = await createUser(
+      email,
+      null,
+      true,
+      marketingEmails ?? false,
+      langCode ?? "en"
+    );
   }
 
   const { accessToken, refreshSession, refreshToken } =
@@ -165,11 +172,12 @@ export async function loginWithPassword(
 export async function signUpWithPassword(
   email: string,
   password: string,
-  marketingEmails: boolean
+  marketingEmails: boolean,
+  langCode: string
 ) {
   email = email.toLowerCase();
 
-  await createUser(email, password, false, marketingEmails);
+  await createUser(email, password, false, marketingEmails, langCode);
 
   const mailToken = authenticator.generateMailToken(email);
   const verifyUrl = `${process.env.SIGN_IN_URL}?token=${encodeURIComponent(
@@ -202,20 +210,87 @@ async function createUser(
   email: string,
   password: string | null,
   isEmailVerified: boolean,
-  marketingEmails: boolean
+  marketingEmails: boolean,
+  langCode: string
 ) {
   try {
-    return await prisma.user.create({
+    const user = await prisma.user.create({
       data: {
         email,
         passwordHash:
           password != null ? await authenticator.hashPassword(password) : null,
         isEmailVerified,
         userSettings: {
-          create: { ...getDefaultUserSettings(), marketingEmails },
+          create: {
+            ...getDefaultUserSettings(langCode),
+            marketingEmails,
+          },
         },
       },
     });
+
+    try {
+      // TODO: refactor code to own file
+      const taxRates =
+        langCode == "de"
+          ? [
+              {
+                name: "MwSt. (Standard)",
+                rate: 19,
+                displayText: "MwSt.",
+              },
+              {
+                name: "MwSt. (Ermäßigt)",
+                rate: 7,
+                displayText: "MwSt.",
+              },
+              {
+                name: "Landwirtschaftliche USt",
+                rate: 10.7,
+                displayText: "USt.",
+              },
+            ]
+          : [
+              {
+                name: "VAT (Standard)",
+                rate: 20,
+                displayText: "VAT",
+              },
+              {
+                name: "VAT (Reduced)",
+                rate: 5,
+                displayText: "VAT",
+              },
+            ];
+
+      await prisma.$transaction([
+        prisma.userSettings.update({
+          where: {
+            userId: user.id,
+          },
+          data: {
+            defaultTaxRate: {
+              create: {
+                name: "taxRate.reverseChargeName",
+                rate: 0,
+                displayText: "taxRate.reverseCharge",
+                userId: user.id,
+              },
+            },
+          },
+        }),
+        prisma.taxRate.createMany({
+          data: taxRates.map((taxRate) => ({
+            ...taxRate,
+            userId: user.id,
+          })),
+        }),
+      ]);
+    } catch (e) {
+      // Ignore
+    }
+
+    return user;
   } catch (e: any) {
     if (e.code === "P2002") {
       throw new TError("error.emailAlreadyInUse");
@@ -225,7 +300,9 @@ async function createUser(
   }
 }
 
-function getDefaultUserSettings(): Prisma.UserSettingsCreateInput {
+function getDefaultUserSettings(
+  langCode: string
+): Prisma.UserSettingsCreateInput {
   // TODO: Vary default settings based on user's country
   return {
     name: "",
@@ -248,10 +325,10 @@ function getDefaultUserSettings(): Prisma.UserSettingsCreateInput {
     iban: "",
     logoUrl: "",
 
-    defaultCurrency: "USD",
-    defaultLanguage: "en",
+    defaultCurrency: langCode === "de" ? "EUR" : "USD",
+    defaultLanguage: langCode,
     defaultDueDays: 14,
-    enableMultilingual: false,
+    enableMultilingual: true,
     enableTaxPerItem: false,
     idFormat: "YYMM.XXX",
     nextPartialId: 1,

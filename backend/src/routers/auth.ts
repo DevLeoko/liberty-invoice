@@ -46,6 +46,7 @@ export const authRouter = router({
         email: z.string().email(),
         password: z.string(),
         marketingEmails: z.boolean(),
+        langCode: z.string(),
       })
     )
     .mutation(async ({ input, ctx }) => {
@@ -55,7 +56,8 @@ export const authRouter = router({
       await signUpWithPassword(
         input.email,
         input.password,
-        input.marketingEmails
+        input.marketingEmails,
+        input.langCode
       );
     }),
 
@@ -65,13 +67,15 @@ export const authRouter = router({
         token: z.string(),
         createAccountIfNotFound: z.boolean(),
         marketingEmails: z.boolean().optional(),
+        langCode: z.string().optional(),
       })
     )
     .mutation(async ({ input, ctx }) => {
       const { accessToken, refreshToken } = await loginWithGoogle(
         input.token,
         input.createAccountIfNotFound,
-        input.marketingEmails
+        input.marketingEmails,
+        input.langCode
       );
 
       ctx.res.cookie("refreshToken", refreshToken, {

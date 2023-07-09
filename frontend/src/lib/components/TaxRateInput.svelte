@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { createTaxRateListQuery } from '../controller/tax-rate'
+	import { translateIfFound } from '../stores/settings'
 	import FloatingCardTrigger from './basics/FloatingCardTrigger.svelte'
 	import TaxRateSelector from './TaxRateSelector.svelte'
 
@@ -15,7 +16,7 @@
 		<div class="!flex items-center cursor-pointer input-style">
 			<div class="w-12 text-center">{selectedTaxRate?.rate ?? ''}%</div>
 			<div class="w-[2px] h-3 bg-gray-300 rounded-sm mr-2" />
-			{selectedTaxRate?.name ?? ''}
+			{$translateIfFound(selectedTaxRate?.name || '', 'taxRate')}
 		</div>
 	</svelte:fragment>
 
