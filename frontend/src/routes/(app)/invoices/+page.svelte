@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores'
 	import InvoicePreview from '../../../lib/components/InvoicePreview.svelte'
 	import InvoiceRow from '../../../lib/components/InvoiceRow.svelte'
 	import Button from '../../../lib/components/basics/Button.svelte'
@@ -6,7 +7,7 @@
 	import Skeleton from '../../../lib/components/basics/Skeleton.svelte'
 	import { createInvoiceQuery, createInvoiceReadFetcher } from '../../../lib/controller/invoice'
 	import { t } from '../../../lib/stores/settings'
-	import type { ListInvoice, ReadInvoice } from '../../../lib/trpcClient'
+	import type { ReadInvoice } from '../../../lib/trpcClient'
 
 	const invoices = createInvoiceQuery()
 
@@ -15,12 +16,16 @@
 
 	const fetchInvoice = createInvoiceReadFetcher()
 
-	async function openPreview(invoice: ListInvoice) {
+	async function openPreview(invoiceId: number) {
 		loadingPreview = true
 		// TODO: maybe replace with tan query in the future
-		previewInvoice = await fetchInvoice(invoice.id).finally(() => {
+		previewInvoice = await fetchInvoice(invoiceId).finally(() => {
 			loadingPreview = false
 		})
+	}
+
+	if ($page.url.searchParams.has('preview')) {
+		openPreview(Number.parseInt($page.url.searchParams.get('preview')!))
 	}
 
 	function closePreview() {
@@ -58,7 +63,11 @@
 				<th />
 			</tr>
 			{#each sortedInvoices as invoice (invoice.id)}
-				<InvoiceRow {invoice} on:click={() => openPreview(invoice)} />
+				<InvoiceRow
+					{invoice}
+					on:click={() => openPreview(invoice.id)}
+					class={previewInvoice?.id == invoice.id ? 'bg-blue-100 hover:bg-blue-100' : ''}
+				/>
 			{/each}
 		</table>
 	</div>

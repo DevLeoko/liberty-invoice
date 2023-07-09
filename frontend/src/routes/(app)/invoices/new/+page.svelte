@@ -79,7 +79,7 @@
 
 		$logSuccess('invoiceEditor.created')
 
-		goto(`/invoices/${res.id}/edit`)
+		goto(`/invoices?preview=${res.id}`)
 	}
 
 	function openPdfPreview() {

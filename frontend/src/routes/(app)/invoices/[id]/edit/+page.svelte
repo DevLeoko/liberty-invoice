@@ -42,7 +42,7 @@
 		})
 
 		$logSuccess('general.savedChanges')
-		goto('/invoices')
+		goto(`/invoices?preview=${id}`)
 	}
 
 	function openPdfPreview() {

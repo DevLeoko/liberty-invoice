@@ -8,9 +8,16 @@
 	export let invoice: ListInvoice
 
 	$: currency = $getCurrency(invoice.currency)
+
+	let className = ''
+
+	export { className as class }
 </script>
 
-<tr class="my-row [&>*]:px-2 [&>*]:py-1 cursor-pointer" on:click>
+<tr
+	class="my-row [&>*]:px-2 [&>*]:py-1 cursor-pointer border-b last:border-b-0 hover:bg-slate-100 {className}"
+	on:click
+>
 	<td class="rounded-l-sm">{invoice.invoiceNumber}</td>
 	<td>{invoice.client.name}</td>
 	<td>{currency.format(invoice.amountWithTax)}</td>
@@ -31,9 +38,9 @@
 </tr>
 
 <style lang="scss">
-	.my-row:nth-child(even) {
-		& > * {
-			@apply bg-slate-200;
-		}
-	}
+	// .my-row:nth-child(even) {
+	// 	& > * {
+	// 		@apply bg-slate-200;
+	// 	}
+	// }
 </style>
