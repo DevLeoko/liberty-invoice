@@ -2,7 +2,7 @@
 	import { logInfo, t } from '../../../lib/stores/settings'
 </script>
 
-<div class="grid max-w-lg grid-cols-1 xs:grid-cols-2 gap-4">
+<div class="grid max-w-lg grid-cols-1 gap-4 xs:grid-cols-2">
 	<a href="/settings/account">
 		<h2>
 			<span class="material-icons">person</span>
@@ -37,7 +37,7 @@
 			{$t('settings.taxRatesText')}
 		</p>
 	</a>
-	<article on:click={() => $logInfo('general.error')} class="opacity-50">
+	<article on:click={() => $logInfo('general.inDevelopment')} class="opacity-50">
 		<h2><span class="material-icons">people</span>{$t('settings.members')}</h2>
 		<p>
 			{$t('settings.membersText')}<br />

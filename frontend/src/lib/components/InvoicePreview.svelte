@@ -3,7 +3,14 @@
 	import { createEventDispatcher } from 'svelte'
 	import { getClientDisplayLines } from '../../../../shared/address-formatter'
 	import { createTaxRateListQuery } from '../controller/tax-rate'
-	import { formatDate, formatFloat, getCurrency, t, translateIfFound } from '../stores/settings'
+	import {
+		formatDate,
+		formatFloat,
+		getCurrency,
+		logInfo,
+		t,
+		translateIfFound,
+	} from '../stores/settings'
 	import type { ReadInvoice } from '../trpcClient'
 	import InvoiceStatusChip from './InvoiceStatusChip.svelte'
 	import Button from './basics/Button.svelte'
@@ -35,6 +42,11 @@
 	const taxRates = createTaxRateListQuery()
 	$: selectedTaxRate =
 		$taxRates.data?.find((taxRate) => taxRate.id === invoice.taxRates[0]?.id) ?? null
+
+	function sendInvoice() {
+		// TODO: implement
+		$logInfo('general.inDevelopment')
+	}
 </script>
 
 <div class="w-full">
@@ -54,7 +66,7 @@
 		>{$t('general.download')}</Button
 	>
 	<Button class="flex-1" href="/invoices/{invoice.id}/edit">{$t('general.edit')}</Button>
-	<Button class="flex-1">{$t('general.send')}</Button>
+	<Button class="flex-1" on:click={sendInvoice}>{$t('general.send')}</Button>
 </div>
 
 <div class="flex items-start justify-between mt-4">

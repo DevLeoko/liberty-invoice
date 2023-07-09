@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { NullableProp } from '../../../types/utilities'
-	import { getCurrency, t } from '../../stores/settings'
+	import { getCurrency, logInfo, t } from '../../stores/settings'
 	import { trpc, type CreateInvoice } from '../../trpcClient'
 	import ClientSelector from '../ClientSelector.svelte'
 	import DateInput from '../basics/DateInput.svelte'
@@ -35,6 +35,11 @@
 	$: dueDays = invoice.dueDate
 		? Math.round((invoice.dueDate.getTime() - invoice.date.getTime()) / (1000 * 60 * 60 * 24))
 		: 0
+
+	function notImplemented() {
+		// TODO: implement
+		$logInfo('general.inDevelopment')
+	}
 </script>
 
 <div class="flex flex-col max-w-2xl space-y-6">
@@ -42,7 +47,7 @@
 		<Labeled label={$t('invoice.invoiceNumber')} class="mr-auto">
 			<div class="flex items-center">
 				<input type="text" bind:value={invoice.invoiceNumber} disabled />
-				<span class="material-icons input-icon">edit</span>
+				<span class="cursor-pointer material-icons input-icon" on:click={notImplemented}>edit</span>
 			</div>
 		</Labeled>
 		<Labeled label={$t('invoiceEditor.date')}>
@@ -51,12 +56,17 @@
 		<Labeled
 			label={$t('invoiceEditor.due')}
 			actionText={$t('invoiceEditor.dueIn', { days: dueDays })}
+			on:action={notImplemented}
 		>
 			<DateInput bind:date={invoice.dueDate} />
 		</Labeled>
 	</div>
 
-	<Labeled label={$t('general.client')} actionText={$t('invoiceEditor.toggleSearch')}>
+	<Labeled
+		label={$t('general.client')}
+		actionText={$t('invoiceEditor.toggleSearch')}
+		on:action={notImplemented}
+	>
 		<ClientSelector bind:clientId={invoice.clientId} />
 	</Labeled>
 

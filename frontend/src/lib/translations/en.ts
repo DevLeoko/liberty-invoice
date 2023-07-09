@@ -206,6 +206,7 @@ export const TRANSLATIONS_EN = {
 		savedChanges: 'Saved changes',
 		languages: 'Languages',
 		unsavedChanges: 'Unsaved changes',
+		inDevelopment: 'This feature is still in development.',
 	},
 
 	demo: {

@@ -223,6 +223,7 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		unsavedChanges: 'Ungespeicherte Änderungen',
 		back: 'Zurück',
 		close: 'Schließen',
+		inDevelopment: 'Diese Funktion ist noch in Entwicklung.',
 	},
 
 	demo: {
