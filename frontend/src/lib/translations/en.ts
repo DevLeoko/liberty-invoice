@@ -157,6 +157,10 @@ export const TRANSLATIONS_EN = {
 
 		marketingConsent: 'Marketing consent',
 		marketingConsentText: 'I agree to receive marketing emails from Liberty Invoice',
+
+		deleteAccount: 'Delete account',
+		deleteAccountText: 'Delete your account and all your data permanently',
+		accountDeleted: 'Account deleted',
 	},
 
 	taxRates: {

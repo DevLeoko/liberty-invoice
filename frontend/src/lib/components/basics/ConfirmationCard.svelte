@@ -23,7 +23,7 @@
 	}
 </script>
 
-<FloatingCard on:clickOutside={handleNo} preferTop {preferLeft}>
+<FloatingCard on:clickOutside={handleNo} preferTop {preferLeft} class="confirm-card">
 	<div class="mr-4">{$t('general.areYouSure')}</div>
 	<Button snug red {loading} class="mr-2" on:click={handleYes}>{$t('general.yes')}</Button>
 	<Button snug gray on:click={handleNo}>{$t('general.cancel')}</Button>

@@ -174,6 +174,10 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 
 		marketingConsent: 'Marketing-Einwilligung',
 		marketingConsentText: 'Ich möchte über Neuigkeiten und Updates informiert werden.',
+
+		deleteAccount: 'Account löschen',
+		deleteAccountText: 'Dein Account wird unwiderruflich gelöscht.',
+		accountDeleted: 'Dein Account wurde gelöscht.',
 	},
 
 	taxRates: {

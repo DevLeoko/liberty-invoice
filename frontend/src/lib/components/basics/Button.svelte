@@ -27,6 +27,15 @@
 		}
 
 		if (requiresConfirmation) {
+			// Make sure target is not a child of .confirm-card
+			let target = event.target as HTMLElement
+			while (target.parentElement) {
+				if (target.classList.contains('confirm-card')) {
+					return
+				}
+				target = target.parentElement
+			}
+
 			confirmationOpen = true
 		} else {
 			eventDispatcher('click', event)

@@ -170,4 +170,8 @@ export const authRouter = router({
 
     return { email: user.email, isPasswordAccount: !!user.passwordHash };
   }),
+
+  deleteAccount: protectedProcedure.mutation(async ({ ctx }) => {
+    await prisma.user.delete({ where: { id: ctx.userId } });
+  }),
 });

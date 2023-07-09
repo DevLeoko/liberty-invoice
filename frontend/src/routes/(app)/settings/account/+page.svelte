@@ -7,6 +7,7 @@
 		createUserSettingsQuery,
 		createUserSettingsUpdateMutation,
 	} from '../../../../lib/controller/user-settings'
+	import { setLoggedOut } from '../../../../lib/stores/auth'
 	import { logSuccess, t } from '../../../../lib/stores/settings'
 	import { trpc, type ReadMe } from '../../../../lib/trpcClient'
 
@@ -50,6 +51,17 @@
 
 		$logSuccess('settings.saved')
 	}
+
+	let loadingDelete = false
+
+	async function deleteAccount() {
+		loadingDelete = true
+		await trpc.auth.deleteAccount.mutate().finally(() => {
+			loadingDelete = false
+		})
+		setLoggedOut()
+		$logSuccess('settings.accountDeleted')
+	}
 </script>
 
 <div class="flex flex-col max-w-md">
@@ -75,7 +87,7 @@
 					>
 				</div>
 
-				<Button loading={loadingPasswordReset} on:click={resetPassword}
+				<Button loading={loadingPasswordReset} snug on:click={resetPassword}
 					>{$t('auth.passwordReset')}</Button
 				>
 			{:else}
@@ -101,6 +113,21 @@
 					>{$t('settings.marketingConsentText')}</label
 				>
 			</div>
+		</div>
+
+		<div class="px-3 py-2 mt-2 bg-gray-200 border-l-4 border-red-500">
+			<b>{$t('settings.deleteAccount')}</b>
+			<p>{$t('settings.deleteAccountText')}</p>
+			<Button
+				class="mt-2"
+				snug
+				red
+				requiresConfirmation
+				on:click={deleteAccount}
+				loading={loadingDelete}
+			>
+				{$t('settings.deleteAccount')}
+			</Button>
 		</div>
 	{/if}
 </div>
