@@ -289,6 +289,8 @@ export const TRANSLATIONS_EN = {
 		agreeToMarketing: 'I want to receive emails about new features and updates',
 
 		register: 'Sign Up',
+		registerWithMail: 'Sign up using email',
+		completeRegistration: 'Complete sign up',
 		login: 'Login',
 		resetPassword: 'Reset password',
 		email: 'Email',

@@ -300,6 +300,8 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		agreeToMarketing: 'Ich möchte E-Mails über neue Funktionen und Updates erhalten',
 
 		register: 'Registrieren',
+		registerWithMail: 'Mit E-Mail registrieren',
+		completeRegistration: 'Registrierung abschließen',
 		login: 'Anmelden',
 		resetPassword: 'Passwort zurücksetzen',
 		email: 'E-Mail',

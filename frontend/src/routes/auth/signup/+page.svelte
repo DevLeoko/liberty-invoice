@@ -1,70 +1,29 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
-	import { PUBLIC_GOOGLE_AUTH_CLIENT_ID, PUBLIC_RECAPTCHA_SITE_KEY } from '$env/static/public'
+	import { PUBLIC_GOOGLE_AUTH_CLIENT_ID } from '$env/static/public'
 	import { onMount } from 'svelte'
+	import ConsentCheckBoxes from '../../../lib/components/auth/ConsentCheckBoxes.svelte'
 	import Button from '../../../lib/components/basics/Button.svelte'
 	import { setLoggedIn } from '../../../lib/stores/auth'
-	import { applicationLanguage, logSuccess, t } from '../../../lib/stores/settings'
-	import type { TranslationPaths } from '../../../lib/translations/translations'
+	import { applicationLanguage, t } from '../../../lib/stores/settings'
 	import { trpc } from '../../../lib/trpcClient'
-
-	let email = ''
-	let password = ''
-	let confirmPassword = ''
 
 	let agreedToTerms = false
 	let agreedToMarketing = false
 
-	let inputIssue: '' | TranslationPaths = ''
-	let showIssue = false
-	$: {
-		if (email === '' || !isValidEmail()) {
-			inputIssue = 'auth.emailRequired'
-		} else if (password === '') {
-			inputIssue = 'auth.passwordRequired'
-		} else if (!isPasswordSecure()) {
-			inputIssue = 'auth.passwordNotSecure'
-		} else if (confirmPassword === '' || password !== confirmPassword) {
-			inputIssue = 'auth.passwordsDoNotMatch'
-		} else {
-			inputIssue = ''
-		}
-	}
-
-	function isValidEmail() {
-		// https://stackoverflow.com/a/46181/2715716
-		return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-	}
-
-	function isPasswordSecure() {
-		// Password must be at least 8 characters long and contain at least one number and one letter
-		return password.length >= 8 && /\d/.test(password) && /[a-zA-Z]/.test(password)
-	}
-
 	let loading = false
 
-	async function register(token: string) {
-		loading = true
-		await trpc.auth.signUpWithPassword
-			.mutate({
-				email,
-				password,
-				token,
-				marketingEmails: agreedToMarketing,
-				langCode: $applicationLanguage,
-			})
-			.finally(() => {
-				loading = false
-			})
-
-		$logSuccess('auth.registrationMailSent')
-	}
+	let googleToken: string | null = null
 
 	async function signUpWithGoogle(response: any) {
+		googleToken = response.credential
+	}
+
+	async function completeSignup() {
 		loading = true
 		await trpc.auth.loginWithGoogle
 			.mutate({
-				token: response.credential,
+				token: googleToken!,
 				createAccountIfNotFound: true,
 				marketingEmails: agreedToMarketing,
 				langCode: $applicationLanguage,
@@ -79,121 +38,54 @@
 
 	onMount(() => {
 		// @ts-ignore
-		window.registerCallback = register
-		// @ts-ignore
 		window.signUpWithGoogleCallback = signUpWithGoogle
 
 		return () => {
 			// @ts-ignore
-			delete window.registerCallback
-			// @ts-ignore
 			delete window.signInWithGoogleCallback
 		}
 	})
-
-	function registerClick() {
-		if (inputIssue || !agreedToTerms) {
-			showIssue = true
-			return
-		}
-
-		// @ts-ignore
-		grecaptcha.execute()
-	}
 </script>
 
 <svelte:head>
-	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 	<script src="https://accounts.google.com/gsi/client" async defer></script>
 </svelte:head>
 
 <div class="flex flex-col w-[350px]">
 	<h1 class="text-3xl font-semibold text-slate-700">{$t('auth.register')}</h1>
-	<span class="text-orange-400">
-		{inputIssue && showIssue ? $t(inputIssue) : ''}&nbsp;
-	</span>
-	<input type="text" placeholder={$t('auth.email')} class="mt-2" bind:value={email} />
-	<input type="password" placeholder={$t('auth.password')} class="mt-2" bind:value={password} />
-	<input
-		type="password"
-		placeholder={$t('auth.passwordRepeat')}
-		class="mt-2"
-		bind:value={confirmPassword}
-		on:focus={() => (showIssue = true)}
-		on:keypress={(e) => e.key === 'Enter' && registerClick()}
-	/>
-	<div
-		class="z-30 g-recaptcha"
-		data-sitekey={PUBLIC_RECAPTCHA_SITE_KEY}
-		data-callback="registerCallback"
-		data-size="invisible"
-	/>
-	<Button {loading} disabled={!!inputIssue} on:click={registerClick} class="mt-4"
-		>{$t('auth.register')}</Button
-	>
-	<div class="my-2 text-sm text-center text-gray-500">{$t('auth.or')}</div>
 
-	<div
-		id="g_id_onload"
-		data-client_id={PUBLIC_GOOGLE_AUTH_CLIENT_ID}
-		data-context="signup"
-		data-ux_mode="popup"
-		data-callback="signUpWithGoogleCallback"
-		data-auto_prompt="false"
-	/>
+	{#if !googleToken}
+		<Button href="/auth/signup-password" gray class="mt-8">{$t('auth.registerWithMail')}</Button>
+		<div class="my-2 text-sm text-center text-gray-500">{$t('auth.or')}</div>
 
-	<div
-		class="g_id_signin {!agreedToTerms ? 'opacity-50 pointer-events-none' : ''}"
-		data-type="standard"
-		data-shape="rectangular"
-		data-theme="outline"
-		data-text="signup_with"
-		data-size="large"
-		data-locale={$applicationLanguage}
-		data-logo_alignment="center"
-		data-width="350"
-	/>
+		<div
+			id="g_id_onload"
+			data-client_id={PUBLIC_GOOGLE_AUTH_CLIENT_ID}
+			data-context="signup"
+			data-ux_mode="popup"
+			data-callback="signUpWithGoogleCallback"
+			data-auto_prompt="false"
+		/>
 
-	<!-- ToS and Marketing checkbox -->
-	<div class="leading-tight">
-		<div class="flex items-center mt-2">
-			<input
-				type="checkbox"
-				class="w-4 h-4 mr-2 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
-				bind:checked={agreedToTerms}
-			/>
-			<div>
-				<div>&nbsp;</div>
-				<span class="text-sm text-gray-500">
-					{$t('auth.agreeTo')}
-					<a href="https://liberty-invoice.com/{$t('langCodeShort')}/legal/terms"
-						>{$t('auth.termsOfService')}</a
-					>
-					{$t('auth.and')}
-					<a href="https://liberty-invoice.com/{$t('langCodeShort')}/legal/privacy"
-						>{$t('auth.privacyPolicy')}</a
-					>
-				</span>
-				<div class="text-sm text-red-500">
-					{#if !agreedToTerms}
-						{$t('auth.agreeToTermsRequired')}
-					{/if} &nbsp;
-				</div>
-			</div>
-		</div>
-
-		<div class="flex items-center mt-2">
-			<input
-				type="checkbox"
-				class="w-4 h-4 mr-2 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
-				bind:checked={agreedToMarketing}
-			/>
-			<span class="text-sm text-gray-500">{$t('auth.agreeToMarketing')}</span>
-		</div>
-	</div>
+		<div
+			class="g_id_signin"
+			data-type="standard"
+			data-shape="rectangular"
+			data-theme="outline"
+			data-text="signup_with"
+			data-size="large"
+			data-locale={$applicationLanguage}
+			data-logo_alignment="center"
+			data-width="350"
+		/>
+	{:else}
+		<ConsentCheckBoxes bind:agreedToTerms bind:agreedToMarketing />
+		<Button class="mt-4" on:click={completeSignup} {loading} disabled={!agreedToTerms}>
+			{$t('auth.completeRegistration')}
+		</Button>
+	{/if}
 
 	<div class="mt-4">
-		<span>{$t('auth.alreadyHaveAnAccount')}</span>
-		<a href="/auth/login" class="text-blue-500">{$t('auth.login')}</a>
+		<a href="/auth/login" class="text-blue-500">{$t('auth.alreadyHaveAnAccount')}</a>
 	</div>
 </div>
