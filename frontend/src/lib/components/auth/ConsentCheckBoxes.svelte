@@ -20,14 +20,14 @@
 				{$t('auth.agreeTo')}
 				<a
 					class="text-blue-500"
-					href="https://liberty-invoice.com/{$t('langCodeShort')}/legal/terms"
-					>{$t('auth.termsOfService')}</a
+					href="https://liberty-invoice.com/{$t('langCodeShort')}/legal/tos"
+					target="_blank">{$t('auth.termsOfService')}</a
 				>
 				{$t('auth.and')}
 				<a
 					class="text-blue-500"
-					href="https://liberty-invoice.com/{$t('langCodeShort')}/legal/privacy"
-					>{$t('auth.privacyPolicy')}</a
+					href="https://liberty-invoice.com/{$t('langCodeShort')}/legal/privacy-policy"
+					target="_blank">{$t('auth.privacyPolicy')}</a
 				>
 			</span>
 		</label>
