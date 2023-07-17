@@ -3,6 +3,7 @@
 	import type { CreateProduct } from '../../trpcClient'
 	import CurrencyInput from '../CurrencyInput.svelte'
 	import Labeled from '../basics/Labeled.svelte'
+	import NumberInput from '../basics/NumberInput.svelte'
 
 	export let entity: CreateProduct
 
@@ -35,7 +36,7 @@
 		<textarea bind:value={entity.description} />
 	</Labeled>
 	<Labeled label={$t('productEditor.unitPrice')}>
-		<input type="number" bind:value={entity.unitPrice} />
+		<NumberInput bind:value={entity.unitPrice} />
 	</Labeled>
 	<Labeled label={$t('productEditor.currency')}>
 		<CurrencyInput bind:value={entity.currency} />
@@ -59,7 +60,7 @@
 
 	{#if entity.stockedUnits !== null}
 		<Labeled label={$t('productEditor.stockedQuantity')}>
-			<input type="number" bind:value={entity.stockedUnits} />
+			<NumberInput bind:value={entity.stockedUnits} />
 		</Labeled>
 
 		<p class="text-sm text-gray-500 xs:col-span-3">

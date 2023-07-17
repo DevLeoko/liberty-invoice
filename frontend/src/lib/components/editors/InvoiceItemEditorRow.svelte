@@ -7,6 +7,7 @@
 	import { sleep } from '../../utils/sleep'
 	import ProductSelector from '../ProductSelector.svelte'
 	import ConfirmationCard from '../basics/ConfirmationCard.svelte'
+	import NumberInput from '../basics/NumberInput.svelte'
 	import InvoiceItemProductIndicator from './InvoiceItemProductIndicator.svelte'
 
 	export let item: CreateInvoiceItem
@@ -69,7 +70,7 @@
 </script>
 
 <tr
-	class="align-top {className}"
+	class="align-top invoice-item-editor-row {className}"
 	on:focusin={() => (isFocused = true)}
 	on:focusout={() => (isFocused = false)}
 >
@@ -118,16 +119,12 @@
 	</td>
 	<td class="pr-2" on:focusin>
 		<div class="flex w-full -ml-2">
-			<input
-				type="number"
-				class="!rounded-r-none -mr-[1px] text-right"
-				bind:value={item.quantity}
-			/>
+			<NumberInput class="!rounded-r-none -mr-[1px] text-right" bind:value={item.quantity} />
 			<input type="text" class="!rounded-l-none !bg-opacity-20" bind:value={item.unit} />
 		</div>
 	</td>
 	<td on:focusin>
-		<input type="number" class="-ml-2" bind:value={item.unitPrice} />
+		<NumberInput class="-ml-2" bind:value={item.unitPrice} />
 	</td>
 	<td class="py-1.5 text-right">
 		{currency.format(item.quantity * item.unitPrice)}
@@ -159,10 +156,9 @@
 </tr>
 
 <style lang="scss">
-	input:not(.plain),
+	:global(.invoice-item-editor-row input:not(.plain)),
 	.input-style {
-		background-color: transparent;
-		@apply ring-0 transition-all;
+		@apply bg-transparent transition-all ring-0 #{!important};
 	}
 
 	.show-on-hover {
@@ -179,9 +175,9 @@
 
 	// Style for sceens small then md
 	@media (max-width: 767px) {
-		input:not(.plain),
+		:global(.invoice-item-editor-row input:not(.plain)),
 		.input-style {
-			@apply ring-1 bg-white bg-opacity-40 ring-opacity-70;
+			@apply ring-1 bg-white bg-opacity-40 ring-opacity-70 #{!important};
 		}
 
 		.show-on-hover {
@@ -201,10 +197,10 @@
 		}
 	}
 
-	tr:hover {
-		input:not(.plain),
+	.invoice-item-editor-row:hover {
+		:global(input:not(.plain)),
 		.input-style {
-			@apply ring-1 bg-white bg-opacity-40 ring-opacity-70;
+			@apply ring-1 bg-white bg-opacity-40 ring-opacity-70 #{!important};
 		}
 
 		.show-on-hover {
@@ -216,10 +212,10 @@
 		}
 	}
 
-	tr:focus-within {
-		input:not(.plain),
+	.invoice-item-editor-row:focus-within {
+		:global(input:not(.plain)),
 		.input-style {
-			@apply ring-1  bg-white bg-opacity-70;
+			@apply ring-1  bg-white bg-opacity-70 #{!important};
 		}
 
 		.show-on-hover {

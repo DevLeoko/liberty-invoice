@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { createClientCreateMutation, createClientUpdateMutation } from '../../controller/client'
-	import { logSuccess } from '../../stores/settings'
 	import type { CreateClient } from '../../trpcClient'
 	import type { EditorSelection } from '../basics/EditorModal.svelte'
 	import EditorModal from '../basics/EditorModal.svelte'
@@ -15,12 +14,9 @@
 		if (selected) {
 			if (selected.id === undefined) {
 				await createClient(selected.entity)
-				$logSuccess('clientEditorModal.created')
 			} else {
 				await updateClient({ id: selected.id, client: selected.entity })
-				$logSuccess('clientEditorModal.updated')
 			}
-			selected = null
 		}
 	}
 </script>

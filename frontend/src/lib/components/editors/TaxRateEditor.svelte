@@ -2,6 +2,7 @@
 	import { t } from '../../stores/settings'
 	import type { CreateTaxRate } from '../../trpcClient'
 	import Labeled from '../basics/Labeled.svelte'
+	import NumberInput from '../basics/NumberInput.svelte'
 
 	export let entity: CreateTaxRate
 
@@ -18,7 +19,7 @@
 	}
 </script>
 
-<div class="grid grid-cols-1 xs:grid-cols-2 gap-2">
+<div class="grid grid-cols-1 gap-2 xs:grid-cols-2">
 	<Labeled label={$t('taxRates.name')}>
 		<input type="text" bind:value={entity.name} />
 	</Labeled>
@@ -28,7 +29,7 @@
 
 	<div class="flex items-end">
 		<Labeled label={$t('taxRates.rate')} class="flex-grow">
-			<input type="number" bind:value={entity.rate} />
+			<NumberInput bind:value={entity.rate} />
 		</Labeled>
 		<span class="z-10 w-6 mb-2 -ml-6">%</span>
 	</div>
