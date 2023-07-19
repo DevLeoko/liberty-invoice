@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { readable } from 'svelte/store'
-	import type { NullableProp } from '../../../types/utilities'
+	import type { NullableProp } from '../../../../types/utilities'
 	import {
 		createFinalTextFragmentQuery,
 		parseInvoiceTextFragment,
-	} from '../../controller/text-fragment'
-	import { t } from '../../stores/settings'
-	import type { CreateInvoice } from '../../trpcClient'
+	} from '../../../controller/text-fragment'
+	import { t } from '../../../stores/settings'
+	import type { CreateInvoice } from '../../../trpcClient'
 
 	export let invoice: NullableProp<CreateInvoice, 'clientId'>
 	export let createMode = false

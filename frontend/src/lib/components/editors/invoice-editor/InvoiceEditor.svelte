@@ -1,10 +1,10 @@
 <script lang="ts">
-	import type { NullableProp } from '../../../types/utilities'
-	import { getCurrency, logInfo, t } from '../../stores/settings'
-	import { trpc, type CreateInvoice } from '../../trpcClient'
-	import ClientSelector from '../ClientSelector.svelte'
-	import DateInput from '../basics/DateInput.svelte'
-	import Labeled from '../basics/Labeled.svelte'
+	import type { NullableProp } from '../../../../types/utilities'
+	import { getCurrency, logInfo, t } from '../../../stores/settings'
+	import { trpc, type CreateInvoice } from '../../../trpcClient'
+	import ClientSelector from '../../ClientSelector.svelte'
+	import DateInput from '../../basics/DateInput.svelte'
+	import Labeled from '../../basics/Labeled.svelte'
 	import InvoiceItemsEditor from './InvoiceItemsEditor.svelte'
 	import InvoiceNoteEditor from './InvoiceNoteEditor.svelte'
 

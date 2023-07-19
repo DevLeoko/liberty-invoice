@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { createTaxRateListQuery } from '../../controller/tax-rate'
-	import { translateIfFound } from '../../stores/settings'
-	import FloatingCardTrigger from '../basics/FloatingCardTrigger.svelte'
-	import TaxRateSelector from '../TaxRateSelector.svelte'
+	import { createTaxRateListQuery } from '../../../controller/tax-rate'
+	import { translateIfFound } from '../../../stores/settings'
+	import FloatingCardTrigger from '../../basics/FloatingCardTrigger.svelte'
+	import TaxRateSelector from '../../TaxRateSelector.svelte'
 
 	export let taxRateId: number | null
 

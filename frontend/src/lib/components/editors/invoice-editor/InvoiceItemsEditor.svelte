@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { tick } from 'svelte'
-	import type { FullCurrency } from '../../../../../shared/currencies'
-	import { createTaxRateListQuery } from '../../controller/tax-rate'
-	import { t } from '../../stores/settings'
-	import type { CreateInvoiceItem } from '../../trpcClient'
+	import type { FullCurrency } from '../../../../../../shared/currencies'
+	import { createTaxRateListQuery } from '../../../controller/tax-rate'
+	import { t } from '../../../stores/settings'
+	import type { CreateInvoiceItem } from '../../../trpcClient'
 	import InvoiceItemEditorRow from './InvoiceItemEditorRow.svelte'
 	import InvoiceTaxRateEditor from './InvoiceTaxRateEditor.svelte'
 
@@ -47,7 +47,7 @@
 	$: tax = itemSubtotal * taxRate
 </script>
 
-<table class="w-full table-fixed" id="itemEditorTable">
+<table class="hidden w-full table-fixed lg:table" id="itemEditorTable">
 	<tr class="text-sm">
 		<th class="w-1/2 font-semibold text-left">{$t('invoice.item')}</th>
 		<th class="font-semibold text-left">{$t('invoice.quantity')}</th>

@@ -4,7 +4,7 @@
 	import { parseInvoiceIdFormat } from '../../../../../../shared/invoice-ids'
 	import Button from '../../../../lib/components/basics/Button.svelte'
 	import Skeleton from '../../../../lib/components/basics/Skeleton.svelte'
-	import InvoiceEditor from '../../../../lib/components/editors/InvoiceEditor.svelte'
+	import InvoiceEditor from '../../../../lib/components/editors/invoice-editor/InvoiceEditor.svelte'
 	import {
 		createInvoiceCreateMutation,
 		previewInvoice,

@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { createEventDispatcher, tick } from 'svelte'
-	import type { FullCurrency } from '../../../../../shared/currencies'
-	import { createProductListFetcher, createProductListQuery } from '../../controller/product'
-	import { t } from '../../stores/settings'
-	import type { CreateInvoiceItem } from '../../trpcClient'
-	import { sleep } from '../../utils/sleep'
-	import ProductSelector from '../ProductSelector.svelte'
-	import ConfirmationCard from '../basics/ConfirmationCard.svelte'
-	import NumberInput from '../basics/NumberInput.svelte'
+	import type { FullCurrency } from '../../../../../../shared/currencies'
+	import { createProductListFetcher, createProductListQuery } from '../../../controller/product'
+	import { t } from '../../../stores/settings'
+	import type { CreateInvoiceItem } from '../../../trpcClient'
+	import { sleep } from '../../../utils/sleep'
+	import ProductSelector from '../../ProductSelector.svelte'
+	import ConfirmationCard from '../../basics/ConfirmationCard.svelte'
+	import NumberInput from '../../basics/NumberInput.svelte'
 	import InvoiceItemProductIndicator from './InvoiceItemProductIndicator.svelte'
 
 	export let item: CreateInvoiceItem

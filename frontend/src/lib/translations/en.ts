@@ -55,6 +55,7 @@ export const TRANSLATIONS_EN = {
 		clientRequired: 'You need to select a client',
 		created: 'Invoice created',
 		previewPdf: 'Preview PDF',
+		items: 'Items',
 
 		product: {
 			products: 'Products:',

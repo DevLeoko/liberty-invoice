@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { createProductUpdateMutation } from '../../controller/product'
-	import { logSuccess, t } from '../../stores/settings'
-	import type { CreateInvoiceItem, ListProduct } from '../../trpcClient'
-	import Button from '../basics/Button.svelte'
-	import FloatingCardTrigger from '../basics/FloatingCardTrigger.svelte'
+	import { createProductUpdateMutation } from '../../../controller/product'
+	import { logSuccess, t } from '../../../stores/settings'
+	import type { CreateInvoiceItem, ListProduct } from '../../../trpcClient'
+	import Button from '../../basics/Button.svelte'
+	import FloatingCardTrigger from '../../basics/FloatingCardTrigger.svelte'
 
 	export let product: ListProduct
 	export let item: CreateInvoiceItem
