@@ -44,6 +44,7 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		clientRequired: 'Sie müssen einen Kunden auswählen',
 		previewPdf: 'PDF-Vorschau',
 		items: 'Artikel',
+		remove: 'Entfernen',
 
 		product: {
 			products: 'Produkte:',
@@ -201,6 +202,8 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		manageInSettingsPre: 'Verwalten Sie die Steuersätze in ',
 		manageInSettingsLink: 'den Einstellungen',
 		manageInSettingsPost: '.',
+
+		select: 'Steuersatz auswählen',
 	},
 
 	general: {

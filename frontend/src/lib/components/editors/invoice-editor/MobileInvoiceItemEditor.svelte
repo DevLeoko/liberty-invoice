@@ -9,7 +9,8 @@
 	import Labeled from '../../basics/Labeled.svelte'
 	import NumberInput from '../../basics/NumberInput.svelte'
 	import InvoiceItemProductIndicator from './InvoiceItemProductIndicator.svelte'
-	import ProductDescriptionInput from './ProductDescriptionInput.svelte'
+	import ItemDescriptionInput from './ItemDescriptionInput.svelte'
+	import ItemQuantityInput from './ItemQuantityInput.svelte'
 
 	export let item: CreateInvoiceItem
 	export let dummy = false
@@ -66,7 +67,7 @@
 			class="pb-1 text-xs font-medium text-red-500 underline cursor-pointer"
 			on:click|stopPropagation={() => {
 				showDeleteConfirmation = true
-			}}>Remove</span
+			}}>{$t('invoiceEditor.remove')}</span
 		>
 		{#if showDeleteConfirmation}
 			<ConfirmationCard
@@ -79,20 +80,19 @@
 		{/if}
 	</div>
 
-	<ProductDescriptionInput bind:name={item.name} bind:description={item.description}>
-		{#if product != null}
-			<div class="pr-1 mr-1 show-on-hover-border-r">
-				<InvoiceItemProductIndicator {item} {product} bind:productId={item.productId} />
-			</div>
-		{/if}
-	</ProductDescriptionInput>
+	<ItemDescriptionInput bind:name={item.name} bind:description={item.description}>
+		<svelte:fragment slot="icon">
+			{#if product != null}
+				<div class="pr-1 mr-1 show-on-hover-border-r">
+					<InvoiceItemProductIndicator {item} {product} bind:productId={item.productId} />
+				</div>
+			{/if}
+		</svelte:fragment>
+	</ItemDescriptionInput>
 
 	<div class="grid grid-cols-3 gap-4 mt-2">
 		<Labeled label={$t('invoice.quantity')}>
-			<div class="flex w-full">
-				<NumberInput class="!rounded-r-none -mr-[1px] text-right" bind:value={item.quantity} />
-				<input type="text" class="!rounded-l-none !bg-opacity-20" bind:value={item.unit} />
-			</div>
+			<ItemQuantityInput bind:quantity={item.quantity} bind:unit={item.unit} />
 		</Labeled>
 		<Labeled label={$t('invoice.unitPrice')}>
 			<NumberInput bind:value={item.unitPrice} />

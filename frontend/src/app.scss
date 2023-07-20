@@ -111,3 +111,80 @@ input[type='number']::-webkit-outer-spin-button {
 .back-nav {
 	@apply mr-1 -mb-0.5 text-2xl text-gray-400 cursor-pointer;
 }
+
+.invoice-item-editor-row {
+	input:not(.plain),
+	.input-style {
+		@apply bg-transparent transition-all ring-0 #{!important};
+	}
+
+	.show-on-hover {
+		@apply opacity-0 pointer-events-none;
+	}
+
+	.show-on-focus {
+		@apply opacity-0 pointer-events-none;
+	}
+
+	.show-on-hover-border-r {
+		@apply border-r border-r-transparent;
+	}
+
+	// Style for sceens small then md
+	@media (max-width: 767px) {
+		input:not(.plain),
+		.input-style {
+			@apply ring-1 bg-white bg-opacity-40 ring-opacity-70 #{!important};
+		}
+
+		.show-on-hover {
+			@apply opacity-100 pointer-events-auto;
+		}
+
+		.show-on-hover-border-r {
+			@apply border-r-gray-300;
+		}
+
+		.show-on-focus {
+			@apply opacity-100 pointer-events-auto;
+		}
+
+		.show-on-focus-mobile {
+			@apply opacity-0 pointer-events-none;
+		}
+	}
+
+	&:hover {
+		input:not(.plain),
+		.input-style {
+			@apply ring-1 bg-white bg-opacity-40 ring-opacity-70 #{!important};
+		}
+
+		.show-on-hover {
+			@apply opacity-50 pointer-events-auto;
+		}
+
+		.show-on-hover-border-r {
+			@apply border-r-gray-300;
+		}
+	}
+
+	&:focus-within {
+		input:not(.plain),
+		.input-style {
+			@apply ring-1  bg-white bg-opacity-70 #{!important};
+		}
+
+		.show-on-hover {
+			@apply opacity-100 pointer-events-auto;
+		}
+
+		.show-on-focus {
+			@apply opacity-100 pointer-events-auto;
+		}
+
+		.show-on-hover-border-r {
+			@apply border-r-gray-300;
+		}
+	}
+}

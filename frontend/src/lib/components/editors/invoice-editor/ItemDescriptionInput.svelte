@@ -30,9 +30,13 @@
 			showDescription = true
 		}
 	}
+
+	let className = ''
+
+	export { className as class }
 </script>
 
-<div class="relative">
+<div class="relative {className}">
 	<div class="input-style">
 		<div class="flex items-center">
 			<slot name="icon" />

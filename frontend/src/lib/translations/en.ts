@@ -56,6 +56,7 @@ export const TRANSLATIONS_EN = {
 		created: 'Invoice created',
 		previewPdf: 'Preview PDF',
 		items: 'Items',
+		remove: 'Remove',
 
 		product: {
 			products: 'Products:',
@@ -184,6 +185,8 @@ export const TRANSLATIONS_EN = {
 		manageInSettingsPre: 'Manage tax rates in the ',
 		manageInSettingsLink: 'settings',
 		manageInSettingsPost: '.',
+
+		select: 'Select tax rate',
 	},
 
 	general: {
