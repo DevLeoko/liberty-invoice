@@ -112,6 +112,8 @@ export async function buildInvoicePdf(
   const currency = getCurrency(invoice.currency, numberFormatter);
 
   async function ppCompanyLogo() {
+    if (!account.logoUrl) return ppText("");
+
     const logoPath = `${process.env.FILE_STORAGE_PATH}/logos/${account.logoUrl}`;
 
     // Check if file exists

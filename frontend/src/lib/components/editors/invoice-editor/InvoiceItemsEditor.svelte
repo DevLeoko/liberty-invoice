@@ -1,28 +1,31 @@
 <script lang="ts">
 	import { tick } from 'svelte'
 	import type { FullCurrency } from '../../../../../../shared/currencies'
+	import { emptyInvoiceItem } from '../../../controller/invoice'
 	import { createTaxRateListQuery } from '../../../controller/tax-rate'
 	import { t } from '../../../stores/settings'
 	import type { CreateInvoiceItem } from '../../../trpcClient'
+	import Button from '../../basics/Button.svelte'
 	import InvoiceItemEditorRow from './InvoiceItemEditorRow.svelte'
 	import InvoiceTaxRateEditor from './InvoiceTaxRateEditor.svelte'
+	import MobileInvoiceItemEditor from './MobileInvoiceItemEditor.svelte'
 
 	export let currency: FullCurrency
 	export let items: CreateInvoiceItem[]
 	export let taxRateIds: number[]
 
-	function getEmptyItem() {
-		return { description: '', quantity: 0, name: '', unit: '', unitPrice: 0, productId: null }
-	}
-
 	function addNewItem() {
-		items = [...items, getEmptyItem()]
+		items = [...items, emptyInvoiceItem()]
 	}
 
 	function addNewAndFocusLast() {
 		addNewItem()
 		tick().then(() => {
 			const table = document.getElementById('itemEditorTable') as HTMLTableElement
+			const mobileTable = document.getElementById('itemEditorMobile') as HTMLDivElement
+
+			// TODO focus for mobile
+
 			const lastRow = table.rows[items.length]
 
 			const input = lastRow.querySelector('input') as HTMLInputElement
@@ -62,7 +65,7 @@
 		<InvoiceItemEditorRow
 			{currency}
 			class="opacity-50"
-			item={getEmptyItem()}
+			item={emptyInvoiceItem()}
 			on:focusin={() => addNewAndFocusLast()}
 			dummy
 		/>
@@ -89,3 +92,39 @@
 		<td />
 	</tr>
 </table>
+
+<div class="flex flex-col w-full table-fixed lg:hidden" id="itemEditorMobile">
+	<h3 class="mb-0.5 text-sm font-semibold">
+		{$t('invoiceEditor.items')}
+	</h3>
+	<div class="flex flex-col space-y-2">
+		{#each items as item, index (index)}
+			<MobileInvoiceItemEditor
+				class="{index != 0 ? 'border-t' : ''} py-2"
+				{currency}
+				{index}
+				bind:item
+				on:remove={() => removeItem(index)}
+			/>
+		{/each}
+	</div>
+
+	<Button class="mt-2" on:click={addNewItem}>+ Add item</Button>
+
+	<div class="flex flex-col mt-2 space-y-2">
+		<div class="flex justify-between">
+			<span class="font-semibold">{$t('invoice.subtotal')}</span>
+			<span>{currency.format(itemSubtotal)}</span>
+		</div>
+		<div class="flex justify-between">
+			<span class="font-semibold">{$t('invoice.tax')}</span>
+			<InvoiceTaxRateEditor bind:taxRateId={taxRateIds[0]}>
+				{currency.format(tax)}
+			</InvoiceTaxRateEditor>
+		</div>
+		<div class="flex justify-between">
+			<span class="font-semibold">{$t('invoice.total')}</span>
+			<span class="font-medium">{currency.format(itemSubtotal + tax)}</span>
+		</div>
+	</div>
+</div>

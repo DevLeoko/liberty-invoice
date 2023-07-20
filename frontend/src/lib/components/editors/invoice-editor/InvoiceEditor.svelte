@@ -74,13 +74,11 @@
 		<InvoiceNoteEditor {invoice} {createMode} bind:note={invoice.note} />
 	</Labeled>
 
-	<div class="pl-2 -ml-2 overflow-x-auto md:overflow-x-visible">
-		<div class="min-w-[600px]">
-			<InvoiceItemsEditor
-				{currency}
-				bind:items={invoice.items}
-				bind:taxRateIds={invoice.taxRateIds}
-			/>
-		</div>
+	<div class="pl-2 -ml-2">
+		<InvoiceItemsEditor
+			{currency}
+			bind:items={invoice.items}
+			bind:taxRateIds={invoice.taxRateIds}
+		/>
 	</div>
 </div>

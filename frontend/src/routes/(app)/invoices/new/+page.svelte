@@ -7,12 +7,14 @@
 	import InvoiceEditor from '../../../../lib/components/editors/invoice-editor/InvoiceEditor.svelte'
 	import {
 		createInvoiceCreateMutation,
+		emptyInvoiceItem,
 		previewInvoice,
 		queryInvoiceRead,
 	} from '../../../../lib/controller/invoice'
 	import { queryUserSettings } from '../../../../lib/controller/user-settings'
 	import { logError, logSuccess, t } from '../../../../lib/stores/settings'
 	import { trpc, type CreateInvoice } from '../../../../lib/trpcClient'
+	import { isLgOrLarger } from '../../../../lib/utils/screenSize'
 	import type { NullableProp } from '../../../../types/utilities'
 
 	let invoice: null | NullableProp<CreateInvoice, 'clientId'> = null
@@ -45,7 +47,7 @@
 		invoice = {
 			note: '',
 			clientId: null,
-			items: [],
+			items: isLgOrLarger() ? [] : [emptyInvoiceItem()],
 			taxRateIds: userSettings.defaultTaxRateId != null ? [userSettings.defaultTaxRateId] : [],
 			language: userSettings.defaultLanguage,
 			currency: userSettings.defaultCurrency,

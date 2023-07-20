@@ -146,3 +146,7 @@ export function previewInvoice(invoice: CreateInvoice) {
 	form.submit()
 	document.body.removeChild(form)
 }
+
+export function emptyInvoiceItem() {
+	return { description: '', quantity: 1, name: '', unit: '', unitPrice: 0, productId: null }
+}
