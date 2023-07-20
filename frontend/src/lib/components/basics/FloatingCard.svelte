@@ -9,28 +9,91 @@
 	export let preferTop = false
 	export let preferLeft = false
 
-	let placeBottom = false
-	let placeLeft = false
-	onMount(() => {
-		const { left, top, width, height } = el.getBoundingClientRect()
-		const windowWidth = window.innerWidth
+	function ensureConstraints(
+		box: {
+			x: number
+			y: number
+			width: number
+			height: number
+		},
+		constraints: {
+			width: number
+			height: number
+		},
+	) {
+		const { x, y, width, height } = box
+		const { width: constraintWidth, height: constraintHeight } = constraints
 
-		if (!preferTop) {
-			// Is enough space below?
-			if (top + height <= window.innerHeight) {
-				placeBottom = true
-			}
-		} else if (top < 0) {
-			placeBottom = true
+		const constrainedX = Math.min(Math.max(x, 0), constraintWidth - width)
+		const constrainedY = Math.min(Math.max(y, 0), constraintHeight - height)
+
+		return { x: constrainedX, y: constrainedY }
+	}
+
+	function getParentBounds(parent: HTMLElement) {
+		const {
+			left: parentLeft,
+			top: parentTop,
+			width: parentWidth,
+			height: parentHeight,
+		} = parent.getBoundingClientRect()
+		const parentRight = parentLeft + parentWidth
+		const parentBottom = parentTop + parentHeight
+
+		return {
+			parentLeft,
+			parentTop: parentTop + window.scrollY,
+			parentRight,
+			parentBottom: parentBottom + window.scrollY,
 		}
+	}
 
-		if (!preferLeft) {
-			// Is enough space to the right?
-			if (left + width > windowWidth) {
-				placeLeft = true
-			}
-		} else if (left < 0) {
-			placeLeft = true
+	let parent = null as HTMLElement | null
+
+	let windowWidth: number
+	let windowHeight: number
+
+	function recomputePlacement() {
+		const { parentLeft, parentTop, parentRight, parentBottom } = getParentBounds(parent!)
+		const { width, height } = el.getBoundingClientRect()
+
+		let preferredLeft = preferLeft ? parentRight - width : parentLeft
+		let preferredTop = preferTop ? parentTop - height - 5 : parentBottom + 5
+
+		const { x, y } = ensureConstraints(
+			{ x: preferredLeft, y: preferredTop, width, height },
+			{ width: windowWidth, height: windowHeight },
+		)
+
+		el.style.left = `${x}px`
+		el.style.top = `${y}px`
+	}
+
+	onMount(() => {
+		windowWidth = window.innerWidth
+		windowHeight = window.innerHeight
+
+		parent = el.parentElement!
+
+		const observer = new ResizeObserver(() => {
+			recomputePlacement()
+		})
+
+		observer.observe(el)
+		observer.observe(parent)
+
+		const cancelId = setTimeout(() => {
+			recomputePlacement()
+		}, 300)
+
+		const floatingCardContainer = document.querySelector('#floatingCardContainer')!
+		parent.removeChild(el)
+		floatingCardContainer.appendChild(el)
+
+		return () => {
+			observer.disconnect()
+			floatingCardContainer.removeChild(el)
+			clearTimeout(cancelId)
 		}
 	})
 
@@ -49,11 +112,7 @@
 <svelte:body on:click|capture={onBodyClick} />
 
 <div
-	class="absolute z-30 flex items-center px-3 py-2 my-1 text-black bg-white rounded-md shadow w-max border border-gray-100 {className}"
-	class:top-full={placeBottom}
-	class:bottom-full={!placeBottom}
-	class:right-0={placeLeft}
-	class:left-0={!placeLeft}
+	class="absolute z-30 flex items-center px-3 py-2 text-black bg-white rounded-md shadow w-max border border-gray-100 {className}"
 	bind:this={el}
 	on:click
 	transition:fly|local={{ duration: 100, y: 10 }}

@@ -54,10 +54,6 @@
 	on:focusin={() => (isFocused = true)}
 	on:focusout={() => (isFocused = false)}
 >
-	{#if isFocused}
-		<ProductSelector bind:productId={item.productId} {item} {currency} on:select={useProductData} />
-	{/if}
-
 	<div class="relative flex items-end justify-between text-sm">
 		<span>
 			#{index + 1}
@@ -76,6 +72,17 @@
 				on:cancel={() => {
 					showDeleteConfirmation = false
 				}}
+			/>
+		{/if}
+	</div>
+
+	<div>
+		{#if isFocused}
+			<ProductSelector
+				bind:productId={item.productId}
+				{item}
+				{currency}
+				on:select={useProductData}
 			/>
 		{/if}
 	</div>
