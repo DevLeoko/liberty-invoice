@@ -64,12 +64,12 @@
 	</h1>
 
 	{#if invoice != null}
-		<Button gray on:click={openPdfPreview} class="ml-auto mr-2"
-			>{$t('invoiceEditor.previewPdf')}</Button
-		>
-		<Button loading={loadingSave} on:click={saveInvoice}
-			><span class="mr-1 material-icons">check</span> {$t('general.save')}</Button
-		>
+		<div class="flex flex-wrap justify-end">
+			<Button gray on:click={openPdfPreview} class="mr-2">{$t('invoiceEditor.previewPdf')}</Button>
+			<Button loading={loadingSave} on:click={saveInvoice}
+				><span class="mr-1 material-icons">check</span> {$t('general.save')}</Button
+			>
+		</div>
 	{/if}
 </div>
 

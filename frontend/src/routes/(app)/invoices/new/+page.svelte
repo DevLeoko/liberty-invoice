@@ -95,16 +95,16 @@
 </script>
 
 <div class="flex items-center justify-between mb-4">
-	<h1 class="pageTitle">
+	<h1 class="!mb-0 pageTitle">
 		<span class="material-icons back-nav" on:click={() => goto('/invoices')}>arrow_back</span>
 		{$t('invoiceList.newInvoice')}
 	</h1>
-	<Button gray on:click={openPdfPreview} class="ml-auto mr-2"
-		>{$t('invoiceEditor.previewPdf')}</Button
-	>
-	<Button loading={loadingSave} on:click={createInvoice}
-		><span class="mr-1 material-icons">check</span> {$t('general.create')}</Button
-	>
+	<div class="flex flex-wrap justify-end gap-2">
+		<Button gray on:click={openPdfPreview} class="">{$t('invoiceEditor.previewPdf')}</Button>
+		<Button loading={loadingSave} on:click={createInvoice}
+			><span class="mr-1 material-icons">check</span> {$t('general.create')}</Button
+		>
+	</div>
 </div>
 
 {#if invoice != null}
