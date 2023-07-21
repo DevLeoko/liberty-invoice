@@ -1,0 +1,37 @@
+{
+	"short_name": "Liberty Invoice",
+	"name": "Liberty Invoice - Free Invoicing Tool",
+	"icons": [
+		{
+			"src": "/manifest-images/logo-sq.svg",
+			"type": "image/svg+xml",
+			"sizes": "192x192"
+		},
+		{
+			"src": "/manifest-images/logo-192.png",
+			"type": "image/png",
+			"sizes": "192x192"
+		},
+		{
+			"src": "/manifest-images/logo-512.png",
+			"type": "image/png",
+			"sizes": "512x512"
+		}
+	],
+	"id": "respark/liberty-invoice",
+	"start_url": "/?source=pwa",
+	"background_color": "#f9fafb",
+	"display": "standalone",
+	"scope": "/",
+	"theme_color": "#3b82f6",
+	"shortcuts": [
+		{
+			"name": "New invoice",
+			"short_name": "New invoice",
+			"description": "Create a new invoice",
+			"url": "/invoices/new?source=pwa",
+			"icons": [{ "src": "/manifest-images/shortcuts/add.png", "sizes": "192x192" }]
+		}
+	],
+	"description": "Easy-to-use invoicing with Liberty Invoice, free invoicing tool for freelancers, businesses, and more. Manage invoices in the cloud and generate PDFs."
+}
