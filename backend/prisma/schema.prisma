@@ -129,7 +129,7 @@ model Invoice {
   clientId Int
 
   draft         Boolean   @default(true)
-  invoiceNumber String    @unique
+  invoiceNumber String
   date          DateTime  @db.Date()
   dueDate       DateTime  @db.Date()
   currency      String
@@ -142,6 +142,8 @@ model Invoice {
   amountPaid       Float
 
   items InvoiceItem[]
+
+  @@unique([userId, invoiceNumber])
 }
 
 model InvoiceItem {
