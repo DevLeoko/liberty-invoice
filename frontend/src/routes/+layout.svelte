@@ -22,7 +22,7 @@
 </svelte:head>
 
 <QueryClientProvider client={queryClient}>
-	<div id="floatingCardContainer" />
+	<div class="relative z-[60]" id="floatingCardContainer" />
 	<MessageBar />
 	<slot />
 </QueryClientProvider>

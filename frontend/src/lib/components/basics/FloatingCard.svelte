@@ -24,8 +24,8 @@
 		const { x, y, width, height } = box
 		const { width: constraintWidth, height: constraintHeight } = constraints
 
-		const constrainedX = Math.min(Math.max(x, 0), constraintWidth - width)
-		const constrainedY = Math.min(Math.max(y, 0), constraintHeight - height)
+		const constrainedX = Math.min(Math.max(x, 5), constraintWidth - width - 5)
+		const constrainedY = Math.min(Math.max(y, 5), constraintHeight - height - 5)
 
 		return { x: constrainedX, y: constrainedY }
 	}
@@ -112,7 +112,7 @@
 <svelte:body on:click|capture={onBodyClick} />
 
 <div
-	class="absolute z-30 flex items-center px-3 py-2 text-black bg-white rounded-md shadow w-max border border-gray-100 {className}"
+	class="absolute z-60 flex items-center px-3 py-2 text-black bg-white rounded-md shadow w-max border border-gray-100 {className}"
 	bind:this={el}
 	on:click
 	transition:fly|local={{ duration: 100, y: 10 }}

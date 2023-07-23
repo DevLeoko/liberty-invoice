@@ -222,6 +222,7 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		areYouSure: 'Sind Sie sicher?',
 		yes: 'Ja',
 		no: 'Nein',
+		more: 'Mehr',
 		savedChanges: 'Änderungen gespeichert',
 		languages: 'Sprachen',
 		unsavedChanges: 'Ungespeicherte Änderungen',

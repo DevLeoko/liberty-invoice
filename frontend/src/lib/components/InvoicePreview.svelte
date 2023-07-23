@@ -2,18 +2,13 @@
 	import { PUBLIC_BACKEND_URL } from '$env/static/public'
 	import { createEventDispatcher } from 'svelte'
 	import { getClientDisplayLines } from '../../../../shared/address-formatter'
-	import { createTaxRateListQuery } from '../controller/tax-rate'
-	import {
-		formatDate,
-		formatFloat,
-		getCurrency,
-		logInfo,
-		t,
-		translateIfFound,
-	} from '../stores/settings'
+	import { formatDate, formatFloat, getCurrency, logInfo, t } from '../stores/settings'
 	import type { ReadInvoice } from '../trpcClient'
+	import InvoiceActionCard from './InvoiceActionCard.svelte'
+	import InvoicePreviewItemList from './InvoicePreviewItemList.svelte'
 	import InvoiceStatusChip from './InvoiceStatusChip.svelte'
 	import Button from './basics/Button.svelte'
+	import FloatingCardTrigger from './basics/FloatingCardTrigger.svelte'
 
 	export let invoice: ReadInvoice
 
@@ -39,10 +34,6 @@
 		}
 	}
 
-	const taxRates = createTaxRateListQuery()
-	$: selectedTaxRate =
-		$taxRates.data?.find((taxRate) => taxRate.id === invoice.taxRates[0]?.id) ?? null
-
 	function sendInvoice() {
 		// TODO: implement
 		$logInfo('general.inDevelopment')
@@ -66,10 +57,16 @@
 		>{$t('general.download')}</Button
 	>
 	<Button class="flex-1" href="/invoices/{invoice.id}/edit">{$t('general.edit')}</Button>
-	<Button class="flex-1" on:click={sendInvoice}>{$t('general.send')}</Button>
+
+	<FloatingCardTrigger>
+		<svelte:fragment slot="trigger">
+			<Button class="flex-1">{$t('general.more')}</Button>
+		</svelte:fragment>
+		<InvoiceActionCard {invoice} />
+	</FloatingCardTrigger>
 </div>
 
-<div class="flex items-start justify-between mt-4">
+<div class="flex flex-col items-start justify-between gap-4 mt-4 xs:flex-row">
 	<div class="flex flex-col">
 		<b class="text-base">{$t('invoice.billedTo')}</b>
 		<div class="leading-tight">
@@ -83,9 +80,9 @@
 		</div>
 	</div>
 
-	<div class="grid gap-x-4 grid-table-2">
-		<b>{$t('invoice.invoiceDate')}</b> <span>{$formatDate(invoice.date)}</span>
-		<b>{$t('invoice.dueDate')}</b> <span>{$formatDate(invoice.dueDate)}</span>
+	<div class="grid w-full gap-x-4 grid-table-2 xs:w-auto">
+		<b>{$t('invoice.invoiceDate')}</b> <span class="text-right">{$formatDate(invoice.date)}</span>
+		<b>{$t('invoice.dueDate')}</b> <span class="text-right">{$formatDate(invoice.dueDate)}</span>
 	</div>
 </div>
 
@@ -97,47 +94,7 @@
 	{dueText}
 </h3>
 
-<div class="grid w-full p-2 px-3 mt-8 shadow-md bg-neutral-50 gap-x-2 grid-table-4">
-	<b>{$t('invoice.item')}</b>
-	<b>{$t('invoice.quantity')}</b>
-	<b>{$t('invoice.unitPrice')}</b>
-	<b class="text-right">{$t('invoice.amount')}</b>
-
-	{#each invoice.items as item}
-		<div>{item.name}</div>
-		<div>{item.quantity}{item.unit}</div>
-		<div>{currency.format(item.unitPrice)}</div>
-		<div class="text-right">{currency.format(item.unitPrice * item.quantity)}</div>
-		{#if item.description}
-			<div class="col-span-4">
-				<div class="mb-2 text-sm text-gray-500 whitespace-pre-wrap">{item.description}</div>
-			</div>
-		{/if}
-	{/each}
-
-	<div class="col-span-4 pt-2 mt-4 font-semibold border-t">
-		{#if selectedTaxRate}
-			<div class="flex justify-between">
-				<div>{$t('invoice.subtotal')}</div>
-				<div>{currency.format(invoice.amountWithoutTax)}</div>
-			</div>
-			<div class="flex justify-between">
-				{#if selectedTaxRate.rate > 0}
-					<div>
-						{$translateIfFound(selectedTaxRate.displayText, 'taxRate')} ({selectedTaxRate.rate}%)
-					</div>
-					<div>{currency.format(invoice.amountWithTax - invoice.amountWithoutTax)}</div>
-				{:else}
-					<div class="text-xs">{$translateIfFound(selectedTaxRate.displayText, 'taxRate')}</div>
-				{/if}
-			</div>
-		{/if}
-		<div class="flex justify-between">
-			<div>{$t('invoice.total')}</div>
-			<div>{currency.format(invoice.amountWithTax)}</div>
-		</div>
-	</div>
-</div>
+<InvoicePreviewItemList {invoice} />
 
 <style>
 	b {

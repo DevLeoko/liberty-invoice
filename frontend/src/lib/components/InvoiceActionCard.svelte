@@ -96,7 +96,7 @@
 		{$t('general.download')}
 	</a>
 	<div on:click|stopPropagation>
-		<ConfirmationCardTrigger loading={loadingDelete} on:confirm={deleteInvoice}>
+		<ConfirmationCardTrigger loading={loadingDelete} on:confirm={deleteInvoice} preferLeft>
 			<div class="floating-action">
 				<span class="mr-1 text-sm material-icons">delete</span>
 				{$t('general.delete')}

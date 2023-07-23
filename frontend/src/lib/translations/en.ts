@@ -207,6 +207,7 @@ export const TRANSLATIONS_EN = {
 		areYouSure: 'Are you sure?',
 		yes: 'Yes',
 		no: 'No',
+		more: 'More',
 		savedChanges: 'Saved changes',
 		languages: 'Languages',
 		unsavedChanges: 'Unsaved changes',

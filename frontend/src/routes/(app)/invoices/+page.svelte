@@ -60,9 +60,9 @@
 		</table>
 	</div>
 
-	{#if $previewInvoice?.data}
+	{#if previewInvoice != null}
 		<SidePopup on:exit={closePreview} class="w-[600px]">
-			{#if !previewInvoice}
+			{#if !$previewInvoice?.data}
 				<Skeleton class="w-full h-48" />
 			{:else}
 				<InvoicePreview invoice={$previewInvoice.data} on:exit={closePreview} />
