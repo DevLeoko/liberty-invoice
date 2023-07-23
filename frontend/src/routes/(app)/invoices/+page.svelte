@@ -5,32 +5,20 @@
 	import Button from '../../../lib/components/basics/Button.svelte'
 	import SidePopup from '../../../lib/components/basics/SidePopup.svelte'
 	import Skeleton from '../../../lib/components/basics/Skeleton.svelte'
-	import { createInvoiceQuery, createInvoiceReadFetcher } from '../../../lib/controller/invoice'
+	import { createInvoiceQuery, createInvoiceReadQuery } from '../../../lib/controller/invoice'
 	import { t } from '../../../lib/stores/settings'
-	import type { ReadInvoice } from '../../../lib/trpcClient'
 
 	const invoices = createInvoiceQuery()
 
-	let previewInvoice: ReadInvoice | null = null
-	let loadingPreview = false
-
-	const fetchInvoice = createInvoiceReadFetcher()
-
-	async function openPreview(invoiceId: number) {
-		loadingPreview = true
-		// TODO: maybe replace with tan query in the future
-		previewInvoice = await fetchInvoice(invoiceId).finally(() => {
-			loadingPreview = false
-		})
-	}
+	let previewInvoiceId: number | null = null
+	$: previewInvoice = previewInvoiceId != null ? createInvoiceReadQuery(previewInvoiceId) : null
 
 	if ($page.url.searchParams.has('preview')) {
-		openPreview(Number.parseInt($page.url.searchParams.get('preview')!))
+		previewInvoiceId = Number.parseInt($page.url.searchParams.get('preview')!)
 	}
 
 	function closePreview() {
-		previewInvoice = null
-		loadingPreview = false
+		previewInvoiceId = null
 	}
 
 	$: sortedInvoices = [...($invoices.data || [])].sort((a, b) =>
@@ -65,19 +53,19 @@
 			{#each sortedInvoices as invoice (invoice.id)}
 				<InvoiceRow
 					{invoice}
-					on:click={() => openPreview(invoice.id)}
-					class={previewInvoice?.id == invoice.id ? 'bg-blue-100 hover:bg-blue-100' : ''}
+					on:click={() => (previewInvoiceId = invoice.id)}
+					class={previewInvoiceId == invoice.id ? 'bg-blue-100 hover:bg-blue-100' : ''}
 				/>
 			{/each}
 		</table>
 	</div>
 
-	{#if loadingPreview || previewInvoice}
+	{#if $previewInvoice?.data}
 		<SidePopup on:exit={closePreview} class="w-[600px]">
 			{#if !previewInvoice}
 				<Skeleton class="w-full h-48" />
 			{:else}
-				<InvoicePreview invoice={previewInvoice} on:exit={closePreview} />
+				<InvoicePreview invoice={$previewInvoice.data} on:exit={closePreview} />
 			{/if}
 		</SidePopup>
 	{/if}
