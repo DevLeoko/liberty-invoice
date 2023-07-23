@@ -2,6 +2,7 @@
 	import * as d3 from 'd3'
 	import { onMount } from 'svelte'
 	import { formatInt } from '../../stores/settings'
+	import FloatingCard from '../basics/FloatingCard.svelte'
 
 	export let labels: string[]
 	export let data: {
@@ -138,12 +139,16 @@
 
 		{#if showIndex != null}
 			{@const i = showIndex}
-			<div
-				class="absolute z-20 px-3 py-2 my-1 text-black bg-white rounded-md shadow pointer-events-none"
-				style="left: {x(i) + 13}px; top: {y(data[0].values[i]) - 40}px"
-			>
-				<slot name="tooltip" label={labels[i]} index={i} values={showValues} />
-			</div>
+			{#key showIndex}
+				<div
+					class="absolute pointer-events-none"
+					style="left: {x(i) + 13}px; top: {y(data[0].values[i]) - 40}px"
+				>
+					<FloatingCard class="pointer-events-none">
+						<slot name="tooltip" label={labels[i]} index={i} values={showValues} />
+					</FloatingCard>
+				</div>
+			{/key}
 		{/if}
 
 		{#each y.ticks() as tick}

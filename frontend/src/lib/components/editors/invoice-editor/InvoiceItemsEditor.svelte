@@ -100,7 +100,7 @@
 	<div class="flex flex-col space-y-2">
 		{#each items as item, index (index)}
 			<MobileInvoiceItemEditor
-				class="{index != 0 ? 'border-t' : ''} py-2"
+				class="{index != 0 ? 'border-t-2 border-gray-300' : ''} py-2"
 				{currency}
 				{index}
 				bind:item
@@ -116,12 +116,9 @@
 			<span class="font-semibold">{$t('invoice.subtotal')}</span>
 			<span>{currency.format(itemSubtotal)}</span>
 		</div>
-		<div class="flex justify-between">
-			<span class="font-semibold">{$t('invoice.tax')}</span>
-			<InvoiceTaxRateEditor bind:taxRateId={taxRateIds[0]}>
-				{currency.format(tax)}
-			</InvoiceTaxRateEditor>
-		</div>
+		<InvoiceTaxRateEditor bind:taxRateId={taxRateIds[0]}>
+			{currency.format(tax)}
+		</InvoiceTaxRateEditor>
 		<div class="flex justify-between">
 			<span class="font-semibold">{$t('invoice.total')}</span>
 			<span class="font-medium">{currency.format(itemSubtotal + tax)}</span>

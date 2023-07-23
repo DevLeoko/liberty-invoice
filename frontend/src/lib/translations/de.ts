@@ -46,6 +46,12 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		items: 'Artikel',
 		remove: 'Entfernen',
 
+		invoiceNumberWarning1:
+			'Rechnungsnummern werden automatisch generiert und vom System verwaltet. Sie können das Format und die Laufnummer in den ',
+		invoiceNumberWarning2: 'Einstellungen',
+		invoiceNumberWarning3: ' ändern.',
+		invoiceNumberOverride: 'Manuelle Eingabe',
+
 		product: {
 			products: 'Produkte:',
 			noMatching: 'Keine passenden Produkte gefunden',
@@ -70,6 +76,8 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		dueTomorrow: 'Fällig morgen',
 		dueToday: 'Fällig heute',
 		overdue: 'Überfällig',
+		overdueYesterday: '1 Tag überfällig',
+		overdueByDays: '{{days}} Tage überfällig',
 
 		finalize: 'Freigeben',
 		sendAndFinalize: 'Senden und freigeben',
@@ -229,6 +237,7 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		back: 'Zurück',
 		close: 'Schließen',
 		inDevelopment: 'Diese Funktion ist noch in Entwicklung.',
+		date: 'Datum',
 	},
 
 	demo: {

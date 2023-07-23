@@ -17,15 +17,28 @@
 			height: number
 		},
 		constraints: {
+			x: number
+			y: number
 			width: number
 			height: number
 		},
 	) {
 		const { x, y, width, height } = box
-		const { width: constraintWidth, height: constraintHeight } = constraints
+		const {
+			width: constraintWidth,
+			height: constraintHeight,
+			x: constraintX,
+			y: constraintY,
+		} = constraints
 
-		const constrainedX = Math.min(Math.max(x, 5), constraintWidth - width - 5)
-		const constrainedY = Math.min(Math.max(y, 5), constraintHeight - height - 5)
+		const constrainedX = Math.min(
+			Math.max(x, constraintX + 5),
+			constraintX + constraintWidth - width - 5,
+		)
+		const constrainedY = Math.min(
+			Math.max(y, constraintY + 5),
+			constraintY + constraintHeight - height - 5,
+		)
 
 		return { x: constrainedX, y: constrainedY }
 	}
@@ -62,7 +75,7 @@
 
 		const { x, y } = ensureConstraints(
 			{ x: preferredLeft, y: preferredTop, width, height },
-			{ width: windowWidth, height: windowHeight },
+			{ x: 0, y: window.scrollY, width: windowWidth, height: windowHeight },
 		)
 
 		el.style.left = `${x}px`
@@ -70,7 +83,7 @@
 	}
 
 	onMount(() => {
-		windowWidth = window.innerWidth
+		windowWidth = document.body.clientWidth
 		windowHeight = window.innerHeight
 
 		parent = el.parentElement!

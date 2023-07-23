@@ -1,4 +1,5 @@
 <script lang="ts">
+	import PageTitle from '../../../lib/components/basics/PageTitle.svelte'
 	import QuickStatsRow from '../../../lib/components/dashboard/QuickStatsRow.svelte'
 	import RevenueChart from '../../../lib/components/dashboard/RevenueChart.svelte'
 	import GettingStartedSection from '../../../lib/components/getting-started/GettingStartedSection.svelte'
@@ -6,7 +7,7 @@
 	const gettingStatedHidden = localStorage.getItem('gettingStartedHidden') == 'true'
 </script>
 
-<h1 class="pageTitle">Dashboard</h1>
+<PageTitle title="Dashboard" />
 
 <div class="flex flex-col min-w-0">
 	{#if !gettingStatedHidden}

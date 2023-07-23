@@ -3,6 +3,7 @@
 
 	export let showFloatingCard = false
 	export let preferTop = false
+	export let preferLeft = false
 
 	export let triggerClass = ''
 </script>
@@ -15,6 +16,7 @@
 	{#if showFloatingCard}
 		<FloatingCard
 			{preferTop}
+			{preferLeft}
 			on:clickOutside={() => (showFloatingCard = false)}
 			on:click={() => (showFloatingCard = false)}
 			class="cursor-default"

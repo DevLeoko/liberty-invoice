@@ -55,7 +55,7 @@
 	on:focusout={() => (isFocused = false)}
 >
 	<div class="relative flex items-end justify-between text-sm">
-		<span>
+		<span class="font-medium text-gray-400">
 			#{index + 1}
 		</span>
 

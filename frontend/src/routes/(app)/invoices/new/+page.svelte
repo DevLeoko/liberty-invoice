@@ -3,6 +3,7 @@
 	import { page } from '$app/stores'
 	import { parseInvoiceIdFormat } from '../../../../../../shared/invoice-ids'
 	import Button from '../../../../lib/components/basics/Button.svelte'
+	import PageTitle from '../../../../lib/components/basics/PageTitle.svelte'
 	import Skeleton from '../../../../lib/components/basics/Skeleton.svelte'
 	import InvoiceEditor from '../../../../lib/components/editors/invoice-editor/InvoiceEditor.svelte'
 	import {
@@ -19,6 +20,7 @@
 
 	let invoice: null | NullableProp<CreateInvoice, 'clientId'> = null
 	let partialId: null | number = null
+	let systemInvoiceNumber: null | string = null
 
 	let loadingSave = false
 
@@ -44,6 +46,8 @@
 		const dueDate = new Date()
 		dueDate.setDate(dueDate.getDate() + userSettings.defaultDueDays)
 
+		const invoiceNumber = format(partialId)
+
 		invoice = {
 			note: '',
 			clientId: null,
@@ -54,10 +58,12 @@
 			...duplicationData,
 
 			// Don't overwrite this data when duplicating:
-			invoiceNumber: format(partialId),
+			invoiceNumber,
 			date: new Date(),
 			dueDate,
 		}
+
+		systemInvoiceNumber = invoiceNumber
 	}
 
 	init()
@@ -74,7 +80,7 @@
 
 		const res = await invoiceCreateMutation({
 			invoice: invoice as CreateInvoice,
-			partialId: partialId!,
+			partialId: systemInvoiceNumber == invoice.invoiceNumber ? partialId! : undefined,
 		}).finally(() => {
 			loadingSave = false
 		})
@@ -94,18 +100,12 @@
 	}
 </script>
 
-<div class="flex items-center justify-between mb-4">
-	<h1 class="!mb-0 pageTitle">
-		<span class="material-icons back-nav" on:click={() => goto('/invoices')}>arrow_back</span>
-		{$t('invoiceList.newInvoice')}
-	</h1>
-	<div class="flex flex-wrap justify-end gap-2">
-		<Button gray on:click={openPdfPreview} class="">{$t('invoiceEditor.previewPdf')}</Button>
-		<Button loading={loadingSave} on:click={createInvoice}
-			><span class="mr-1 material-icons">check</span> {$t('general.create')}</Button
-		>
-	</div>
-</div>
+<PageTitle title={$t('invoiceList.newInvoice')} backLink="/invoices">
+	<Button gray on:click={openPdfPreview} class="">{$t('invoiceEditor.previewPdf')}</Button>
+	<Button loading={loadingSave} on:click={createInvoice}
+		><span class="mr-1 material-icons">check</span> {$t('general.create')}</Button
+	>
+</PageTitle>
 
 {#if invoice != null}
 	<InvoiceEditor bind:invoice createMode />

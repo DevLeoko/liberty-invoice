@@ -3,8 +3,9 @@
 	import { page } from '$app/stores'
 	import { cloneDeep } from 'lodash'
 	import Button from '../../../../../lib/components/basics/Button.svelte'
+	import PageTitle from '../../../../../lib/components/basics/PageTitle.svelte'
 	import Skeleton from '../../../../../lib/components/basics/Skeleton.svelte'
-	import InvoiceEditor from '../../../../../lib/components/editors/InvoiceEditor.svelte'
+	import InvoiceEditor from '../../../../../lib/components/editors/invoice-editor/InvoiceEditor.svelte'
 	import {
 		createInvoiceUpdateMutation,
 		previewInvoice,
@@ -54,24 +55,23 @@
 	}
 </script>
 
-<div class="flex items-center justify-between mb-4">
-	<h1 class="pageTitle">
-		<span class="material-icons back-nav" on:click={() => goto('/invoices')}>arrow_back</span>
-		<span class="">{$t('invoice.invoice')}</span>
-		{#if invoice != null}
-			<span class="font-normal">&nbsp;{invoice.invoiceNumber}</span>
-		{/if}
-	</h1>
+<PageTitle backLink="/invoices">
+	<svelte:fragment slot="title">
+		<div class="flex flex-wrap gap-x-2">
+			<span class="">{$t('invoice.invoice')}</span>
+			{#if invoice != null}
+				<span class="font-normal">{invoice.invoiceNumber}</span>
+			{/if}
+		</div>
+	</svelte:fragment>
 
 	{#if invoice != null}
-		<div class="flex flex-wrap justify-end">
-			<Button gray on:click={openPdfPreview} class="mr-2">{$t('invoiceEditor.previewPdf')}</Button>
-			<Button loading={loadingSave} on:click={saveInvoice}
-				><span class="mr-1 material-icons">check</span> {$t('general.save')}</Button
-			>
-		</div>
+		<Button gray on:click={openPdfPreview}>{$t('invoiceEditor.previewPdf')}</Button>
+		<Button loading={loadingSave} on:click={saveInvoice}
+			><span class="mr-1 material-icons">check</span> {$t('general.save')}</Button
+		>
 	{/if}
-</div>
+</PageTitle>
 
 {#if invoice != null}
 	<InvoiceEditor bind:invoice />

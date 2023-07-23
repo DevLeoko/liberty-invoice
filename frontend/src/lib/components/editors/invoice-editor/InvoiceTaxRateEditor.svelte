@@ -10,7 +10,7 @@
 	$: selectedTaxRate = $taxRates.data?.find((taxRate) => taxRate.id === taxRateId) ?? null
 </script>
 
-<FloatingCardTrigger>
+<FloatingCardTrigger preferTop>
 	<svelte:fragment slot="trigger">
 		{#if selectedTaxRate?.rate}
 			<div class="flex justify-between">

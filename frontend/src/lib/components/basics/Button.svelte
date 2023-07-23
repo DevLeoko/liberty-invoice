@@ -11,6 +11,7 @@
 	export let gray = false
 	export let snug = false
 	export let red = false
+	export let orange = false
 	export let href: string | undefined = undefined
 	export let target: undefined | '_blank' | '_self' | '_parent' | '_top' = undefined
 
@@ -59,6 +60,7 @@
 	class:snug
 	class:gray
 	class:red
+	class:orange
 	on:click={handleClick}
 >
 	{#if requiresConfirmation && confirmationOpen}
@@ -108,6 +110,11 @@
 		&.red {
 			--color: theme('colors.red.500');
 			--hover-color: theme('colors.red.600');
+		}
+
+		&.orange {
+			--color: theme('colors.orange.500');
+			--hover-color: theme('colors.orange.600');
 		}
 
 		&.disabled {

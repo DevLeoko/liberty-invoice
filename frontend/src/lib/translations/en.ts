@@ -38,6 +38,8 @@ export const TRANSLATIONS_EN = {
 		dueTomorrow: 'Due tomorrow',
 		dueToday: 'Due today',
 		overdue: 'Overdue',
+		overdueYesterday: 'Overdue by 1 day',
+		overdueByDays: 'Overdue by {{days}} days',
 
 		finalize: 'Finalize',
 		sendAndFinalize: 'Send and finalize',
@@ -57,6 +59,12 @@ export const TRANSLATIONS_EN = {
 		previewPdf: 'Preview PDF',
 		items: 'Items',
 		remove: 'Remove',
+
+		invoiceNumberWarning1:
+			'Invoice numbers are automatically generated and managed by the system. You can change the format and running number in the ',
+		invoiceNumberWarning2: 'settings',
+		invoiceNumberWarning3: '.',
+		invoiceNumberOverride: 'Manual override',
 
 		product: {
 			products: 'Products:',
@@ -212,6 +220,7 @@ export const TRANSLATIONS_EN = {
 		languages: 'Languages',
 		unsavedChanges: 'Unsaved changes',
 		inDevelopment: 'This feature is still in development.',
+		date: 'Date',
 	},
 
 	demo: {

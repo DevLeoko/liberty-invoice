@@ -4,6 +4,7 @@
 	import Chip from './basics/Chip.svelte'
 
 	export let invoice: ListInvoice
+	export let showOverdueDays = false
 
 	$: remaining = invoice.amountWithTax - invoice.amountPaid
 	$: dueInDays = Math.ceil((invoice.dueDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24))
@@ -12,8 +13,12 @@
 	$: {
 		if (invoice.draft) statusText = $t('invoiceStatus.draft')
 		else if (remaining == 0) statusText = $t('invoiceStatus.paid')
-		else if (dueInDays < 0) statusText = $t('invoiceStatus.overdue')
-		else if (dueInDays == 0) statusText = $t('invoiceStatus.dueToday')
+		else if (dueInDays < 0) {
+			if (showOverdueDays) {
+				if (dueInDays == -1) statusText = $t('invoiceStatus.overdueYesterday')
+				else statusText = $t('invoiceStatus.overdueByDays', { days: -dueInDays })
+			} else statusText = $t('invoiceStatus.overdue')
+		} else if (dueInDays == 0) statusText = $t('invoiceStatus.dueToday')
 		else if (dueInDays == 1) statusText = $t('invoiceStatus.dueTomorrow')
 		else statusText = $t('invoiceStatus.dueInDays', { days: dueInDays })
 	}

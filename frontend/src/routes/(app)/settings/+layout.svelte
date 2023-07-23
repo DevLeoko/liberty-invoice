@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { goto } from '$app/navigation'
 	import { page } from '$app/stores'
+	import PageTitle from '../../../lib/components/basics/PageTitle.svelte'
 	import { t } from '../../../lib/stores/settings'
 
 	let title = $t('menu.settings')
@@ -17,11 +17,6 @@
 	}
 </script>
 
-<h1 class="pageTitle">
-	{#if $page.url.pathname != '/settings'}
-		<span class="material-icons back-nav" on:click={() => goto('/settings')}>arrow_back</span>
-	{/if}
-	{title}
-</h1>
+<PageTitle {title} backLink={$page.url.pathname != '/settings' ? '/settings' : null} />
 
 <slot />

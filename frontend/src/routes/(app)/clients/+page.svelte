@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { cloneDeep } from 'lodash'
+	import { formatClientName } from '../../../../../shared/client-formatter'
 	import Button from '../../../lib/components/basics/Button.svelte'
 	import type { EditorSelection } from '../../../lib/components/basics/EditorModal.svelte'
+	import PageTitle from '../../../lib/components/basics/PageTitle.svelte'
 	import Skeleton from '../../../lib/components/basics/Skeleton.svelte'
 	import ClientEditorModal from '../../../lib/components/editors/ClientEditorModal.svelte'
 	import { createClientQuery } from '../../../lib/controller/client'
@@ -36,8 +38,7 @@
 
 <ClientEditorModal bind:selected />
 
-<div class="flex items-center justify-between mb-4">
-	<h1 class="pageTitle">{$t('menu.clients')}</h1>
+<PageTitle title={$t('menu.clients')}>
 	{#if $userSettings.isLoading}
 		<Skeleton class="h-9 w-36" />
 	{:else}
@@ -45,7 +46,7 @@
 			><span class="mr-1 material-icons">add</span> {$t('clientEditorModal.create')}</Button
 		>
 	{/if}
-</div>
+</PageTitle>
 
 {#if $clients.isLoading}
 	<Skeleton class="w-24 h-12" />
@@ -56,11 +57,11 @@
 {:else}
 	{#each $clients.data as client}
 		<div
-			class="p-2 mt-2 rounded-sm cursor-pointer w-72 bg-slate-200 hover:bg-slate-300"
+			class="w-full p-2 mt-2 rounded-sm cursor-pointer xs:w-72 bg-slate-200 hover:bg-slate-300"
 			on:click={() => selectClient(client.id)}
 		>
 			<h3 class="text-lg font-semibold">
-				{client.name}
+				{formatClientName(client)}
 			</h3>
 		</div>
 	{/each}

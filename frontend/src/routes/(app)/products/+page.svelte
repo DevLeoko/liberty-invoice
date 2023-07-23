@@ -2,6 +2,7 @@
 	import { cloneDeep } from 'lodash'
 	import Button from '../../../lib/components/basics/Button.svelte'
 	import type { EditorSelection } from '../../../lib/components/basics/EditorModal.svelte'
+	import PageTitle from '../../../lib/components/basics/PageTitle.svelte'
 	import Skeleton from '../../../lib/components/basics/Skeleton.svelte'
 	import ProductEditorModal from '../../../lib/components/editors/ProductEditorModal.svelte'
 	import { createProductListQuery } from '../../../lib/controller/product'
@@ -38,9 +39,7 @@
 
 <ProductEditorModal bind:selected />
 
-<div class="flex items-center justify-between mb-4">
-	<h1 class="pageTitle">{$t('menu.products')}</h1>
-
+<PageTitle title={$t('menu.products')}>
 	{#if $userSettings.isLoading}
 		<Skeleton class="h-9 w-36" />
 	{:else}
@@ -48,7 +47,7 @@
 			><span class="mr-1 material-icons">add</span> {$t('productEditorModal.create')}</Button
 		>
 	{/if}
-</div>
+</PageTitle>
 
 {#if $products.isLoading}
 	<Skeleton class="w-24 h-12" />
@@ -59,7 +58,7 @@
 {:else}
 	{#each $products.data as product}
 		<div
-			class="p-2 mt-2 rounded-sm cursor-pointer w-72 bg-slate-200 hover:bg-slate-300"
+			class="w-full p-2 mt-2 rounded-sm cursor-pointer xs:w-72 bg-slate-200 hover:bg-slate-300"
 			on:click={() => selectProduct(product.id)}
 		>
 			<h3 class="text-lg font-semibold">

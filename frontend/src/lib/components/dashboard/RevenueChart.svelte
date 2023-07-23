@@ -96,7 +96,7 @@
 		{$t('dashboard.revenueChart.title')} ({$userSettings.data?.defaultCurrency})
 	</h2>
 
-	<div class="flex items-center text-sm uppercase">
+	<div class="flex flex-col items-center text-sm uppercase xs:flex-row min-w-max">
 		<div
 			class="cursor-pointer"
 			class:font-semibold={view === 'year'}
@@ -104,7 +104,8 @@
 		>
 			{$t('dashboard.revenueChart.thisYear')}
 		</div>
-		<div class="mx-2 h-4 w-[1px] bg-gray-400" />
+		<div class="mx-2 h-4 w-[1px] bg-gray-400 hidden xs:block" />
+		<div class="my-1 w-4 h-[1px] bg-gray-400 xs:hidden" />
 		<div
 			class="cursor-pointer"
 			class:font-semibold={view === 'month'}
@@ -115,21 +116,25 @@
 	</div>
 </div>
 
-<Chart {data} {labels} height={300}>
-	<svelte:fragment slot="tooltip" let:values let:index>
-		<div class="min-w-max">
-			<div class="mb-1 text-sm font-semibold">
-				{new Date(0, index).toLocaleString($t('langCode'), { month: 'long' })}
-			</div>
-			{#each values as value, i}
-				<div class="flex items-center">
-					<div class="w-2 h-2 mr-1 rounded-full" style="background: {data[i].color}" />
-					<div class="mr-auto">
-						{data[i].name}
+<div class="overflow-x-auto overflow-y-hidden md:overflow-x-hidden">
+	<div class="min-w-[1000px] md:min-w-0">
+		<Chart {data} {labels} height={300}>
+			<svelte:fragment slot="tooltip" let:values let:index>
+				<div class="min-w-max">
+					<div class="mb-1 text-sm font-semibold">
+						{new Date(0, index).toLocaleString($t('langCode'), { month: 'long' })}
 					</div>
-					<div class="ml-2">{$formatFloat(value)}</div>
+					{#each values as value, i}
+						<div class="flex items-center">
+							<div class="w-2 h-2 mr-1 rounded-full" style="background: {data[i].color}" />
+							<div class="mr-auto">
+								{data[i].name}
+							</div>
+							<div class="ml-2">{$formatFloat(value)}</div>
+						</div>
+					{/each}
 				</div>
-			{/each}
-		</div>
-	</svelte:fragment>
-</Chart>
+			</svelte:fragment>
+		</Chart>
+	</div>
+</div>

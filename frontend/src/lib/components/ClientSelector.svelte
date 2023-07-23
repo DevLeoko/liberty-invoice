@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { formatClientName } from '../../../../shared/client-formatter'
 	import { createClientQuery } from '../controller/client'
 	import { createUserSettingsQuery } from '../controller/user-settings'
 	import { t } from '../stores/settings'
@@ -56,7 +57,10 @@
 					class:text-gray-600={client.id !== clientId}
 					on:click={() => (clientId = client.id)}
 				>
-					<span class="font-semibold">{client.shorthand || client.name}</span>
+					<span
+						class="font-semibold text-center overflow-hidden {!client.shorthand ? 'text-xs' : ''}"
+						>{client.shorthand || formatClientName(client)}</span
+					>
 				</div>
 			{/each}
 		{/if}
