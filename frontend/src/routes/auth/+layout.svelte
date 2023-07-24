@@ -4,8 +4,8 @@
 	import { applicationLanguage, t } from '../../lib/stores/settings'
 </script>
 
-<div class="flex w-screen h-screen overflow-hidden">
-	<div class="flex flex-col flex-grow p-12 pb-4">
+<div class="flex w-screen h-screen max-w-full overflow-hidden">
+	<div class="flex flex-col flex-grow min-w-0 p-6 pb-4 md:p-12">
 		<a class="flex items-center mb-8" href="https://liberty-invoice.com/{$t('langCodeShort')}">
 			<img class="h-6" src="/logo.svg" alt="logo" />
 			<h2 class="ml-2 font-sans text-lg tracking-widest uppercase text-slate-800">
@@ -47,5 +47,5 @@
 			</FloatingCardTrigger>
 		</div>
 	</div>
-	<div class="w-1/3 p-8 -mr-12 -skew-x-6 bg-blue-400 bg-center bg-cover" />
+	<div class="hidden w-1/3 p-8 -mr-12 -skew-x-6 bg-blue-400 bg-center bg-cover md:block" />
 </div>

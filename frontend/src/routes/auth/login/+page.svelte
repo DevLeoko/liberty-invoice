@@ -84,7 +84,7 @@
 	<script src="https://accounts.google.com/gsi/client" async defer></script>
 </svelte:head>
 
-<div class="flex flex-col w-[350px]">
+<div class="flex flex-col w-[350px] max-w-full">
 	<h1 class="text-3xl font-semibold text-slate-700">{$t('auth.login')}</h1>
 	<span class="text-orange-400">
 		{inputIssue && showIssue ? $t(inputIssue) : ''}&nbsp;
@@ -113,17 +113,18 @@
 		data-itp_support="true"
 	/>
 
-	<div
-		class="g_id_signin"
-		data-type="standard"
-		data-shape="rectangular"
-		data-theme="outline"
-		data-text="signin_with"
-		data-size="large"
-		data-locale={$applicationLanguage}
-		data-logo_alignment="center"
-		data-width="350"
-	/>
+	<div class="flex justify-center">
+		<div
+			class="g_id_signin"
+			data-type="standard"
+			data-shape="rectangular"
+			data-theme="outline"
+			data-text="signin_with"
+			data-size="large"
+			data-locale={$applicationLanguage}
+			data-logo_alignment="center"
+		/>
+	</div>
 
 	<div class="mt-4">
 		<a href="/auth/reset-password" class="text-blue-500">{$t('auth.forgotPassword')}</a>

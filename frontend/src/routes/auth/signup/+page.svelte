@@ -67,17 +67,18 @@
 			data-auto_prompt="false"
 		/>
 
-		<div
-			class="g_id_signin"
-			data-type="standard"
-			data-shape="rectangular"
-			data-theme="outline"
-			data-text="signup_with"
-			data-size="large"
-			data-locale={$applicationLanguage}
-			data-logo_alignment="center"
-			data-width="350"
-		/>
+		<div class="justify-center">
+			<div
+				class="g_id_signin"
+				data-type="standard"
+				data-shape="rectangular"
+				data-theme="outline"
+				data-text="signup_with"
+				data-size="large"
+				data-locale={$applicationLanguage}
+				data-logo_alignment="center"
+			/>
+		</div>
 	{:else}
 		<ConsentCheckBoxes bind:agreedToTerms bind:agreedToMarketing />
 		<Button class="mt-4" on:click={completeSignup} {loading} disabled={!agreedToTerms}>

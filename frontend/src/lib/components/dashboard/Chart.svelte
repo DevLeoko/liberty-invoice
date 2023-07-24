@@ -29,7 +29,18 @@
 		return () => resizeObserver.disconnect()
 	})
 
-	let showIndex: number | null = 2
+	function onChatClick(index: number) {
+		if (lastClickedIndex == index) {
+			showIndex = null
+			lastClickedIndex = null
+		} else {
+			showIndex = index
+			lastClickedIndex = index
+		}
+	}
+
+	let showIndex: number | null = null
+	let lastClickedIndex: number | null = null
 
 	$: x = d3.scaleLinear([0, labels.length - 1], [marginLeft, width - marginRight])
 	$: y = d3.scaleLinear(
@@ -121,6 +132,7 @@
 						fill="transparent"
 						on:mouseover={() => (showIndex = i)}
 						on:mouseout={() => (showIndex = null)}
+						on:click={() => onChatClick(i)}
 					/>
 				{/each}
 			</g></svg

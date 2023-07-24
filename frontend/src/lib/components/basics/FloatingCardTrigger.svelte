@@ -6,6 +6,7 @@
 	export let preferLeft = false
 
 	export let triggerClass = ''
+	export let cardClass = ''
 </script>
 
 <div class="relative">
@@ -19,7 +20,7 @@
 			{preferLeft}
 			on:clickOutside={() => (showFloatingCard = false)}
 			on:click={() => (showFloatingCard = false)}
-			class="cursor-default"
+			class="cursor-default {cardClass}"
 		>
 			<slot />
 		</FloatingCard>
