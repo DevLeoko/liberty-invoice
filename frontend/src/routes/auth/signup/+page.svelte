@@ -67,7 +67,7 @@
 			data-auto_prompt="false"
 		/>
 
-		<div class="justify-center">
+		<div class="flex justify-center">
 			<div
 				class="g_id_signin"
 				data-type="standard"
