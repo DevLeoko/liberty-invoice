@@ -70,7 +70,7 @@
 	<div class="flex flex-col">
 		<b class="text-base">{$t('invoice.billedTo')}</b>
 		<div class="leading-tight">
-			{#each getClientDisplayLines(invoice.client, (str) => str) as line}
+			{#each getClientDisplayLines(invoice.client, $t) as line}
 				{#if line}
 					<div>{line}</div>
 				{:else}

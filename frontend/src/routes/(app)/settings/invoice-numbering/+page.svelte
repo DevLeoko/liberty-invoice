@@ -28,7 +28,7 @@
 {#if !userEditObject}
 	<Skeleton class="max-w-lg h-80" />
 {:else}
-	<div class="flex flex-col w-max">
+	<div class="flex flex-col max-w-md">
 		<div class="grid grid-cols-1 gap-4 xs:grid-cols-2">
 			<Labeled label={$t('settings.format')}>
 				<input type="text" bind:value={userEditObject.idFormat} />

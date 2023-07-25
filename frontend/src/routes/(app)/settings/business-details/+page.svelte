@@ -33,7 +33,7 @@
 {#if !userEditObject}
 	<Skeleton class="max-w-lg h-80" />
 {:else}
-	<div class="flex flex-col w-max">
+	<div class="flex flex-col max-w-full w-max">
 		<div class="flex flex-col space-y-8 xl:space-y-0 xl:space-x-8 xl:flex-row">
 			<div class="max-w-lg">
 				<h2 class="pageSubTitle">{$t('settings.businessDetails')}</h2>

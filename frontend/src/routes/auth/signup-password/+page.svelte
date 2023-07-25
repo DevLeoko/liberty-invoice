@@ -92,12 +92,12 @@
 			<span class="text-3xl text-lime-500 material-icons-outlined"> done_outline </span>
 
 			<h2 class="my-2 text-xl font-semibold">{$t('auth.registrationMailSent')}</h2>
-			<Button href="/auth/login" outlined class="mt-4 w-max">{$t('auth.login')}</Button>
+			<Button href="/auth/login" outlined class="max-w-full mt-4 w-max">{$t('auth.login')}</Button>
 		</div>
 	</BasicModal>
 {/if}
 
-<div class="flex flex-col w-[350px]">
+<div class="flex flex-col w-[350px] max-w-full">
 	<h1 class="text-3xl font-semibold text-slate-700">{$t('auth.register')}</h1>
 	<span class="text-orange-400">
 		{inputIssue && showIssue ? $t(inputIssue) : ''}&nbsp;
