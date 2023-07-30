@@ -17,6 +17,9 @@
 body {
 	// @apply bg-white;
 	@apply bg-gray-50;
+
+	// TODO: Check accessibility implications of this
+	-webkit-tap-highlight-color: transparent;
 }
 
 input[type='text'],
