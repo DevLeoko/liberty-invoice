@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "com.liberty_invoice.app",
+        "sha256_cert_fingerprints": ["A1:6B:DC:3E:B0:8B:E9:65:74:8C:E2:D3:47:BE:9C:DF:F7:3E:CA:ED:C5:AA:F7:C6:34:FD:9B:E9:E5:46:9C:1D"]
+      }
+    }]
