@@ -3,17 +3,17 @@
 	"name": "Liberty Invoice - Free Invoicing Tool",
 	"icons": [
 		{
-			"src": "/manifest-images/logo-sq.svg",
+			"src": "/manifest-images/icon-512.svg",
 			"type": "image/svg+xml",
-			"sizes": "192x192"
+			"sizes": "512x512"
 		},
 		{
-			"src": "/manifest-images/logo-192.png",
+			"src": "/manifest-images/icon-192.png",
 			"type": "image/png",
 			"sizes": "192x192"
 		},
 		{
-			"src": "/manifest-images/logo-512.png",
+			"src": "/manifest-images/icon-512.png",
 			"type": "image/png",
 			"sizes": "512x512"
 		}
