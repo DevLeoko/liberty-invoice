@@ -68,9 +68,9 @@
 			{$t('invoiceStatus.finalize')}
 		</CardActionButton>
 
-		<CardActionButton icon="mark_email_read" on:click={finalizeInvoice}>
+		<!-- <CardActionButton icon="mark_email_read" on:click={finalizeInvoice}>
 			{$t('invoiceStatus.sendAndFinalize')}
-		</CardActionButton>
+		</CardActionButton> -->
 		<div class="h-[1px] bg-slate-200" />
 	{:else if invoice.amountPaid != invoice.amountWithTax}
 		<CardActionButton icon="check" loading={loadingMarkAsPaid} on:click={markAsPaid}>
