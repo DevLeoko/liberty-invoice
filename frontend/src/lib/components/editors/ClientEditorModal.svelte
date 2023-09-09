@@ -1,5 +1,9 @@
 <script lang="ts">
-	import { createClientCreateMutation, createClientUpdateMutation } from '../../controller/client'
+	import {
+		createClientCreateMutation,
+		createClientDeleteMutation,
+		createClientUpdateMutation,
+	} from '../../controller/client'
 	import type { CreateClient } from '../../trpcClient'
 	import type { EditorSelection } from '../basics/EditorModal.svelte'
 	import EditorModal from '../basics/EditorModal.svelte'
@@ -9,6 +13,7 @@
 
 	const updateClient = createClientUpdateMutation()
 	const createClient = createClientCreateMutation()
+	const deleteClient = createClientDeleteMutation()
 
 	async function onSave() {
 		if (selected) {
@@ -19,6 +24,12 @@
 			}
 		}
 	}
+
+	async function onDelete() {
+		if (selected && selected.id !== undefined) {
+			await deleteClient({ id: selected.id })
+		}
+	}
 </script>
 
-<EditorModal editor={ClientEditor} name="clientEditorModal" bind:selected {onSave} />
+<EditorModal editor={ClientEditor} name="clientEditorModal" bind:selected {onSave} {onDelete} />

@@ -30,6 +30,21 @@ export function createClientUpdateMutation() {
 	}
 }
 
+export function createClientDeleteMutation() {
+	const queryClient = useQueryClient()
+
+	return async (data: Parameters<typeof trpc.client.delete.mutate>[0]) => {
+		const res = await trpc.client.delete.mutate(data)
+
+		queryClient.invalidateQueries(CLIENT_KEYS.read(data.id))
+		queryClient.invalidateQueries(CLIENT_KEYS.list())
+
+		queryClient.invalidateQueries(TEXT_FRAGMENT_KEYS.allListForClient(data.id))
+
+		return res
+	}
+}
+
 export function createClientCreateMutation() {
 	const queryClient = useQueryClient()
 

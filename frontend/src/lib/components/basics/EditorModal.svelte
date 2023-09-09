@@ -35,7 +35,7 @@
 	export let selected: EditorSelection<E> = null
 
 	export let onSave: (selected: { entity: E; id?: number }) => Promise<void>
-	export let onDelete: (id: number) => Promise<void> = async () => {}
+	export let onDelete: ((id: number) => Promise<void>) | null = null
 
 	function performSave() {
 		loadingSave = true
@@ -55,6 +55,8 @@
 	}
 
 	async function performDelete() {
+		if (!onDelete) return
+
 		loadingDelete = true
 		try {
 			await onDelete(selected!.id!)
@@ -77,7 +79,7 @@
 			<div class="mt-2 text-red-500">{inputError}</div>
 		{/if}
 		<div class="flex justify-end w-full mt-4" slot="action">
-			{#if selected.id !== undefined}
+			{#if selected.id !== undefined && onDelete}
 				<Button
 					outlined
 					disabled={anyLoading}

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import {
 		createProductCreateMutation,
+		createProductDeleteMutation,
 		createProductUpdateMutation,
 	} from '../../controller/product'
 	import type { CreateProduct } from '../../trpcClient'
@@ -12,6 +13,7 @@
 
 	const updateProduct = createProductUpdateMutation()
 	const createProduct = createProductCreateMutation()
+	const deleteProduct = createProductDeleteMutation()
 
 	async function onSave() {
 		if (selected) {
@@ -22,6 +24,12 @@
 			}
 		}
 	}
+
+	async function onDelete() {
+		if (selected && selected.id !== undefined) {
+			await deleteProduct(selected.id)
+		}
+	}
 </script>
 
-<EditorModal editor={ProductEditor} name="productEditorModal" bind:selected {onSave} />
+<EditorModal editor={ProductEditor} name="productEditorModal" bind:selected {onSave} {onDelete} />
