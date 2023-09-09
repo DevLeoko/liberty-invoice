@@ -7,6 +7,7 @@
 	import TaxRateInput from '../TaxRateInput.svelte'
 	import FloatingCardTrigger from '../basics/FloatingCardTrigger.svelte'
 	import Labeled from '../basics/Labeled.svelte'
+	import NumberInput from '../basics/NumberInput.svelte'
 
 	export let entity: Pick<
 		CreateClient,
@@ -33,7 +34,7 @@
 </Labeled>
 
 <Labeled label={$t('clientEditor.defaultDueDays')}>
-	<input type="text" bind:value={entity.defaultDueDays} />
+	<NumberInput bind:value={entity.defaultDueDays} />
 </Labeled>
 
 <Labeled label={$t('clientEditor.defaultTaxRate')}>
