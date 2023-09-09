@@ -125,7 +125,7 @@
 <svelte:body on:click|capture={onBodyClick} />
 
 <div
-	class="absolute z-60 flex items-center px-3 py-2 text-black bg-white rounded-md shadow w-max border border-gray-100 {className}"
+	class="absolute z-[60] flex items-center px-3 py-2 text-black bg-white rounded-md shadow w-max border border-gray-100 {className}"
 	bind:this={el}
 	on:click
 	transition:fly|local={{ duration: 100, y: 10 }}
