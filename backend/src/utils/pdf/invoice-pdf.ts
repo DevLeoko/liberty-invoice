@@ -333,6 +333,7 @@ export async function buildInvoicePdf(
                   ),
                 ],
             {
+              mainAxisAlignment: "space-between",
               width: { relative: 1 },
               div: {
                 padding: 2,
