@@ -32,10 +32,12 @@
 		// TODO: this overrides the initial value of the note, when duplicating an invoice
 	}
 
+	let initialLoad = true
 	$: {
-		if ($defaultNoteQuery != null) {
+		if ($defaultNoteQuery != null && !initialLoad) {
 			updateInvoiceNote($defaultNoteQuery, new Date(invoiceDate), new Date(invoiceDueDate))
 		}
+		initialLoad = false
 	}
 </script>
 

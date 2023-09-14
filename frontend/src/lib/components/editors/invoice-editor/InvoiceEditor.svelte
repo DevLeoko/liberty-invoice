@@ -28,10 +28,12 @@
 		})
 	}
 
+	let initialLoad = true
 	$: {
-		if (clientId != null) {
+		if (clientId != null && !initialLoad) {
 			onClientChange(clientId)
 		}
+		initialLoad = false
 	}
 
 	$: dueDays = invoice.dueDate

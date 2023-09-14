@@ -44,7 +44,16 @@
 		const { format } = parseInvoiceIdFormat(idFormat)
 
 		const dueDate = new Date()
-		dueDate.setDate(dueDate.getDate() + userSettings.defaultDueDays)
+
+		let dueDays = userSettings.defaultDueDays
+		if (duplicationData) {
+			dueDays = Math.round(
+				(duplicationData.dueDate.getTime() - duplicationData.date.getTime()) /
+					(1000 * 60 * 60 * 24),
+			)
+		}
+
+		dueDate.setDate(dueDate.getDate() + dueDays)
 
 		const invoiceNumber = format(partialId)
 
