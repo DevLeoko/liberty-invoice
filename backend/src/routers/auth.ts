@@ -172,6 +172,9 @@ export const authRouter = router({
   }),
 
   deleteAccount: protectedProcedure.mutation(async ({ ctx }) => {
-    await prisma.user.delete({ where: { id: ctx.userId } });
+    await prisma.$transaction([
+      prisma.invoice.deleteMany({ where: { userId: ctx.userId } }),
+      prisma.user.delete({ where: { id: ctx.userId } }),
+    ]);
   }),
 });

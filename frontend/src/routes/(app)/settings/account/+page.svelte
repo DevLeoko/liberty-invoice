@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation'
 	import { onMount } from 'svelte'
 	import Button from '../../../../lib/components/basics/Button.svelte'
 	import Chip from '../../../../lib/components/basics/Chip.svelte'
@@ -61,6 +62,7 @@
 		})
 		setLoggedOut()
 		$logSuccess('settings.accountDeleted')
+		goto('/auth/login')
 	}
 </script>
 
