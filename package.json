@@ -1,29 +1,26 @@
 {
-  "name": "liberty-invoice",
-  "version": "1.0.1",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "lint": "npm run lint --workspaces",
-    "format": "npm run format --workspaces"
-  },
-  "devDependencies": {
-    "@types/eslint": "8.56.0",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^6.0.0",
-    "eslint": "^8.56.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-svelte": "^2.35.1",
-    "prettier": "^3.1.1",
-    "prettier-plugin-svelte": "^3.1.2",
-    "tslib": "^2.4.1",
-    "typescript": "^5.0.0"
-  },
-  "author": "",
-  "license": "ISC",
-  "workspaces": [
-    "packages/frontend",
-    "packages/backend",
-    "packages/shared"
-  ]
+	"name": "liberty-invoice",
+	"version": "1.0.1",
+	"description": "",
+	"main": "index.js",
+	"scripts": {},
+	"devDependencies": {
+		"@types/eslint": "8.56.0",
+		"@typescript-eslint/eslint-plugin": "^6.0.0",
+		"@typescript-eslint/parser": "^6.0.0",
+		"eslint": "^8.56.0",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-plugin-svelte": "^2.35.1",
+		"prettier": "^3.1.1",
+		"prettier-plugin-svelte": "^3.1.2",
+		"tslib": "^2.4.1",
+		"typescript": "^5.0.0"
+	},
+	"author": "",
+	"license": "ISC",
+	"workspaces": [
+		"packages/frontend",
+		"packages/backend",
+		"packages/shared"
+	]
 }

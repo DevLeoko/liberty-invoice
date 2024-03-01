@@ -1,11 +1,11 @@
 <script lang="ts">
+	import type { EditorSelection } from '$lib/utils/EditorSelection'
 	import { formatClientName } from '../../../../shared/client-formatter'
 	import { createClientQuery } from '../controller/client'
 	import { createUserSettingsQuery } from '../controller/user-settings'
 	import { t } from '../stores/settings'
 	import type { CreateClient } from '../trpcClient'
 	import { emptyClient } from '../utils/clientUtils'
-	import type { EditorSelection } from './basics/EditorModal.svelte'
 	import Skeleton from './basics/Skeleton.svelte'
 	import ClientEditorModal from './editors/ClientEditorModal.svelte'
 

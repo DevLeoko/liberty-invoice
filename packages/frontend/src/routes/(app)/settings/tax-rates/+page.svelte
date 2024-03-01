@@ -1,7 +1,7 @@
 <script lang="ts">
+	import type { EditorSelection } from '$lib/utils/EditorSelection'
 	import Button from '../../../../lib/components/basics/Button.svelte'
 	import Chip from '../../../../lib/components/basics/Chip.svelte'
-	import type { EditorSelection } from '../../../../lib/components/basics/EditorModal.svelte'
 	import EditorModal from '../../../../lib/components/basics/EditorModal.svelte'
 	import Skeleton from '../../../../lib/components/basics/Skeleton.svelte'
 	import TaxRateEditor from '../../../../lib/components/editors/TaxRateEditor.svelte'

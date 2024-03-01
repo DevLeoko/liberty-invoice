@@ -28,7 +28,7 @@
 		return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 	}
 
-	onMount(async () => {
+	async function checkForVerificationToken() {
 		// Get token from url
 		const urlParams = new URLSearchParams(window.location.search)
 		const token = urlParams.get('token')
@@ -42,6 +42,10 @@
 			// Clear url params
 			window.history.replaceState({}, document.title, '/')
 		}
+	}
+
+	onMount(() => {
+		checkForVerificationToken()
 
 		// Register signInWithGoogle callback as global function
 		// @ts-ignore

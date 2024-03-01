@@ -1,11 +1,11 @@
 <script lang="ts">
+	import type { EditorSelection } from '$lib/utils/EditorSelection'
 	import {
 		createProductCreateMutation,
 		createProductDeleteMutation,
 		createProductUpdateMutation,
 	} from '../../controller/product'
 	import type { CreateProduct } from '../../trpcClient'
-	import type { EditorSelection } from '../basics/EditorModal.svelte'
 	import EditorModal from '../basics/EditorModal.svelte'
 	import ProductEditor from './ProductEditor.svelte'
 

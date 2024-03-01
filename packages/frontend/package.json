@@ -6,9 +6,7 @@
 		"build": "vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --threshold error",
-		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch --threshold error",
-		"lint": "prettier --check . && eslint .",
-		"format": "prettier --write . && eslint . --fix"
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch --threshold error"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-static": "^3.0.1",
@@ -22,6 +20,7 @@
 		"d3": "^7.8.5",
 		"lodash": "^4.17.21",
 		"material-icons": "^1.13.4",
+		"sass": "^1.71.1",
 		"superjson": "^1.13.3",
 		"svelte": "^4.2.7",
 		"svelte-check": "^3.6.0",

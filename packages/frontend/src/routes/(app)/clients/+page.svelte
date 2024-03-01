@@ -1,8 +1,8 @@
 <script lang="ts">
+	import type { EditorSelection } from '$lib/utils/EditorSelection'
 	import { cloneDeep } from 'lodash'
 	import { formatClientName } from '../../../../../shared/client-formatter'
 	import Button from '../../../lib/components/basics/Button.svelte'
-	import type { EditorSelection } from '../../../lib/components/basics/EditorModal.svelte'
 	import PageTitle from '../../../lib/components/basics/PageTitle.svelte'
 	import Skeleton from '../../../lib/components/basics/Skeleton.svelte'
 	import ClientEditorModal from '../../../lib/components/editors/ClientEditorModal.svelte'
