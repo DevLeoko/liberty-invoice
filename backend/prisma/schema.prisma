@@ -159,7 +159,7 @@ model InvoiceItem {
   productId Int?
 
   name        String
-  description String
+  description String @db.Text
   quantity    Float
   unit        String
   unitPrice   Float
@@ -172,7 +172,7 @@ model Product {
   userId Int
 
   name        String
-  description String
+  description String @db.Text
   unit        String
   unitPrice   Float
   currency    String
