@@ -1,4 +1,4 @@
-import { PdfDocument } from 'painless-pdf'
+import type { PdfDocument } from 'painless-pdf'
 import fs from 'fs'
 
 const DEFAULT_FONTS = [

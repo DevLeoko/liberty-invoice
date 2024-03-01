@@ -17,7 +17,7 @@
 		"prisma-gen": "prisma generate",
 		"gen-env": "gen-env-types .env -o src/types/env.d.ts -e .",
 		"lint": "prettier --check . && eslint .",
-		"format": "prettier --write ."
+		"format": "prettier --write . && eslint . --fix"
 	},
 	"keywords": [],
 	"author": "",

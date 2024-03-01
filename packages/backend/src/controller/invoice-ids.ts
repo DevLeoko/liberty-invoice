@@ -40,7 +40,7 @@ export async function getNextAvailablePartialId(
 
 	// TODO: Adjust for time zones of users
 	const today = new Date()
-	let resetPartialId =
+	const resetPartialId =
 		(discriminatingTimespan == 'year' && today.getFullYear() != partialIdDate.getFullYear()) ||
 		(discriminatingTimespan == 'month' && today.getMonth() != partialIdDate.getMonth()) ||
 		(discriminatingTimespan == 'day' && today.getDate() != partialIdDate.getDate())

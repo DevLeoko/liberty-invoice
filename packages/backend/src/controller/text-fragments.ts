@@ -1,6 +1,7 @@
-import {
+import type {
 	Locale,
-	ServerTranslationPath,
+	ServerTranslationPath} from '../../../shared/invoice-translations/translations';
+import {
 	translateServer,
 } from '../../../shared/invoice-translations/translations'
 import { prisma } from '../prisma'

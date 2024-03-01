@@ -1,8 +1,9 @@
-import { Prisma } from '@prisma/client'
+import type { Prisma } from '@prisma/client'
 import fs from 'fs/promises'
 import imageSize from 'image-size'
+import type {
+	PdfBlueprint} from 'painless-pdf';
 import {
-	PdfBlueprint,
 	PdfDocument,
 	ppColumn,
 	ppDiv,
@@ -15,21 +16,22 @@ import {
 	ppText,
 } from 'painless-pdf'
 import { promisify } from 'util'
-import { z } from 'zod'
+import type { z } from 'zod'
 import { getClientDisplayLines } from '../../../../shared/address-formatter'
 import { getCurrency } from '../../../../shared/currencies'
 import {
 	computeTotalExcludingTax,
 	computeTotalWithTax,
 } from '../../../../shared/invoice-computations'
-import {
+import type {
 	KeyPath,
-	Locale,
+	Locale} from '../../../../shared/invoice-translations/translations';
+import {
 	getTranslationDictionary,
 	translate,
 } from '../../../../shared/invoice-translations/translations'
 import { getFinalTextFragment } from '../../controller/text-fragments'
-import { invoiceItemCreateSchema } from '../../routers/invoice-schemas'
+import type { invoiceItemCreateSchema } from '../../routers/invoice-schemas'
 import { addAllRobotoFonts } from './pdf-fonts'
 
 const imageSizeAsync = promisify(imageSize)
@@ -287,7 +289,7 @@ export async function buildInvoicePdf(
 	}
 
 	function ppItemListTotal() {
-		let startGray = invoice.items.length % 2 == 0
+		const startGray = invoice.items.length % 2 == 0
 
 		const withoutTax = computeTotalExcludingTax(invoice)
 
