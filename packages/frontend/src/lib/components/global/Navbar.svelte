@@ -89,7 +89,7 @@
 		class="flex justify-between mt-1 mb-8 text-xs text-gray-700 md:mb-4"
 		on:click|stopPropagation
 	>
-		<span>&copy; Liberty Invoice 2023</span>
+		<span>&copy; Liberty Invoice {new Date().getFullYear()}</span>
 
 		<FloatingCardTrigger preferTop>
 			<svelte:fragment slot="trigger">

@@ -18,7 +18,7 @@
 		</div>
 
 		<div class="z-20 flex flex-wrap gap-4 mt-auto mb-4 text-xs text-gray-700">
-			<span>&copy; Liberty Invoice 2023</span>
+			<span>&copy; Liberty Invoice {new Date().getFullYear()}</span>
 
 			<a
 				href="https://liberty-invoice.com/{$t('langCodeShort')}/legal/tos"
