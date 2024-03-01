@@ -4,14 +4,15 @@
 		createTextFragmentListQuery,
 		createTextFragmentUpsertMutation,
 		getAvailableVariables,
+		type TextFragmentKey,
 	} from '../../controller/text-fragment'
 	import { t } from '../../stores/settings'
-	import type { Locale} from '../../translations/translations';
-import { translate, type TranslationPaths } from '../../translations/translations'
+	import type { Locale } from '../../translations/translations'
+	import { translate, type TranslationPaths } from '../../translations/translations'
 	import LanguageSelectorPopup from '../LanguageSelectorPopup.svelte'
 
 	export let fragmentLanguage: Locale
-	export let fragmentName: string
+	export let fragmentName: TextFragmentKey
 
 	$: tFragmentName = $t(`textFragments.name.${fragmentName}` as TranslationPaths)
 	$: tFragmentDefault = translate(

@@ -46,7 +46,7 @@ export const authRouter = router({
 				langCode: z.string(),
 			})
 		)
-		.mutation(async ({ input, ctx }) => {
+		.mutation(async ({ input }) => {
 			if (!verifyRecaptcha(input.token)) throw new TError('error.failedCaptcha')
 
 			await signUpWithPassword(input.email, input.password, input.marketingEmails, input.langCode)

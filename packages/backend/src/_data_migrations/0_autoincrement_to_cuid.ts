@@ -132,7 +132,7 @@ async function runMigration() {
 	}
 
 	// Drop all constraints
-	for (const [entityName, relatedEntityName, columnName, nullable] of relations) {
+	for (const [entityName, , columnName] of relations) {
 		// Drop constraint
 		await prisma.$executeRawUnsafe(
 			`ALTER TABLE \`${entityName}\` DROP FOREIGN KEY \`${entityName}_${columnName}_fkey\`;`

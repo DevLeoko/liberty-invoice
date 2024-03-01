@@ -1,8 +1,7 @@
 import type { Prisma } from '@prisma/client'
 import fs from 'fs/promises'
 import imageSize from 'image-size'
-import type {
-	PdfBlueprint} from 'painless-pdf';
+import type { PdfBlueprint } from 'painless-pdf'
 import {
 	PdfDocument,
 	ppColumn,
@@ -23,9 +22,7 @@ import {
 	computeTotalExcludingTax,
 	computeTotalWithTax,
 } from '../../../../shared/invoice-computations'
-import type {
-	KeyPath,
-	Locale} from '../../../../shared/invoice-translations/translations';
+import type { KeyPath, Locale } from '../../../../shared/invoice-translations/translations'
 import {
 	getTranslationDictionary,
 	translate,

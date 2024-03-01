@@ -1,5 +1,3 @@
-/// <reference path="./types/env.d.ts" />
-
 import 'dotenv-safe/config'
 
 process.env.TZ = 'Europe/Vienna'

@@ -1,26 +1,15 @@
-<script lang="ts" context="module">
-	export type EditorSelection<E> = { entity: E; id?: string } | null
-
-	// Required language properties
-	// updated:
-	// deleted:
-	// create:
-	// update:
-</script>
-
-<script lang="ts">
+<script
+	lang="ts"
+	generics="E, C extends ComponentType<SvelteComponent<{ entity: E; inputError?: string | null }>>"
+>
+	import type { EditorSelection } from '$lib/utils/EditorSelection'
 	import type { TranslationPaths } from '../../translations/translations'
 
 	import { logSuccess, t } from '../../stores/settings'
 
-	import type { SvelteComponentTyped } from 'svelte/internal'
+	import type { ComponentType, SvelteComponent } from 'svelte'
 	import BasicModal from './BasicModal.svelte'
 	import Button from './Button.svelte'
-
-	type E = $$Generic
-	type C = $$Generic<
-		typeof SvelteComponentTyped<{ entity: E; inputError?: string | null }, any, any>
-	>
 
 	export let editor: C
 

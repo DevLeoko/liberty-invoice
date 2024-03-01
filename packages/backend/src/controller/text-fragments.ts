@@ -1,9 +1,8 @@
 import type {
 	Locale,
-	ServerTranslationPath} from '../../../shared/invoice-translations/translations';
-import {
-	translateServer,
+	ServerTranslationPath,
 } from '../../../shared/invoice-translations/translations'
+import { translateServer } from '../../../shared/invoice-translations/translations'
 import { prisma } from '../prisma'
 
 export async function getFinalTextFragment(data: {

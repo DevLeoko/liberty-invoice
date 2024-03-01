@@ -1,5 +1,3 @@
-/// <reference path="../types/env.d.ts" />
-
 import argon2 from 'argon2'
 import jwt from 'jsonwebtoken'
 

@@ -5,15 +5,15 @@
 		getAvailableVariables,
 	} from '../../controller/text-fragment'
 	import { t } from '../../stores/settings'
-	import type { Locale} from '../../translations/translations';
-import { translate, type TranslationPaths } from '../../translations/translations'
+	import type { Locale } from '../../translations/translations'
+	import { translate, type TranslationPaths } from '../../translations/translations'
 	import type { CreateClient } from '../../trpcClient'
 	import FloatingCardTrigger from '../basics/FloatingCardTrigger.svelte'
 
 	export let clientLanguage: string // is Locale
 	export let fragments: CreateClient['textFragments']
 
-	let activeFragment = TEXT_FRAGMENT_NAMES[0]
+	let activeFragment: (typeof TEXT_FRAGMENT_NAMES)[number] = TEXT_FRAGMENT_NAMES[0]
 
 	$: tFragmentName = $t(`textFragments.name.${activeFragment}` as TranslationPaths)
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createTaxRateListQuery } from '../controller/tax-rate'
+	import { createTaxRateListQuery } from '$lib/controller/tax-rate'
 	import { t, translateIfFound } from '../stores/settings'
 	export let selectedId: string | null
 

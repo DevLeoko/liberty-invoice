@@ -12,7 +12,7 @@ export const TEXT_FRAGMENT_NAMES = [
 	'invoice.paymentNote',
 ] as const
 
-type TextFragmentKey = (typeof TEXT_FRAGMENT_NAMES)[number]
+export type TextFragmentKey = (typeof TEXT_FRAGMENT_NAMES)[number]
 
 export const TEXT_FRAGMENT_KEYS = {
 	all: ['textFragment'],
