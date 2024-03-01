@@ -1,0 +1,54 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "runDevelopment",
+      // "runOptions": {
+      //     "runOn": "folderOpen"
+      // },
+      "dependsOrder": "parallel",
+      "dependsOn": [
+        "run-backend",
+        "run-backend-build",
+        "run-frontend",
+        "run-frontend-check"
+      ]
+    },
+    {
+      "label": "run-backend",
+      "type": "shell",
+      "command": "npm run dev -w backend",
+      "presentation": {
+        "panel": "dedicated",
+        "group": "g1"
+      }
+    },
+    {
+      "label": "run-frontend",
+      "type": "shell",
+      "command": "npm run dev -w frontend",
+      "presentation": {
+        "panel": "dedicated",
+        "group": "g2"
+      }
+    },
+    {
+      "label": "run-backend-build",
+      "type": "shell",
+      "command": "npm run tsc:watch -w backend",
+      "presentation": {
+        "panel": "dedicated",
+        "group": "g2"
+      }
+    },
+    {
+      "label": "run-frontend-check",
+      "type": "shell",
+      "command": "npm run check:watch -w frontend",
+      "presentation": {
+        "panel": "dedicated",
+        "group": "g1"
+      }
+    }
+  ]
+}
