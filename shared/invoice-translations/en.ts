@@ -54,6 +54,8 @@ export const TRANSLATIONS_EN = {
     ET: "Ethiopia",
     GH: "Ghana",
     TZ: "Tanzania",
+    UA: "Ukraine",
+    MA: "Morocco",
   },
 
   invoice: {

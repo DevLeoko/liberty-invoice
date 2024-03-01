@@ -56,6 +56,8 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
     ET: "Äthiopien",
     GH: "Ghana",
     TZ: "Tansania",
+    UA: "Ukraine",
+    MA: "Marokko",
   },
 
   invoice: {
