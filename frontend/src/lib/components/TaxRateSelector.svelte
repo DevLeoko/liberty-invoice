@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createTaxRateListQuery } from '../controller/tax-rate'
 	import { t, translateIfFound } from '../stores/settings'
-	export let selectedId: number | null
+	export let selectedId: string | null
 
 	const taxRates = createTaxRateListQuery()
 </script>

@@ -12,7 +12,7 @@ import { TError } from "../utils/TError";
 // - Return true if successful, false if not
 
 export async function claimInvoiceId(
-  userId: number,
+  userId: string,
   partialId: number
 ): Promise<boolean> {
   const result = await prisma.userSettings.updateMany({
@@ -29,7 +29,7 @@ export async function claimInvoiceId(
 }
 
 export async function getNextAvailablePartialId(
-  userId: number
+  userId: string
 ): Promise<{ partialId: number; idFormat: string }> {
   const userSettings = await prisma.userSettings.findUnique({
     where: { userId },

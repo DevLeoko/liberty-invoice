@@ -39,7 +39,7 @@ const READ_INVOICE_DEFAULT_INCLUDES = {
   },
 } satisfies Prisma.InvoiceInclude;
 
-async function verifyInvoiceOwnership(invoiceId: number, userId: number) {
+async function verifyInvoiceOwnership(invoiceId: string, userId: string) {
   const invoice = await prisma.invoice.findUnique({
     where: {
       id: invoiceId,
@@ -70,7 +70,7 @@ export const invoiceRouter = router({
   create: protectedProcedure
     .input(
       z.object({
-        partialId: z.number().int().optional(),
+        partialId: z.number().optional(),
         invoice: invoiceCreateSchema,
       })
     )
@@ -129,7 +129,7 @@ export const invoiceRouter = router({
   update: protectedProcedure
     .input(
       z.object({
-        id: z.number().int(),
+        id: z.string(),
         invoice: invoiceCreateSchema,
       })
     )
@@ -187,7 +187,7 @@ export const invoiceRouter = router({
     }),
 
   delete: protectedProcedure
-    .input(z.number().int())
+    .input(z.string())
     .mutation(async ({ ctx, input }) => {
       await verifyInvoiceOwnership(input, ctx.userId);
 
@@ -198,25 +198,23 @@ export const invoiceRouter = router({
       });
     }),
 
-  read: protectedProcedure
-    .input(z.number().int())
-    .query(async ({ input, ctx }) => {
-      const invoice = await prisma.invoice.findUnique({
-        where: {
-          id: input,
-        },
-        include: READ_INVOICE_DEFAULT_INCLUDES,
-      });
+  read: protectedProcedure.input(z.string()).query(async ({ input, ctx }) => {
+    const invoice = await prisma.invoice.findUnique({
+      where: {
+        id: input,
+      },
+      include: READ_INVOICE_DEFAULT_INCLUDES,
+    });
 
-      if (invoice?.userId !== ctx.userId) {
-        throw new TError("error.invoice.notFound");
-      }
+    if (invoice?.userId !== ctx.userId) {
+      throw new TError("error.invoice.notFound");
+    }
 
-      return invoice;
-    }),
+    return invoice;
+  }),
 
   finalize: protectedProcedure
-    .input(z.number().int())
+    .input(z.string())
     .mutation(async ({ input, ctx }) => {
       await verifyInvoiceOwnership(input, ctx.userId);
 
@@ -271,7 +269,7 @@ export const invoiceRouter = router({
     }),
 
   logPayment: protectedProcedure
-    .input(z.object({ id: z.number().int(), amount: z.number() }))
+    .input(z.object({ id: z.string(), amount: z.number() }))
     .mutation(async ({ input, ctx }) => {
       await verifyInvoiceOwnership(input.id, ctx.userId);
 

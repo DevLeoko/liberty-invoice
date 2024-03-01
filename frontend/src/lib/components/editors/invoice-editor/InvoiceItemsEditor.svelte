@@ -12,7 +12,7 @@
 
 	export let currency: FullCurrency
 	export let items: CreateInvoiceItem[]
-	export let taxRateIds: number[]
+	export let taxRateIds: string[]
 
 	function addNewItem() {
 		items = [...items, emptyInvoiceItem()]

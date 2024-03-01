@@ -10,7 +10,7 @@
 
 	const dispatch = createEventDispatcher<{ select: void }>()
 
-	export let productId: number | null
+	export let productId: string | null
 	export let item: CreateInvoiceItem
 	export let currency: FullCurrency
 
@@ -25,7 +25,7 @@
 		  )
 		: []
 
-	function selectProduct(id: number) {
+	function selectProduct(id: string) {
 		productId = id
 		dispatch('select')
 	}

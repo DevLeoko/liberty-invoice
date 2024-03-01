@@ -23,7 +23,7 @@ export const textFragmentRouter = router({
   listForClient: protectedProcedure
     .input(
       z.object({
-        clientId: z.number().int(),
+        clientId: z.string(),
         language: z.string(),
         keys: z.array(z.string()).optional(),
       })
@@ -67,7 +67,7 @@ export const textFragmentRouter = router({
   delete: protectedProcedure
     .input(
       z.object({
-        clientId: z.number().int().nullable(),
+        clientId: z.string().nullable(),
         language: z.string().nullable(),
         key: z.string(),
       })
@@ -87,7 +87,7 @@ export const textFragmentRouter = router({
     .input(
       z.object({
         language: z.string().nullable(),
-        clientId: z.number().int().nullable(),
+        clientId: z.string().nullable(),
         key: z.string(),
         value: z.string(),
       })

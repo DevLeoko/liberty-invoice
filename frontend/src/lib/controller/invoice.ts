@@ -8,7 +8,7 @@ import { STATS_KEYS } from './stats'
 export const INVOICE_KEYS = {
 	all: ['invoice'],
 	list: () => [...INVOICE_KEYS.all, 'list'],
-	read: (invoiceId: number) => [...INVOICE_KEYS.all, 'read', invoiceId],
+	read: (invoiceId: string) => [...INVOICE_KEYS.all, 'read', invoiceId],
 }
 
 export function createInvoiceQuery() {
@@ -18,14 +18,14 @@ export function createInvoiceQuery() {
 	})
 }
 
-export function createInvoiceReadQuery(invoiceId: number) {
+export function createInvoiceReadQuery(invoiceId: string) {
 	return createQuery({
 		queryKey: INVOICE_KEYS.read(invoiceId),
 		queryFn: () => trpc.invoice.read.query(invoiceId),
 	})
 }
 
-export function queryInvoiceRead(invoiceId: number) {
+export function queryInvoiceRead(invoiceId: string) {
 	return useQueryClient().fetchQuery({
 		queryKey: INVOICE_KEYS.read(invoiceId),
 		queryFn: () => trpc.invoice.read.query(invoiceId),
@@ -35,7 +35,7 @@ export function queryInvoiceRead(invoiceId: number) {
 export function createInvoiceReadFetcher() {
 	const queryClient = useQueryClient()
 
-	return (invoiceId: number) => {
+	return (invoiceId: string) => {
 		return queryClient.fetchQuery({
 			queryKey: INVOICE_KEYS.read(invoiceId),
 			queryFn: () => trpc.invoice.read.query(invoiceId),
@@ -46,10 +46,10 @@ export function createInvoiceReadFetcher() {
 export function createInvoiceDeleteMutation() {
 	const queryClient = useQueryClient()
 
-	return async (invoiceId: number) => {
+	return async (invoiceId: string) => {
 		const res = await trpc.invoice.delete.mutate(invoiceId)
 
-		queryClient.setQueriesData(INVOICE_KEYS.list(), (oldData?: { id: number }[]) => {
+		queryClient.setQueriesData(INVOICE_KEYS.list(), (oldData?: { id: string }[]) => {
 			if (!oldData) return oldData
 			return oldData.filter((invoice) => invoice.id !== invoiceId)
 		})
@@ -90,15 +90,15 @@ export function createInvoiceCreateMutation() {
 export function createInvoiceFinalizeMutation() {
 	const queryClient = useQueryClient()
 
-	return async (invoiceId: number) => {
+	return async (invoiceId: string) => {
 		const res = await trpc.invoice.finalize.mutate(invoiceId)
 		queryClient.invalidateQueries(INVOICE_KEYS.read(invoiceId))
 
-		queryClient.setQueryData(INVOICE_KEYS.list(), (oldData?: { id: number }[]) => {
+		queryClient.setQueryData(INVOICE_KEYS.list(), (oldData?: { id: string }[]) => {
 			if (!oldData) return oldData
 			return oldData.map((i) => (i.id === invoiceId ? res : i))
 		})
-		const productIds = res.items.map((i) => i.productId).filter((i) => i !== null) as number[]
+		const productIds = res.items.map((i) => i.productId).filter((i) => i !== null) as string[]
 		if (productIds.length > 0) {
 			queryClient.invalidateQueries(PRODUCT_KEYS.list())
 			for (const productId of productIds) {
@@ -116,7 +116,7 @@ export function createInvoiceLogPaymentMutation() {
 	return async (data: Parameters<typeof trpc.invoice.logPayment.mutate>[0]) => {
 		const res = await trpc.invoice.logPayment.mutate(data)
 		queryClient.invalidateQueries(INVOICE_KEYS.read(data.id))
-		queryClient.setQueryData(INVOICE_KEYS.list(), (oldData?: { id: number }[]) => {
+		queryClient.setQueryData(INVOICE_KEYS.list(), (oldData?: { id: string }[]) => {
 			if (!oldData) return oldData
 			return oldData.map((i) => (i.id === data.id ? res : i))
 		})

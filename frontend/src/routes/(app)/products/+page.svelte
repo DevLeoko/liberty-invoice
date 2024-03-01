@@ -27,7 +27,7 @@
 		}
 	}
 
-	async function selectProduct(id: number) {
+	async function selectProduct(id: string) {
 		// TODO: add load indicator
 		const product = await trpc.product.read.query({ id })
 		selected = {

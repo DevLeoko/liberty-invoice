@@ -8,11 +8,11 @@ import { sendMail } from "../utils/mailer";
 
 const googleOAuth = new OAuth2Client(process.env.GOOGLE_AUTH_CLIENT_ID);
 
-const authenticator = new Authenticator<{ userId: number }>(
+const authenticator = new Authenticator<{ userId: string }>(
   process.env.JWT_SECRET
 );
 
-async function refreshSessionExtractor(userId: number) {
+async function refreshSessionExtractor(userId: string) {
   const user = await prisma.user.findUnique({
     where: {
       id: userId,
@@ -83,7 +83,7 @@ async function fetchEmailFromGoogleToken(token: string) {
 }
 
 async function updateUserRefreshSession(
-  userId: number,
+  userId: string,
   refreshSession: string
 ) {
   await prisma.user.update({

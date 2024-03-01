@@ -34,7 +34,7 @@ export const taxRateRouter = router({
   update: protectedProcedure
     .input(
       z.object({
-        id: z.number().int(),
+        id: z.string(),
         name: z.string(),
         displayText: z.string(),
         rate: z.number(),
@@ -64,7 +64,7 @@ export const taxRateRouter = router({
   delete: protectedProcedure
     .input(
       z.object({
-        id: z.number().int(),
+        id: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {

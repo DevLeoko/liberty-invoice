@@ -4,14 +4,14 @@ import { trpc, type CreateProduct, type ListProduct, type UpdateProduct } from '
 export const PRODUCT_KEYS = {
 	all: ['product'],
 	list: () => [...PRODUCT_KEYS.all, 'list'],
-	read: (id: number) => [...PRODUCT_KEYS.all, 'read', id],
+	read: (id: string) => [...PRODUCT_KEYS.all, 'read', id],
 }
 
 export function createProductListQuery() {
 	return createQuery(PRODUCT_KEYS.list(), () => trpc.product.list.query())
 }
 
-export function createProductReadQuery(id: number) {
+export function createProductReadQuery(id: string) {
 	return createQuery(PRODUCT_KEYS.read(id), () => trpc.product.read.query({ id }))
 }
 
@@ -34,7 +34,7 @@ export function createProductCreateMutation() {
 export function createProductUpdateMutation() {
 	const queryClient = useQueryClient()
 
-	return async (data: { id: number; product: UpdateProduct }) => {
+	return async (data: { id: string; product: UpdateProduct }) => {
 		const newProduct = await trpc.product.update.mutate(data)
 
 		queryClient.setQueriesData(PRODUCT_KEYS.list(), (oldData?: ListProduct[]) => {
@@ -57,7 +57,7 @@ export function createProductUpdateMutation() {
 export function createProductDeleteMutation() {
 	const queryClient = useQueryClient()
 
-	return async (id: number) => {
+	return async (id: string) => {
 		await trpc.product.delete.mutate({ id })
 
 		queryClient.setQueriesData(PRODUCT_KEYS.list(), (oldData?: ListProduct[]) => {

@@ -33,7 +33,7 @@
 		}
 	}
 
-	async function onDelete(id: number) {
+	async function onDelete(id: string) {
 		await deleteMutation(id)
 	}
 

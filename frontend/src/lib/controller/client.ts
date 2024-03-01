@@ -5,7 +5,7 @@ import { TEXT_FRAGMENT_KEYS } from './text-fragment'
 export const CLIENT_KEYS = {
 	all: ['client'],
 	list: () => [...CLIENT_KEYS.all, 'list'],
-	read: (clientId: number) => [...CLIENT_KEYS.all, 'read', clientId],
+	read: (clientId: string) => [...CLIENT_KEYS.all, 'read', clientId],
 }
 
 export function createClientQuery() {

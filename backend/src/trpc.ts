@@ -3,7 +3,7 @@ import { Response } from "express";
 import SuperJSON from "superjson";
 import { TError } from "./utils/TError";
 
-const t = initTRPC.context<{ userId?: number; res: Response }>().create({
+const t = initTRPC.context<{ userId?: string; res: Response }>().create({
   transformer: SuperJSON,
 });
 

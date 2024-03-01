@@ -8,8 +8,8 @@ import { prisma } from "../prisma";
 export async function getFinalTextFragment(data: {
   keys: string[];
   language: Locale;
-  clientId: number;
-  userId: number;
+  clientId: string;
+  userId: string;
 }) {
   const { clientId, language, keys, userId } = data;
   const textFragments = await prisma.textFragment.findMany({

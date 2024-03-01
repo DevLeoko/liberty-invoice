@@ -28,8 +28,7 @@
 
 	async function init() {
 		const duplicateId = $page.url.searchParams.get('duplicate')
-		const duplicationDataFetch =
-			duplicateId != null ? queryInvoiceRead(Number.parseInt(duplicateId)) : null
+		const duplicationDataFetch = duplicateId != null ? queryInvoiceRead(duplicateId) : null
 
 		const [partialIdData, userSettings, duplicationData] = await Promise.all([
 			trpc.invoice.getNextAvailablePartialInvoiceId.query(),

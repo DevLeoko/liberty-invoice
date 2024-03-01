@@ -15,7 +15,7 @@ export const productInputSchema = z.object({
 
 export const productRouter = router({
   read: protectedProcedure
-    .input(z.object({ id: z.number() }))
+    .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
       const product = await prisma.product.findUnique({
         where: {
@@ -56,7 +56,7 @@ export const productRouter = router({
     }),
 
   update: protectedProcedure
-    .input(z.object({ id: z.number(), product: productInputSchema.partial() }))
+    .input(z.object({ id: z.string(), product: productInputSchema.partial() }))
     .mutation(async ({ ctx, input }) => {
       const product = await prisma.product.findUnique({
         where: { id: input.id },
@@ -76,7 +76,7 @@ export const productRouter = router({
     }),
 
   delete: protectedProcedure
-    .input(z.object({ id: z.number() }))
+    .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       await prisma.product.deleteMany({
         where: {

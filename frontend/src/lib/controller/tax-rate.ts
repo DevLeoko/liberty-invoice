@@ -47,7 +47,7 @@ export function createTaxRateUpdateMutation() {
 export function createTaxRateDeleteMutation() {
 	const queryClient = useQueryClient()
 
-	return async (id: number) => {
+	return async (id: string) => {
 		await trpc.taxRate.delete.mutate({ id })
 
 		queryClient.setQueriesData(TAX_RATE_KEYS.list(), (oldData?: ListTaxRate[]) => {

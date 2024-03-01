@@ -4,7 +4,7 @@
 	import FloatingCardTrigger from '../../basics/FloatingCardTrigger.svelte'
 	import TaxRateSelector from '../../TaxRateSelector.svelte'
 
-	export let taxRateId: number | null
+	export let taxRateId: string | null
 
 	const taxRates = createTaxRateListQuery()
 	$: selectedTaxRate = $taxRates.data?.find((taxRate) => taxRate.id === taxRateId) ?? null

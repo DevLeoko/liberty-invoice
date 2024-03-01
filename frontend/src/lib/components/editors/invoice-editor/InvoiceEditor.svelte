@@ -17,7 +17,7 @@
 
 	$: clientId = invoice.clientId
 
-	function onClientChange(clientId: number) {
+	function onClientChange(clientId: string) {
 		trpc.client.readDefaults.query({ id: clientId }).then((defaults) => {
 			invoice.currency = defaults.defaultCurrency
 			invoice.language = defaults.defaultLanguage

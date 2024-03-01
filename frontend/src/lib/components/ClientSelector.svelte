@@ -9,7 +9,7 @@
 	import Skeleton from './basics/Skeleton.svelte'
 	import ClientEditorModal from './editors/ClientEditorModal.svelte'
 
-	export let clientId: number | null
+	export let clientId: string | null
 
 	let createClient: EditorSelection<CreateClient> = null
 	let userSettings = createUserSettingsQuery()

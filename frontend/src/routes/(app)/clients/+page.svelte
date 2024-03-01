@@ -26,7 +26,7 @@
 		}
 	}
 
-	async function selectClient(id: number) {
+	async function selectClient(id: string) {
 		// TODO: add load indicator
 		const client = await trpc.client.read.query({ id })
 		selected = {

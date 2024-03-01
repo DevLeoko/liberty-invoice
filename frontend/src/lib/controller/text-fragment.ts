@@ -18,8 +18,8 @@ export const TEXT_FRAGMENT_KEYS = {
 	all: ['textFragment'],
 	allList: () => [...TEXT_FRAGMENT_KEYS.all, 'list'],
 	listDefaults: (language: string) => [...TEXT_FRAGMENT_KEYS.allList(), { language }],
-	allListForClient: (clientId: number) => [...TEXT_FRAGMENT_KEYS.allList(), 'client', clientId],
-	listForClient: (clientId: number, language: string, keys: TextFragmentKey[] | undefined) => [
+	allListForClient: (clientId: string) => [...TEXT_FRAGMENT_KEYS.allList(), 'client', clientId],
+	listForClient: (clientId: string, language: string, keys: TextFragmentKey[] | undefined) => [
 		...TEXT_FRAGMENT_KEYS.allListForClient(clientId),
 		{ language, keys },
 	],
@@ -65,7 +65,7 @@ export function parseInvoiceTextFragment(
 export function createTextFragmentListQuery(
 	key: TextFragmentKey,
 	language: string,
-	clientId: number | null,
+	clientId: string | null,
 ) {
 	if (clientId === null) {
 		return createQuery({
@@ -85,7 +85,7 @@ export function createTextFragmentListQuery(
 export function createFinalTextFragmentQuery(
 	key: TextFragmentKey,
 	language: string,
-	clientId: number,
+	clientId: string,
 ) {
 	const query = createQuery({
 		queryKey: TEXT_FRAGMENT_KEYS.listForClient(clientId, language, [key]),
@@ -101,7 +101,7 @@ export function createFinalTextFragmentQuery(
 export function createTextFragmentUpsertMutation() {
 	const queryClient = useQueryClient()
 
-	return async (key: TextFragmentKey, language: string, clientId: number | null, value: string) => {
+	return async (key: TextFragmentKey, language: string, clientId: string | null, value: string) => {
 		const newFragment = await trpc.textFragment.upsert.mutate({
 			key,
 			language,
@@ -141,7 +141,7 @@ export function createTextFragmentUpsertMutation() {
 export function createTextFragmentDeleteMutation() {
 	const queryClient = useQueryClient()
 
-	return async (key: TextFragmentKey, language: string, clientId: number | null) => {
+	return async (key: TextFragmentKey, language: string, clientId: string | null) => {
 		await trpc.textFragment.delete.mutate({ key, language, clientId })
 
 		queryClient.setQueriesData(TEXT_FRAGMENT_KEYS.allList(), (oldData?: ListTextFragment[]) => {

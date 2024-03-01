@@ -18,7 +18,7 @@ export const clientInputSchema = z.object({
 
   defaultLanguage: z.string(),
   defaultCurrency: z.string(),
-  defaultTaxRateId: z.number().nullable(),
+  defaultTaxRateId: z.string().nullable(),
   defaultDueDays: z.number(),
 
   textFragments: z.array(

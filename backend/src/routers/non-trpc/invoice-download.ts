@@ -6,7 +6,7 @@ import { buildInvoicePdf } from "../../utils/pdf/invoice-pdf";
 import { invoiceCreateSchema } from "../invoice-schemas";
 
 const downloadQuerySchema = z.object({
-  invoiceId: z.coerce.number().int(),
+  invoiceId: z.string(),
   downloadType: z.enum(["inline", "attachment"]).default("inline"),
 });
 

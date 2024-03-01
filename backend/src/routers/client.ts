@@ -6,7 +6,7 @@ import { clientInputSchema } from "./client-schema";
 
 export const clientRouter = router({
   read: protectedProcedure
-    .input(z.object({ id: z.number() }))
+    .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
       const client = await prisma.client.findUnique({
         where: {
@@ -34,7 +34,7 @@ export const clientRouter = router({
     }),
 
   readDefaults: protectedProcedure
-    .input(z.object({ id: z.number() }))
+    .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
       const client = await prisma.client.findUnique({
         where: {
@@ -92,7 +92,7 @@ export const clientRouter = router({
     }),
 
   update: protectedProcedure
-    .input(z.object({ id: z.number(), client: clientInputSchema.partial() }))
+    .input(z.object({ id: z.string(), client: clientInputSchema.partial() }))
     .mutation(async ({ ctx, input }) => {
       await prisma.client.updateMany({
         where: {
@@ -125,7 +125,7 @@ export const clientRouter = router({
     }),
 
   delete: protectedProcedure
-    .input(z.object({ id: z.number() }))
+    .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       await prisma.client.deleteMany({
         where: {

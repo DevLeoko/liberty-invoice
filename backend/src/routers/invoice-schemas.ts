@@ -7,17 +7,17 @@ export const invoiceItemCreateSchema = z.object({
   unit: z.string(),
   unitPrice: z.number(),
 
-  productId: z.number().nullable(),
+  productId: z.string().nullable(),
 });
 
 export const invoiceCreateSchema = z.object({
-  clientId: z.number(),
+  clientId: z.string(),
   invoiceNumber: z.string(),
   date: z.date(),
   dueDate: z.date(),
   currency: z.string(),
   language: z.string(),
-  taxRateIds: z.array(z.number()),
+  taxRateIds: z.array(z.string()),
   note: z.string(),
   items: z.array(invoiceItemCreateSchema),
 });

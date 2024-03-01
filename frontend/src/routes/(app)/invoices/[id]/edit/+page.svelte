@@ -14,7 +14,7 @@
 	import { logSuccess, t } from '../../../../../lib/stores/settings'
 	import type { CreateInvoice } from '../../../../../lib/trpcClient'
 
-	const id = Number.parseInt($page.params.id)
+	const id = $page.params.id
 
 	let loadingSave = false
 	let invoice: null | CreateInvoice = null

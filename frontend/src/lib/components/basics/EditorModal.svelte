@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-	export type EditorSelection<E> = { entity: E; id?: number } | null
+	export type EditorSelection<E> = { entity: E; id?: string } | null
 
 	// Required language properties
 	// updated:
@@ -34,8 +34,8 @@
 
 	export let selected: EditorSelection<E> = null
 
-	export let onSave: (selected: { entity: E; id?: number }) => Promise<void>
-	export let onDelete: ((id: number) => Promise<void>) | null = null
+	export let onSave: (selected: { entity: E; id?: string }) => Promise<void>
+	export let onDelete: ((id: string) => Promise<void>) | null = null
 
 	function performSave() {
 		loadingSave = true

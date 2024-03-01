@@ -11,7 +11,8 @@ datasource db {
 }
 
 model User {
-  id              Int      @id @default(autoincrement())
+  id String @id @default(cuid())
+
   email           String   @unique
   isEmailVerified Boolean
   passwordHash    String?
@@ -25,14 +26,14 @@ model User {
   invoices      Invoice[]
   invoiceItems  InvoiceItem[]
   textFragments TextFragment[]
-  Product       Product[]
+  products      Product[]
 }
 
 model UserSettings {
-  id Int @id @default(autoincrement())
+  id String @id @default(cuid())
 
-  user   User? @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId Int?  @unique
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String? @unique
 
   // Account details (same a client)
   name           String
@@ -53,7 +54,7 @@ model UserSettings {
   defaultLanguage  String
   defaultCurrency  String
   defaultTaxRate   TaxRate? @relation(fields: [defaultTaxRateId], references: [id], onDelete: SetNull)
-  defaultTaxRateId Int?
+  defaultTaxRateId String?
   defaultDueDays   Int
   // End account details
 
@@ -73,10 +74,10 @@ model UserSettings {
 }
 
 model TaxRate {
-  id Int @id @default(autoincrement())
+  id String @id @default(cuid())
 
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId Int
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 
   name        String
   displayText String
@@ -88,10 +89,10 @@ model TaxRate {
 }
 
 model Client {
-  id Int @id @default(autoincrement())
+  id String @id @default(cuid())
 
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId Int
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 
   name           String
   shorthand      String
@@ -111,7 +112,7 @@ model Client {
   defaultLanguage  String
   defaultCurrency  String
   defaultTaxRate   TaxRate? @relation(fields: [defaultTaxRateId], references: [id], onDelete: SetNull)
-  defaultTaxRateId Int?
+  defaultTaxRateId String?
   defaultDueDays   Int
 
   invoices      Invoice[]
@@ -119,13 +120,13 @@ model Client {
 }
 
 model Invoice {
-  id Int @id @default(autoincrement())
+  id String @id @default(cuid())
 
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId Int
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 
   client   Client @relation(fields: [clientId], references: [id], onDelete: Restrict)
-  clientId Int
+  clientId String
 
   draft         Boolean   @default(true)
   invoiceNumber String
@@ -146,16 +147,16 @@ model Invoice {
 }
 
 model InvoiceItem {
-  id Int @id @default(autoincrement())
+  id String @id @default(cuid())
 
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId Int
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 
   invoice   Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
-  invoiceId Int
+  invoiceId String
 
   product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
-  productId Int?
+  productId String?
 
   name        String
   description String @db.Text
@@ -165,10 +166,10 @@ model InvoiceItem {
 }
 
 model Product {
-  id Int @id @default(autoincrement())
+  id String @id @default(cuid())
 
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId Int
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 
   name        String
   description String @db.Text
@@ -182,14 +183,14 @@ model Product {
 }
 
 model TextFragment {
-  id Int @id @default(autoincrement())
+  id String @id @default(cuid())
 
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId Int
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 
   language String?
   client   Client? @relation(fields: [clientId], references: [id], onDelete: Cascade)
-  clientId Int?
+  clientId String?
   key      String
   value    String  @db.Text
 }

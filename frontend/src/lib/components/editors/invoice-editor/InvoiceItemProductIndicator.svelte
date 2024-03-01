@@ -7,7 +7,7 @@
 
 	export let product: ListProduct
 	export let item: CreateInvoiceItem
-	export let productId: number | null
+	export let productId: string | null
 
 	$: isSynced =
 		product.name === item.name &&

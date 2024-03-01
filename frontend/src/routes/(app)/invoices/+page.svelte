@@ -11,11 +11,11 @@
 
 	const invoices = createInvoiceQuery()
 
-	let previewInvoiceId: number | null = null
+	let previewInvoiceId: string | null = null
 	$: previewInvoice = previewInvoiceId != null ? createInvoiceReadQuery(previewInvoiceId) : null
 
 	if ($page.url.searchParams.has('preview')) {
-		previewInvoiceId = Number.parseInt($page.url.searchParams.get('preview')!)
+		previewInvoiceId = $page.url.searchParams.get('preview')!
 	}
 
 	function closePreview() {
