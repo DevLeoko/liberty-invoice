@@ -15,7 +15,7 @@
 	$: tFragmentName = $t(`textFragments.name.${fragmentName}` as TranslationPaths)
 	$: tFragmentDefault = translate(
 		fragmentLanguage,
-		`textFragmentDefaults.${fragmentName}` as TranslationPaths,
+		`textFragmentDefaults.${fragmentName}` as TranslationPaths
 	)
 
 	$: availableVariables = getAvailableVariables(fragmentName)

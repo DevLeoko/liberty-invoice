@@ -22,10 +22,10 @@
 		$defaultFragmentQuery.data?.value ??
 		translate(
 			clientLanguage as Locale,
-			`textFragmentDefaults.${activeFragment}` as TranslationPaths,
+			`textFragmentDefaults.${activeFragment}` as TranslationPaths
 		)
 	$: tFragmentNames = TEXT_FRAGMENT_NAMES.map((f) =>
-		$t(`textFragments.name.${f}` as TranslationPaths),
+		$t(`textFragments.name.${f}` as TranslationPaths)
 	)
 
 	$: availableVariables = getAvailableVariables(activeFragment)
@@ -43,7 +43,7 @@
 			const fragmentExists = fragments.some((f) => f.key === activeFragment)
 			if (fragmentExists) {
 				fragments = fragments.map((f) =>
-					f.key === activeFragment ? { ...f, value: inputText } : f,
+					f.key === activeFragment ? { ...f, value: inputText } : f
 				)
 			} else {
 				fragments = [...fragments, { key: activeFragment, value: inputText }]

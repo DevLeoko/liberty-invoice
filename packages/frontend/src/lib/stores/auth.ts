@@ -19,7 +19,7 @@ export function setLoggedIn() {
 	const loginDuration = 1000 * 60 * 60 * 24 * 7 // 7 days TODO: make this the same as the backend
 	localStorage.setItem(
 		'loggedInUntil',
-		new Date(new Date().getTime() + loginDuration).toISOString(),
+		new Date(new Date().getTime() + loginDuration).toISOString()
 	)
 }
 

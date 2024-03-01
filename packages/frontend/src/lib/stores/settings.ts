@@ -26,7 +26,7 @@ export const t = derived(
 	applicationLanguage,
 	($applicationLanguage) =>
 		(key: TranslationPaths, vars?: Record<string, { toString(): string }>) =>
-			translate($applicationLanguage, key, vars),
+			translate($applicationLanguage, key, vars)
 )
 
 export const translateIfFound = derived(t, ($t) => {
@@ -43,27 +43,27 @@ export const logError = derived(
 	t,
 	($t) =>
 		(key: TranslationPaths, vars?: Record<string, { toString(): string }>, timeout?: number) =>
-			logErrorStatic($t(key, vars), timeout),
+			logErrorStatic($t(key, vars), timeout)
 )
 
 export const logInfo = derived(
 	t,
 	($t) =>
 		(key: TranslationPaths, vars?: Record<string, { toString(): string }>, timeout?: number) =>
-			logInfoStatic($t(key, vars), timeout),
+			logInfoStatic($t(key, vars), timeout)
 )
 
 export const logSuccess = derived(
 	t,
 	($t) =>
 		(key: TranslationPaths, vars?: Record<string, { toString(): string }>, timeout?: number) =>
-			logSuccessStatic($t(key, vars), timeout),
+			logSuccessStatic($t(key, vars), timeout)
 )
 
 export const formatFloat = derived(
 	t,
 	($t) => (value: number) =>
-		value.toLocaleString($t('langCode'), { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+		value.toLocaleString($t('langCode'), { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 )
 
 export const formatInt = derived(t, ($t) => (value: number) => value.toLocaleString($t('langCode')))
@@ -71,10 +71,10 @@ export const formatInt = derived(t, ($t) => (value: number) => value.toLocaleStr
 export const formatDate = derived(
 	t,
 	($t) => (date: Date) =>
-		date.toLocaleDateString($t('langCode'), { year: 'numeric', month: '2-digit', day: '2-digit' }),
+		date.toLocaleDateString($t('langCode'), { year: 'numeric', month: '2-digit', day: '2-digit' })
 )
 
 export const getCurrency = derived(
 	formatFloat,
-	($formatFloat) => (shorthand: string) => getCurrencyUtil(shorthand, $formatFloat),
+	($formatFloat) => (shorthand: string) => getCurrencyUtil(shorthand, $formatFloat)
 )

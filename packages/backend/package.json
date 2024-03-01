@@ -15,7 +15,9 @@
     "prisma-up": "prisma db push",
     "prisma-migrate": "prisma migrate deploy",
     "prisma-gen": "prisma generate",
-    "gen-env": "gen-env-types .env -o src/types/env.d.ts -e ."
+    "gen-env": "gen-env-types .env -o src/types/env.d.ts -e .",
+    "lint": "prettier --check . && eslint .",
+    "format": "prettier --write ."
   },
   "keywords": [],
   "author": "",

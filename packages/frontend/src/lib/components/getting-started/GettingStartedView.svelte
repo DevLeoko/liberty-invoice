@@ -63,8 +63,8 @@
 			{step == 0
 				? $t('gettingStarted.getStarted')
 				: step == STEP_COMPONENTS.length - 1
-				? $t('gettingStarted.finish')
-				: $t('gettingStarted.saveAndContinue')}
+					? $t('gettingStarted.finish')
+					: $t('gettingStarted.saveAndContinue')}
 		</Button>
 	</div>
 </div>

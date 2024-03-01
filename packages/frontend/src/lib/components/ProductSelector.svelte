@@ -21,8 +21,8 @@
 		? $products.data.filter(
 				(p) =>
 					p.name.toLowerCase().includes(item.name.toLowerCase()) &&
-					p.currency === currency.shorthand,
-		  )
+					p.currency === currency.shorthand
+			)
 		: []
 
 	function selectProduct(id: string) {

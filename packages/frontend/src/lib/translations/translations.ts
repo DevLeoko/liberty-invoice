@@ -25,7 +25,7 @@ export const TRANSLATIONS: Record<Locale, TranslationDictionary> = {
 export function translate(
 	language: Locale,
 	key: TranslationPaths,
-	vars?: Record<string, { toString(): string }>,
+	vars?: Record<string, { toString(): string }>
 ) {
 	return basicTranslate(TRANSLATIONS[language], key, vars)
 }

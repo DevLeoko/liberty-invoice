@@ -14,7 +14,7 @@
 	})).sort((a, b) => a.name.localeCompare(b.name))
 
 	$: filteredCountries = COUNTRIES.filter((c) =>
-		c.name.toLowerCase().includes(search.toLowerCase()),
+		c.name.toLowerCase().includes(search.toLowerCase())
 	)
 
 	function highlight(text: string, search: string) {

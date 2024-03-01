@@ -41,7 +41,7 @@ export function parseInvoiceTextFragment(
 	data: {
 		invoiceDate: Date
 		dueDate: Date
-	},
+	}
 ) {
 	const lastMonth = new Date(data.invoiceDate)
 	lastMonth.setMonth(lastMonth.getMonth() - 1)
@@ -65,7 +65,7 @@ export function parseInvoiceTextFragment(
 export function createTextFragmentListQuery(
 	key: TextFragmentKey,
 	language: string,
-	clientId: string | null,
+	clientId: string | null
 ) {
 	if (clientId === null) {
 		return createQuery({
@@ -85,7 +85,7 @@ export function createTextFragmentListQuery(
 export function createFinalTextFragmentQuery(
 	key: TextFragmentKey,
 	language: string,
-	clientId: string,
+	clientId: string
 ) {
 	const query = createQuery({
 		queryKey: TEXT_FRAGMENT_KEYS.listForClient(clientId, language, [key]),
@@ -116,7 +116,7 @@ export function createTextFragmentUpsertMutation() {
 				(textFragment) =>
 					textFragment.key === key &&
 					textFragment.language === language &&
-					textFragment.clientId === clientId,
+					textFragment.clientId === clientId
 			)
 
 			if (exists) {
@@ -151,7 +151,7 @@ export function createTextFragmentDeleteMutation() {
 				(textFragment) =>
 					textFragment.key !== key ||
 					textFragment.language !== language ||
-					textFragment.clientId !== clientId,
+					textFragment.clientId !== clientId
 			)
 		})
 	}

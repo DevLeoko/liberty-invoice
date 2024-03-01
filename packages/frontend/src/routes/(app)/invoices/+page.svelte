@@ -23,7 +23,7 @@
 	}
 
 	$: sortedInvoices = [...($invoices.data || [])].sort((a, b) =>
-		b.invoiceNumber.localeCompare(a.invoiceNumber),
+		b.invoiceNumber.localeCompare(a.invoiceNumber)
 	)
 </script>
 

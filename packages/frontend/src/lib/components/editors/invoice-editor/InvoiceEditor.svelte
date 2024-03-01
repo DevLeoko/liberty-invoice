@@ -22,7 +22,7 @@
 			invoice.currency = defaults.defaultCurrency
 			invoice.language = defaults.defaultLanguage
 			invoice.dueDate = new Date(
-				invoice.date.getTime() + defaults.defaultDueDays * 24 * 60 * 60 * 1000,
+				invoice.date.getTime() + defaults.defaultDueDays * 24 * 60 * 60 * 1000
 			)
 			if (defaults.defaultTaxRateId != null) invoice.taxRateIds = [defaults.defaultTaxRateId]
 		})

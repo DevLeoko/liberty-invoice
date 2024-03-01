@@ -16,7 +16,7 @@
 			on:click={() => (selected = language)}
 		>
 			<img src={`/flags/${language}.svg`} class="h-3.5 mr-2" alt="flag" />{$t(
-				`language.${language}`,
+				`language.${language}`
 			)}
 		</div>
 	{/each}

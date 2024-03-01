@@ -11,8 +11,8 @@
 			? new Array(12).fill(0).map((_, i) =>
 					new Date(new Date().getFullYear(), i, 1).toLocaleString($t('langCode'), {
 						month: 'short',
-					}),
-			  )
+					})
+				)
 			: new Array(new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate())
 					.fill(0)
 					.map((_, i) => (i + 1).toString())
@@ -46,7 +46,7 @@
 				from,
 				to,
 				interval: view === 'year' ? 'month' : 'day',
-		  })
+			})
 
 	$: previousIntervalRevenueData = !$userSettings.data
 		? null
@@ -55,7 +55,7 @@
 				from: previousFrom,
 				to: previousTo,
 				interval: view === 'year' ? 'month' : 'day',
-		  })
+			})
 
 	function mapToNumberArray(data: { sum: number; date: Date }[], view: 'year' | 'month' = 'year') {
 		const array = new Array(labels.length).fill(0)

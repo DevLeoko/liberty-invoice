@@ -45,7 +45,7 @@
 	$: x = d3.scaleLinear([0, labels.length - 1], [marginLeft, width - marginRight])
 	$: y = d3.scaleLinear(
 		[0, d3.max(data.flatMap((d) => d.values)) as number],
-		[height - marginBottom, marginTop],
+		[height - marginBottom, marginTop]
 	)
 	$: area = d3.area((d, i) => x(i), y(0), y).curve(d3.curveMonotoneX)
 	$: line = d3.line((d, i) => x(i), y).curve(d3.curveMonotoneX)

@@ -21,7 +21,7 @@
 			y: number
 			width: number
 			height: number
-		},
+		}
 	) {
 		const { x, y, width, height } = box
 		const {
@@ -33,11 +33,11 @@
 
 		const constrainedX = Math.min(
 			Math.max(x, constraintX + 5),
-			constraintX + constraintWidth - width - 5,
+			constraintX + constraintWidth - width - 5
 		)
 		const constrainedY = Math.min(
 			Math.max(y, constraintY + 5),
-			constraintY + constraintHeight - height - 5,
+			constraintY + constraintHeight - height - 5
 		)
 
 		return { x: constrainedX, y: constrainedY }
@@ -75,7 +75,7 @@
 
 		const { x, y } = ensureConstraints(
 			{ x: preferredLeft, y: preferredTop, width, height },
-			{ x: 0, y: window.scrollY, width: windowWidth, height: windowHeight },
+			{ x: 0, y: window.scrollY, width: windowWidth, height: windowHeight }
 		)
 
 		el.style.left = `${x}px`

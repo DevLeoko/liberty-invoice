@@ -4,7 +4,7 @@ export function emptyClient(
 	defaultValues: Pick<
 		CreateClient,
 		'defaultLanguage' | 'defaultCurrency' | 'defaultTaxRateId' | 'defaultDueDays'
-	>,
+	>
 ): CreateClient {
 	return {
 		name: '',

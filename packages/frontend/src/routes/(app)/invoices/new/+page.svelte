@@ -47,8 +47,7 @@
 		let dueDays = userSettings.defaultDueDays
 		if (duplicationData) {
 			dueDays = Math.round(
-				(duplicationData.dueDate.getTime() - duplicationData.date.getTime()) /
-					(1000 * 60 * 60 * 24),
+				(duplicationData.dueDate.getTime() - duplicationData.date.getTime()) / (1000 * 60 * 60 * 24)
 			)
 		}
 
