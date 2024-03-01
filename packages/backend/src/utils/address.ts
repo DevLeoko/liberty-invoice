@@ -1,8 +1,8 @@
 export function emptyAddress() {
-  return {
-    street: "",
-    streetnumber: "",
-    postalcode: "",
-    city: "",
-  };
+	return {
+		street: '',
+		streetnumber: '',
+		postalcode: '',
+		city: '',
+	}
 }

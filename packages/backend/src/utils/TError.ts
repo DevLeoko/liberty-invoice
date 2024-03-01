@@ -1,7 +1,7 @@
-import { ServerTranslationPath } from "../../../shared/invoice-translations/translations";
+import { ServerTranslationPath } from '../../../shared/invoice-translations/translations'
 
 export class TError extends Error {
-  constructor(message: ServerTranslationPath) {
-    super(message);
-  }
+	constructor(message: ServerTranslationPath) {
+		super(message)
+	}
 }

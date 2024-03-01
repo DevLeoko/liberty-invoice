@@ -1,11 +1,11 @@
 /// <reference path="../types/env.d.ts" />
 
-import argon2 from "argon2";
-import jwt from "jsonwebtoken";
+import argon2 from 'argon2'
+import jwt from 'jsonwebtoken'
 
 type AuthResponse<T, E extends string> =
-  | { success: false; data: { errorType: E; errorData?: any } }
-  | { success: true; data: T };
+	| { success: false; data: { errorType: E; errorData?: any } }
+	| { success: true; data: T }
 
 // AUTH-FLOWS
 // Sign up (password):
@@ -47,125 +47,116 @@ type AuthResponse<T, E extends string> =
 // 6. If refresh token is valid, update access token in http-only cookie
 
 export class Authenticator<T extends Record<string, any>> {
-  constructor(private readonly secret: string) {}
+	constructor(private readonly secret: string) {}
 
-  private generateRandomString(length: number) {
-    const characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let result = "";
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(
-        Math.floor(Math.random() * characters.length)
-      );
-    }
-    return result;
-  }
+	private generateRandomString(length: number) {
+		const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+		let result = ''
+		for (let i = 0; i < length; i++) {
+			result += characters.charAt(Math.floor(Math.random() * characters.length))
+		}
+		return result
+	}
 
-  async loginWithPassword(
-    passwordHash: string,
-    password: string,
-    data: T,
-    existingRefreshSession?: string
-  ): Promise<
-    AuthResponse<
-      { accessToken: string; refreshToken: string; refreshSession: string },
-      "invalid-password"
-    >
-  > {
-    if (!(await argon2.verify(passwordHash, password)))
-      return { success: false, data: { errorType: "invalid-password" } };
+	async loginWithPassword(
+		passwordHash: string,
+		password: string,
+		data: T,
+		existingRefreshSession?: string
+	): Promise<
+		AuthResponse<
+			{ accessToken: string; refreshToken: string; refreshSession: string },
+			'invalid-password'
+		>
+	> {
+		if (!(await argon2.verify(passwordHash, password)))
+			return { success: false, data: { errorType: 'invalid-password' } }
 
-    return {
-      success: true,
-      data: this.directLogin(data, existingRefreshSession),
-    };
-  }
+		return {
+			success: true,
+			data: this.directLogin(data, existingRefreshSession),
+		}
+	}
 
-  directLogin(data: T, existingRefreshSession: string | undefined) {
-    const refreshSession =
-      existingRefreshSession || this.generateRandomString(32);
-    const accessToken = this.generateAccessToken(data);
-    const refreshToken = jwt.sign({ data, refreshSession }, this.secret, {
-      expiresIn: "6d",
-    });
+	directLogin(data: T, existingRefreshSession: string | undefined) {
+		const refreshSession = existingRefreshSession || this.generateRandomString(32)
+		const accessToken = this.generateAccessToken(data)
+		const refreshToken = jwt.sign({ data, refreshSession }, this.secret, {
+			expiresIn: '6d',
+		})
 
-    return {
-      accessToken,
-      refreshToken,
-      refreshSession,
-    };
-  }
+		return {
+			accessToken,
+			refreshToken,
+			refreshSession,
+		}
+	}
 
-  private generateAccessToken(data: T) {
-    return jwt.sign({ data }, this.secret, {
-      expiresIn: "1h",
-    });
-  }
+	private generateAccessToken(data: T) {
+		return jwt.sign({ data }, this.secret, {
+			expiresIn: '1h',
+		})
+	}
 
-  async refreshAccessToken(
-    refreshToken: string,
-    refreshSession: (data: T) => Promise<string | null>
-  ): Promise<
-    AuthResponse<
-      { accessToken: string; data: T },
-      "invalid-token" | "invalid-session"
-    >
-  > {
-    try {
-      const { data, refreshSession: tokenRefreshSession } = jwt.verify(
-        refreshToken,
-        this.secret
-      ) as { data: T; refreshSession: string };
+	async refreshAccessToken(
+		refreshToken: string,
+		refreshSession: (data: T) => Promise<string | null>
+	): Promise<AuthResponse<{ accessToken: string; data: T }, 'invalid-token' | 'invalid-session'>> {
+		try {
+			const { data, refreshSession: tokenRefreshSession } = jwt.verify(
+				refreshToken,
+				this.secret
+			) as { data: T; refreshSession: string }
 
-      const session = await refreshSession(data);
-      if (tokenRefreshSession !== session || !session)
-        return { success: false, data: { errorType: "invalid-session" } };
+			const session = await refreshSession(data)
+			if (tokenRefreshSession !== session || !session)
+				return { success: false, data: { errorType: 'invalid-session' } }
 
-      const accessToken = this.generateAccessToken(data);
+			const accessToken = this.generateAccessToken(data)
 
-      return {
-        success: true,
-        data: { accessToken, data },
-      };
-    } catch (err) {
-      return { success: false, data: { errorType: "invalid-token" } };
-    }
-  }
+			return {
+				success: true,
+				data: { accessToken, data },
+			}
+		} catch (err) {
+			return { success: false, data: { errorType: 'invalid-token' } }
+		}
+	}
 
-  generateMailToken(email: string) {
-    return jwt.sign({ email: email.toLowerCase() }, this.secret, {
-      expiresIn: "36h",
-    });
-  }
+	generateMailToken(email: string) {
+		return jwt.sign({ email: email.toLowerCase() }, this.secret, {
+			expiresIn: '36h',
+		})
+	}
 
-  verifyMailToken(token: string, email: string): boolean {
-    try {
-      const { email: tokenEmail } = jwt.verify(token, this.secret) as {
-        email: string;
-      };
+	verifyMailToken(token: string, email: string): boolean {
+		try {
+			const { email: tokenEmail } = jwt.verify(token, this.secret) as {
+				email: string
+			}
 
-      return email.toLowerCase() === tokenEmail;
-    } catch (err) {
-      return false;
-    }
-  }
+			return email.toLowerCase() === tokenEmail
+		} catch (err) {
+			return false
+		}
+	}
 
-  verifyAccessToken(accessToken: string): AuthResponse<T, "invalid-token"> {
-    try {
-      const { data } = jwt.verify(accessToken, this.secret) as { data: T };
+	verifyAccessToken(accessToken: string): AuthResponse<T, 'invalid-token'> {
+		try {
+			const { data } = jwt.verify(accessToken, this.secret) as { data: T }
 
-      return {
-        success: true,
-        data,
-      };
-    } catch (err) {
-      return { success: false, data: { errorType: "invalid-token" } };
-    }
-  }
+			return {
+				success: true,
+				data,
+			}
+		} catch (err) {
+			return { success: false, data: { errorType: 'invalid-token' } }
+		}
+	}
 
-  hashPassword(password: string) {
-    return argon2.hash(password);
-  }
+	hashPassword(password: string) {
+		return argon2.hash(password)
+	}
 }
 
 // invite: email -> void
