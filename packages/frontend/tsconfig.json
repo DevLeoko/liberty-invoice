@@ -1,8 +1,5 @@
 {
-	"extends": [
-		"../../tsconfig.json",
-		"./.svelte-kit/tsconfig.json"
-	],
+	"extends": ["../../tsconfig.json", "./.svelte-kit/tsconfig.json"],
 	"compilerOptions": {
 		"rootDir": "../",
 		"allowJs": true,

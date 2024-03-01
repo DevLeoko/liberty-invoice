@@ -5,7 +5,8 @@
 		getAvailableVariables,
 	} from '../../controller/text-fragment'
 	import { t } from '../../stores/settings'
-	import { Locale, translate, type TranslationPaths } from '../../translations/translations'
+	import type { Locale} from '../../translations/translations';
+import { translate, type TranslationPaths } from '../../translations/translations'
 	import type { CreateClient } from '../../trpcClient'
 	import FloatingCardTrigger from '../basics/FloatingCardTrigger.svelte'
 
