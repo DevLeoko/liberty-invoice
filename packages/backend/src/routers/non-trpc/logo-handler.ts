@@ -49,22 +49,15 @@ export async function logoViewHandler(req: Request, res: Response) {
 		return
 	}
 
-	// Get the file extension from the query parameter
-	const extension = req.query.extension
-
-	// Check if the extension is valid
-	if (!VALID_EXTENSIONS.includes(extension as string)) {
-		res.status(400).send('Invalid file type')
-		return
-	}
+	const userSettings = await prisma.userSettings.findUnique({ where: { userId: req.userId } })
 
 	// Get the filename from the request parameter
-	const filename = `${req.userId}.${extension}`
+	const filename = userSettings!.logoUrl
 
 	const file = await fs.readFile(`${LOGO_UPLOAD_PATH}/${filename}`)
 
 	let mimeType = 'png'
-	if (extension === 'jpg') mimeType = 'jpeg'
+	if (filename.endsWith('.jpg')) mimeType = 'jpeg'
 
 	res.setHeader('Content-Type', `image/${mimeType}`)
 	res.send(file)

@@ -4,7 +4,6 @@ import { protectedProcedure, router } from '../trpc'
 import { clientInputSchema } from './client-schema'
 
 const userSettingsInputSchema = clientInputSchema.extend({
-	logoUrl: z.string(),
 	bankName: z.string(),
 	iban: z.string(),
 	bic: z.string(),

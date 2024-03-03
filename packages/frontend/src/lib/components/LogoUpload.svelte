@@ -10,10 +10,7 @@
 	let fileInput: HTMLInputElement
 	let reloadToken = '-'
 
-	$: fileExtension = fileName.split('.').pop()
-	$: logoUrl = fileExtension
-		? `${PUBLIC_BACKEND_URL}/logo?extension=${fileExtension}&rand=${reloadToken}`
-		: ''
+	$: logoUrl = fileName ? `${PUBLIC_BACKEND_URL}/logo?rand=${reloadToken}` : ''
 
 	async function uploadLogo() {
 		const file = fileInput.files ? fileInput.files[0] : null
