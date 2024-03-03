@@ -1,24 +1,11 @@
-/* Write your global styles here, in SCSS syntax. Variables and mixins from the src/variables.scss file are available here without importing */
-
 @import 'material-icons/iconfont/material-icons.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities {
-	@for $i from 1 through 10 {
-		.grid-table-#{$i} {
-			grid-template-columns: repeat(#{$i}, minmax(0, auto));
-		}
-	}
-}
-
 body {
-	// @apply bg-white;
 	@apply bg-gray-50;
-
-	// TODO: Check accessibility implications of this
 	-webkit-tap-highlight-color: transparent;
 }
 
@@ -99,7 +86,6 @@ select:disabled:not(.plain) {
 	@apply text-lg mb-2;
 }
 
-// Hide number handles
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
 	-webkit-appearance: none;
@@ -118,7 +104,7 @@ input[type='number']::-webkit-outer-spin-button {
 .invoice-item-editor-row {
 	input:not(.plain),
 	.input-style {
-		@apply bg-transparent transition-all ring-0 #{!important};
+		@apply bg-transparent transition-all ring-0 !important;
 	}
 
 	.show-on-hover {
@@ -133,11 +119,10 @@ input[type='number']::-webkit-outer-spin-button {
 		@apply border-r border-r-transparent;
 	}
 
-	// Style for sceens small then md
 	@media (max-width: 767px) {
 		input:not(.plain),
 		.input-style {
-			@apply ring-1 bg-white bg-opacity-40 ring-opacity-70 #{!important};
+			@apply ring-1 bg-white bg-opacity-40 ring-opacity-70 !important;
 		}
 
 		.show-on-hover {
@@ -160,7 +145,7 @@ input[type='number']::-webkit-outer-spin-button {
 	&:hover {
 		input:not(.plain),
 		.input-style {
-			@apply ring-1 bg-white bg-opacity-40 ring-opacity-70 #{!important};
+			@apply ring-1 bg-white bg-opacity-40 ring-opacity-70 !important;
 		}
 
 		.show-on-hover {
@@ -175,7 +160,7 @@ input[type='number']::-webkit-outer-spin-button {
 	&:focus-within {
 		input:not(.plain),
 		.input-style {
-			@apply ring-1  bg-white bg-opacity-70 #{!important};
+			@apply ring-1  bg-white bg-opacity-70 !important;
 		}
 
 		.show-on-hover {

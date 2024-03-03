@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query'
-	import '../app.scss'
+	import '../app.postcss'
 	import MessageBar from '../lib/components/global/MessageBar.svelte'
 
 	const queryClient = new QueryClient({

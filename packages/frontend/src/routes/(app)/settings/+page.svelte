@@ -46,22 +46,22 @@
 	</article>
 </div>
 
-<style lang="scss">
+<style lang="postcss">
 	article,
 	a {
 		@apply px-3 py-2 bg-gray-200 hover:bg-gray-300 cursor-pointer;
+	}
 
-		h2 {
-			@apply text-lg flex items-center leading-tight;
-			word-break: break-word;
+	a h2 {
+		@apply text-lg flex items-center leading-tight;
+		word-break: break-word;
+	}
 
-			span {
-				@apply mr-2 text-xl;
-			}
-		}
+	a h2 span {
+		@apply mr-2 text-xl;
+	}
 
-		p {
-			@apply text-sm mt-1 text-gray-600;
-		}
+	a p {
+		@apply text-sm mt-1 text-gray-600;
 	}
 </style>
