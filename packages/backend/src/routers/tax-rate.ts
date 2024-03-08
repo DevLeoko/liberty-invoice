@@ -76,3 +76,18 @@ export const taxRateRouter = router({
 			})
 		}),
 })
+
+export async function verifyTaxRateOwnership(taxRateIds: string[], userId: string) {
+	if (taxRateIds.length === 0) return true
+
+	const taxRateCount = await prisma.taxRate.count({
+		where: {
+			id: {
+				in: taxRateIds,
+			},
+			userId,
+		},
+	})
+
+	return taxRateCount === taxRateIds.length
+}

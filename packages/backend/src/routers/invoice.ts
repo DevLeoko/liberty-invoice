@@ -5,7 +5,10 @@ import { claimInvoiceId, getNextAvailablePartialId } from '../controller/invoice
 import { prisma } from '../prisma'
 import { protectedProcedure, router } from '../trpc'
 import { TError } from '../utils/TError'
+import { verifyClientOwnership } from './client'
+import type { InvoiceCreateInput } from './invoice-schemas'
 import { invoiceCreateSchema } from './invoice-schemas'
+import { verifyProductOwnership } from './product'
 
 const LIST_INVOICE_DEFAULT_INCLUDES = {
 	client: {
@@ -48,6 +51,26 @@ async function verifyInvoiceOwnership(invoiceId: string, userId: string) {
 	}
 }
 
+async function verifyInvoiceDataOwnership(invoiceData: InvoiceCreateInput, userId: string) {
+	// Check if the client, tax rates and products are owned by the user
+	const [taxRates, clientOwnership, productOwnership] = await Promise.all([
+		prisma.taxRate.findMany({
+			where: { id: { in: invoiceData.taxRateIds }, userId: userId },
+		}),
+		verifyClientOwnership([invoiceData.clientId], userId),
+		verifyProductOwnership(
+			invoiceData.items.map((item) => item.productId).filter((id) => id != null) as string[],
+			userId
+		),
+	])
+
+	return {
+		hasOwnership:
+			clientOwnership && productOwnership && taxRates.length == invoiceData.taxRateIds.length,
+		taxRates,
+	}
+}
+
 export const invoiceRouter = router({
 	list: protectedProcedure.query(async ({ ctx }) => {
 		return prisma.invoice.findMany({
@@ -78,6 +101,9 @@ export const invoiceRouter = router({
 				}
 			}
 
+			const { hasOwnership, taxRates } = await verifyInvoiceDataOwnership(invoice, ctx.userId)
+			if (!hasOwnership) throw new TError('error.internalServerError')
+
 			try {
 				return prisma.invoice.create({
 					data: {
@@ -102,9 +128,7 @@ export const invoiceRouter = router({
 						amountWithoutTax: computeTotalExcludingTax(invoice),
 						amountWithTax: computeTotalWithTax({
 							...invoice,
-							taxRates: await prisma.taxRate.findMany({
-								where: { id: { in: invoice.taxRateIds } },
-							}),
+							taxRates,
 						}),
 						amountPaid: 0,
 					},
@@ -143,6 +167,9 @@ export const invoiceRouter = router({
 				throw new TError('error.invoice.notFound')
 			}
 
+			const { hasOwnership, taxRates } = await verifyInvoiceDataOwnership(invoice, ctx.userId)
+			if (!hasOwnership) throw new TError('error.internalServerError')
+
 			const updatedInvoice = await prisma.invoice.update({
 				where: {
 					id,
@@ -169,9 +196,7 @@ export const invoiceRouter = router({
 					amountWithoutTax: computeTotalExcludingTax(invoice),
 					amountWithTax: computeTotalWithTax({
 						...invoice,
-						taxRates: await prisma.taxRate.findMany({
-							where: { id: { in: invoice.taxRateIds } },
-						}),
+						taxRates,
 					}),
 				},
 				include: READ_INVOICE_DEFAULT_INCLUDES,

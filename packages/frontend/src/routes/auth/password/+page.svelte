@@ -41,7 +41,7 @@
 </script>
 
 <div class="flex flex-col">
-	<h1 class="text-3xl font-semibold text-slate-700">{$t('auth.resetPassword')}</h1>
+	<h1 class="text-xl font-semibold text-slate-700">{$t('auth.resetPassword')}</h1>
 	<span class="text-orange-400">
 		{inputIssue ? $t(inputIssue) : ''}&nbsp;
 	</span>

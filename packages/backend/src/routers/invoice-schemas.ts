@@ -21,3 +21,6 @@ export const invoiceCreateSchema = z.object({
 	note: z.string(),
 	items: z.array(invoiceItemCreateSchema),
 })
+
+export type InvoiceCreateInput = z.infer<typeof invoiceCreateSchema>
+export type InvoiceItemCreateInput = z.infer<typeof invoiceItemCreateSchema>

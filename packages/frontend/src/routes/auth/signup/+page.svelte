@@ -52,7 +52,7 @@
 </svelte:head>
 
 <div class="flex flex-col w-[350px]">
-	<h1 class="text-3xl font-semibold text-slate-700">{$t('auth.register')}</h1>
+	<h1 class="text-xl font-semibold text-slate-700">{$t('auth.register')}</h1>
 
 	{#if !googleToken}
 		<Button href="/auth/signup-password" gray class="mt-8">{$t('auth.registerWithMail')}</Button>

@@ -52,7 +52,7 @@
 <div class="flex flex-col">
 	<div class="flex items-center">
 		<span class="material-icons back-nav" on:click={() => goto('/auth/login')}>arrow_back</span>
-		<h1 class="text-3xl font-semibold text-slate-700">{$t('auth.forgetPasswordTitle')}</h1>
+		<h1 class="text-xl font-semibold text-slate-700">{$t('auth.forgetPasswordTitle')}</h1>
 	</div>
 	<p>
 		{$t('auth.forgotPasswordInfo')}

@@ -129,3 +129,18 @@ export const clientRouter = router({
 			})
 		}),
 })
+
+export async function verifyClientOwnership(clientIds: string[], userId: string) {
+	if (clientIds.length === 0) return true
+
+	const clientCount = await prisma.client.count({
+		where: {
+			id: {
+				in: clientIds,
+			},
+			userId,
+		},
+	})
+
+	return clientCount === clientIds.length
+}

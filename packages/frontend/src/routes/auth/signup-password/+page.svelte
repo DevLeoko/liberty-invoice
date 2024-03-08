@@ -98,7 +98,7 @@
 {/if}
 
 <div class="flex flex-col w-[350px] max-w-full">
-	<h1 class="text-3xl font-semibold text-slate-700">{$t('auth.register')}</h1>
+	<h1 class="text-xl font-semibold text-slate-700">{$t('auth.register')}</h1>
 	<span class="text-orange-400">
 		{inputIssue && showIssue ? $t(inputIssue) : ''}&nbsp;
 	</span>

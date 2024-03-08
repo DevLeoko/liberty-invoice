@@ -80,3 +80,18 @@ export const productRouter = router({
 			})
 		}),
 })
+
+export async function verifyProductOwnership(productIds: string[], userId: string) {
+	if (productIds.length === 0) return true
+
+	const productCount = await prisma.product.count({
+		where: {
+			id: {
+				in: productIds,
+			},
+			userId,
+		},
+	})
+
+	return productCount === productIds.length
+}
