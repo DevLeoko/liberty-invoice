@@ -5,7 +5,6 @@
 	import { applicationLanguage, t } from '../../stores/settings'
 	import LanguageSelector from '../LanguageSelector.svelte'
 	import Button from '../basics/Button.svelte'
-	import Chip from '../basics/Chip.svelte'
 	import FloatingCardTrigger from '../basics/FloatingCardTrigger.svelte'
 	import MobileNavbar from './MobileNavbar.svelte'
 
@@ -58,11 +57,7 @@
 >
 	<!-- <img src="" alt="logo" class="self-center w-2/3" /> -->
 	<a class="flex items-center justify-center md:justify-start" href="/">
-		<img class="h-6" src="/logo.svg" alt="logo" />
-		<h2 class="ml-2 font-sans text-lg tracking-widest uppercase text-slate-800">
-			Liberty Invoice
-			<Chip>Early access</Chip>
-		</h2>
+		<img class="h-8 mx-auto" src="/logo.svg" alt="logo" />
 	</a>
 
 	<nav class="flex flex-col mt-6">

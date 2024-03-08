@@ -3,6 +3,13 @@ export default {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 	theme: {
 		extend: {
+			colors: {
+				blue: {
+					500: '#004ee7',
+					600: '#003cb3',
+					700: '#00349a',
+				},
+			},
 			screens: {
 				xs: '475px',
 			},

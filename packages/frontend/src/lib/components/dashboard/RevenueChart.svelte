@@ -73,7 +73,7 @@
 
 	$: data = [
 		{
-			color: '#3b82f6',
+			color: '#004ee7',
 			name:
 				view === 'year'
 					? $t('dashboard.revenueChart.thisYear')

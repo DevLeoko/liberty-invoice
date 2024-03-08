@@ -60,8 +60,8 @@
 		<svg {width} {height}>
 			<defs>
 				<radialGradient id="area-gradient" cx="50%" cy="0%" r="75%" fx="50%" fy="0%">
-					<stop offset="0%" stop-color="#3b82f6" stop-opacity="0.15" />
-					<stop offset="100%" stop-color="#3b82f6" stop-opacity="0" />
+					<stop offset="0%" stop-color="#004ee7" stop-opacity="0.15" />
+					<stop offset="100%" stop-color="#004ee7" stop-opacity="0" />
 				</radialGradient>
 
 				{#each [...data].reverse() as graph, i}

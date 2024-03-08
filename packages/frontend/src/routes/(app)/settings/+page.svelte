@@ -52,16 +52,19 @@
 		@apply px-3 py-2 bg-gray-200 hover:bg-gray-300 cursor-pointer;
 	}
 
-	a h2 {
+	a h2,
+	article h2 {
 		@apply text-lg flex items-center leading-tight;
 		word-break: break-word;
 	}
 
-	a h2 span {
+	a h2 span,
+	article h2 span {
 		@apply mr-2 text-xl;
 	}
 
-	a p {
+	a p,
+	article p {
 		@apply text-sm mt-1 text-gray-600;
 	}
 </style>
