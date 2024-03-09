@@ -66,7 +66,14 @@ interface Address {
 export async function buildInvoicePdf(
 	invoice: Omit<
 		Invoice,
-		'id' | 'draft' | 'amountPaid' | 'amountWithoutTax' | 'amountWithTax' | 'items'
+		| 'id'
+		| 'draft'
+		| 'amountPaid'
+		| 'amountWithoutTax'
+		| 'amountWithTax'
+		| 'items'
+		| 'createdAt'
+		| 'updatedAt'
 	> & { items: z.output<typeof invoiceItemCreateSchema>[] }
 ) {
 	const account = invoice.user.userSettings!

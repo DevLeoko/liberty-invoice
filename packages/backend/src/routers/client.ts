@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { prisma } from '../prisma'
 import { protectedProcedure, router } from '../trpc'
 import { TError } from '../utils/TError'
-import { clientInputSchema } from './client-schema'
+import { clientInputSchema, clientListSchema } from './client-schema'
 
 export const clientRouter = router({
 	read: protectedProcedure.input(z.object({ id: z.string() })).query(async ({ ctx, input }) => {
@@ -51,19 +51,56 @@ export const clientRouter = router({
 			return client
 		}),
 
-	list: protectedProcedure.query(async ({ ctx }) => {
-		return prisma.client.findMany({
-			where: {
-				userId: ctx.userId,
-			},
-			select: {
-				id: true,
-				name: true,
-				firstName: true,
-				lastName: true,
-				shorthand: true,
-			},
-		})
+	list: protectedProcedure.input(clientListSchema).query(async ({ ctx, input }) => {
+		const { take, skip, isArchived, isFavorite, search } = input
+
+		const { defaultCurrency } = (await prisma.userSettings.findUnique({
+			where: { userId: ctx.userId },
+			select: { defaultCurrency: true },
+		}))!
+
+		// Select stats about all invoices and invoices in the last 90 days
+		return prisma.$queryRawUnsafe<
+			{
+				id: string
+				name: string
+				firstName: string
+				lastName: string
+				shorthand: string
+				isFavorite: boolean
+				isArchived: boolean
+				createdAt: Date
+				totalAmount: number | null
+				totalAmountLast90Days: number | null
+				invoiceCount: number
+				invoiceCountLast90Days: number
+				lastInvoiceDate: Date | null
+			}[]
+		>(
+			`SELECT \`Client\`.\`id\`, \`Client\`.\`name\`, \`Client\`.\`firstName\`, \`Client\`.\`lastName\`, \`Client\`.\`shorthand\`, \`Client\`.\`isFavorite\`, \`Client\`.\`isArchived\`, \`Client\`.\`createdAt\`,
+				SUM(\`Invoice\`.\`amountWithTax\` * \`CurrencyExchangeRates\`.rate) AS \`totalAmount\`, 
+				SUM(IF(\`Invoice\`.\`date\` > DATE_SUB(NOW(), INTERVAL 90 DAY), \`Invoice\`.\`amountWithTax\` * \`CurrencyExchangeRates\`.rate, 0)) AS \`totalAmountLast90Days\`,
+				COUNT(\`Invoice\`.\`id\`) AS \`invoiceCount\` ,
+				SUM(IF(\`Invoice\`.\`date\` > DATE_SUB(NOW(), INTERVAL 90 DAY), 1, 0)) AS \`invoiceCountLast90Days\`,
+				MAX(\`Invoice\`.\`date\`) AS \`lastInvoiceDate\`
+			FROM \`Client\`
+			LEFT JOIN \`Invoice\` ON \`Client\`.\`id\` = \`Invoice\`.\`clientId\`
+			LEFT JOIN \`CurrencyExchangeRates\` ON \`Invoice\`.currency = \`CurrencyExchangeRates\`.fromCurrency AND \`CurrencyExchangeRates\`.toCurrency = ?
+			WHERE \`Client\`.\`userId\` = ? 
+				${isArchived !== undefined ? 'AND `Client`.`isArchived` = ?' : ''} 
+				${isFavorite !== undefined ? 'AND `Client`.`isFavorite` = ?' : ''} 
+				${search ? 'AND (CONCAT(`Client`.`name`, " ", `Client`.`firstName`, " ", `Client`.`lastName`, " ", `Client`.`shorthand`) LIKE ?)' : ''}
+			GROUP BY \`Client\`.\`id\`
+			ORDER BY \`Client\`.\`isFavorite\` DESC, CONCAT(\`Client\`.\`name\`, \`Client\`.\`firstName\`, \`Client\`.\`lastName\`) ASC
+			LIMIT ? OFFSET ?`,
+			defaultCurrency,
+			ctx.userId,
+			...(isArchived !== undefined ? [isArchived] : []),
+			...(isFavorite !== undefined ? [isFavorite] : []),
+			...(search ? [`%${search}%`] : []),
+			take,
+			skip
+		)
 	}),
 
 	create: protectedProcedure.input(clientInputSchema).mutation(async ({ ctx, input }) => {
@@ -84,6 +121,34 @@ export const clientRouter = router({
 			},
 		})
 	}),
+
+	toggleFavorite: protectedProcedure
+		.input(z.object({ id: z.string(), isFavorite: z.boolean() }))
+		.mutation(async ({ ctx, input }) => {
+			await prisma.client.updateMany({
+				where: {
+					id: input.id,
+					userId: ctx.userId,
+				},
+				data: {
+					isFavorite: input.isFavorite,
+				},
+			})
+		}),
+
+	toggleArchived: protectedProcedure
+		.input(z.object({ id: z.string(), isArchived: z.boolean() }))
+		.mutation(async ({ ctx, input }) => {
+			await prisma.client.updateMany({
+				where: {
+					id: input.id,
+					userId: ctx.userId,
+				},
+				data: {
+					isArchived: input.isArchived,
+				},
+			})
+		}),
 
 	update: protectedProcedure
 		.input(z.object({ id: z.string(), client: clientInputSchema.partial() }))

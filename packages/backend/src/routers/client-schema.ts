@@ -17,9 +17,11 @@ export const clientInputSchema = z.object({
 	countryCode: z.string(),
 
 	defaultLanguage: z.string(),
-	defaultCurrency: z.string(),
+	defaultCurrency: z.string().min(1).max(6),
 	defaultTaxRateId: z.string().nullable(),
 	defaultDueDays: z.number(),
+
+	isFavorite: z.boolean().optional(),
 
 	textFragments: z.array(
 		z.object({
@@ -27,4 +29,13 @@ export const clientInputSchema = z.object({
 			value: z.string(),
 		})
 	),
+})
+
+export const clientListSchema = z.object({
+	isFavorite: z.boolean().optional(),
+	isArchived: z.boolean().default(false),
+	search: z.string().optional(),
+
+	take: z.number().max(50).default(10),
+	skip: z.number().default(0),
 })

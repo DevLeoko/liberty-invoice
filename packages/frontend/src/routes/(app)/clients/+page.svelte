@@ -1,7 +1,7 @@
 <script lang="ts">
+	import ClientCard from '$lib/components/clients/ClientCard.svelte'
 	import type { EditorSelection } from '$lib/utils/EditorSelection'
-	import { cloneDeep } from 'lodash'
-	import { formatClientName } from '../../../../../shared/client-formatter'
+	import { cloneDeep, debounce } from 'lodash'
 	import Button from '../../../lib/components/basics/Button.svelte'
 	import PageTitle from '../../../lib/components/basics/PageTitle.svelte'
 	import Skeleton from '../../../lib/components/basics/Skeleton.svelte'
@@ -12,8 +12,18 @@
 	import { trpc, type CreateClient } from '../../../lib/trpcClient'
 	import { emptyClient } from '../../../lib/utils/clientUtils'
 
+	let searchQuery = ''
+	let viewArchived = false
+	let debouncedSearchQuery = ''
+
+	const updateDebouncedSearchQuery = debounce((value: string) => {
+		debouncedSearchQuery = value
+	}, 300)
+
+	$: updateDebouncedSearchQuery(searchQuery)
+
 	const userSettings = createUserSettingsQuery()
-	const clients = createClientQuery()
+	$: clients = createClientQuery({ search: debouncedSearchQuery, isArchived: viewArchived })
 
 	let selected: EditorSelection<CreateClient> = null
 
@@ -48,21 +58,36 @@
 	{/if}
 </PageTitle>
 
-{#if $clients.isLoading}
-	<Skeleton class="w-24 h-12" />
-{:else if $clients.isError}
-	<span>{$t('general.error')}</span>
-{:else if $clients.data.length === 0}
-	<span>{$t('clientEditor.noneFound')}</span>
-{:else}
-	{#each $clients.data as client}
-		<div
-			class="w-full p-2 mt-2 rounded-sm cursor-pointer xs:w-72 bg-slate-200 hover:bg-slate-300"
-			on:click={() => selectClient(client.id)}
-		>
-			<h3 class="text-lg font-semibold">
-				{formatClientName(client)}
-			</h3>
+<div class="flex flex-col gap-4 max-w-[800px]">
+	<div class="flex gap-2">
+		<div class="relative flex-grow">
+			<span class="absolute inset-y-0 left-0 flex items-center pl-2">
+				<span class="text-lg material-icons">search</span>
+			</span>
+			<input
+				type="text"
+				bind:value={searchQuery}
+				class="!pl-8"
+				placeholder="Search by name, company or shorthand"
+			/>
 		</div>
-	{/each}
-{/if}
+
+		<Button on:click={() => (viewArchived = !viewArchived)} gray outlined>
+			{viewArchived ? $t('client.showActive') : $t('client.showArchived')}
+		</Button>
+	</div>
+
+	{#if $clients.isLoading}
+		<Skeleton class="w-24 h-12" />
+	{:else if $clients.isError}
+		<span>{$t('general.error')}</span>
+	{:else if $clients.data.length === 0}
+		<span>{$t('clientEditor.noneFound')}</span>
+	{:else}
+		<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+			{#each $clients.data as client (client.id)}
+				<ClientCard {client} on:click={() => selectClient(client.id)} />
+			{/each}
+		</div>
+	{/if}
+</div>

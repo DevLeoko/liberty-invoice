@@ -98,6 +98,19 @@ export const TRANSLATIONS_EN = {
 		create: 'Create product',
 	},
 
+	client: {
+		showArchived: 'Show archived',
+		showActive: 'Show active',
+
+		stats: {
+			createdOn: 'Created on',
+			lastInvoice: 'Last invoice',
+			totalInvoiced: 'Total invoiced',
+			invoices: 'Invoices',
+			days90: '90 days',
+		},
+	},
+
 	clientEditor: {
 		noneFound: 'No clients found.',
 		newClient: 'New Client',

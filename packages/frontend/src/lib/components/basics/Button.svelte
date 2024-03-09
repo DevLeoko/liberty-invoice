@@ -91,7 +91,7 @@
 
 	button,
 	a {
-		@apply px-2 py-1;
+		@apply px-4 py-1;
 		background-color: var(--color);
 
 		&:hover {

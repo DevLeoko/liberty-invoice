@@ -9,6 +9,10 @@ export default {
 					600: '#003cb3',
 					700: '#00349a',
 				},
+
+				gray: {
+					150: '#eff0f2',
+				},
 			},
 			screens: {
 				xs: '475px',

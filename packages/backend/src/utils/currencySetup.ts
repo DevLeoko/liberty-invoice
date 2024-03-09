@@ -25,24 +25,25 @@ const RATES_USD_TO_CURRENCY: Record<string, number> = {
 }
 
 export async function setupCurrencies() {
-	const currencyCount = await prisma.currencyExchangeRates.count()
+	const baseEntry = await prisma.currencyExchangeRates.findMany({
+		where: { fromCurrency: 'USD', toCurrency: 'USD' },
+	})
 
-	if (currencyCount === 0) {
+	if (!baseEntry.length) {
 		const currencies = Object.keys(RATES_USD_TO_CURRENCY)
 
 		for (const fromCurrency of currencies) {
 			for (const toCurrency of currencies) {
-				if (fromCurrency !== toCurrency) {
-					const rate = RATES_USD_TO_CURRENCY[toCurrency] / RATES_USD_TO_CURRENCY[fromCurrency]
+				const rate =
+					toCurrency == fromCurrency
+						? 1
+						: RATES_USD_TO_CURRENCY[toCurrency] / RATES_USD_TO_CURRENCY[fromCurrency]
 
-					await prisma.currencyExchangeRates.create({
-						data: {
-							fromCurrency,
-							toCurrency,
-							rate,
-						},
-					})
-				}
+				await prisma.currencyExchangeRates.upsert({
+					where: { toCurrency_fromCurrency: { fromCurrency, toCurrency } },
+					update: { rate: rate },
+					create: { fromCurrency: fromCurrency, toCurrency: toCurrency, rate: rate },
+				})
 			}
 		}
 	}

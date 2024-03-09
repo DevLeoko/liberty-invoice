@@ -44,6 +44,16 @@ export async function authExpressMiddleware(req: Request, res: Response, next: N
 	if (refreshResults.success) {
 		const { accessToken, data } = refreshResults.data
 
+		// Update last login (non-blocking)
+		prisma.user.update({
+			where: {
+				id: data.userId,
+			},
+			data: {
+				lastLogin: new Date(),
+			},
+		})
+
 		res.cookie('accessToken', accessToken, {
 			httpOnly: true,
 			sameSite: 'lax',

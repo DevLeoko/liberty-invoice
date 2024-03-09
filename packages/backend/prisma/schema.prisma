@@ -18,6 +18,7 @@ model User {
   passwordHash    String?
   refreshSession  String?
   createdAt       DateTime @default(now())
+  lastLogin       DateTime @default(now())
 
   userSettings UserSettings?
 
@@ -71,6 +72,8 @@ model UserSettings {
   enableMultilingual Boolean
 
   marketingEmails Boolean @default(false)
+
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model TaxRate {
@@ -115,8 +118,14 @@ model Client {
   defaultTaxRateId String?
   defaultDueDays   Int
 
+  isFavorite Boolean @default(false)
+  isArchived Boolean @default(false)
+
   invoices      Invoice[]
   textFragments TextFragment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Invoice {
@@ -142,6 +151,9 @@ model Invoice {
   amountPaid       Float
 
   items InvoiceItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   @@unique([userId, invoiceNumber])
 }

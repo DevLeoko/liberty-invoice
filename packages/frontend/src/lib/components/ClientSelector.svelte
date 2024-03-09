@@ -28,7 +28,7 @@
 		}
 	}
 
-	const clients = createClientQuery()
+	const clients = createClientQuery({})
 </script>
 
 <ClientEditorModal bind:selected={createClient} />
