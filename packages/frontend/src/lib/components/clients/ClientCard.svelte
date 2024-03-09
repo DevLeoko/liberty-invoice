@@ -7,19 +7,19 @@
 	} from '$lib/controller/client'
 	import { createUserSettingsQuery } from '$lib/controller/user-settings'
 	import { formatDate, formatInt, getCurrency } from '$lib/stores/settings'
-	import type { ListClient } from '$lib/trpcClient'
+	import type { ListDetailedClient } from '$lib/trpcClient'
 	import { formatClientName } from 'shared/client-formatter'
 	import { fly } from 'svelte/transition'
 
 	export let loadingToggleFav: Promise<unknown> | null = null
 	export let loadingToggleArchived: Promise<unknown> | null = null
-	export let client: ListClient
+	export let client: ListDetailedClient
 
 	const toggleFavorite = createClientToggleFavoriteMutation()
 	const toggleArchive = createClientToggleArchivedMutation()
 	const userSettings = createUserSettingsQuery()
 
-	$: currency = $getCurrency($userSettings.data?.defaultCurrency ?? 'USD')
+	$: currency = $getCurrency($userSettings.data?.defaultCurrency ?? 'USD', true)
 </script>
 
 <div
@@ -68,7 +68,9 @@
 		{/await}
 	</div>
 
-	<div class="grid grid-cols-3 gap-px bg-gray-300 border-t border-gray-300">
+	<div
+		class="grid flex-grow grid-cols-2 gap-px bg-gray-300 border-t border-gray-300 xxs:grid-cols-3"
+	>
 		<ClientCardStatsValue label="client.stats.createdOn">
 			{$formatDate(client.createdAt)}
 		</ClientCardStatsValue>

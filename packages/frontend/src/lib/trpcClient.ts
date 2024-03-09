@@ -9,7 +9,7 @@ import { logError } from './stores/settings'
 import type { TranslationPaths } from './translations/translations'
 
 export type CreateClient = RouterInput['client']['create']
-export type ListClient = RouterOutput['client']['list'][0]
+export type ListDetailedClient = RouterOutput['client']['listDetailed']['results'][0]
 export type ClientListQuery = RouterInput['client']['list']
 
 export type ReadUserSettings = RouterOutput['userSettings']['read']

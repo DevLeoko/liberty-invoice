@@ -28,7 +28,7 @@
 		}
 	}
 
-	const clients = createClientQuery({})
+	const clients = createClientQuery({}, 10)
 </script>
 
 <ClientEditorModal bind:selected={createClient} />
@@ -47,7 +47,7 @@
 				<span class="material-icons">add</span>
 				<span class="-mt-1 text-xs">{$t('invoiceEditor.create')}</span>
 			</div>
-			{#each $clients.data as client}
+			{#each $clients.data.pages.flatMap((page) => page.results) as client}
 				<div
 					class="flex items-center justify-center w-16 h-16 mr-2 border rounded-md cursor-pointer bg-opacity-70"
 					class:border-opacity-20={client.id === clientId}

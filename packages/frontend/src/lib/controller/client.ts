@@ -1,10 +1,13 @@
-import { createQuery, useQueryClient } from '@tanstack/svelte-query'
+import type { Paged } from '$lib/utils/svelteQueryUtils'
+import { createInfiniteQuery, useQueryClient } from '@tanstack/svelte-query'
+import { cloneDeep } from 'lodash'
 import { trpc, type ClientListQuery } from '../trpcClient'
 import { TEXT_FRAGMENT_KEYS } from './text-fragment'
 
 export const CLIENT_KEYS = {
 	all: ['client'],
 	allList: () => [...CLIENT_KEYS.all, 'list'],
+	// allListPaged: () => [...CLIENT_KEYS.allList(), 'paged'],
 	listQuery: (query: ClientListQuery) => [
 		...CLIENT_KEYS.allList(),
 		{ archived: query.isArchived ?? false },
@@ -14,10 +17,40 @@ export const CLIENT_KEYS = {
 	read: (clientId: string) => [...CLIENT_KEYS.all, 'read', clientId],
 }
 
-export function createClientQuery(query: ClientListQuery) {
-	return createQuery({
-		queryKey: CLIENT_KEYS.listQuery(query),
-		queryFn: () => trpc.client.list.query(query),
+type AllListBaseData = {
+	results: { id: string; isFavorite?: boolean; isArchived?: boolean }[]
+}
+
+export function createClientQuery(query: Omit<ClientListQuery, 'take' | 'skip'>, pageSize: number) {
+	return createInfiniteQuery({
+		queryKey: CLIENT_KEYS.listQuery({ ...query, take: pageSize }),
+		queryFn: ({ pageParam }) => {
+			return trpc.client.list
+				.query({ ...query, take: pageSize, skip: pageParam })
+				.then((res) => ({ ...res }))
+		},
+		getNextPageParam: (lastPage, allPages) => {
+			if (!lastPage.hasMore) return undefined
+			return allPages.reduce((acc, page) => acc + page.results.length, 0)
+		},
+	})
+}
+
+export function createDetailedClientQuery(
+	query: Omit<ClientListQuery, 'take' | 'skip'>,
+	pageSize: number
+) {
+	return createInfiniteQuery({
+		queryKey: CLIENT_KEYS.listQuery({ ...query, take: pageSize }),
+		queryFn: ({ pageParam }) => {
+			return trpc.client.listDetailed
+				.query({ ...query, take: pageSize, skip: pageParam })
+				.then((res) => ({ ...res }))
+		},
+		getNextPageParam: (lastPage, allPages) => {
+			if (!lastPage.hasMore) return undefined
+			return allPages.reduce((acc, page) => acc + page.results.length, 0)
+		},
 	})
 }
 
@@ -71,26 +104,35 @@ export function createClientToggleArchivedMutation() {
 		queryClient.invalidateQueries(CLIENT_KEYS.read(data.id))
 
 		// Update archived status
-		queryClient.setQueriesData(
-			CLIENT_KEYS.allList(),
-			(oldData?: { id: string; isArchived?: boolean }[]) => {
-				if (!oldData) return oldData
+		queryClient.setQueriesData(CLIENT_KEYS.allList(), (oldData?: Paged<AllListBaseData>) => {
+			if (!oldData) return oldData
 
-				oldData
+			const newData = cloneDeep(oldData)
+
+			newData.pages.forEach((page) => {
+				page.results
 					.filter((client) => client.id === data.id)
 					.forEach((client) => {
 						client.isArchived = data.isArchived
 					})
-			}
-		)
+			})
+
+			return newData
+		})
 
 		// Remove from all list where { isArchived: !data.isArchived }
 		queryClient.setQueriesData(
 			[...CLIENT_KEYS.allList(), { archived: !data.isArchived }],
-			(oldData?: { id: string; isArchived?: boolean }[]) => {
+			(oldData?: Paged<AllListBaseData>) => {
 				if (!oldData) return oldData
 
-				return oldData.filter((client) => client.id !== data.id)
+				const newData = cloneDeep(oldData)
+
+				newData.pages.forEach((page) => {
+					page.results = page.results.filter((client) => client.id !== data.id)
+				})
+
+				return newData
 			}
 		)
 
@@ -109,26 +151,35 @@ export function createClientToggleFavoriteMutation() {
 		queryClient.invalidateQueries(CLIENT_KEYS.read(data.id))
 
 		// Update favorite status
-		queryClient.setQueriesData(
-			CLIENT_KEYS.allList(),
-			(oldData?: { id: string; isFavorite?: boolean }[]) => {
-				if (!oldData) return oldData
+		queryClient.setQueriesData(CLIENT_KEYS.allList(), (oldData?: Paged<AllListBaseData>) => {
+			if (!oldData) return oldData
 
-				oldData
+			const newData = cloneDeep(oldData)
+
+			newData.pages.forEach((page) => {
+				page.results
 					.filter((client) => client.id === data.id)
 					.forEach((client) => {
 						client.isFavorite = data.isFavorite
 					})
-			}
-		)
+			})
+
+			return newData
+		})
 
 		// Remove from all list where { favorite: !data.isFavorite }
 		queryClient.setQueriesData(
 			[...CLIENT_KEYS.allList(), { favorite: !data.isFavorite }],
-			(oldData?: { id: string; isFavorite?: boolean }[]) => {
+			(oldData?: Paged<AllListBaseData>) => {
 				if (!oldData) return oldData
 
-				return oldData.filter((client) => client.id !== data.id)
+				const newData = cloneDeep(oldData)
+
+				newData.pages.forEach((page) => {
+					page.results = page.results.filter((client) => client.id !== data.id)
+				})
+
+				return newData
 			}
 		)
 

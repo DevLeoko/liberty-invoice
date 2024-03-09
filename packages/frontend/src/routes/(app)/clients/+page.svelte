@@ -6,7 +6,7 @@
 	import PageTitle from '../../../lib/components/basics/PageTitle.svelte'
 	import Skeleton from '../../../lib/components/basics/Skeleton.svelte'
 	import ClientEditorModal from '../../../lib/components/editors/ClientEditorModal.svelte'
-	import { createClientQuery } from '../../../lib/controller/client'
+	import { createDetailedClientQuery } from '../../../lib/controller/client'
 	import { createUserSettingsQuery } from '../../../lib/controller/user-settings'
 	import { t } from '../../../lib/stores/settings'
 	import { trpc, type CreateClient } from '../../../lib/trpcClient'
@@ -23,7 +23,10 @@
 	$: updateDebouncedSearchQuery(searchQuery)
 
 	const userSettings = createUserSettingsQuery()
-	$: clients = createClientQuery({ search: debouncedSearchQuery, isArchived: viewArchived })
+	$: clients = createDetailedClientQuery(
+		{ search: debouncedSearchQuery, isArchived: viewArchived },
+		12
+	)
 
 	let selected: EditorSelection<CreateClient> = null
 
@@ -72,7 +75,12 @@
 			/>
 		</div>
 
-		<Button on:click={() => (viewArchived = !viewArchived)} gray outlined>
+		<Button
+			on:click={() => (viewArchived = !viewArchived)}
+			gray={!viewArchived}
+			outlined
+			class="min-w-36"
+		>
 			{viewArchived ? $t('client.showActive') : $t('client.showArchived')}
 		</Button>
 	</div>
@@ -81,13 +89,19 @@
 		<Skeleton class="w-24 h-12" />
 	{:else if $clients.isError}
 		<span>{$t('general.error')}</span>
-	{:else if $clients.data.length === 0}
+	{:else if $clients.data.pages.length === 0}
 		<span>{$t('clientEditor.noneFound')}</span>
 	{:else}
-		<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-			{#each $clients.data as client (client.id)}
-				<ClientCard {client} on:click={() => selectClient(client.id)} />
-			{/each}
+		<div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+			{#key viewArchived}
+				{#each $clients.data.pages.flatMap((p) => p.results) as client (client.id)}
+					<ClientCard {client} on:click={() => selectClient(client.id)} />
+				{/each}
+			{/key}
 		</div>
+
+		{#if $clients.hasNextPage}
+			<Button on:click={() => $clients.fetchNextPage()} outlined>Load more</Button>
+		{/if}
 	{/if}
 </div>

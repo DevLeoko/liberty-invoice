@@ -66,7 +66,10 @@ export const formatFloat = derived(
 		value.toLocaleString($t('langCode'), { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 )
 
-export const formatInt = derived(t, ($t) => (value: number) => value.toLocaleString($t('langCode')))
+export const formatInt = derived(
+	t,
+	($t) => (value: number) => value.toLocaleString($t('langCode'), { maximumFractionDigits: 0 })
+)
 
 export const formatDate = derived(
 	t,
@@ -75,6 +78,8 @@ export const formatDate = derived(
 )
 
 export const getCurrency = derived(
-	formatFloat,
-	($formatFloat) => (shorthand: string) => getCurrencyUtil(shorthand, $formatFloat)
+	[formatFloat, formatInt],
+	([$formatFloat, $formatInt]) =>
+		(shorthand: string, round = false) =>
+			getCurrencyUtil(shorthand, round ? $formatInt : $formatFloat)
 )

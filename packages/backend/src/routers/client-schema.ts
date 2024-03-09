@@ -39,3 +39,5 @@ export const clientListSchema = z.object({
 	take: z.number().max(50).default(10),
 	skip: z.number().default(0),
 })
+
+export type ClientListQuery = z.infer<typeof clientListSchema>
