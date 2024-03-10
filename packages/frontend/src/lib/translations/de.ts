@@ -35,7 +35,9 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 	invoiceEditor: {
 		date: 'Datum',
 		due: 'Fällig',
-		dueIn: 'in {{days}} Tagen',
+		setDueDateTo: 'Fälligkeitsdatum anpassen',
+		today: 'Heute',
+		dueIn: 'In {{days}} Tagen',
 		toggleSearch: 'Zu Suche umschalten',
 		note: 'Anmerkung',
 		create: 'Anlegen',
@@ -99,6 +101,19 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		deleted: 'Produkt gelöscht',
 		update: 'Produkt bearbeiten',
 		create: 'Produkt anlegen',
+	},
+
+	client: {
+		showArchived: 'Archivierte anzeigen',
+		showActive: 'Aktive anzeigen',
+
+		stats: {
+			createdOn: 'Erstellt am',
+			lastInvoice: 'Letzte Rechnung',
+			totalInvoiced: 'Insgesamt',
+			invoices: 'Rechnungen',
+			days90: '90 Tage',
+		},
 	},
 
 	clientEditor: {
