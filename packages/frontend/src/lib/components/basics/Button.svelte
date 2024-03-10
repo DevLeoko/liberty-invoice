@@ -8,6 +8,7 @@
 	export let loading = false
 	export let disabled = false
 	export let outlined = false
+	export let text = false
 	export let gray = false
 	export let snug = false
 	export let red = false
@@ -57,6 +58,7 @@
 	class:loading
 	class:disabled
 	class:outlined
+	class:text
 	class:snug
 	class:gray
 	class:red
@@ -134,6 +136,16 @@
 		&.outlined {
 			background-color: transparent;
 			border: 1px solid var(--color);
+			color: var(--color);
+
+			&:hover {
+				background-color: rgba(0, 0, 0, 0.02);
+			}
+		}
+
+		&.text {
+			@apply px-2 py-0.5;
+			background-color: transparent;
 			color: var(--color);
 
 			&:hover {

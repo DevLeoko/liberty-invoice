@@ -17,6 +17,8 @@ export const TRANSLATIONS_EN = {
 	},
 
 	invoiceList: {
+		searchPlaceholder: 'Search by invoice number or client name',
+
 		newInvoice: 'New Invoice',
 		noneFound: 'No invoices found.',
 		paid: 'Paid',
@@ -238,6 +240,8 @@ export const TRANSLATIONS_EN = {
 		unsavedChanges: 'Unsaved changes',
 		inDevelopment: 'This feature is still in development.',
 		date: 'Date',
+
+		loadMore: 'Load more',
 	},
 
 	demo: {

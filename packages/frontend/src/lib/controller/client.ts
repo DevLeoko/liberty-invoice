@@ -7,7 +7,6 @@ import { TEXT_FRAGMENT_KEYS } from './text-fragment'
 export const CLIENT_KEYS = {
 	all: ['client'],
 	allList: () => [...CLIENT_KEYS.all, 'list'],
-	// allListPaged: () => [...CLIENT_KEYS.allList(), 'paged'],
 	listQuery: (query: ClientListQuery) => [
 		...CLIENT_KEYS.allList(),
 		{ archived: query.isArchived ?? false },

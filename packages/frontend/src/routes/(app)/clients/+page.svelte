@@ -96,7 +96,7 @@
 		</div>
 
 		{#if $clients.hasNextPage}
-			<Button on:click={() => $clients.fetchNextPage()} outlined>Load more</Button>
+			<Button on:click={() => $clients.fetchNextPage()} outlined>{$t('general.loadMore')}</Button>
 		{/if}
 	{/if}
 </div>

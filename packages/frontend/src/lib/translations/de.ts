@@ -18,6 +18,7 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 	},
 
 	invoiceList: {
+		searchPlaceholder: 'Suche nach Rechnungsnummer oder Kundenname',
 		newInvoice: 'Neue Rechnung',
 		noneFound: 'Keine Rechnungen gefunden.',
 		paid: 'Bezahlt',
@@ -255,6 +256,7 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		close: 'Schließen',
 		inDevelopment: 'Diese Funktion ist noch in Entwicklung.',
 		date: 'Datum',
+		loadMore: 'Mehr laden',
 	},
 
 	demo: {

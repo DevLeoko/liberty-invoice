@@ -24,3 +24,13 @@ export const invoiceCreateSchema = z.object({
 
 export type InvoiceCreateInput = z.infer<typeof invoiceCreateSchema>
 export type InvoiceItemCreateInput = z.infer<typeof invoiceItemCreateSchema>
+
+export const invoiceListSchema = z.object({
+	status: z.array(z.enum(['draft', 'outstanding', 'paid'])).optional(),
+	issuedBefore: z.date().optional(),
+	search: z.string().optional(),
+	take: z.number().max(100).default(25),
+	skip: z.number().default(0),
+})
+
+export type InvoiceListQuery = z.infer<typeof invoiceListSchema>

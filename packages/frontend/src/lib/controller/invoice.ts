@@ -1,20 +1,50 @@
 import { PUBLIC_BACKEND_URL } from '$env/static/public'
-import { createQuery, useQueryClient } from '@tanstack/svelte-query'
+import type { Paged } from '$lib/utils/svelteQueryUtils'
+import { createInfiniteQuery, createQuery, useQueryClient } from '@tanstack/svelte-query'
+import { cloneDeep } from 'lodash'
 import SuperJSON from 'superjson'
-import { trpc, type CreateInvoice, type ReadInvoice } from '../trpcClient'
+import {
+	trpc,
+	type CreateInvoice,
+	type InvoiceListQuery,
+	type ListInvoice,
+	type ReadInvoice,
+} from '../trpcClient'
 import { PRODUCT_KEYS } from './product'
 import { STATS_KEYS } from './stats'
 
 export const INVOICE_KEYS = {
 	all: ['invoice'],
 	list: () => [...INVOICE_KEYS.all, 'list'],
+	allList: () => [...INVOICE_KEYS.all, 'list'],
+	listQuery: (query: InvoiceListQuery) => [
+		...INVOICE_KEYS.allList(),
+		{ status: query.status ?? false },
+		{ issuedBefore: query.issuedBefore },
+		query,
+	],
 	read: (invoiceId: string) => [...INVOICE_KEYS.all, 'read', invoiceId],
 }
 
-export function createInvoiceQuery() {
-	return createQuery({
-		queryKey: INVOICE_KEYS.list(),
-		queryFn: () => trpc.invoice.list.query(),
+type AllListBaseData = Paged<{
+	results: ListInvoice[]
+}>
+
+export function createInvoiceQuery(
+	query: Omit<InvoiceListQuery, 'take' | 'skip'>,
+	pageSize: number
+) {
+	return createInfiniteQuery({
+		queryKey: INVOICE_KEYS.listQuery({ ...query, take: pageSize }),
+		queryFn: ({ pageParam }) => {
+			return trpc.invoice.list
+				.query({ ...query, take: pageSize, skip: pageParam })
+				.then((res) => ({ ...res }))
+		},
+		getNextPageParam: (lastPage, allPages) => {
+			if (!lastPage.hasMore) return undefined
+			return allPages.reduce((acc, page) => acc + page.results.length, 0)
+		},
 	})
 }
 
@@ -49,9 +79,16 @@ export function createInvoiceDeleteMutation() {
 	return async (invoiceId: string) => {
 		const res = await trpc.invoice.delete.mutate(invoiceId)
 
-		queryClient.setQueriesData(INVOICE_KEYS.list(), (oldData?: { id: string }[]) => {
+		queryClient.setQueriesData(INVOICE_KEYS.list(), (oldData?: AllListBaseData) => {
 			if (!oldData) return oldData
-			return oldData.filter((invoice) => invoice.id !== invoiceId)
+
+			const newData = cloneDeep(oldData)
+
+			newData.pages.forEach((page) => {
+				page.results = page.results.filter((invoice) => invoice.id !== invoiceId)
+			})
+
+			return newData
 		})
 		queryClient.invalidateQueries(INVOICE_KEYS.read(invoiceId))
 		queryClient.invalidateQueries(STATS_KEYS.all)
@@ -94,9 +131,17 @@ export function createInvoiceFinalizeMutation() {
 		const res = await trpc.invoice.finalize.mutate(invoiceId)
 		queryClient.invalidateQueries(INVOICE_KEYS.read(invoiceId))
 
-		queryClient.setQueryData(INVOICE_KEYS.list(), (oldData?: { id: string }[]) => {
+		queryClient.setQueryData(INVOICE_KEYS.list(), (oldData?: AllListBaseData) => {
 			if (!oldData) return oldData
-			return oldData.map((i) => (i.id === invoiceId ? res : i))
+			// return oldData.map((i) => (i.id === invoiceId ? res : i))
+
+			const newData = cloneDeep(oldData)
+
+			newData.pages.forEach((page) => {
+				page.results = page.results.map((invoice) => (invoice.id === invoiceId ? res : invoice))
+			})
+
+			return newData
 		})
 		const productIds = res.items.map((i) => i.productId).filter((i) => i !== null) as string[]
 		if (productIds.length > 0) {
@@ -116,9 +161,16 @@ export function createInvoiceLogPaymentMutation() {
 	return async (data: Parameters<typeof trpc.invoice.logPayment.mutate>[0]) => {
 		const res = await trpc.invoice.logPayment.mutate(data)
 		queryClient.invalidateQueries(INVOICE_KEYS.read(data.id))
-		queryClient.setQueryData(INVOICE_KEYS.list(), (oldData?: { id: string }[]) => {
+		queryClient.setQueryData(INVOICE_KEYS.list(), (oldData?: AllListBaseData) => {
 			if (!oldData) return oldData
-			return oldData.map((i) => (i.id === data.id ? res : i))
+
+			const newData = cloneDeep(oldData)
+
+			newData.pages.forEach((page) => {
+				page.results = page.results.map((invoice) => (invoice.id === data.id ? res : invoice))
+			})
+
+			return newData
 		})
 		queryClient.invalidateQueries(STATS_KEYS.all)
 

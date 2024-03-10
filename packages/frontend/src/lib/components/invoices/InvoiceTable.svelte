@@ -15,6 +15,14 @@
 	function closePreview() {
 		previewInvoiceId = null
 	}
+
+	function selectInvoice(id: string) {
+		if (previewInvoiceId === id) {
+			previewInvoiceId = null
+		} else {
+			previewInvoiceId = id
+		}
+	}
 </script>
 
 <div class="hidden py-2 overflow-x-auto md:block">
@@ -31,7 +39,7 @@
 		{#each invoices as invoice (invoice.id)}
 			<InvoiceRow
 				{invoice}
-				on:click={() => (previewInvoiceId = invoice.id)}
+				on:click={() => selectInvoice(invoice.id)}
 				class={previewInvoiceId == invoice.id ? 'bg-blue-100 hover:bg-blue-100' : ''}
 			/>
 		{/each}

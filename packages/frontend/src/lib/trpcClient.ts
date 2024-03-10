@@ -18,8 +18,9 @@ export type UpdateUserSettings = RouterInput['userSettings']['update']
 export type CreateInvoice = RouterInput['invoice']['create']['invoice']
 
 export type CreateInvoiceItem = RouterInput['invoice']['create']['invoice']['items'][0]
-export type ListInvoice = RouterOutput['invoice']['list'][0]
+export type ListInvoice = RouterOutput['invoice']['list']['results'][0]
 export type ReadInvoice = RouterOutput['invoice']['read']
+export type InvoiceListQuery = RouterInput['invoice']['list']
 
 export type ReadMe = RouterOutput['auth']['me']
 
