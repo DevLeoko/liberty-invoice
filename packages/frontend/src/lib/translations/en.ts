@@ -49,7 +49,9 @@ export const TRANSLATIONS_EN = {
 	invoiceEditor: {
 		date: 'Date',
 		due: 'Due',
-		dueIn: 'in {{days}} days',
+		setDueDateTo: 'Set due date to',
+		today: 'Today',
+		dueIn: 'In {{days}} days',
 		toggleSearch: 'toggle search',
 		note: 'Note',
 		create: 'New',

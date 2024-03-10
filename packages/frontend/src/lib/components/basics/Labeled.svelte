@@ -13,15 +13,17 @@
 </script>
 
 <div class="flex flex-col {className}">
-	{#if !actionText}
+	{#if !actionText && !$$slots.action}
 		<span class="mb-0.5 text-sm font-semibold {rightAlign ? 'self-end' : ''}">{label}</span>
 	{:else}
 		<div class="flex items-center justify-between mb-0.5 {rightAlign ? 'flex-row-reverse' : ''}">
 			<span class="text-sm font-semibold">{label}</span>
 			<span
 				class="text-xs font-semibold text-blue-500 cursor-pointer"
-				on:click={() => eventDispatcher('action')}>{actionText}</span
+				on:click={() => eventDispatcher('action')}
 			>
+				<slot name="action">{actionText}</slot>
+			</span>
 		</div>
 	{/if}
 	<slot />

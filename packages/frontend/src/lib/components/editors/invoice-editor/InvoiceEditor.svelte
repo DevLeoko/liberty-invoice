@@ -1,4 +1,5 @@
 <script lang="ts">
+	import DueDateInput from '$lib/components/editors/invoice-editor/DueDateInput.svelte'
 	import type { NullableProp } from '../../../../types/utilities'
 	import { getCurrency, t } from '../../../stores/settings'
 	import { trpc, type CreateInvoice } from '../../../trpcClient'
@@ -35,10 +36,6 @@
 		}
 		initialLoad = false
 	}
-
-	$: dueDays = invoice.dueDate
-		? Math.round((invoice.dueDate.getTime() - invoice.date.getTime()) / (1000 * 60 * 60 * 24))
-		: 0
 
 	let overrideInvoiceNumber = false
 </script>
@@ -77,13 +74,7 @@
 			<Labeled label={$t('invoiceEditor.date')} class="flex-1">
 				<DateInput bind:date={invoice.date} />
 			</Labeled>
-			<Labeled
-				label={$t('invoiceEditor.due')}
-				actionText={$t('invoiceEditor.dueIn', { days: dueDays })}
-				class="flex-1"
-			>
-				<DateInput bind:date={invoice.dueDate} />
-			</Labeled>
+			<DueDateInput bind:dueDate={invoice.dueDate} date={invoice.date} />
 		</div>
 	</div>
 

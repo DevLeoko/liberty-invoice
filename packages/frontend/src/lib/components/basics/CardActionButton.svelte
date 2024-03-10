@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Skeleton from './Skeleton.svelte'
 
-	export let icon: string
+	export let icon: string | undefined = undefined
 
 	export let loading = false
 </script>
@@ -11,6 +11,8 @@
 		<Skeleton class="!absolute inset-0 opacity-70" />
 	{/if}
 
-	<span class="mr-1 text-sm material-icons">{icon}</span>
+	{#if icon}
+		<span class="mr-1 text-sm material-icons">{icon}</span>
+	{/if}
 	<slot />
 </div>
