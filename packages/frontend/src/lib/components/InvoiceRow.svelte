@@ -24,7 +24,7 @@
 		<td class="rounded-l-sm">{invoice.invoiceNumber}</td>
 		<td>{$formatDate(invoice.date)}</td>
 		<td>{formatClientName(invoice.client)}</td>
-		<td>{currency.format(invoice.amountWithTax)}</td>
+		<td class="text-right">{currency.format(invoice.amountWithTax)}</td>
 		<td>{$formatDate(invoice.dueDate)}</td>
 		<td class="rounded-r-sm">
 			<InvoiceStatusChip {invoice} />
