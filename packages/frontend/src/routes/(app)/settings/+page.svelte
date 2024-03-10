@@ -49,7 +49,7 @@
 <style lang="postcss">
 	article,
 	a {
-		@apply px-3 py-2 bg-gray-200 hover:bg-gray-300 cursor-pointer;
+		@apply px-3 py-2 bg-gray-150 hover:bg-gray-200 cursor-pointer;
 	}
 
 	a h2,

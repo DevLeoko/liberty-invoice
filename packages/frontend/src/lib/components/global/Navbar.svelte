@@ -49,8 +49,10 @@
 	let showMenu = false
 </script>
 
+<div class="hidden md:flex h-[100dvh] w-60 min-w-60" />
+
 <div
-	class="hidden md:flex flex-col bg-white h-screen w-full px-4 pt-8 md:border-r md:w-60 {showMenu
+	class="hidden md:flex md:fixed flex-col bg-white h-[100dvh] w-full px-4 pt-8 md:border-r md:w-60 {showMenu
 		? '!flex fixed top-0 left-0 w-screen h-screen z-30'
 		: ''}"
 	on:click={() => (showMenu = false)}
