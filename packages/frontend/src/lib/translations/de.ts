@@ -38,7 +38,8 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		setDueDateTo: 'Fälligkeitsdatum anpassen',
 		today: 'Heute',
 		dueIn: 'In {{days}} Tagen',
-		toggleSearch: 'Zu Suche umschalten',
+		showClientSearch: 'Kunden-Suche anzeigen',
+		showClientQuickList: 'Kunden-Schnellauswahl anzeigen',
 		note: 'Anmerkung',
 		create: 'Anlegen',
 		addDescription: 'Beschreibung hinzufügen',
@@ -106,6 +107,7 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 	client: {
 		showArchived: 'Archivierte anzeigen',
 		showActive: 'Aktive anzeigen',
+		searchPlaceholder: 'Suche nach Firma, Name oder Kürzel',
 
 		stats: {
 			createdOn: 'Erstellt am',

@@ -14,6 +14,8 @@
 	export let invoice: NullableProp<CreateInvoice, 'clientId'>
 	export let createMode = false
 
+	let clientListSearchMode = false
+
 	$: currency = $getCurrency(invoice.currency) || $getCurrency('USD')
 
 	$: clientId = invoice.clientId
@@ -78,8 +80,14 @@
 		</div>
 	</div>
 
-	<Labeled label={$t('general.client')}>
-		<ClientSelector bind:clientId={invoice.clientId} />
+	<Labeled
+		label={$t('general.client')}
+		actionText={$t(
+			clientListSearchMode ? 'invoiceEditor.showClientQuickList' : 'invoiceEditor.showClientSearch'
+		)}
+		on:action={() => (clientListSearchMode = !clientListSearchMode)}
+	>
+		<ClientSelector bind:clientId={invoice.clientId} searchMode={clientListSearchMode} />
 	</Labeled>
 
 	<Labeled label={$t('invoiceEditor.note')}>

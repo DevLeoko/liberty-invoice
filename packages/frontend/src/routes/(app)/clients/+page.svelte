@@ -1,4 +1,5 @@
 <script lang="ts">
+	import SearchInput from '$lib/components/basics/SearchInput.svelte'
 	import ClientCard from '$lib/components/clients/ClientCard.svelte'
 	import type { EditorSelection } from '$lib/utils/EditorSelection'
 	import { cloneDeep, debounce } from 'lodash'
@@ -63,17 +64,11 @@
 
 <div class="flex flex-col gap-4 max-w-[800px]">
 	<div class="flex gap-2">
-		<div class="relative flex-grow">
-			<span class="absolute inset-y-0 left-0 flex items-center pl-2">
-				<span class="text-lg material-icons">search</span>
-			</span>
-			<input
-				type="text"
-				bind:value={searchQuery}
-				class="!pl-8"
-				placeholder="Search by name, company or shorthand"
-			/>
-		</div>
+		<SearchInput
+			bind:value={searchQuery}
+			placeholder="client.searchPlaceholder"
+			class="flex-grow"
+		/>
 
 		<Button
 			on:click={() => (viewArchived = !viewArchived)}

@@ -52,7 +52,8 @@ export const TRANSLATIONS_EN = {
 		setDueDateTo: 'Set due date to',
 		today: 'Today',
 		dueIn: 'In {{days}} days',
-		toggleSearch: 'toggle search',
+		showClientSearch: 'Toggle search',
+		showClientQuickList: 'Toggle quick list',
 		note: 'Note',
 		create: 'New',
 		addDescription: 'Add description',
@@ -103,6 +104,7 @@ export const TRANSLATIONS_EN = {
 	client: {
 		showArchived: 'Show archived',
 		showActive: 'Show active',
+		searchPlaceholder: 'Search by name, company or shorthand',
 
 		stats: {
 			createdOn: 'Created on',

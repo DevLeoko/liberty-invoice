@@ -19,7 +19,7 @@
 		<div class="flex items-center justify-between mb-0.5 {rightAlign ? 'flex-row-reverse' : ''}">
 			<span class="text-sm font-semibold">{label}</span>
 			<span
-				class="text-xs font-semibold text-blue-500 cursor-pointer"
+				class="text-xs font-semibold text-blue-500 cursor-pointer select-none"
 				on:click={() => eventDispatcher('action')}
 			>
 				<slot name="action">{actionText}</slot>
