@@ -32,23 +32,36 @@
 
 <PageTitle title={$t('menu.invoices')} />
 
-<div class="mb-8">
+<div class="mb-8 border border-gray-200">
 	<div
-		class="flex items-center px-2 py-1 text-xl font-medium cursor-pointer hover:bg-gray-100"
+		class="flex items-center px-2 py-1 text-lg font-medium cursor-pointer bg-gray-150 hover:bg-gray-200"
 		on:click={() => ($showOutstanding = !$showOutstanding)}
 	>
-		<span class="material-icons">
+		<span class="text-gray-500 material-icons">
 			{$showOutstanding ? 'expand_less' : 'expand_more'}
 		</span>
-		Outstanding invoices
+		{$t('invoiceList.outstandingInvoices')}
 	</div>
 	{#if $showOutstanding}
-		<FetchingInvoiceTable bind:previewInvoiceId filterStatus={['outstanding']} />
+		<FetchingInvoiceTable bind:previewInvoiceId filterStatus={['outstanding']}>
+			<svelte:fragment slot="empty">
+				<div class="flex justify-center">
+					<div
+						class="flex items-center gap-2 px-4 py-2 mx-auto my-4 text-blue-500 bg-blue-500 border border-blue-500 opacity-80 bg-opacity-10"
+					>
+						<span class="material-icons">done_all</span>
+						<span>{$t('invoiceList.noOutstanding')}</span>
+					</div>
+				</div>
+			</svelte:fragment>
+		</FetchingInvoiceTable>
 	{/if}
 </div>
 
 <div class="flex flex-wrap items-center justify-between gap-4 mb-2">
-	<h2 class="px-2 py-1 text-xl font-medium">All invoices</h2>
+	<h2 class="px-2 py-1 text-xl font-medium">
+		{$t('invoiceList.allInvoices')}
+	</h2>
 	<Button href="/invoices/new">
 		<span class="mr-1 material-icons">add</span>
 		{$t('invoiceList.newInvoice')}
@@ -59,7 +72,7 @@
 	<SearchInput bind:value={search} placeholder="invoiceList.searchPlaceholder" class="col-span-2" />
 
 	<Filter
-		title="Status"
+		title={$t('general.status')}
 		class="overflow-hidden"
 		bind:selected={filterStatus}
 		options={STATUS_OPTIONS.map((value) => ({ value }))}

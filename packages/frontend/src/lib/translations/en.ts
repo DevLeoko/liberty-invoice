@@ -18,7 +18,9 @@ export const TRANSLATIONS_EN = {
 
 	invoiceList: {
 		searchPlaceholder: 'Search by invoice number or client name',
-
+		outstandingInvoices: 'Outstanding invoices',
+		allInvoices: 'All invoices',
+		noOutstanding: 'All done - no unpaid invoices',
 		newInvoice: 'New Invoice',
 		noneFound: 'No invoices found.',
 		paid: 'Paid',

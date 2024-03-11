@@ -90,9 +90,11 @@
 	<p>{invoice.note}</p>
 {/if}
 
-<h3 class="mt-8 text-xl font-medium text-center {remainingDays < 0 ? 'text-orange-600' : ''}">
-	{dueText}
-</h3>
+{#if invoice.amountPaid < invoice.amountWithTax}
+	<h3 class="mt-8 text-xl font-medium text-center {remainingDays < 0 ? 'text-orange-600' : ''}">
+		{dueText}
+	</h3>
+{/if}
 
 <InvoicePreviewItemList {invoice} />
 

@@ -29,9 +29,11 @@
 {#if $invoices.isLoading}
 	<Skeleton class="w-24 h-12" />
 {:else if $invoices.isError}
-	<span>{$t('general.error')}</span>
+	<div class="p-2">{$t('general.error')}</div>
 {:else if allInvoices?.length === 0}
-	<span>{$t('invoiceList.noneFound')}</span>
+	<slot name="empty">
+		<div class="p-2">{$t('invoiceList.noneFound')}</div>
+	</slot>
 {:else}
 	<InvoiceTable invoices={allInvoices || []} bind:previewInvoiceId />
 

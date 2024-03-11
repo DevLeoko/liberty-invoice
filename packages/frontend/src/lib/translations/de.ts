@@ -19,6 +19,9 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 
 	invoiceList: {
 		searchPlaceholder: 'Suche nach Rechnungsnummer oder Kundenname',
+		outstandingInvoices: 'Offene Rechnungen',
+		allInvoices: 'Alle Rechnungen',
+		noOutstanding: 'Keine unbezahlten Rechnungen',
 		newInvoice: 'Neue Rechnung',
 		noneFound: 'Keine Rechnungen gefunden.',
 		paid: 'Bezahlt',

@@ -58,7 +58,7 @@
 {:else}
 	{#each $products.data as product}
 		<div
-			class="w-full p-2 mt-2 rounded-sm cursor-pointer xs:w-72 bg-slate-200 hover:bg-slate-300"
+			class="w-full px-4 py-2 mt-2 rounded-sm cursor-pointer xs:w-72 bg-gray-150 hover:bg-gray-200"
 			on:click={() => selectProduct(product.id)}
 		>
 			<h3 class="text-lg font-semibold">
