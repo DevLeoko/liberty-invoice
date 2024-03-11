@@ -15,8 +15,10 @@
 		<div class="flex-grow overflow-y-auto">
 			<slot />
 		</div>
-		<div class="flex justify-end pt-4">
-			<slot name="action" />
-		</div>
+		{#if $$slots.action}
+			<div class="flex justify-end pt-4">
+				<slot name="action" />
+			</div>
+		{/if}
 	</div>
 </Modal>

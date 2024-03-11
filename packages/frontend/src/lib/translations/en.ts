@@ -8,12 +8,27 @@ export const TRANSLATIONS_EN = {
 		products: 'Products',
 		settings: 'Settings',
 		logout: 'Logout',
+		needHelp: 'Need help?',
 	},
 
 	language: {
 		en: 'English',
 		de: 'German',
 		pl: 'Polish',
+	},
+
+	supportModal: {
+		titleL1: 'Are you having trouble with something?',
+		titleL2: "We're here to help!",
+
+		text: "Whether you have a question, found a bug, or have a feature request, please don't hesitate to reach out to us.",
+		discordTitle: 'Live chat / Discord',
+		discordText:
+			'We have a community of users and developers who are happy to help you out. You can join our Discord server and ask your question in the #support channel.',
+		joinDiscord: 'Join our Discord',
+
+		emailTitle: 'Email',
+		emailText: 'If you prefer email, you can send us a message at',
 	},
 
 	invoiceList: {

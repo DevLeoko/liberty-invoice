@@ -9,12 +9,28 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		products: 'Produkte',
 		settings: 'Einstellungen',
 		logout: 'Abmelden',
+		needHelp: 'Hilfe benötigt?',
 	},
 
 	language: {
 		en: 'Englisch',
 		de: 'Deutsch',
 		pl: 'Polnisch',
+	},
+
+	supportModal: {
+		titleL1: 'Haben Sie Schwierigkeiten mit etwas?',
+		titleL2: 'Wir sind hier, um zu helfen!',
+		text: 'Egal, ob Sie eine Frage haben, einen Fehler gefunden haben oder ein Feature vorschlagen möchten, zögern Sie nicht, uns zu kontaktieren.',
+
+		discordTitle: 'Live-Chat / Discord',
+		discordText:
+			'Wir haben eine Community von Benutzern und Entwicklern, die Ihnen gerne helfen. Sie können unserem Discord-Server beitreten und Ihre Frage im #support-Kanal stellen.',
+		joinDiscord: 'Unserem Discord beitreten',
+
+		emailTitle: 'E-Mail',
+		emailText:
+			'Wenn Sie E-Mail bevorzugen, können Sie uns auch gerne eine E-Mail senden. Wir antworten so schnell wie möglich.',
 	},
 
 	invoiceList: {

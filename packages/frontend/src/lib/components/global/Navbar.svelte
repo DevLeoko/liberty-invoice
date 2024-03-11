@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
 	import { page } from '$app/stores'
+	import SupportModal from '$lib/components/global/SupportModal.svelte'
 	import { setLoggedOut } from '../../stores/auth'
 	import { applicationLanguage, t } from '../../stores/settings'
 	import LanguageSelector from '../LanguageSelector.svelte'
@@ -47,10 +48,15 @@
 	] as const
 
 	let showMenu = false
+
+	let showSupportModal = false
 </script>
 
-<div class="hidden md:flex h-[100dvh] w-60 min-w-60" />
+{#if showSupportModal}
+	<SupportModal on:exit={() => (showSupportModal = false)} />
+{/if}
 
+<div class="hidden md:flex h-[100dvh] w-60 min-w-60" />
 <div
 	class="hidden md:flex md:fixed flex-col bg-white h-[100dvh] w-full px-4 pt-8 md:border-r md:w-60 {showMenu
 		? '!flex fixed top-0 left-0 w-screen h-screen z-30'
@@ -80,7 +86,13 @@
 			</a>
 		{/each}
 	</nav>
-	<Button on:click={logout} outlined class="mt-auto">{$t('menu.logout')}</Button>
+	<Button on:click={() => (showSupportModal = !showSupportModal)} text class="mt-auto">
+		<div class="flex items-center gap-1">
+			<class class="text-xl material-icons">support</class>
+			<span>{$t('menu.needHelp')}</span>
+		</div>
+	</Button>
+	<Button on:click={logout} outlined class="mt-4">{$t('menu.logout')}</Button>
 	<Button class="mt-4 mb-4 md:hidden" outlined gray>{$t('general.close')}</Button>
 	<div
 		class="flex justify-between mt-1 mb-8 text-xs text-gray-700 md:mb-4"

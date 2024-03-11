@@ -21,7 +21,7 @@
 </script>
 
 <div
-	class="fixed top-0 left-0 flex items-center justify-center w-screen h-screen bg-blur"
+	class="fixed top-0 left-0 flex items-center justify-center w-screen h-screen p-1 bg-blur"
 	style:z-index={zLevel}
 	on:click|self={() => dispatchEvent('exit')}
 	on:keydown={handleKeydown}
