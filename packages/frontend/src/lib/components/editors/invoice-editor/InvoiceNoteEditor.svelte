@@ -3,7 +3,8 @@
 	import type { NullableProp } from '../../../../types/utilities'
 	import {
 		createFinalTextFragmentQuery,
-		parseInvoiceTextFragment,
+		getTextFragmentInvoiceDateVariables,
+		parseTextFragment,
 	} from '../../../controller/text-fragment'
 	import { t } from '../../../stores/settings'
 	import type { CreateInvoice } from '../../../trpcClient'
@@ -24,12 +25,16 @@
 			: createFinalTextFragmentQuery('invoice.note', invoiceLanguage, clientId)
 
 	function updateInvoiceNote(rawNote: string, invoiceDate: Date, dueDate: Date) {
-		note = parseInvoiceTextFragment(rawNote, $t('langCode'), {
-			dueDate,
-			invoiceDate,
-		})
-
-		// TODO: this overrides the initial value of the note, when duplicating an invoice
+		note = parseTextFragment(
+			rawNote,
+			getTextFragmentInvoiceDateVariables(
+				{
+					dueDate,
+					invoiceDate,
+				},
+				$t('langCode')
+			)
+		)
 	}
 
 	let initialLoad = true

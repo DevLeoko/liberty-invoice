@@ -35,31 +35,46 @@ export function getAvailableVariables(fragmentName: string) {
 	return ''
 }
 
-export function parseInvoiceTextFragment(
-	text: string,
-	langCode: string,
-	data: {
-		invoiceDate: Date
-		dueDate: Date
-	}
+export function parseTextFragment(text: string, variables: Record<string, string>) {
+	return text.replace(/{([^}]+)}/g, (match, group) => {
+		return variables[group] ?? match
+	})
+}
+
+export function getTextFragmentInvoiceDateVariables(
+	{ invoiceDate, dueDate }: { invoiceDate: Date; dueDate: Date },
+	langCode: string
 ) {
-	const lastMonth = new Date(data.invoiceDate)
-	lastMonth.setMonth(lastMonth.getMonth() - 1)
+	const dateVariables = getTextFragmentDateVariables(invoiceDate, langCode)
+	const dueDateStr = dueDate.toLocaleDateString(langCode)
 
-	const invoiceDate = data.invoiceDate.toLocaleDateString(langCode)
-	const invoiceMonth = data.invoiceDate.toLocaleDateString(langCode, { month: 'long' })
-	const invoiceLastMonth = lastMonth.toLocaleDateString(langCode, { month: 'long' })
-	const invoiceYear = data.invoiceDate.getFullYear()
-	const invoiceLastMonthYear = lastMonth.getFullYear()
-	const invoiceDueDate = data.dueDate.toLocaleDateString(langCode)
+	return {
+		invoiceDate: dateVariables.date,
+		invoiceMonth: dateVariables.month,
+		invoiceLastMonth: dateVariables.lastMonth,
+		invoiceYear: dateVariables.year,
+		invoiceLastMonthYear: dateVariables.lastMonthYear,
+		invoiceDueDate: dueDateStr,
+	}
+}
 
-	return text
-		.replace(/{invoiceDate}/g, invoiceDate)
-		.replace(/{invoiceMonth}/g, invoiceMonth)
-		.replace(/{invoiceLastMonth}/g, invoiceLastMonth)
-		.replace(/{invoiceYear}/g, invoiceYear.toString())
-		.replace(/{invoiceLastMonthYear}/g, invoiceLastMonthYear.toString())
-		.replace(/{invoiceDueDate}/g, invoiceDueDate)
+export function getTextFragmentDateVariables(date: Date, langCode: string) {
+	const lastMonthDate = new Date(date)
+	lastMonthDate.setMonth(lastMonthDate.getMonth() - 1)
+
+	const dateStr = date.toLocaleDateString(langCode)
+	const month = date.toLocaleDateString(langCode, { month: 'long' })
+	const lastMonth = lastMonthDate.toLocaleDateString(langCode, { month: 'long' })
+	const year = date.getFullYear().toString()
+	const lastMonthYear = lastMonthDate.getFullYear().toString()
+
+	return {
+		date: dateStr,
+		month,
+		lastMonth,
+		year,
+		lastMonthYear,
+	}
 }
 
 export function createTextFragmentListQuery(
