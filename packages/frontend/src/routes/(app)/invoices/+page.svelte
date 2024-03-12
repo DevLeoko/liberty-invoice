@@ -25,9 +25,21 @@
 	const STATUS_OPTIONS = ['draft', 'outstanding', 'paid'] as const
 
 	let previewInvoiceId: string | null = null
+	let previewInvoiceIdOutstanding: string | null = null
 	if ($page.url.searchParams.has('preview')) {
 		previewInvoiceId = $page.url.searchParams.get('preview')!
 	}
+
+	function onPreviewInvoiceIdChange(id: string | null) {
+		if (id) previewInvoiceIdOutstanding = null
+	}
+
+	function onPreviewInvoiceIdOutstandingChange(id: string | null) {
+		if (id) previewInvoiceId = null
+	}
+
+	$: onPreviewInvoiceIdChange(previewInvoiceId)
+	$: onPreviewInvoiceIdOutstandingChange(previewInvoiceIdOutstanding)
 </script>
 
 <PageTitle title={$t('menu.invoices')} />
@@ -43,7 +55,10 @@
 		{$t('invoiceList.outstandingInvoices')}
 	</div>
 	{#if $showOutstanding}
-		<FetchingInvoiceTable bind:previewInvoiceId filterStatus={['outstanding']}>
+		<FetchingInvoiceTable
+			bind:previewInvoiceId={previewInvoiceIdOutstanding}
+			filterStatus={['outstanding']}
+		>
 			<svelte:fragment slot="empty">
 				<div class="flex justify-center">
 					<div
