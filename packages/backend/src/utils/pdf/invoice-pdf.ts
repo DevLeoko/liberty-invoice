@@ -1,3 +1,8 @@
+import { getClientDisplayLines } from '$shared/address-formatter'
+import { getCurrency } from '$shared/currencies'
+import { computeTotalExcludingTax, computeTotalWithTax } from '$shared/invoice-computations'
+import type { KeyPath, Locale } from '$shared/invoice-translations/translations'
+import { getTranslationDictionary, translate } from '$shared/invoice-translations/translations'
 import type { Prisma } from '@prisma/client'
 import fs from 'fs/promises'
 import imageSize from 'image-size'
@@ -16,17 +21,6 @@ import {
 } from 'painless-pdf'
 import { promisify } from 'util'
 import type { z } from 'zod'
-import { getClientDisplayLines } from '../../../../shared/address-formatter'
-import { getCurrency } from '../../../../shared/currencies'
-import {
-	computeTotalExcludingTax,
-	computeTotalWithTax,
-} from '../../../../shared/invoice-computations'
-import type { KeyPath, Locale } from '../../../../shared/invoice-translations/translations'
-import {
-	getTranslationDictionary,
-	translate,
-} from '../../../../shared/invoice-translations/translations'
 import { getFinalTextFragment } from '../../controller/text-fragments'
 import type { invoiceItemCreateSchema } from '../../routers/invoice-schemas'
 import { addAllRobotoFonts } from './pdf-fonts'

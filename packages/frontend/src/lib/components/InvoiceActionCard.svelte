@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
-	import { PUBLIC_BACKEND_URL } from '$env/static/public'
 	import {
 		createInvoiceDeleteMutation,
 		createInvoiceFinalizeMutation,
 		createInvoiceLogPaymentMutation,
+		getDownloadUrl,
 	} from '../controller/invoice'
 	import { logSuccess, t } from '../stores/settings'
 	import type { ListInvoice } from '../trpcClient'
@@ -87,11 +87,7 @@
 	<CardActionButton icon="edit" on:click={() => goto(`/invoices/${invoice.id}/edit`)}>
 		{$t('general.edit')}
 	</CardActionButton>
-	<a
-		href={`${PUBLIC_BACKEND_URL}/invoices/${invoice.id}/download`}
-		class="floating-action"
-		target="_blank"
-	>
+	<a href={getDownloadUrl(invoice.id)} class="floating-action" target="_blank">
 		<span class="mr-1 text-sm material-icons">download</span>
 		{$t('general.download')}
 	</a>

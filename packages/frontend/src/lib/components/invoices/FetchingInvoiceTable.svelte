@@ -27,7 +27,9 @@
 </script>
 
 {#if $invoices.isLoading}
-	<Skeleton class="w-24 h-12" />
+	<div class="p-2">
+		<Skeleton class="w-full h-8" />
+	</div>
 {:else if $invoices.isError}
 	<div class="p-2">{$t('general.error')}</div>
 {:else if allInvoices?.length === 0}

@@ -1,0 +1,136 @@
+<script lang="ts">
+	import BasicModal from '$lib/components/basics/BasicModal.svelte'
+	import Button from '$lib/components/basics/Button.svelte'
+	import DynamicTextarea from '$lib/components/basics/DynamicTextarea.svelte'
+	import Labeled from '$lib/components/basics/Labeled.svelte'
+	import { getDownloadUrl } from '$lib/controller/invoice'
+	import { createFinalTextFragmentsQuery } from '$lib/controller/text-fragment'
+	import { queryUserSettings } from '$lib/controller/user-settings'
+	import { logSuccessStatic } from '$lib/stores/alerts'
+	import { t } from '$lib/stores/settings'
+	import { Locale, translate } from '$lib/translations/translations'
+	import { trpc, type ReadInvoice } from '$lib/trpcClient'
+	import { getTextFragmentInvoiceVariables, parseTextFragment } from 'shared/text-fragment'
+	import { createEventDispatcher } from 'svelte'
+
+	const dispatch = createEventDispatcher()
+
+	export let invoice: ReadInvoice
+
+	$: textFragmentQuery = createFinalTextFragmentsQuery(
+		['mail.invoiceSubject', 'mail.invoiceText'],
+		invoice.language as Locale,
+		invoice.clientId
+	)
+
+	let email = ''
+	let cc = ''
+	let bcc = ''
+	let subject = ''
+	let text = ''
+
+	function onInvoiceUpdate() {
+		email = invoice.client.contactEmail
+	}
+
+	function updateTextFragments() {
+		const subjectText =
+			$textFragmentQuery?.find((q) => q.key === 'mail.invoiceSubject')?.value ?? ''
+		const bodyText = $textFragmentQuery?.find((q) => q.key === 'mail.invoiceText')?.value ?? ''
+
+		queryUserSettings().then((userSettings) => {
+			const invoiceVariables = getTextFragmentInvoiceVariables(invoice, userSettings)
+
+			subject = parseTextFragment(subjectText, invoiceVariables)
+			text = parseTextFragment(bodyText, invoiceVariables)
+		})
+	}
+
+	$: {
+		invoice
+		onInvoiceUpdate()
+	}
+
+	$: {
+		invoice
+		$textFragmentQuery
+		updateTextFragments()
+	}
+
+	$: mailDisclaimer = translate(invoice.language as Locale, 'mailTemplate.footerDisclaimer')
+
+	let loadingSend = false
+	function sendMail() {
+		loadingSend = true
+		trpc.invoice.sendMail
+			.mutate({
+				id: invoice.id,
+				email,
+				cc,
+				bcc,
+				content: {
+					subject,
+					body: text,
+				},
+			})
+			.then(() => {
+				logSuccessStatic('Mail sent')
+			})
+			.finally(() => {
+				loadingSend = false
+			})
+	}
+</script>
+
+<BasicModal title="Send and finalize invoice {invoice.invoiceNumber}" on:exit>
+	<div class="flex flex-col gap-2">
+		<Labeled label="Email">
+			<input type="email" bind:value={email} />
+		</Labeled>
+
+		<div class="grid grid-cols-2 gap-4">
+			<Labeled label="CC">
+				<input type="email" placeholder="optional" bind:value={cc} />
+			</Labeled>
+
+			<Labeled label="BCC">
+				<input type="email" placeholder="optional" bind:value={bcc} />
+			</Labeled>
+		</div>
+
+		<Labeled label="Subject">
+			<input type="text" bind:value={subject} disabled={$textFragmentQuery == null} />
+		</Labeled>
+
+		<Labeled label="Text" class="z-20">
+			<DynamicTextarea bind:value={text} disabled={$textFragmentQuery == null} class="!bg-white" />
+		</Labeled>
+
+		<div
+			class="z-10 !pt-4 -mt-4 input-style !bg-gray-50 !text-gray-500 whitespace-pre-wrap"
+			style="font-size: 12px;"
+		>
+			{@html mailDisclaimer}
+		</div>
+
+		<Labeled label="Attachment">
+			<a
+				class="flex items-center gap-3 p-2 border border-gray-300 bg-gray-50 hover:bg-gray-100 w-max hover:text-blue-600"
+				href={getDownloadUrl(invoice.id)}
+				target="_blank"
+			>
+				<div class="flex items-center justify-center w-10 h-10 bg-gray-200 rounded-md">
+					<span class="material-icons">description</span>
+				</div>
+				<div class="pr-4 font-medium">
+					{invoice.invoiceNumber}.pdf
+				</div>
+			</a>
+		</Labeled>
+	</div>
+
+	<div class="flex justify-end gap-4 mt-6">
+		<Button on:click={() => dispatch('exit')} gray class="mt-6">{$t('general.cancel')}</Button>
+		<Button on:click={sendMail} loading={loadingSend} class="mt-6">Send and finalize</Button>
+	</div>
+</BasicModal>

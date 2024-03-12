@@ -1,7 +1,7 @@
 import { createQuery, useQueryClient } from '@tanstack/svelte-query'
 import { derived } from 'svelte/store'
-import { t } from '../stores/settings'
-import type { TranslationPaths } from '../translations/translations'
+import type { Locale } from '../translations/translations'
+import { translate, type TranslationPaths } from '../translations/translations'
 import { trpc, type ListTextFragment } from '../trpcClient'
 
 export const TEXT_FRAGMENT_NAMES = [
@@ -17,9 +17,9 @@ export type TextFragmentKey = (typeof TEXT_FRAGMENT_NAMES)[number]
 export const TEXT_FRAGMENT_KEYS = {
 	all: ['textFragment'],
 	allList: () => [...TEXT_FRAGMENT_KEYS.all, 'list'],
-	listDefaults: (language: string) => [...TEXT_FRAGMENT_KEYS.allList(), { language }],
+	listDefaults: (language: Locale) => [...TEXT_FRAGMENT_KEYS.allList(), { language }],
 	allListForClient: (clientId: string) => [...TEXT_FRAGMENT_KEYS.allList(), 'client', clientId],
-	listForClient: (clientId: string, language: string, keys: TextFragmentKey[] | undefined) => [
+	listForClient: (clientId: string, language: Locale, keys: TextFragmentKey[] | undefined) => [
 		...TEXT_FRAGMENT_KEYS.allListForClient(clientId),
 		{ language, keys },
 	],
@@ -27,7 +27,7 @@ export const TEXT_FRAGMENT_KEYS = {
 
 export function getAvailableVariables(fragmentName: string) {
 	if (fragmentName.startsWith('mail.invoice')) {
-		return '{clientName}, {businessName}, {invoiceNumber}, {invoiceDate}, {invoiceMonth}, {invoiceLastMonth}, {invoiceYear}, {invoiceLastYear}, {invoiceDueDate}, {invoiceTotal}'
+		return '{clientName}, {accountBusinessName}, {accountFullName}, {invoiceNumber}, {invoiceDate}, {invoiceMonth}, {invoiceLastMonth}, {invoiceYear}, {invoiceLastYear}, {invoiceDueDate}, {invoiceTotal}'
 	} else if (fragmentName == 'invoice.note') {
 		return '{invoiceDate}, {invoiceMonth}, {invoiceLastMonth}, {invoiceYear}, {invoiceLastMonthYear}, {invoiceDueDate}'
 	}
@@ -35,51 +35,9 @@ export function getAvailableVariables(fragmentName: string) {
 	return ''
 }
 
-export function parseTextFragment(text: string, variables: Record<string, string>) {
-	return text.replace(/{([^}]+)}/g, (match, group) => {
-		return variables[group] ?? match
-	})
-}
-
-export function getTextFragmentInvoiceDateVariables(
-	{ invoiceDate, dueDate }: { invoiceDate: Date; dueDate: Date },
-	langCode: string
-) {
-	const dateVariables = getTextFragmentDateVariables(invoiceDate, langCode)
-	const dueDateStr = dueDate.toLocaleDateString(langCode)
-
-	return {
-		invoiceDate: dateVariables.date,
-		invoiceMonth: dateVariables.month,
-		invoiceLastMonth: dateVariables.lastMonth,
-		invoiceYear: dateVariables.year,
-		invoiceLastMonthYear: dateVariables.lastMonthYear,
-		invoiceDueDate: dueDateStr,
-	}
-}
-
-export function getTextFragmentDateVariables(date: Date, langCode: string) {
-	const lastMonthDate = new Date(date)
-	lastMonthDate.setMonth(lastMonthDate.getMonth() - 1)
-
-	const dateStr = date.toLocaleDateString(langCode)
-	const month = date.toLocaleDateString(langCode, { month: 'long' })
-	const lastMonth = lastMonthDate.toLocaleDateString(langCode, { month: 'long' })
-	const year = date.getFullYear().toString()
-	const lastMonthYear = lastMonthDate.getFullYear().toString()
-
-	return {
-		date: dateStr,
-		month,
-		lastMonth,
-		year,
-		lastMonthYear,
-	}
-}
-
 export function createTextFragmentListQuery(
 	key: TextFragmentKey,
-	language: string,
+	language: Locale,
 	clientId: string | null
 ) {
 	if (clientId === null) {
@@ -99,24 +57,52 @@ export function createTextFragmentListQuery(
 
 export function createFinalTextFragmentQuery(
 	key: TextFragmentKey,
-	language: string,
+	language: Locale,
 	clientId: string
 ) {
 	const query = createQuery({
 		queryKey: TEXT_FRAGMENT_KEYS.listForClient(clientId, language, [key]),
 		queryFn: () => trpc.textFragment.listForClient.query({ clientId, language, keys: [key] }),
-		select: (data) => data.find((textFragment) => textFragment.key === key),
 	})
 
-	return derived([query, t], ([$query, $t]) => {
-		return $query?.data?.value ?? $t(`textFragmentDefaults.${key}` as TranslationPaths)
+	return derived(query, ($query) => {
+		return (
+			$query.data?.[0]?.value ??
+			translate(language, `textFragmentDefaults.${key}` as TranslationPaths)
+		)
+	})
+}
+
+export function createFinalTextFragmentsQuery<K extends TextFragmentKey>(
+	keys: K[],
+	language: Locale,
+	clientId: string
+) {
+	const query = createQuery({
+		queryKey: TEXT_FRAGMENT_KEYS.listForClient(clientId, language, keys),
+		queryFn: () => trpc.textFragment.listForClient.query({ clientId, language, keys }),
+	})
+
+	return derived(query, ($query) => {
+		if (!$query.data) return null
+
+		const result: { key: string; value: string }[] = []
+		for (const key of keys) {
+			const value = $query.data.find((textFragment) => textFragment.key === key)?.value
+			result.push({
+				key,
+				value: value ?? translate(language, `textFragmentDefaults.${key}` as TranslationPaths),
+			})
+		}
+
+		return result
 	})
 }
 
 export function createTextFragmentUpsertMutation() {
 	const queryClient = useQueryClient()
 
-	return async (key: TextFragmentKey, language: string, clientId: string | null, value: string) => {
+	return async (key: TextFragmentKey, language: Locale, clientId: string | null, value: string) => {
 		const newFragment = await trpc.textFragment.upsert.mutate({
 			key,
 			language,
@@ -156,7 +142,7 @@ export function createTextFragmentUpsertMutation() {
 export function createTextFragmentDeleteMutation() {
 	const queryClient = useQueryClient()
 
-	return async (key: TextFragmentKey, language: string, clientId: string | null) => {
+	return async (key: TextFragmentKey, language: Locale, clientId: string | null) => {
 		await trpc.textFragment.delete.mutate({ key, language, clientId })
 
 		queryClient.setQueriesData(TEXT_FRAGMENT_KEYS.allList(), (oldData?: ListTextFragment[]) => {

@@ -4,8 +4,8 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"start": "ts-node --files src/index.ts",
-		"dev": "nodemon src/index.ts --exec \"ts-node --files\"",
+		"start": "ts-node --files -r tsconfig-paths/register src/index.ts",
+		"dev": "nodemon src/index.ts --exec \"ts-node --files -r tsconfig-paths/register\"",
 		"tsc": "tsc --build",
 		"tsc:force": "tsc --build --force",
 		"tsc:watch": "tsc --build --watch",
@@ -33,7 +33,8 @@
 		"gen-env-types": "^1.3.4",
 		"nodemon": "^2.0.20",
 		"prisma": "^5.10.2",
-		"ts-node": "^10.9.1"
+		"ts-node": "^10.9.1",
+		"tsconfig-paths": "^4.2.0"
 	},
 	"dependencies": {
 		"@paralleldrive/cuid2": "^2.2.2",
@@ -52,6 +53,7 @@
 		"nodemailer": "^6.9.1",
 		"painless-pdf": "^1.2.2",
 		"superjson": "^1.13.3",
+		"xss": "^1.0.15",
 		"zod": "^3.20.6"
 	}
 }

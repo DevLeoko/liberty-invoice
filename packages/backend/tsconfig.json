@@ -8,7 +8,7 @@
 		"outDir": "./dist",
 		"rootDir": "../",
 		"paths": {
-			"shared/*": ["../shared/*"]
+			"$shared/*": ["../shared/*"]
 		}
 	},
 	"include": ["src/**/*.js", "src/**/*.ts", "src/**/*.json", "../shared/**/*.ts"]

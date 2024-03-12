@@ -45,6 +45,7 @@ export const textFragmentRouter = router({
 						},
 						{
 							language: language,
+							clientId: null,
 						},
 					],
 				},
@@ -55,7 +56,6 @@ export const textFragmentRouter = router({
 			)
 			const defaultFragments = textFragments.filter(
 				(textFragment) =>
-					textFragment.clientId === null &&
 					!clientFragments.some((clientFragment) => clientFragment.key === textFragment.key)
 			)
 

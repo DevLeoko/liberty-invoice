@@ -2,7 +2,7 @@ import type {
 	Locale,
 	ServerTranslationPath,
 } from '../../../shared/invoice-translations/translations'
-import { translateServer } from '../../../shared/invoice-translations/translations'
+import { translateShared } from '../../../shared/invoice-translations/translations'
 import { prisma } from '../prisma'
 
 export async function getFinalTextFragment(data: {
@@ -42,6 +42,6 @@ export async function getFinalTextFragment(data: {
 		)
 		if (defaultFragment) return defaultFragment.value
 
-		return translateServer(language, `textFragmentDefaults.${key}` as ServerTranslationPath)
+		return translateShared(language, `textFragmentDefaults.${key}` as ServerTranslationPath)
 	})
 }

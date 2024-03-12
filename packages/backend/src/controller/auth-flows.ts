@@ -4,7 +4,7 @@ import { OAuth2Client } from 'google-auth-library'
 import { prisma } from '../prisma'
 import { TError } from '../utils/TError'
 import { Authenticator } from '../utils/authenticator'
-import { sendMail } from '../utils/mailer'
+import { sendMailTemplate } from '../utils/mailer'
 
 const googleOAuth = new OAuth2Client(process.env.GOOGLE_AUTH_CLIENT_ID)
 
@@ -178,7 +178,7 @@ export async function signUpWithPassword(
 	)}&email=${encodeURIComponent(email)}`
 
 	// TODO: localize subject and body
-	await sendMail(email, 'Verify your email', 'verify-email', {
+	await sendMailTemplate(email, 'Verify your email', 'verify-email', {
 		url: verifyUrl,
 	})
 }
@@ -334,7 +334,7 @@ export async function requestPasswordReset(email: string) {
 		process.env.RESET_PASSWORD_URL
 	}?token=${encodeURIComponent(resetToken)}&email=${encodeURIComponent(email)}`
 
-	await sendMail(email, 'Reset your password', 'reset-password', {
+	await sendMailTemplate(email, 'Reset your password', 'reset-password', {
 		url: resetUrl,
 	})
 }

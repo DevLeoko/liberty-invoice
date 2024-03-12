@@ -199,6 +199,10 @@ export function previewInvoice(invoice: CreateInvoice) {
 	document.body.removeChild(form)
 }
 
+export function getDownloadUrl(invoiceId: string) {
+	return `${PUBLIC_BACKEND_URL}/invoices/${invoiceId}/download`
+}
+
 export function emptyInvoiceItem() {
 	return { description: '', quantity: 1, name: '', unit: '', unitPrice: 0, productId: null }
 }

@@ -1,6 +1,11 @@
-import type { Prisma, Product } from '@prisma/client'
+import { computeTotalExcludingTax, computeTotalWithTax } from '$shared/invoice-computations'
 import { z } from 'zod'
-import { computeTotalExcludingTax, computeTotalWithTax } from '../../../shared/invoice-computations'
+import {
+	LIST_INVOICE_DEFAULT_INCLUDES,
+	READ_INVOICE_DEFAULT_INCLUDES,
+	finalizeInvoice,
+	sendInvoiceEmail,
+} from '../controller/invoice'
 import { claimInvoiceId, getNextAvailablePartialId } from '../controller/invoice-ids'
 import { prisma } from '../prisma'
 import { protectedProcedure, router } from '../trpc'
@@ -9,33 +14,6 @@ import { verifyClientOwnership } from './client'
 import type { InvoiceCreateInput } from './invoice-schemas'
 import { invoiceCreateSchema, invoiceListSchema } from './invoice-schemas'
 import { verifyProductOwnership } from './product'
-
-// TODO: This seems like an extensive amount of data for a list - check if all is necessary
-const LIST_INVOICE_DEFAULT_INCLUDES = {
-	client: {
-		select: {
-			name: true,
-			firstName: true,
-			lastName: true,
-		},
-	},
-	items: true,
-	taxRates: {
-		select: {
-			id: true,
-		},
-	},
-} satisfies Prisma.InvoiceInclude
-
-const READ_INVOICE_DEFAULT_INCLUDES = {
-	client: true,
-	items: true,
-	taxRates: {
-		select: {
-			id: true,
-		},
-	},
-} satisfies Prisma.InvoiceInclude
 
 async function verifyInvoiceOwnership(invoiceId: string, userId: string) {
 	const invoice = await prisma.invoice.findUnique({
@@ -71,63 +49,6 @@ async function verifyInvoiceDataOwnership(invoiceData: InvoiceCreateInput, userI
 		taxRates,
 	}
 }
-
-// // Select stats about all invoices and invoices in the last 90 days
-// const clients = await prisma.$queryRawUnsafe<
-// ({
-// 	id: string
-// 	name: string
-// 	firstName: string
-// 	lastName: string
-// 	shorthand: string
-// 	isFavorite: boolean
-// 	isArchived: boolean
-// 	createdAt: Date
-// } & (T extends true
-// 	? {
-// 			totalAmount: number | null
-// 			totalAmountLast90Days: number | null
-// 			invoiceCount: number
-// 			invoiceCountLast90Days: number
-// 			lastInvoiceDate: Date | null
-// 		}
-// 	: unknown))[]
-// >(
-// `SELECT \`Client\`.\`id\`, \`Client\`.\`name\`, \`Client\`.\`firstName\`, \`Client\`.\`lastName\`, \`Client\`.\`shorthand\`, \`Client\`.\`isFavorite\`, \`Client\`.\`isArchived\`, \`Client\`.\`createdAt\`
-// ${
-// 	includeStats
-// 		? `,
-// 	SUM(\`Invoice\`.\`amountWithTax\` * \`CurrencyExchangeRates\`.rate) AS \`totalAmount\`,
-// 	SUM(IF(\`Invoice\`.\`date\` > DATE_SUB(NOW(), INTERVAL 90 DAY), \`Invoice\`.\`amountWithTax\` * \`CurrencyExchangeRates\`.rate, 0)) AS \`totalAmountLast90Days\`,
-// 	COUNT(\`Invoice\`.\`id\`) AS \`invoiceCount\` ,
-// 	SUM(IF(\`Invoice\`.\`date\` > DATE_SUB(NOW(), INTERVAL 90 DAY), 1, 0)) AS \`invoiceCountLast90Days\`,
-// 	MAX(\`Invoice\`.\`date\`) AS \`lastInvoiceDate\``
-// 		: ''
-// }
-// FROM \`Client\`
-// ${
-// 	includeStats
-// 		? `
-// LEFT JOIN \`Invoice\` ON \`Client\`.\`id\` = \`Invoice\`.\`clientId\`
-// LEFT JOIN \`CurrencyExchangeRates\` ON \`Invoice\`.currency = \`CurrencyExchangeRates\`.fromCurrency AND \`CurrencyExchangeRates\`.toCurrency = ?
-// `
-// 		: ''
-// }
-// WHERE \`Client\`.\`userId\` = ?
-// 	${isArchived !== undefined ? 'AND `Client`.`isArchived` = ?' : ''}
-// 	${isFavorite !== undefined ? 'AND `Client`.`isFavorite` = ?' : ''}
-// 	${search ? 'AND (CONCAT(`Client`.`name`, " ", `Client`.`firstName`, " ", `Client`.`lastName`, " ", `Client`.`shorthand`) LIKE ?)' : ''}
-// GROUP BY \`Client\`.\`id\`
-// ORDER BY \`Client\`.\`isFavorite\` DESC, CONCAT(\`Client\`.\`name\`, \`Client\`.\`firstName\`, \`Client\`.\`lastName\`) ASC
-// LIMIT ? OFFSET ?`,
-// ...(includeStats ? [await getDefaultCurrency(userId)!] : []),
-// userId,
-// ...(isArchived !== undefined ? [isArchived] : []),
-// ...(isFavorite !== undefined ? [isFavorite] : []),
-// ...(search ? [`%${search}%`] : []),
-// take + 1,
-// skip
-// )
 
 export const invoiceRouter = router({
 	list: protectedProcedure.input(invoiceListSchema).query(async ({ ctx, input }) => {
@@ -333,55 +254,40 @@ export const invoiceRouter = router({
 		return invoice
 	}),
 
-	finalize: protectedProcedure.input(z.string()).mutation(async ({ input, ctx }) => {
-		await verifyInvoiceOwnership(input, ctx.userId)
+	finalize: protectedProcedure
+		.input(
+			z.object({
+				id: z.string(),
+			})
+		)
+		.mutation(async ({ input, ctx }) => {
+			await verifyInvoiceOwnership(input.id, ctx.userId)
 
-		const products = await prisma.invoiceItem.findMany({
-			where: {
-				invoiceId: input,
-				product: {
-					stockedUnits: {
-						not: {
-							equals: null,
-						},
-					},
-				},
-			},
-			select: {
-				quantity: true,
-				productId: true,
-			},
-		})
+			return await finalizeInvoice(input.id)
+		}),
 
-		const updateQueries = [
-			...products.map((product) =>
-				prisma.product.update({
-					where: {
-						id: product.productId!,
-					},
-					data: {
-						stockedUnits: {
-							decrement: product.quantity,
-						},
-					},
-				})
-			),
-			prisma.invoice.update({
-				where: {
-					id: input,
-				},
-				data: {
-					draft: false,
-				},
-				include: LIST_INVOICE_DEFAULT_INCLUDES,
-			}),
-		]
+	sendMail: protectedProcedure
+		.input(
+			z.object({
+				id: z.string(),
+				email: z.string(),
+				cc: z.string().optional(),
+				bcc: z.string().optional(),
+				content: z.object({ subject: z.string(), body: z.string() }).nullable(),
+			})
+		)
+		.mutation(async ({ input, ctx }) => {
+			await verifyInvoiceOwnership(input.id, ctx.userId)
 
-		const results = await prisma.$transaction(updateQueries)
-
-		// TODO: This should just be `as Prisma.InvoiceGetPayload<{ include: LIST_INVOICE_DEFAULT_INCLUDES }>` but it gives an type error
-		return results[results.length - 1] as Exclude<(typeof results)[0], Product>
-	}),
+			await sendInvoiceEmail({
+				invoiceId: input.id,
+				email: input.email,
+				cc: input.cc,
+				bcc: input.bcc,
+				content: input.content,
+				sendingUserId: ctx.userId,
+			})
+		}),
 
 	logPayment: protectedProcedure
 		.input(z.object({ id: z.string(), amount: z.number() }))

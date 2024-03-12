@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Locale } from '$lib/translations/translations'
 	import { readable } from 'svelte/store'
 	import type { NullableProp } from '../../../../types/utilities'
 	import {
@@ -6,7 +7,6 @@
 		getTextFragmentInvoiceDateVariables,
 		parseTextFragment,
 	} from '../../../controller/text-fragment'
-	import { t } from '../../../stores/settings'
 	import type { CreateInvoice } from '../../../trpcClient'
 
 	export let invoice: NullableProp<CreateInvoice, 'clientId'>
@@ -22,7 +22,7 @@
 	$: defaultNoteQuery =
 		clientId == null || !createMode
 			? readable(null)
-			: createFinalTextFragmentQuery('invoice.note', invoiceLanguage, clientId)
+			: createFinalTextFragmentQuery('invoice.note', invoiceLanguage as Locale, clientId)
 
 	function updateInvoiceNote(rawNote: string, invoiceDate: Date, dueDate: Date) {
 		note = parseTextFragment(
@@ -32,7 +32,7 @@
 					dueDate,
 					invoiceDate,
 				},
-				$t('langCode')
+				invoiceLanguage as Locale
 			)
 		)
 	}
