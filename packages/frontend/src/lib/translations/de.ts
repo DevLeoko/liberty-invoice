@@ -138,6 +138,24 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		},
 	},
 
+	invoiceEmailModal: {
+		sendAndFinalizeTitle: 'Rechnung {{invoiceNumber}} senden und freigeben',
+		sendTitle: 'Rechnung {{invoiceNumber}} senden',
+
+		sendAndFinalize: 'Senden und freigeben',
+		send: 'Senden',
+
+		sendAndFinalizeSuccess: 'Rechnung gesendet und freigegeben',
+		sendSuccess: 'Rechnung gesendet',
+
+		email: 'E-Mail',
+		cc: 'CC',
+		bcc: 'BCC',
+		subject: 'Betreff',
+		text: 'Text',
+		attachment: 'Anhang',
+	},
+
 	clientEditor: {
 		noneFound: 'Keine Kunden gefunden.',
 		newClient: 'Kunden anlegen',
@@ -163,20 +181,6 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 
 		overrideTextFragments: 'Textbausteine',
 	},
-
-	// productEditor: {
-	// 	name: 'Name',
-	// 	description: 'Description',
-	// 	unitPrice: 'Unit price',
-	// 	unit: 'Unit (e.g. pcs, kg, h)',
-	// 	currency: 'Currency',
-
-	// 	noneFound: 'No products found.',
-	// 	trackStock: 'Track stocked quantity',
-	// 	stockedQuantity: 'Stocked quantity',
-	// 	trackStockExplain:
-	// 		'If you enable this option, the stocked quantity will be decreased by the quantity of each invoice item linked to the product when the invoice is finalized.',
-	// },
 
 	productEditor: {
 		name: 'Name',
@@ -276,6 +280,7 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		inDevelopment: 'Diese Funktion ist noch in Entwicklung.',
 		date: 'Datum',
 		loadMore: 'Mehr laden',
+		optional: 'Optional',
 	},
 
 	demo: {

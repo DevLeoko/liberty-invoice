@@ -1,12 +1,9 @@
 <script lang="ts">
 	import type { Locale } from '$lib/translations/translations'
+	import { getTextFragmentInvoiceDateVariables, parseTextFragment } from 'shared/text-fragment'
 	import { readable } from 'svelte/store'
 	import type { NullableProp } from '../../../../types/utilities'
-	import {
-		createFinalTextFragmentQuery,
-		getTextFragmentInvoiceDateVariables,
-		parseTextFragment,
-	} from '../../../controller/text-fragment'
+	import { createFinalTextFragmentQuery } from '../../../controller/text-fragment'
 	import type { CreateInvoice } from '../../../trpcClient'
 
 	export let invoice: NullableProp<CreateInvoice, 'clientId'>

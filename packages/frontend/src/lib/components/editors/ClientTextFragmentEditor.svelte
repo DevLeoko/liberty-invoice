@@ -17,7 +17,11 @@
 
 	$: tFragmentName = $t(`textFragments.name.${activeFragment}` as TranslationPaths)
 
-	$: defaultFragmentQuery = createTextFragmentListQuery(activeFragment, clientLanguage, null)
+	$: defaultFragmentQuery = createTextFragmentListQuery(
+		activeFragment,
+		clientLanguage as Locale,
+		null
+	)
 
 	$: tFragmentDefault =
 		$defaultFragmentQuery.data?.value ??

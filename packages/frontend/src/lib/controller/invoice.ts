@@ -128,7 +128,7 @@ export function createInvoiceFinalizeMutation() {
 	const queryClient = useQueryClient()
 
 	return async (invoiceId: string) => {
-		const res = await trpc.invoice.finalize.mutate(invoiceId)
+		const res = await trpc.invoice.finalize.mutate({ id: invoiceId })
 		queryClient.invalidateQueries(INVOICE_KEYS.read(invoiceId))
 
 		queryClient.setQueryData(INVOICE_KEYS.list(), (oldData?: AllListBaseData) => {

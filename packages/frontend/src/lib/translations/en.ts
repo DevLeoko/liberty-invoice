@@ -104,6 +104,25 @@ export const TRANSLATIONS_EN = {
 			updateProduct: 'Update product',
 		},
 	},
+
+	invoiceEmailModal: {
+		sendAndFinalizeTitle: 'Send and finalize invoice {{invoiceNumber}}',
+		sendTitle: 'Send invoice {{invoiceNumber}}',
+
+		sendAndFinalize: 'Send and finalize',
+		send: 'Send',
+
+		sendAndFinalizeSuccess: 'Invoice sent and finalized',
+		sendSuccess: 'Invoice sent',
+
+		email: 'Email',
+		cc: 'CC',
+		bcc: 'BCC',
+		subject: 'Subject',
+		text: 'Text',
+		attachment: 'Attachment',
+	},
+
 	clientEditorModal: {
 		created: 'Client created',
 		updated: 'Client updated',
@@ -257,6 +276,7 @@ export const TRANSLATIONS_EN = {
 		unsavedChanges: 'Unsaved changes',
 		inDevelopment: 'This feature is still in development.',
 		date: 'Date',
+		optional: 'Optional',
 
 		loadMore: 'Load more',
 	},

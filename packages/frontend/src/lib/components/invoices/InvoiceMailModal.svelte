@@ -3,11 +3,10 @@
 	import Button from '$lib/components/basics/Button.svelte'
 	import DynamicTextarea from '$lib/components/basics/DynamicTextarea.svelte'
 	import Labeled from '$lib/components/basics/Labeled.svelte'
-	import { getDownloadUrl } from '$lib/controller/invoice'
+	import { createInvoiceFinalizeMutation, getDownloadUrl } from '$lib/controller/invoice'
 	import { createFinalTextFragmentsQuery } from '$lib/controller/text-fragment'
 	import { queryUserSettings } from '$lib/controller/user-settings'
-	import { logSuccessStatic } from '$lib/stores/alerts'
-	import { t } from '$lib/stores/settings'
+	import { logSuccess, t } from '$lib/stores/settings'
 	import { Locale, translate } from '$lib/translations/translations'
 	import { trpc, type ReadInvoice } from '$lib/trpcClient'
 	import { getTextFragmentInvoiceVariables, parseTextFragment } from 'shared/text-fragment'
@@ -16,6 +15,7 @@
 	const dispatch = createEventDispatcher()
 
 	export let invoice: ReadInvoice
+	export let finalizeBeforeSend = false
 
 	$: textFragmentQuery = createFinalTextFragmentsQuery(
 		['mail.invoiceSubject', 'mail.invoiceText'],
@@ -60,10 +60,18 @@
 	$: mailDisclaimer = translate(invoice.language as Locale, 'mailTemplate.footerDisclaimer')
 
 	let loadingSend = false
-	function sendMail() {
+
+	const finalizeInvoiceMutation = createInvoiceFinalizeMutation()
+
+	async function sendMail() {
 		loadingSend = true
-		trpc.invoice.sendMail
-			.mutate({
+
+		try {
+			if (finalizeBeforeSend) {
+				await finalizeInvoiceMutation(invoice.id)
+			}
+
+			await trpc.invoice.sendMail.mutate({
 				id: invoice.id,
 				email,
 				cc,
@@ -73,36 +81,45 @@
 					body: text,
 				},
 			})
-			.then(() => {
-				logSuccessStatic('Mail sent')
-			})
-			.finally(() => {
-				loadingSend = false
-			})
+
+			$logSuccess(
+				finalizeBeforeSend
+					? 'invoiceEmailModal.sendAndFinalizeSuccess'
+					: 'invoiceEmailModal.sendSuccess'
+			)
+		} finally {
+			loadingSend = false
+		}
 	}
 </script>
 
-<BasicModal title="Send and finalize invoice {invoice.invoiceNumber}" on:exit>
+<BasicModal
+	title={$t(
+		finalizeBeforeSend ? 'invoiceEmailModal.sendAndFinalizeTitle' : 'invoiceEmailModal.sendTitle',
+		{ invoiceNumber: invoice.invoiceNumber }
+	)}
+	on:exit
+>
 	<div class="flex flex-col gap-2">
-		<Labeled label="Email">
+		<Labeled label={$t('invoiceEmailModal.email')}>
 			<input type="email" bind:value={email} />
 		</Labeled>
 
 		<div class="grid grid-cols-2 gap-4">
-			<Labeled label="CC">
-				<input type="email" placeholder="optional" bind:value={cc} />
+			<Labeled label={$t('invoiceEmailModal.cc')}>
+				<input type="email" placeholder={$t('general.optional')} bind:value={cc} />
 			</Labeled>
 
-			<Labeled label="BCC">
-				<input type="email" placeholder="optional" bind:value={bcc} />
+			<Labeled label={$t('invoiceEmailModal.bcc')}>
+				<input type="email" placeholder={$t('general.optional')} bind:value={bcc} />
 			</Labeled>
 		</div>
 
-		<Labeled label="Subject">
+		<Labeled label={$t('invoiceEmailModal.subject')}>
 			<input type="text" bind:value={subject} disabled={$textFragmentQuery == null} />
 		</Labeled>
 
-		<Labeled label="Text" class="z-20">
+		<Labeled label={$t('invoiceEmailModal.text')} class="z-20">
 			<DynamicTextarea bind:value={text} disabled={$textFragmentQuery == null} class="!bg-white" />
 		</Labeled>
 
@@ -113,7 +130,7 @@
 			{@html mailDisclaimer}
 		</div>
 
-		<Labeled label="Attachment">
+		<Labeled label={$t('invoiceEmailModal.attachment')}>
 			<a
 				class="flex items-center gap-3 p-2 border border-gray-300 bg-gray-50 hover:bg-gray-100 w-max hover:text-blue-600"
 				href={getDownloadUrl(invoice.id)}
@@ -131,6 +148,8 @@
 
 	<div class="flex justify-end gap-4 mt-6">
 		<Button on:click={() => dispatch('exit')} gray class="mt-6">{$t('general.cancel')}</Button>
-		<Button on:click={sendMail} loading={loadingSend} class="mt-6">Send and finalize</Button>
+		<Button on:click={sendMail} loading={loadingSend} class="mt-6">
+			{$t(finalizeBeforeSend ? 'invoiceEmailModal.sendAndFinalize' : 'invoiceEmailModal.send')}
+		</Button>
 	</div>
 </BasicModal>
