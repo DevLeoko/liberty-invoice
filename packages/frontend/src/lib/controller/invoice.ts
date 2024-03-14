@@ -15,7 +15,6 @@ import { STATS_KEYS } from './stats'
 
 export const INVOICE_KEYS = {
 	all: ['invoice'],
-	list: () => [...INVOICE_KEYS.all, 'list'],
 	allList: () => [...INVOICE_KEYS.all, 'list'],
 	listQuery: (query: InvoiceListQuery) => [
 		...INVOICE_KEYS.allList(),
@@ -79,7 +78,7 @@ export function createInvoiceDeleteMutation() {
 	return async (invoiceId: string) => {
 		const res = await trpc.invoice.delete.mutate(invoiceId)
 
-		queryClient.setQueriesData(INVOICE_KEYS.list(), (oldData?: AllListBaseData) => {
+		queryClient.setQueriesData(INVOICE_KEYS.allList(), (oldData?: AllListBaseData) => {
 			if (!oldData) return oldData
 
 			const newData = cloneDeep(oldData)
@@ -103,7 +102,7 @@ export function createInvoiceUpdateMutation() {
 	return async (data: Parameters<typeof trpc.invoice.update.mutate>[0]) => {
 		const res: ReadInvoice = await trpc.invoice.update.mutate(data)
 		queryClient.setQueryData(INVOICE_KEYS.read(res.id), res)
-		queryClient.invalidateQueries(INVOICE_KEYS.list())
+		queryClient.invalidateQueries(INVOICE_KEYS.allList())
 		queryClient.invalidateQueries(STATS_KEYS.all)
 
 		return res
@@ -117,7 +116,7 @@ export function createInvoiceCreateMutation() {
 		const res: ReadInvoice = await trpc.invoice.create.mutate(data)
 
 		queryClient.setQueryData(INVOICE_KEYS.read(res.id), res)
-		queryClient.invalidateQueries(INVOICE_KEYS.list())
+		queryClient.invalidateQueries(INVOICE_KEYS.allList())
 		queryClient.invalidateQueries(STATS_KEYS.all)
 
 		return res
@@ -131,7 +130,9 @@ export function createInvoiceFinalizeMutation() {
 		const res = await trpc.invoice.finalize.mutate({ id: invoiceId })
 		queryClient.invalidateQueries(INVOICE_KEYS.read(invoiceId))
 
-		queryClient.setQueryData(INVOICE_KEYS.list(), (oldData?: AllListBaseData) => {
+		queryClient.getQueryCache().findAll(INVOICE_KEYS.allList())[0].state.data
+
+		queryClient.setQueriesData(INVOICE_KEYS.allList(), (oldData?: AllListBaseData) => {
 			if (!oldData) return oldData
 			// return oldData.map((i) => (i.id === invoiceId ? res : i))
 
@@ -161,7 +162,7 @@ export function createInvoiceLogPaymentMutation() {
 	return async (data: Parameters<typeof trpc.invoice.logPayment.mutate>[0]) => {
 		const res = await trpc.invoice.logPayment.mutate(data)
 		queryClient.invalidateQueries(INVOICE_KEYS.read(data.id))
-		queryClient.setQueryData(INVOICE_KEYS.list(), (oldData?: AllListBaseData) => {
+		queryClient.setQueriesData(INVOICE_KEYS.allList(), (oldData?: AllListBaseData) => {
 			if (!oldData) return oldData
 
 			const newData = cloneDeep(oldData)

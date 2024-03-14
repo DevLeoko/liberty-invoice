@@ -58,11 +58,11 @@
 	>
 	<Button class="flex-1" href="/invoices/{invoice.id}/edit">{$t('general.edit')}</Button>
 
-	<FloatingCardTrigger>
+	<FloatingCardTrigger let:close>
 		<svelte:fragment slot="trigger">
 			<Button class="flex-1">{$t('general.more')}</Button>
 		</svelte:fragment>
-		<InvoiceActionCard {invoice} />
+		<InvoiceActionCard {invoice} on:close={close} />
 	</FloatingCardTrigger>
 </div>
 
