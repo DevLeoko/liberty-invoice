@@ -7,6 +7,10 @@
 
 	export let triggerClass = ''
 	export let cardClass = ''
+
+	function close() {
+		showFloatingCard = false
+	}
 </script>
 
 <div class="relative">
@@ -22,7 +26,7 @@
 			on:click={() => (showFloatingCard = false)}
 			class="cursor-default {cardClass}"
 		>
-			<slot />
+			<slot {close} />
 		</FloatingCard>
 	{/if}
 </div>

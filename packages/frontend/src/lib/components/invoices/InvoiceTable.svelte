@@ -3,7 +3,6 @@
 	import InvoiceRow from '$lib/components/InvoiceRow.svelte'
 	import SidePopup from '$lib/components/basics/SidePopup.svelte'
 	import Skeleton from '$lib/components/basics/Skeleton.svelte'
-	import InvoiceMailModal from '$lib/components/invoices/InvoiceMailModal.svelte'
 	import { createInvoiceReadQuery } from '$lib/controller/invoice'
 	import { t } from '$lib/stores/settings'
 	import type { ListInvoice } from '$lib/trpcClient'
@@ -58,10 +57,6 @@
 </div>
 
 {#if previewInvoice != null}
-	{#if $previewInvoice?.data}
-		<InvoiceMailModal invoice={$previewInvoice.data} on:exit={closePreview} />
-	{/if}
-
 	<SidePopup on:exit={closePreview} class="w-[600px]">
 		{#if !$previewInvoice?.data}
 			<Skeleton class="w-full h-48" />

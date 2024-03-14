@@ -104,6 +104,7 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 
 		finalize: 'Freigeben',
 		sendAndFinalize: 'Senden und freigeben',
+		send: 'Per E-Mail senden',
 
 		markAsPaid: 'Als bezahlt markieren',
 	},

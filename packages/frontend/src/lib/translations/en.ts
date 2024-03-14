@@ -62,6 +62,7 @@ export const TRANSLATIONS_EN = {
 
 		finalize: 'Finalize',
 		sendAndFinalize: 'Send and finalize',
+		send: 'Send via email',
 
 		markAsPaid: 'Mark as paid',
 	},

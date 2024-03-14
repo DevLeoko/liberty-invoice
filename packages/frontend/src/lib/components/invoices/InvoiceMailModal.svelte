@@ -87,6 +87,8 @@
 					? 'invoiceEmailModal.sendAndFinalizeSuccess'
 					: 'invoiceEmailModal.sendSuccess'
 			)
+
+			dispatch('exit')
 		} finally {
 			loadingSend = false
 		}

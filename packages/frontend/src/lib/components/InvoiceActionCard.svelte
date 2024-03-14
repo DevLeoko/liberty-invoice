@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
+	import { openInvoiceMailModal } from '$lib/components/global/GlobalInvoiceMailModal.svelte'
+	import { createEventDispatcher } from 'svelte'
 	import {
 		createInvoiceDeleteMutation,
 		createInvoiceFinalizeMutation,
@@ -10,6 +12,8 @@
 	import type { ListInvoice } from '../trpcClient'
 	import CardActionButton from './basics/CardActionButton.svelte'
 	import ConfirmationCardTrigger from './basics/ConfirmationCardTrigger.svelte'
+
+	const dispatch = createEventDispatcher()
 
 	export let invoice: ListInvoice
 
@@ -58,6 +62,34 @@
 
 		$logSuccess('invoiceList.markedAsPaid')
 	}
+
+	let loadingSendAndFinalize = false
+	function sendAndFinalizeInvoice(event: MouseEvent) {
+		event.stopPropagation()
+
+		loadingSendAndFinalize = true
+		openInvoiceMailModal
+			.mutate(invoice.id, true)
+			.then(() => {
+				dispatch('close')
+			})
+			.finally(() => {
+				loadingSendAndFinalize = false
+			})
+	}
+
+	let loadingSend = false
+	function sendInvoice() {
+		loadingSend = true
+		openInvoiceMailModal
+			.mutate(invoice.id, false)
+			.then(() => {
+				dispatch('close')
+			})
+			.finally(() => {
+				loadingSend = false
+			})
+	}
 </script>
 
 <div class="flex flex-col items-stretch space-y-1 text-sm text-left floating-actions">
@@ -68,14 +100,23 @@
 			{$t('invoiceStatus.finalize')}
 		</CardActionButton>
 
-		<!-- <CardActionButton icon="mark_email_read" on:click={finalizeInvoice}>
+		<CardActionButton
+			icon="mark_email_read"
+			loading={loadingSendAndFinalize}
+			on:click={sendAndFinalizeInvoice}
+		>
 			{$t('invoiceStatus.sendAndFinalize')}
-		</CardActionButton> -->
+		</CardActionButton>
 		<div class="h-[1px] bg-slate-200" />
 	{:else if invoice.amountPaid != invoice.amountWithTax}
 		<CardActionButton icon="check" loading={loadingMarkAsPaid} on:click={markAsPaid}>
 			{$t('invoiceStatus.markAsPaid')}
 		</CardActionButton>
+
+		<CardActionButton icon="mark_email_read" loading={loadingSend} on:click={sendInvoice}>
+			{$t('invoiceStatus.send')}
+		</CardActionButton>
+
 		<div class="h-[1px] bg-slate-200" />
 	{/if}
 	<CardActionButton

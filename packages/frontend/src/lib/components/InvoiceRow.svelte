@@ -31,11 +31,11 @@
 		</td>
 		<td class="relative text-right">
 			<div on:click|stopPropagation={() => {}}>
-				<FloatingCardTrigger>
+				<FloatingCardTrigger let:close>
 					<svelte:fragment slot="trigger">
 						<span class="p-2 -m-2 text-base material-icons hover:text-blue-500">more_vert</span>
 					</svelte:fragment>
-					<InvoiceActionCard {invoice} />
+					<InvoiceActionCard {invoice} on:close={close} />
 				</FloatingCardTrigger>
 			</div>
 		</td>
