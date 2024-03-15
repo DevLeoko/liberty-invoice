@@ -21,7 +21,10 @@ export const authRouter = router({
 			})
 		)
 		.mutation(async ({ input, ctx }) => {
-			const { accessToken, refreshToken } = await loginWithPassword(input.email, input.password)
+			const { accessToken, refreshToken, authData } = await loginWithPassword(
+				input.email,
+				input.password
+			)
 
 			ctx.res.cookie('refreshToken', refreshToken, {
 				httpOnly: true,
@@ -34,6 +37,8 @@ export const authRouter = router({
 				sameSite: 'lax',
 				secure: process.env.NODE_ENV === 'production',
 			})
+
+			return { authData }
 		}),
 
 	signUpWithPassword: publicProcedure
@@ -62,7 +67,7 @@ export const authRouter = router({
 			})
 		)
 		.mutation(async ({ input, ctx }) => {
-			const { accessToken, refreshToken } = await loginWithGoogle(
+			const { accessToken, refreshToken, authData } = await loginWithGoogle(
 				input.token,
 				input.createAccountIfNotFound,
 				input.marketingEmails,
@@ -80,6 +85,8 @@ export const authRouter = router({
 				sameSite: 'lax',
 				secure: process.env.NODE_ENV === 'production',
 			})
+
+			return { authData }
 		}),
 
 	verifyEmail: publicProcedure

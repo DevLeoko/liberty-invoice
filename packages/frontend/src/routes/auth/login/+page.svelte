@@ -63,22 +63,24 @@
 		if (inputIssue) return
 
 		loading = true
-		await trpc.auth.loginWithPassword.mutate({ email, password }).finally(() => {
-			loading = false
-		})
-		setLoggedIn()
+		const { authData } = await trpc.auth.loginWithPassword
+			.mutate({ email, password })
+			.finally(() => {
+				loading = false
+			})
+		setLoggedIn(authData)
 
 		goto('/dashboard')
 	}
 
 	async function signInWithGoogle(response: any) {
 		loading = true
-		await trpc.auth.loginWithGoogle
+		const { authData } = await trpc.auth.loginWithGoogle
 			.mutate({ token: response.credential, createAccountIfNotFound: false })
 			.finally(() => {
 				loading = false
 			})
-		setLoggedIn()
+		setLoggedIn(authData)
 
 		goto('/dashboard')
 	}

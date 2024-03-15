@@ -4,7 +4,7 @@ import { createTRPCProxyClient, httpBatchLink, loggerLink } from '@trpc/client'
 import type { AppRouter, RouterInput, RouterOutput } from 'backend/routers/_app'
 import SuperJSON from 'superjson'
 import { get } from 'svelte/store'
-import { setLoggedOut } from './stores/auth'
+import { setLoggedOut, updateAuthData } from './stores/auth'
 import { logError } from './stores/settings'
 import type { TranslationPaths } from './translations/translations'
 
@@ -62,6 +62,20 @@ export const trpc = createTRPCProxyClient<AppRouter>({
 				return fetch(url, {
 					...options,
 					credentials: 'include',
+				}).then((res) => {
+					// TODO: The header name should be a shared constant
+					if (res.headers.has('Custom-Refreshed-Auth-Data')) {
+						const data = JSON.parse(
+							Buffer.from(res.headers.get('Custom-Refreshed-Auth-Data') ?? '', 'base64').toString(
+								'utf-8'
+							)
+						)
+						if (data) {
+							updateAuthData(data)
+						}
+					}
+
+					return res
 				})
 			},
 		}),

@@ -98,7 +98,7 @@ export class Authenticator<T extends Record<string, any>> {
 
 	async refreshAccessToken(
 		refreshToken: string,
-		refreshSession: (data: T) => Promise<string | null>
+		refreshSessionExtractorAndDataUpdate: (data: T) => Promise<string | null>
 	): Promise<AuthResponse<{ accessToken: string; data: T }, 'invalid-token' | 'invalid-session'>> {
 		try {
 			const { data, refreshSession: tokenRefreshSession } = jwt.verify(
@@ -106,7 +106,7 @@ export class Authenticator<T extends Record<string, any>> {
 				this.secret
 			) as { data: T; refreshSession: string }
 
-			const session = await refreshSession(data)
+			const session = await refreshSessionExtractorAndDataUpdate(data)
 			if (tokenRefreshSession !== session || !session)
 				return { success: false, data: { errorType: 'invalid-session' } }
 

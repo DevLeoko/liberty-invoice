@@ -20,6 +20,11 @@ model User {
   createdAt       DateTime @default(now())
   lastLogin       DateTime @default(now())
 
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+  activePlan           String?
+  planValidUntil       DateTime?
+
   userSettings UserSettings?
 
   clients       Client[]

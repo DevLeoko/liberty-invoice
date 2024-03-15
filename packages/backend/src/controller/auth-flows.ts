@@ -1,3 +1,4 @@
+import type { Plan } from '$shared/plans'
 import type { Prisma } from '@prisma/client'
 import type { NextFunction, Request, Response } from 'express'
 import { OAuth2Client } from 'google-auth-library'
@@ -8,16 +9,40 @@ import { sendMailTemplate } from '../utils/mailer'
 
 const googleOAuth = new OAuth2Client(process.env.GOOGLE_AUTH_CLIENT_ID)
 
-const authenticator = new Authenticator<{ userId: string }>(process.env.JWT_SECRET)
+export type AuthPayload = { userId: string; plan: Plan | null }
 
-async function refreshSessionExtractor(userId: string) {
+const authenticator = new Authenticator<AuthPayload>(process.env.JWT_SECRET)
+
+async function checkUserPlan(
+	user: Prisma.UserGetPayload<{ select: { activePlan: true; planValidUntil: true; id: true } }>
+) {
+	if (!user.activePlan) return
+
+	if (user.planValidUntil && user.planValidUntil > new Date()) return
+
+	await prisma.user.update({
+		where: {
+			id: user.id,
+		},
+		data: {
+			activePlan: null,
+		},
+	})
+
+	user.activePlan = null
+}
+
+async function refreshSessionExtractorAndDataUpdate(data: { userId: string; plan: Plan | null }) {
 	const user = await prisma.user.findUnique({
 		where: {
-			id: userId,
+			id: data.userId,
 		},
 	})
 
 	if (!user) return null
+
+	await checkUserPlan(user)
+	data.plan = user.activePlan as Plan | null
 
 	return user.refreshSession
 }
@@ -30,6 +55,7 @@ export async function authExpressMiddleware(req: Request, res: Response, next: N
 	const verifyResult = authenticator.verifyAccessToken(token)
 	if (verifyResult.success) {
 		req.userId = verifyResult.data.userId
+		req.plan = verifyResult.data.plan
 		return next()
 	}
 
@@ -37,8 +63,8 @@ export async function authExpressMiddleware(req: Request, res: Response, next: N
 	const refreshToken = req.cookies.refreshToken
 	if (!refreshToken) return next()
 
-	const refreshResults = await authenticator.refreshAccessToken(refreshToken, ({ userId }) =>
-		refreshSessionExtractor(userId)
+	const refreshResults = await authenticator.refreshAccessToken(refreshToken, (data) =>
+		refreshSessionExtractorAndDataUpdate(data)
 	)
 
 	if (refreshResults.success) {
@@ -59,6 +85,11 @@ export async function authExpressMiddleware(req: Request, res: Response, next: N
 			sameSite: 'lax',
 			secure: process.env.NODE_ENV === 'production',
 		})
+
+		res.setHeader(
+			'Custom-Refreshed-Auth-Data',
+			Buffer.from(JSON.stringify(data)).toString('base64')
+		)
 
 		req.userId = data.userId
 	}
@@ -101,7 +132,7 @@ export async function loginWithGoogle(
 	createAccountIfNotFound: boolean,
 	marketingEmails?: boolean,
 	langCode?: string
-): Promise<{ accessToken: string; refreshToken: string }> {
+): Promise<{ accessToken: string; refreshToken: string; authData: AuthPayload }> {
 	const email = await fetchEmailFromGoogleToken(token)
 
 	let user = await prisma.user.findUnique({
@@ -116,8 +147,12 @@ export async function loginWithGoogle(
 		user = await createUser(email, null, true, marketingEmails ?? false, langCode ?? 'en')
 	}
 
+	await checkUserPlan(user)
+
+	const authData = { userId: user.id, plan: user.activePlan as Plan | null }
+
 	const { accessToken, refreshSession, refreshToken } = authenticator.directLogin(
-		{ userId: user.id },
+		authData,
 		user.refreshSession ?? undefined
 	)
 
@@ -125,13 +160,13 @@ export async function loginWithGoogle(
 		await updateUserRefreshSession(user.id, refreshSession)
 	}
 
-	return { accessToken, refreshToken }
+	return { accessToken, refreshToken, authData }
 }
 
 export async function loginWithPassword(
 	email: string,
 	password: string
-): Promise<{ accessToken: string; refreshToken: string }> {
+): Promise<{ accessToken: string; refreshToken: string; authData: AuthPayload }> {
 	email = email.toLowerCase()
 
 	const user = await prisma.user.findUnique({
@@ -146,10 +181,14 @@ export async function loginWithPassword(
 
 	if (!user.passwordHash) throw new TError('error.notPasswordAccount')
 
+	await checkUserPlan(user)
+
+	const authData = { userId: user.id, plan: user.activePlan as Plan | null }
+
 	const { success, data } = await authenticator.loginWithPassword(
 		user.passwordHash,
 		password,
-		{ userId: user.id },
+		authData,
 		user.refreshSession ?? undefined
 	)
 
@@ -159,7 +198,7 @@ export async function loginWithPassword(
 		await updateUserRefreshSession(user.id, data.refreshSession)
 	}
 
-	return { accessToken: data.accessToken, refreshToken: data.refreshToken }
+	return { accessToken: data.accessToken, refreshToken: data.refreshToken, authData }
 }
 
 export async function signUpWithPassword(

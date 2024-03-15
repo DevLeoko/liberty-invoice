@@ -16,6 +16,11 @@ declare global {
       RESET_PASSWORD_URL: string
       CORS_ORIGIN: string
       FILE_STORAGE_PATH: string
+      STRIPE_PUBLIC_KEY: string;
+      STRIPE_SECRET_KEY: string;
+      STRIPE_WEBHOOK_SECRET: string;
+      STRIPE_PLUS_SUBSCRIPTION_MONTHLY: string;
+      STRIPE_PLUS_SUBSCRIPTION_YEARLY: string;
       GOOGLE_AUTH_CLIENT_ID: string
     }
   }
