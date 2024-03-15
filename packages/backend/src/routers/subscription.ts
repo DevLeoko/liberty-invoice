@@ -6,10 +6,19 @@ import { protectedProcedure, router } from '../trpc'
 import { TError } from '../utils/TError'
 
 export const subscriptionRouter = router({
+	readSubscriptionStatus: protectedProcedure.query(async ({ ctx: { userId } }) => {
+		const user = await prisma.user.findUniqueOrThrow({
+			where: { id: userId },
+			select: { activePlan: true, planValidUntil: true, stripeCustomerId: true },
+		})
+
+		return user
+	}),
+
 	getCheckoutSessionUrl: protectedProcedure
 		.input(
 			z.object({
-				plan: z.enum([Plan.PLUS]),
+				plan: z.enum([Plan.PLUS] as const),
 				billingCycle: z.enum(['monthly', 'yearly']),
 				currency: z.enum(['usd', 'eur']),
 			})
@@ -18,9 +27,10 @@ export const subscriptionRouter = router({
 			const user = await prisma.user.findUniqueOrThrow({ where: { id: userId } })
 
 			const checkoutSession = await stripe.checkout.sessions.create({
-				client_reference_id: userId,
 				customer_email: user.email,
 				mode: 'subscription',
+				success_url: process.env.SUBSCRIPTION_RETURN_URL,
+				cancel_url: process.env.SUBSCRIPTION_RETURN_URL,
 				line_items: [
 					{
 						price:
@@ -30,6 +40,11 @@ export const subscriptionRouter = router({
 						quantity: 1,
 					},
 				],
+				subscription_data: {
+					metadata: {
+						userId: user.id,
+					},
+				},
 				currency,
 			})
 
@@ -45,7 +60,7 @@ export const subscriptionRouter = router({
 
 		const portalSession = await stripe.billingPortal.sessions.create({
 			customer: user.stripeCustomerId,
-			return_url: process.env.STRIPE_PORTAL_RETURN_URL,
+			return_url: process.env.SUBSCRIPTION_RETURN_URL,
 		})
 
 		return {

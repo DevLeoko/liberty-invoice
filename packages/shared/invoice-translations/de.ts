@@ -128,6 +128,7 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		emailAlreadyInUse: 'Diese E-Mail-Adresse wird bereits verwendet.',
 		failedCaptcha: 'Captcha fehlgeschlagen.',
 		invalidInput: 'Ungültige Eingabe.',
+		onlyForPlusPlan: 'Dieses Feature ist nur LiberyInvoice Plus Nutzern zugänglich.',
 
 		client: {
 			notFound: 'Kunde nicht gefunden.',

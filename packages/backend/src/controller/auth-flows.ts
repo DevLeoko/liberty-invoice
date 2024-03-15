@@ -1,3 +1,4 @@
+import type { AuthPayload } from '$shared/AuthPayload'
 import type { Plan } from '$shared/plans'
 import type { Prisma } from '@prisma/client'
 import type { NextFunction, Request, Response } from 'express'
@@ -8,9 +9,6 @@ import { Authenticator } from '../utils/authenticator'
 import { sendMailTemplate } from '../utils/mailer'
 
 const googleOAuth = new OAuth2Client(process.env.GOOGLE_AUTH_CLIENT_ID)
-
-export type AuthPayload = { userId: string; plan: Plan | null }
-
 const authenticator = new Authenticator<AuthPayload>(process.env.JWT_SECRET)
 
 async function checkUserPlan(
@@ -54,8 +52,7 @@ export async function authExpressMiddleware(req: Request, res: Response, next: N
 
 	const verifyResult = authenticator.verifyAccessToken(token)
 	if (verifyResult.success) {
-		req.userId = verifyResult.data.userId
-		req.plan = verifyResult.data.plan
+		req.auth = verifyResult.data
 		return next()
 	}
 
@@ -91,7 +88,7 @@ export async function authExpressMiddleware(req: Request, res: Response, next: N
 			Buffer.from(JSON.stringify(data)).toString('base64')
 		)
 
-		req.userId = data.userId
+		req.auth = data
 	}
 
 	next()
@@ -149,7 +146,7 @@ export async function loginWithGoogle(
 
 	await checkUserPlan(user)
 
-	const authData = { userId: user.id, plan: user.activePlan as Plan | null }
+	const authData = { userId: user.id, plan: user.activePlan as Plan | null, accountMail: email }
 
 	const { accessToken, refreshSession, refreshToken } = authenticator.directLogin(
 		authData,
@@ -183,7 +180,7 @@ export async function loginWithPassword(
 
 	await checkUserPlan(user)
 
-	const authData = { userId: user.id, plan: user.activePlan as Plan | null }
+	const authData = { userId: user.id, plan: user.activePlan as Plan | null, accountMail: email }
 
 	const { success, data } = await authenticator.loginWithPassword(
 		user.passwordHash,

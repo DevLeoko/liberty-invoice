@@ -47,7 +47,7 @@
 </script>
 
 <div
-	class="flex flex-col px-3 py-2 bg-gray-200 {$fragmentTextQuery.isLoading
+	class="flex flex-col px-3 py-2 bg-gray-150 {$fragmentTextQuery.isLoading
 		? 'opacity-50 pointer-events-none'
 		: ''}"
 >

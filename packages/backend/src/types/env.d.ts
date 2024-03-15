@@ -14,6 +14,7 @@ declare global {
       RECAPTCHA_SECRET_KEY: string
       SIGN_IN_URL: string
       RESET_PASSWORD_URL: string
+      SUBSCRIPTION_RETURN_URL: string;
       CORS_ORIGIN: string
       FILE_STORAGE_PATH: string
       STRIPE_PUBLIC_KEY: string;

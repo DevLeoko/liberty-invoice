@@ -11,7 +11,7 @@ const VALID_MIME_TYPES = ['image/png', 'image/jpeg']
 fs.mkdir(LOGO_UPLOAD_PATH, { recursive: true })
 
 export async function logoUploadHandler(req: Request, res: Response) {
-	if (!req.userId) {
+	if (!req.auth?.userId) {
 		res.status(401).send('Unauthorized')
 		return
 	}
@@ -31,12 +31,12 @@ export async function logoUploadHandler(req: Request, res: Response) {
 		return
 	}
 
-	const filename = `${req.userId}.${fileType!.ext}`
+	const filename = `${req.auth?.userId}.${fileType!.ext}`
 
 	await fs.writeFile(`${LOGO_UPLOAD_PATH}/${filename}`, file.buffer)
 
 	await prisma.userSettings.update({
-		where: { userId: req.userId },
+		where: { userId: req.auth?.userId },
 		data: { logoUrl: filename },
 	})
 
@@ -44,12 +44,12 @@ export async function logoUploadHandler(req: Request, res: Response) {
 }
 
 export async function logoViewHandler(req: Request, res: Response) {
-	if (!req.userId) {
+	if (!req.auth?.userId) {
 		res.status(401).send('Unauthorized')
 		return
 	}
 
-	const userSettings = await prisma.userSettings.findUnique({ where: { userId: req.userId } })
+	const userSettings = await prisma.userSettings.findUnique({ where: { userId: req.auth?.userId } })
 
 	// Get the filename from the request parameter
 	const filename = userSettings!.logoUrl

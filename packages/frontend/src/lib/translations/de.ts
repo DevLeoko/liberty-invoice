@@ -92,6 +92,31 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		},
 	},
 
+	subscription: {
+		activePlan: 'Aktueller Plan',
+		upgradeToUnlockP1: 'Upgrade auf',
+		upgradeToUnlockP2: 'um diese Funktionen freizuschalten',
+		feature1: 'Rechnungen per E-Mail senden',
+		feature2: '"Erstellt mit Liberty Invoice" entfernen',
+		feature3: 'Rechnungsnummer-Format anpassen',
+		feature4: 'Priorisierter Support',
+		feature5: 'Zugang zu Feature-Abstimmung',
+
+		just: 'Nur',
+		plusPriceMonthly: '10€',
+		plusPriceYearly: '100€',
+		month: 'Monat',
+		year: 'Jahr',
+		plusTax: 'zzgl. MwSt.',
+		whenBilled: 'Bei Zahlung pro',
+		monthly: 'Monat',
+		yearly: 'Jahr (2 Monate gratis)',
+		upgradeToPlus: 'Jetzt zu Plus upgraden',
+		manageSubscription: 'Abonnement verwalten',
+
+		successfulUpgrade: 'Ihr Account wurde erfolgreich auf Liberty Invoice Plus geupgraded.',
+	},
+
 	invoiceStatus: {
 		draft: 'Entwurf',
 		paid: 'Bezahlt',

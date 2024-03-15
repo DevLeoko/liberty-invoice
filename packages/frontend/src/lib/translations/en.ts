@@ -106,6 +106,31 @@ export const TRANSLATIONS_EN = {
 		},
 	},
 
+	subscription: {
+		activePlan: 'Active plan',
+		upgradeToUnlockP1: 'Upgrade to',
+		upgradeToUnlockP2: 'to unlock these features',
+		feature1: 'Send invoices via email',
+		feature2: 'Remove "Created with Liberty Invoice"',
+		feature3: 'Customize invoice number format',
+		feature4: 'Priority support',
+		feature5: 'Access to feature voting',
+
+		just: 'Just',
+		plusPriceMonthly: '$10',
+		plusPriceYearly: '$100',
+		month: 'month',
+		year: 'year',
+		plusTax: 'plus tax',
+		whenBilled: 'When billed',
+		monthly: 'Monthly',
+		yearly: 'Yearly (2 months free)',
+		upgradeToPlus: 'Upgrade to Plus',
+		manageSubscription: 'Manage subscription',
+
+		successfulUpgrade: 'Your account has been upgraded to Liberty Invoice Plus. Enjoy!',
+	},
+
 	invoiceEmailModal: {
 		sendAndFinalizeTitle: 'Send and finalize invoice {{invoiceNumber}}',
 		sendTitle: 'Send invoice {{invoiceNumber}}',

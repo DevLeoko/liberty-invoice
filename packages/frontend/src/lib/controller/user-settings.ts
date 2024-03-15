@@ -31,3 +31,14 @@ export function queryUserSettings() {
 		queryFn: () => trpc.userSettings.read.query(),
 	})
 }
+
+export function createUserSettingsFetcher() {
+	const queryClient = useQueryClient()
+
+	return () => {
+		return queryClient.fetchQuery({
+			queryKey: USER_SETTINGS_KEYS.read(),
+			queryFn: () => trpc.userSettings.read.query(),
+		})
+	}
+}

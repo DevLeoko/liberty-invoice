@@ -12,7 +12,7 @@
 	>
 		{#each $alerts as alert, i (alert.startTime)}
 			<div
-				class="flex items-center w-lg max-w-full pt-1 px-3 pb-1.5 mt-2 relative rounded-sm pointer-events-auto"
+				class="flex items-center w-lg max-w-full pt-1 px-3 pb-1.5 mt-2 relative shadow-md pointer-events-auto"
 				class:bg-red-600={alert.type == 'error'}
 				class:bg-lime-600={alert.type == 'success'}
 				class:bg-blue-600={alert.type == 'info'}

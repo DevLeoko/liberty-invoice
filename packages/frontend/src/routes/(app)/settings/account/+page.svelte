@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
+	import SubscriptionBox from '$lib/components/settings/SubscriptionBox.svelte'
 	import { onMount } from 'svelte'
 	import Button from '../../../../lib/components/basics/Button.svelte'
 	import Chip from '../../../../lib/components/basics/Chip.svelte'
@@ -66,16 +67,18 @@
 	}
 </script>
 
-<div class="flex flex-col max-w-md">
+<div class="flex flex-col max-w-md gap-4">
 	{#if !myData || !$userSettings.data}
 		<Skeleton class="h-20 max-w-md" />
 	{:else}
-		<div class="px-3 py-2 mt-2 bg-gray-200">
+		<SubscriptionBox />
+
+		<div class="px-3 py-2 bg-gray-150">
 			<b>{$t('auth.email')}</b> <span>{myData.email}</span> <br />
 			<i class="text-sm text-gray-500">{$t('auth.canNotChangeEmail')}</i>
 		</div>
 
-		<div class="px-3 py-2 mt-2 bg-gray-200">
+		<div class="px-3 py-2 bg-gray-150">
 			{#if myData.isPasswordAccount}
 				<b>{$t('auth.password')}</b>
 				<p class="text-sm whitespace-pre-wrap">
@@ -102,7 +105,7 @@
 			{/if}
 		</div>
 
-		<div class="px-3 py-2 mt-2 bg-gray-200">
+		<div class="px-3 py-2 bg-gray-150">
 			<b>{$t('settings.marketingConsent')}</b>
 			<div class="flex items-center {loadingConsentUpdate ? 'opacity-50' : ''}">
 				<input
@@ -117,7 +120,7 @@
 			</div>
 		</div>
 
-		<div class="px-3 py-2 mt-2 bg-gray-200 border-l-4 border-red-500">
+		<div class="px-3 py-2 border-l-4 border-red-500 bg-gray-150">
 			<b>{$t('settings.deleteAccount')}</b>
 			<p>{$t('settings.deleteAccountText')}</p>
 			<Button

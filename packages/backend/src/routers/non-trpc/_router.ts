@@ -1,8 +1,9 @@
-import { urlencoded } from 'express'
 import type { Express, NextFunction, Request, Response } from 'express'
+import { raw, urlencoded } from 'express'
 import multer from 'multer'
 import { invoiceDownloadHandler, invoicePreviewHandler } from './invoice-download'
 import { logoUploadHandler, logoViewHandler } from './logo-handler'
+import { stripeWebhookHandler } from './stripe-webhooks'
 
 function asyncHandler(fn: (req: Request, res: Response, next: NextFunction) => Promise<any>) {
 	return (req: Request, res: Response, next: NextFunction) => {
@@ -31,4 +32,10 @@ export async function setupNonTrpcRoutes(app: Express) {
 		asyncHandler(logoUploadHandler)
 	)
 	app.get('/logo', asyncHandler(logoViewHandler))
+
+	app.post(
+		'/stripe/webhooks',
+		raw({ type: 'application/json' }),
+		asyncHandler(stripeWebhookHandler)
+	)
 }

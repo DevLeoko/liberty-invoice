@@ -124,6 +124,7 @@ export const TRANSLATIONS_EN = {
 		emailAlreadyInUse: 'This email address is already in use.',
 		failedCaptcha: 'Captcha failed.',
 		invalidInput: 'Invalid input.',
+		onlyForPlusPlan: 'This feature is only available for Plus plan users.',
 
 		client: {
 			notFound: 'Client not found.',

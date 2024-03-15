@@ -38,6 +38,8 @@ export type UpdateProduct = RouterInput['product']['update']['product']
 export type ListProduct = RouterOutput['product']['list'][0]
 export type ReadProduct = RouterOutput['product']['read']
 
+export type SubscriptionStatus = RouterOutput['planSubscription']['readSubscriptionStatus']
+
 export const trpc = createTRPCProxyClient<AppRouter>({
 	transformer: SuperJSON,
 	links: [

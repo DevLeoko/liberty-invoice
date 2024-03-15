@@ -16,7 +16,7 @@ const downloadPreviewQuerySchema = z.object({
 })
 
 export async function invoiceDownloadHandler(req: Request, res: Response) {
-	if (!req.userId) {
+	if (!req.auth?.userId) {
 		res.status(401).send('Unauthorized')
 		return
 	}
@@ -40,7 +40,7 @@ export async function invoiceDownloadHandler(req: Request, res: Response) {
 		},
 	})
 
-	if (!invoice || invoice.user.id !== req.userId) {
+	if (!invoice || invoice.user.id !== req.auth?.userId) {
 		res.status(404).send('Not found')
 		return
 	}
@@ -49,7 +49,7 @@ export async function invoiceDownloadHandler(req: Request, res: Response) {
 }
 
 export async function invoicePreviewHandler(req: Request, res: Response) {
-	if (!req.userId) {
+	if (!req.auth?.userId) {
 		res.status(401).send('Unauthorized')
 		return
 	}
@@ -61,13 +61,13 @@ export async function invoicePreviewHandler(req: Request, res: Response) {
 
 	const [client, taxRates, user] = await Promise.all([
 		prisma.client.findFirst({
-			where: { userId: req.userId, id: query.invoice.clientId },
+			where: { userId: req.auth?.userId, id: query.invoice.clientId },
 		}),
 		prisma.taxRate.findMany({
-			where: { userId: req.userId, id: { in: query.invoice.taxRateIds } },
+			where: { userId: req.auth?.userId, id: { in: query.invoice.taxRateIds } },
 		}),
 		prisma.user.findUnique({
-			where: { id: req.userId },
+			where: { id: req.auth?.userId },
 			include: { userSettings: true },
 		}),
 	])
@@ -80,7 +80,7 @@ export async function invoicePreviewHandler(req: Request, res: Response) {
 	const invoice = {
 		...query.invoice,
 		client,
-		userId: req.userId,
+		userId: req.auth?.userId,
 		taxRates,
 		user: user!,
 	}

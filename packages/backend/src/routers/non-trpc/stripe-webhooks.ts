@@ -20,11 +20,11 @@ export async function stripeWebhookHandler(req: Request, res: Response) {
 	// Handle the event
 	try {
 		switch (event.type) {
-			case 'checkout.session.completed':
-				await onCheckoutSessionCompleted(
-					event as Extract<Stripe.Event, { type: 'checkout.session.completed' }>
-				)
-				break
+			// case 'checkout.session.completed':
+			// 	await onCheckoutSessionCompleted(
+			// 		event as Extract<Stripe.Event, { type: 'checkout.session.completed' }>
+			// 	)
+			// 	break
 			case 'invoice.paid':
 				await onInvoicePaid(event as Extract<Stripe.Event, { type: 'invoice.paid' }>)
 				break
@@ -34,7 +34,7 @@ export async function stripeWebhookHandler(req: Request, res: Response) {
 		}
 	} catch (err) {
 		console.error(err)
-		res.status(500).send('Error occurred while processing webhook')
+		res.status(500).send('Error occurred while processing webhook: ' + (err as any).message)
 		return
 	}
 
@@ -42,34 +42,46 @@ export async function stripeWebhookHandler(req: Request, res: Response) {
 	res.send()
 }
 
-async function onCheckoutSessionCompleted(
-	event: Extract<Stripe.Event, { type: 'checkout.session.completed' }>
-) {
-	const customerId = event.data.object.customer!
-	const userId = event.data.object.client_reference_id!
+// async function onCheckoutSessionCompleted(
+// 	event: Extract<Stripe.Event, { type: 'checkout.session.completed' }>
+// ) {
+// 	const customerId = event.data.object.customer!
+// 	const userId = event.data.object.client_reference_id!
 
-	prisma.user.update({
-		where: { id: userId },
-		data: {
-			stripeCustomerId: customerId.toString(),
-		},
-	})
-}
+// 	prisma.user.update({
+// 		where: { id: userId },
+// 		data: {
+// 			stripeCustomerId: customerId.toString(),
+// 		},
+// 	})
+// }
 
 async function onInvoicePaid(event: Extract<Stripe.Event, { type: 'invoice.paid' }>) {
-	const customerId = event.data.object.customer!
+	const customerId = event.data.object.customer as string | undefined
+	const userId = event.data.object.subscription_details?.metadata?.userId
+
+	if (!userId) {
+		return
+	}
 
 	const user = await prisma.user.findFirst({
 		where: {
-			stripeCustomerId: customerId.toString(),
+			id: userId,
 		},
 		select: {
 			id: true,
+			stripeCustomerId: true,
 		},
 	})
 
 	if (!user) {
 		throw new Error('User not found')
+	}
+
+	if (!user.stripeCustomerId) {
+		await prisma.user.update({ where: { id: user.id }, data: { stripeCustomerId: customerId } })
+	} else if (user.stripeCustomerId !== customerId) {
+		throw new Error('Customer ID mismatch')
 	}
 
 	const subscription_item = event.data.object.lines.data[0]

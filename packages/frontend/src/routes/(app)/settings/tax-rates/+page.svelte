@@ -60,7 +60,7 @@
 				{@const systemTaxRate = taxRate.name.startsWith('taxRate.')}
 
 				<div
-					class="flex items-center px-2 py-1 bg-gray-200 cursor-pointer hover:bg-gray-300"
+					class="flex items-center px-2 py-1 cursor-pointer bg-gray-150 hover:bg-gray-200"
 					on:click={systemTaxRate
 						? () => {}
 						: () => (selected = { id: taxRate.id, entity: { ...taxRate } })}

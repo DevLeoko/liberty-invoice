@@ -1,8 +1,12 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
 	import { page } from '$app/stores'
+	import Chip from '$lib/components/basics/Chip.svelte'
+	import Skeleton from '$lib/components/basics/Skeleton.svelte'
 	import SupportModal from '$lib/components/global/SupportModal.svelte'
-	import { setLoggedOut } from '../../stores/auth'
+	import { createUserSettingsQuery } from '$lib/controller/user-settings'
+	import { formatClientName } from 'shared/client-formatter'
+	import { authData, setLoggedOut } from '../../stores/auth'
 	import { applicationLanguage, t } from '../../stores/settings'
 	import LanguageSelector from '../LanguageSelector.svelte'
 	import Button from '../basics/Button.svelte'
@@ -13,6 +17,8 @@
 		setLoggedOut()
 		goto('/')
 	}
+
+	const userSettings = createUserSettingsQuery()
 
 	const PAGES = [
 		{
@@ -50,6 +56,8 @@
 	let showMenu = false
 
 	let showSupportModal = false
+
+	$: accountName = $userSettings.data ? formatClientName($userSettings.data, true) : ''
 </script>
 
 {#if showSupportModal}
@@ -92,7 +100,33 @@
 			<span>{$t('menu.needHelp')}</span>
 		</div>
 	</Button>
-	<Button on:click={logout} outlined class="mt-4">{$t('menu.logout')}</Button>
+
+	{#if $userSettings.data}
+		<a
+			class="p-2 mt-2 text-sm border rounded-md border-gray-150 bg-gray-50 hover:border-blue-300 hover:bg-blue-50"
+			href="/settings/account"
+		>
+			<div class="flex items-start justify-between">
+				<div class="flex flex-col">
+					<b class="text-medium">
+						{accountName || $authData?.accountMail}
+					</b>
+					{#if accountName}
+						<span class="-mt-0.5 text-xs text-gray-500">
+							{$authData?.accountMail}
+						</span>
+					{/if}
+				</div>
+				<Chip color={$authData?.plan ? 'blue-500' : 'gray-700'}>
+					{$authData?.plan || 'Free'}
+				</Chip>
+			</div>
+		</a>
+	{:else}
+		<Skeleton class="w-full h-12 mt-4" />
+	{/if}
+
+	<Button on:click={logout} gray class="mt-4">{$t('menu.logout')}</Button>
 	<Button class="mt-4 mb-4 md:hidden" outlined gray>{$t('general.close')}</Button>
 	<div
 		class="flex justify-between mt-1 mb-8 text-xs text-gray-700 md:mb-4"

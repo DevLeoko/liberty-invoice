@@ -26,7 +26,7 @@ app.use(
 	trpcExpress.createExpressMiddleware({
 		router: appRouter,
 		createContext: ({ req, res }) => {
-			return { userId: req.userId, res }
+			return { userId: req.auth?.userId, plan: req.auth?.plan, res }
 		},
 		onError(data) {
 			if (data.error.message?.startsWith('error.')) return
