@@ -147,6 +147,9 @@ export const TRANSLATIONS_EN = {
 		subject: 'Subject',
 		text: 'Text',
 		attachment: 'Attachment',
+
+		editOnlyForPlus:
+			'Customizing the mail subject or text is only available for Plus and Enterprise users.',
 	},
 
 	clientEditorModal: {
@@ -227,7 +230,7 @@ export const TRANSLATIONS_EN = {
 		textFragments: 'Text fragments',
 		textFragmentsText: 'Text fragments for invoices and emails',
 		account: 'Your account',
-		accountText: 'Email, password and language',
+		accountText: 'Email, password and subscription',
 		invoiceNumberFormat: 'Invoice number format',
 		invoiceNumberFormatText: 'Invoice number format and next running number',
 		members: 'Team members',

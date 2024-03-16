@@ -1,4 +1,5 @@
 import { computeTotalExcludingTax, computeTotalWithTax } from '$shared/invoice-computations'
+import { Plan } from '$shared/plans'
 import { z } from 'zod'
 import {
 	LIST_INVOICE_DEFAULT_INCLUDES,
@@ -14,6 +15,9 @@ import { verifyClientOwnership } from './client'
 import type { InvoiceCreateInput } from './invoice-schemas'
 import { invoiceCreateSchema, invoiceListSchema } from './invoice-schemas'
 import { verifyProductOwnership } from './product'
+
+const INVOICE_MAIL_RATE_LIMIT = 5
+const INVOICE_MAIL_RATE_LIMIT_PERIOD = 7 * 24 * 60 * 60 * 1000
 
 async function verifyInvoiceOwnership(invoiceId: string, userId: string) {
 	const invoice = await prisma.invoice.findUnique({
@@ -278,6 +282,38 @@ export const invoiceRouter = router({
 		)
 		.mutation(async ({ input, ctx }) => {
 			await verifyInvoiceOwnership(input.id, ctx.userId)
+
+			// Custom content is only available for Plus plan
+			if (input.content != null && ctx.plan != Plan.PLUS) {
+				throw new TError('error.onlyForPlusPlan')
+			}
+
+			// Check Mail Rate Limit for Free Plan
+			if (ctx.plan != Plan.PLUS) {
+				const user = await prisma.user.findUniqueOrThrow({
+					where: { id: ctx.userId },
+					select: { invoiceMailCount: true, invoiceMailCountPeriodStart: true },
+				})
+
+				const isInCurrentPeriod =
+					Date.now() - user.invoiceMailCountPeriodStart.getTime() < INVOICE_MAIL_RATE_LIMIT_PERIOD
+
+				if (isInCurrentPeriod) {
+					if (user.invoiceMailCount >= INVOICE_MAIL_RATE_LIMIT) {
+						throw new TError('error.invoiceMailRateLimitExceeded')
+					}
+
+					await prisma.user.update({
+						where: { id: ctx.userId },
+						data: { invoiceMailCount: { increment: 1 } },
+					})
+				} else {
+					await prisma.user.update({
+						where: { id: ctx.userId },
+						data: { invoiceMailCount: 1, invoiceMailCountPeriodStart: new Date() },
+					})
+				}
+			}
 
 			await sendInvoiceEmail({
 				invoiceId: input.id,

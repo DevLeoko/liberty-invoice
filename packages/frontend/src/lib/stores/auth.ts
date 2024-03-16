@@ -9,6 +9,7 @@ const loggedInState = persisted<{
 
 export const isLoggedIn = derived(loggedInState, ($loggedInState) => $loggedInState)
 export const authData = derived(loggedInState, ($loggedInState) => $loggedInState?.authData)
+export const activePlan = derived(loggedInState, ($loggedInState) => $loggedInState?.authData?.plan)
 
 export function checkLoginState() {
 	const until = get(loggedInState)?.until

@@ -92,7 +92,7 @@ export function getTextFragmentInvoiceVariables(
 		invoiceMonth: dateVariables.invoiceMonth,
 		invoiceLastMonth: dateVariables.invoiceLastMonth,
 		invoiceYear: dateVariables.invoiceYear,
-		invoiceLastYear: dateVariables.invoiceLastMonthYear,
+		invoiceLastMonthYear: dateVariables.invoiceLastMonthYear,
 		invoiceDueDate: dateVariables.invoiceDueDate,
 		invoiceTotal,
 	}

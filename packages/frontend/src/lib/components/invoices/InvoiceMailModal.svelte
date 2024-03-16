@@ -6,6 +6,7 @@
 	import { createInvoiceFinalizeMutation, getDownloadUrl } from '$lib/controller/invoice'
 	import { createFinalTextFragmentsQuery } from '$lib/controller/text-fragment'
 	import { queryUserSettings } from '$lib/controller/user-settings'
+	import { activePlan } from '$lib/stores/auth'
 	import { logSuccess, t } from '$lib/stores/settings'
 	import { Locale, translate } from '$lib/translations/translations'
 	import { trpc, type ReadInvoice } from '$lib/trpcClient'
@@ -34,9 +35,16 @@
 	}
 
 	function updateTextFragments() {
-		const subjectText =
-			$textFragmentQuery?.find((q) => q.key === 'mail.invoiceSubject')?.value ?? ''
-		const bodyText = $textFragmentQuery?.find((q) => q.key === 'mail.invoiceText')?.value ?? ''
+		let subjectText = $textFragmentQuery?.find((q) => q.key === 'mail.invoiceSubject')?.value ?? ''
+		let bodyText = $textFragmentQuery?.find((q) => q.key === 'mail.invoiceText')?.value ?? ''
+
+		if (!$activePlan) {
+			subjectText = translate(
+				invoice.language as Locale,
+				'textFragmentDefaults.mail.invoiceSubject'
+			)
+			bodyText = translate(invoice.language as Locale, 'textFragmentDefaults.mail.invoiceText')
+		}
 
 		queryUserSettings().then((userSettings) => {
 			const invoiceVariables = getTextFragmentInvoiceVariables(invoice, userSettings)
@@ -118,19 +126,37 @@
 		</div>
 
 		<Labeled label={$t('invoiceEmailModal.subject')}>
-			<input type="text" bind:value={subject} disabled={$textFragmentQuery == null} />
+			<input
+				type="text"
+				bind:value={subject}
+				disabled={$textFragmentQuery == null || !$activePlan}
+			/>
 		</Labeled>
 
 		<Labeled label={$t('invoiceEmailModal.text')} class="z-20">
-			<DynamicTextarea bind:value={text} disabled={$textFragmentQuery == null} class="!bg-white" />
+			<DynamicTextarea
+				bind:value={text}
+				disabled={$textFragmentQuery == null || !$activePlan}
+				class="!bg-opacity-100"
+			/>
 		</Labeled>
 
 		<div
-			class="z-10 !pt-4 -mt-4 input-style !bg-gray-50 !text-gray-500 whitespace-pre-wrap"
+			class="z-10 !pt-4 -mt-4 input-style !bg-gray-100 !text-gray-500 whitespace-pre-wrap"
 			style="font-size: 12px;"
 		>
 			{@html mailDisclaimer}
 		</div>
+
+		{#if !$activePlan}
+			<div class="flex items-center gap-1 px-2 py-1 text-sm text-blue-500 bg-blue-50">
+				<span class="text-base material-icons"> star </span>
+
+				<p>
+					{$t('invoiceEmailModal.editOnlyForPlus')}
+				</p>
+			</div>
+		{/if}
 
 		<Labeled label={$t('invoiceEmailModal.attachment')}>
 			<a

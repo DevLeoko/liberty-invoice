@@ -27,7 +27,7 @@ export const TEXT_FRAGMENT_KEYS = {
 
 export function getAvailableVariables(fragmentName: string) {
 	if (fragmentName.startsWith('mail.invoice')) {
-		return '{clientName}, {accountBusinessName}, {accountFullName}, {invoiceNumber}, {invoiceDate}, {invoiceMonth}, {invoiceLastMonth}, {invoiceYear}, {invoiceLastYear}, {invoiceDueDate}, {invoiceTotal}'
+		return '{clientName}, {accountBusinessName}, {accountFullName}, {invoiceNumber}, {invoiceDate}, {invoiceMonth}, {invoiceLastMonth}, {invoiceYear}, {invoiceLastMonthYear}, {invoiceDueDate}, {invoiceTotal}'
 	} else if (fragmentName == 'invoice.note') {
 		return '{invoiceDate}, {invoiceMonth}, {invoiceLastMonth}, {invoiceYear}, {invoiceLastMonthYear}, {invoiceDueDate}'
 	}

@@ -21,7 +21,7 @@
 		{value + '\n'}
 	</div>
 
-	<textarea class={className} bind:value></textarea>
+	<textarea class={className} {disabled} bind:value></textarea>
 </div>
 
 <style>

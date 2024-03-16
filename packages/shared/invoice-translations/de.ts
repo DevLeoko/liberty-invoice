@@ -129,6 +129,8 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		failedCaptcha: 'Captcha fehlgeschlagen.',
 		invalidInput: 'Ungültige Eingabe.',
 		onlyForPlusPlan: 'Dieses Feature ist nur LiberyInvoice Plus Nutzern zugänglich.',
+		invoiceMailRateLimitExceeded:
+			'Mit dem Free-Plan können Sie nur bis zu 5 Rechnungen pro Woche versenden.',
 
 		client: {
 			notFound: 'Kunde nicht gefunden.',

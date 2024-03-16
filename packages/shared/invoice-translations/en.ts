@@ -125,6 +125,7 @@ export const TRANSLATIONS_EN = {
 		failedCaptcha: 'Captcha failed.',
 		invalidInput: 'Invalid input.',
 		onlyForPlusPlan: 'This feature is only available for Plus plan users.',
+		invoiceMailRateLimitExceeded: 'You can only send up to 5 invoices per week with the Free plan.',
 
 		client: {
 			notFound: 'Client not found.',

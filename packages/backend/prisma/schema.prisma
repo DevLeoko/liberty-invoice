@@ -25,6 +25,9 @@ model User {
   activePlan           String?
   planValidUntil       DateTime?
 
+  invoiceMailCount Int @default(0)
+  invoiceMailCountPeriodStart DateTime @default(now())
+
   userSettings UserSettings?
 
   clients       Client[]

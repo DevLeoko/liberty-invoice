@@ -180,6 +180,9 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		subject: 'Betreff',
 		text: 'Text',
 		attachment: 'Anhang',
+
+		editOnlyForPlus:
+			'Das Anpassen des Betreffs oder Textes ist nur für Plus- und Enterprise-Nutzer möglich.',
 	},
 
 	clientEditor: {
@@ -230,7 +233,7 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		textFragments: 'Textbausteine',
 		textFragmentsText: 'Textbausteine für Rechnungen und E-Mails',
 		account: 'Dein Account',
-		accountText: 'E-Mail, Passwort und Sprache',
+		accountText: 'E-Mail, Passwort und Abonnement',
 		invoiceNumberFormat: 'Rechnungsnummer Formatierung',
 		invoiceNumberFormatText: 'Formatierung der Rechnungsnummer und nächste Laufnummer',
 		members: 'Teammitglieder',
