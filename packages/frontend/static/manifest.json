@@ -23,7 +23,7 @@
 	"background_color": "#f9fafb",
 	"display": "standalone",
 	"scope": "/",
-	"theme_color": "#3b82f6",
+	"theme_color": "#004ee7",
 	"shortcuts": [
 		{
 			"name": "New invoice",
