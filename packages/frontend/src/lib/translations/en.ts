@@ -110,7 +110,7 @@ export const TRANSLATIONS_EN = {
 		activePlan: 'Active plan',
 		upgradeToUnlockP1: 'Upgrade to',
 		upgradeToUnlockP2: 'to unlock these features',
-		feature1: 'Send invoices via email',
+		feature1: 'Unlimited and customizable invoice emails',
 		feature2: 'Remove "Created with Liberty Invoice"',
 		feature3: 'Customize invoice number format',
 		feature4: 'Priority support',
