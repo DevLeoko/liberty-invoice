@@ -121,24 +121,6 @@ export class Authenticator<T extends Record<string, any>> {
 		}
 	}
 
-	generateMailToken(email: string) {
-		return jwt.sign({ email: email.toLowerCase() }, this.secret, {
-			expiresIn: '36h',
-		})
-	}
-
-	verifyMailToken(token: string, email: string): boolean {
-		try {
-			const { email: tokenEmail } = jwt.verify(token, this.secret) as {
-				email: string
-			}
-
-			return email.toLowerCase() === tokenEmail
-		} catch (err) {
-			return false
-		}
-	}
-
 	verifyAccessToken(accessToken: string): AuthResponse<T, 'invalid-token'> {
 		try {
 			const { data } = jwt.verify(accessToken, this.secret) as { data: T }

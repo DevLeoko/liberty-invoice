@@ -4,6 +4,7 @@ import type { Prisma } from '@prisma/client'
 import type { NextFunction, Request, Response } from 'express'
 import { OAuth2Client } from 'google-auth-library'
 import { prisma } from '../prisma'
+import { generateMailActionToken, verifyMailActionToken } from '../utils/MailActionToken'
 import { TError } from '../utils/TError'
 import { Authenticator } from '../utils/authenticator'
 import { sendMailTemplate } from '../utils/mailer'
@@ -208,7 +209,7 @@ export async function signUpWithPassword(
 
 	await createUser(email, password, false, marketingEmails, langCode)
 
-	const mailToken = authenticator.generateMailToken(email)
+	const mailToken = generateMailActionToken({ type: 'verify', email })
 	const verifyUrl = `${process.env.SIGN_IN_URL}?token=${encodeURIComponent(
 		mailToken
 	)}&email=${encodeURIComponent(email)}`
@@ -222,8 +223,9 @@ export async function signUpWithPassword(
 export async function verifyMailToken(token: string, email: string) {
 	email = email.toLowerCase()
 
-	const isValid = authenticator.verifyMailToken(token, email)
-	if (!isValid) throw new TError('error.invalidToken')
+	const mailAction = verifyMailActionToken(token)
+	if (!mailAction || mailAction.type !== 'verify' || mailAction.email !== email)
+		throw new TError('error.invalidToken')
 
 	await prisma.user.update({
 		where: {
@@ -365,7 +367,7 @@ function getDefaultUserSettings(langCode: string): Prisma.UserSettingsCreateInpu
 export async function requestPasswordReset(email: string) {
 	email = email.toLowerCase()
 
-	const resetToken = authenticator.generateMailToken(email)
+	const resetToken = generateMailActionToken({ type: 'change-password', email })
 	const resetUrl = `${
 		process.env.RESET_PASSWORD_URL
 	}?token=${encodeURIComponent(resetToken)}&email=${encodeURIComponent(email)}`
@@ -386,8 +388,9 @@ export async function resetPassword({
 }) {
 	email = email.toLowerCase()
 
-	const isValid = authenticator.verifyMailToken(token, email)
-	if (!isValid) throw new TError('error.invalidToken')
+	const mailAction = verifyMailActionToken(token)
+	if (!mailAction || mailAction.type !== 'change-password' || mailAction.email !== email)
+		throw new TError('error.invalidToken')
 
 	const user = await prisma.user.findUnique({
 		where: {
