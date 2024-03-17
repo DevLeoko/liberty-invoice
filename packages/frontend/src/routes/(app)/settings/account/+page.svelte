@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { goto } from '$app/navigation'
 	import SubscriptionBox from '$lib/components/settings/SubscriptionBox.svelte'
+	import { logout } from '$lib/stores/auth'
 	import { onMount } from 'svelte'
 	import Button from '../../../../lib/components/basics/Button.svelte'
 	import Chip from '../../../../lib/components/basics/Chip.svelte'
@@ -9,7 +9,6 @@
 		createUserSettingsQuery,
 		createUserSettingsUpdateMutation,
 	} from '../../../../lib/controller/user-settings'
-	import { setLoggedOut } from '../../../../lib/stores/auth'
 	import { logSuccess, t } from '../../../../lib/stores/settings'
 	import { trpc, type ReadMe } from '../../../../lib/trpcClient'
 
@@ -61,9 +60,8 @@
 		await trpc.auth.deleteAccount.mutate().finally(() => {
 			loadingDelete = false
 		})
-		setLoggedOut()
+		logout()
 		$logSuccess('settings.accountDeleted')
-		goto('/auth/login')
 	}
 </script>
 

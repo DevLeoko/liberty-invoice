@@ -27,8 +27,9 @@ export const load: LayoutLoad = async (event) => {
 	}
 
 	const authRoute = event.route.id?.startsWith('/auth/')
+	const isLoggingOut = event.url.searchParams.has('logout')
 
-	if (!get(isLoggedIn)) {
+	if (isLoggingOut || !get(isLoggedIn)) {
 		if (!authRoute) return goto('/auth/login')
 	} else {
 		const isPasswordResetRoute = event.route.id == '/auth/password'

@@ -1,10 +1,9 @@
-import { goto } from '$app/navigation'
 import { PUBLIC_BACKEND_URL } from '$env/static/public'
 import { createTRPCProxyClient, httpBatchLink, loggerLink } from '@trpc/client'
 import type { AppRouter, RouterInput, RouterOutput } from 'backend/routers/_app'
 import SuperJSON from 'superjson'
 import { get } from 'svelte/store'
-import { setLoggedOut, updateAuthData } from './stores/auth'
+import { logout, updateAuthData } from './stores/auth'
 import { logError } from './stores/settings'
 import type { TranslationPaths } from './translations/translations'
 
@@ -49,8 +48,7 @@ export const trpc = createTRPCProxyClient<AppRouter>({
 					if (data.result instanceof Error) {
 						if (data.result.message == 'error.notAuthenticated') {
 							get(logError)('error.sessionExpired')
-							setLoggedOut()
-							goto('/')
+							logout()
 						} else {
 							get(logError)(data.result.message as TranslationPaths)
 						}

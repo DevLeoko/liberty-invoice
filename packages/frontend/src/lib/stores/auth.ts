@@ -1,3 +1,4 @@
+import { goto } from '$app/navigation'
 import { persisted } from 'svelte-persisted-store'
 import { derived, get } from 'svelte/store'
 import type { AuthPayload } from '../../../../shared/AuthPayload'
@@ -39,6 +40,8 @@ export function updateAuthData(authData: AuthPayload) {
 }
 
 // TODO: This should also properly handle redirecting to the login page (without inconsistent application state)
-export function setLoggedOut() {
-	loggedInState.set(null)
+export function logout() {
+	goto('/auth/login?logout=1').then(() => {
+		loggedInState.set(null)
+	})
 }

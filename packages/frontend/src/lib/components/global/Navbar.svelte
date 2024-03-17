@@ -1,22 +1,16 @@
 <script lang="ts">
-	import { goto } from '$app/navigation'
 	import { page } from '$app/stores'
 	import Chip from '$lib/components/basics/Chip.svelte'
 	import Skeleton from '$lib/components/basics/Skeleton.svelte'
 	import SupportModal from '$lib/components/global/SupportModal.svelte'
 	import { createUserSettingsQuery } from '$lib/controller/user-settings'
 	import { formatClientName } from 'shared/client-formatter'
-	import { authData, setLoggedOut } from '../../stores/auth'
+	import { authData, logout } from '../../stores/auth'
 	import { applicationLanguage, t } from '../../stores/settings'
 	import LanguageSelector from '../LanguageSelector.svelte'
 	import Button from '../basics/Button.svelte'
 	import FloatingCardTrigger from '../basics/FloatingCardTrigger.svelte'
 	import MobileNavbar from './MobileNavbar.svelte'
-
-	function logout() {
-		setLoggedOut()
-		goto('/')
-	}
 
 	const userSettings = createUserSettingsQuery()
 
