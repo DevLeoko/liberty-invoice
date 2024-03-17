@@ -133,6 +133,7 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		onlyForPlusPlan: 'Dieses Feature ist nur LiberyInvoice Plus Nutzern zugänglich.',
 		invoiceMailRateLimitExceeded:
 			'Mit dem Free-Plan können Sie nur bis zu 5 Rechnungen pro Woche versenden.',
+		targetEmailDisallowed: 'Der Empfänger hat den Erhalt von E-Mails von LibertyInvoice untersagt.',
 
 		client: {
 			notFound: 'Kunde nicht gefunden.',

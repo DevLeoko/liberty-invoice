@@ -16,6 +16,7 @@ declare global {
       RESET_PASSWORD_URL: string
       SUBSCRIPTION_RETURN_URL: string;
       CORS_ORIGIN: string
+      BACKEND_URL: string;
       FILE_STORAGE_PATH: string
       STRIPE_PUBLIC_KEY: string;
       STRIPE_SECRET_KEY: string;

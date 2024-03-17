@@ -12,7 +12,7 @@ export async function mailActionHandler(req: Request, res: Response) {
 	const action = verifyMailActionToken(token)
 
 	if (!action) {
-		return res.status(400).send('Invalid token')
+		return res.status(400).send('Invalid or expired link')
 	}
 
 	switch (action.type) {
@@ -28,7 +28,24 @@ export async function mailActionHandler(req: Request, res: Response) {
 }
 
 async function onDisallowEmails(email: string, res: Response) {
-	res.status(200).send('Todo - please contact support')
+	try {
+		await prisma.disallowedEmailAddress.create({
+			data: {
+				email,
+			},
+		})
+	} catch (err) {
+		if ((err as any).code === 'P2002') {
+			return res.status(200).send('You have already been removed from our email list.')
+		}
+		throw err
+	}
+
+	res.status(200)
+		.send(`You will no longer receive any emails from Liberty Invoice users. We have added ${email} to our disallowed email list.<br>
+We apologize for any inconvenience caused by unsolicited emails.<br>
+<br>
+If you have any questions or performed this action by mistake, please contact us at lets@respark.dev`)
 }
 
 async function onUnsubscribe(email: string, res: Response) {

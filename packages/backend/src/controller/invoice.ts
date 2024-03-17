@@ -5,6 +5,8 @@ import { getTextFragmentInvoiceVariables, parseTextFragment } from '$shared/text
 import type { Prisma } from '@prisma/client'
 import xss from 'xss'
 import { prisma } from '../prisma'
+import { getMailActionUrl } from '../utils/MailActionToken'
+import { TError } from '../utils/TError'
 import { sendMail } from '../utils/mailer'
 import { buildInvoicePdf } from '../utils/pdf/invoice-pdf'
 
@@ -92,6 +94,16 @@ export async function finalizeInvoice(invoiceId: string) {
 	}>
 }
 
+export async function isEmailDisallowed(email: string) {
+	return prisma.disallowedEmailAddress
+		.findUnique({
+			where: {
+				email,
+			},
+		})
+		.then((result) => !!result)
+}
+
 export async function sendInvoiceEmail(options: {
 	invoiceId: string
 	email: string
@@ -103,6 +115,10 @@ export async function sendInvoiceEmail(options: {
 	} | null
 	sendingUserId: string
 }) {
+	if (await isEmailDisallowed(options.email)) {
+		throw new TError('error.targetEmailDisallowed')
+	}
+
 	const invoice = await prisma.invoice.findUnique({
 		where: {
 			id: options.invoiceId,
@@ -147,9 +163,13 @@ export async function sendInvoiceEmail(options: {
 		body = parseTextFragment(defaultBody, invoiceVariables)
 	}
 
+	const unsubscribeUrl = getMailActionUrl({ type: 'disallow-emails', email: options.email })
 	const mailDisclaimer = translateShared(
 		invoice!.language as Locale,
-		'mailTemplate.footerDisclaimer'
+		'mailTemplate.footerDisclaimer',
+		{
+			url: unsubscribeUrl,
+		}
 	)
 
 	const fullMailBody =
@@ -174,5 +194,6 @@ export async function sendInvoiceEmail(options: {
 				buffer: invoicePdf,
 			},
 		],
+		unsubscribeLink: unsubscribeUrl,
 	})
 }

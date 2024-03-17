@@ -84,10 +84,12 @@
 				email,
 				cc,
 				bcc,
-				content: {
-					subject,
-					body: text,
-				},
+				content: $activePlan
+					? {
+							subject,
+							body: text,
+						}
+					: null,
 			})
 
 			$logSuccess(

@@ -8,7 +8,10 @@ import { stripeWebhookHandler } from './stripe-webhooks'
 
 function asyncHandler(fn: (req: Request, res: Response, next: NextFunction) => Promise<any>) {
 	return (req: Request, res: Response, next: NextFunction) => {
-		Promise.resolve(fn(req, res, next)).catch(next)
+		Promise.resolve(fn(req, res, next)).catch((err) => {
+			console.error(err)
+			res.status(500).send('An error occurred')
+		})
 	}
 }
 

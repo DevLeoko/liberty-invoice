@@ -18,3 +18,9 @@ export function verifyMailActionToken(token: string): null | MailAction {
 		return null
 	}
 }
+
+export function getMailActionUrl(action: MailAction): string {
+	return `${process.env.BACKEND_URL}/mail-action?token=${encodeURIComponent(
+		generateMailActionToken(action)
+	)}`
+}

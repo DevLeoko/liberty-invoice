@@ -25,7 +25,7 @@ model User {
   activePlan           String?
   planValidUntil       DateTime?
 
-  invoiceMailCount Int @default(0)
+  invoiceMailCount            Int      @default(0)
   invoiceMailCountPeriodStart DateTime @default(now())
 
   userSettings UserSettings?
@@ -221,4 +221,9 @@ model CurrencyExchangeRates {
   rate         Float
 
   @@id([toCurrency, fromCurrency])
+}
+
+model DisallowedEmailAddress {
+  email     String   @id
+  createdAt DateTime @default(now())
 }
