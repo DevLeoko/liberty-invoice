@@ -89,6 +89,8 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		paymentDetailsLine2: 'Bitte geben Sie die Rechnungsnummer als Verwendungszweck an',
 
 		deliveryDateNotice: 'Soweit nicht anders angegeben, enspricht Lieferdatum dem Rechnungsdatum',
+
+		createdWithLibertyInvoice: 'Erstellt mit LibertyInvoice',
 	},
 
 	mailTemplate: {

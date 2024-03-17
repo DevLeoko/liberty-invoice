@@ -178,20 +178,29 @@ export async function buildInvoicePdf(
 				? `${account.firstName} ${account.lastName}`
 				: account.name || ''
 
+		const letFooterRows: (PdfBlueprint | 'spacer')[] = [
+			ppText(t('invoice.bankingInfo'), { bold: true }),
+			ppText(accountName),
+			ppText(`${t('invoice.bank')}: ${account.bankName}`),
+			ppText(`IBAN: ${account.iban}`),
+			ppText(`BIC: ${account.bic}`),
+		]
+
+		if (!invoice.user.activePlan) {
+			letFooterRows.push(
+				ppText(''),
+				'spacer',
+				ppText(t('invoice.createdWithLibertyInvoice'), {
+					fontSize: 8.5,
+				})
+			)
+		}
+
 		return ppRow(
 			[
-				ppColumn(
-					[
-						ppText(t('invoice.bankingInfo'), { bold: true }),
-						ppText(accountName),
-						ppText(`${t('invoice.bank')}: ${account.bankName}`),
-						ppText(`IBAN: ${account.iban}`),
-						ppText(`BIC: ${account.bic}`),
-					],
-					{
-						width: { relative: 0.32 },
-					}
-				),
+				ppColumn(letFooterRows, {
+					width: { relative: 0.32 },
+				}),
 				ppColumn(
 					[
 						ppText(t('invoice.paymentDetails'), { bold: true }),
