@@ -29,7 +29,7 @@
 			"name": "New invoice",
 			"short_name": "New invoice",
 			"description": "Create a new invoice",
-			"url": "/invoices/new?source=pwa",
+			"url": "/invoices/new",
 			"icons": [{ "src": "/manifest-images/shortcuts/add.png", "sizes": "192x192" }]
 		}
 	],
