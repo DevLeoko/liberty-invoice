@@ -4,7 +4,7 @@
 	import Skeleton from '$lib/components/basics/Skeleton.svelte'
 	import VerticalSelector from '$lib/components/basics/VerticalSelector.svelte'
 	import { authData, updateAuthData } from '$lib/stores/auth'
-	import { applicationLanguage, logInfo, t } from '$lib/stores/settings'
+	import { applicationLanguage, isInstalledFromStore, logInfo, t } from '$lib/stores/settings'
 	import { Locale } from '$lib/translations/translations'
 	import { trpc, type SubscriptionStatus } from '$lib/trpcClient'
 	import { Plan } from 'shared/plans'
@@ -73,56 +73,81 @@
 		</b>
 
 		{#if !status.activePlan}
-			<h2 class="mt-2 text-base">
-				{$t('subscription.upgradeToUnlockP1')}
-				<Chip color="blue-500" class="inline-block">Plus</Chip>
-				{$t('subscription.upgradeToUnlockP2')}
-			</h2>
-			<ul class="pl-8 list-disc">
-				<li>{$t('subscription.feature1')}</li>
-				<li>{$t('subscription.feature2')}</li>
-				<li>{$t('subscription.feature3')}</li>
-				<li>{$t('subscription.feature4')}</li>
-				<li>{$t('subscription.feature5')}</li>
-			</ul>
+			{#if $isInstalledFromStore}
+				<div>
+					<ul class="pl-8 list-disc">
+						<li>{$t('subscription.freeFeatures.feature1')}</li>
+						<li>{$t('subscription.freeFeatures.feature2')}</li>
+						<li>{$t('subscription.freeFeatures.feature3')}</li>
+						<li>{$t('subscription.freeFeatures.feature4')}</li>
+						<li>{$t('subscription.freeFeatures.feature5')}</li>
+						<li>{$t('subscription.freeFeatures.feature6')}</li>
+					</ul>
 
-			<div class="">
-				{$t('subscription.just')}
-				<span class="text-xl">
-					{billingCycle === 'yearly'
-						? $t('subscription.plusPriceYearly')
-						: $t('subscription.plusPriceMonthly')}
-				</span>
-				<span class="text-sm">
-					/
-					{billingCycle === 'yearly' ? $t('subscription.year') : $t('subscription.month')}
-					<i class="text-gray-500">
-						({$t('subscription.plusTax')})
-					</i>
-				</span>
-			</div>
+					<ul class="pl-8 text-gray-500 list-disc marker:text-gray-300">
+						<li>{$t('subscription.plusFeatures.feature1')}</li>
+						<li>{$t('subscription.plusFeatures.feature2')}</li>
+						<li>{$t('subscription.plusFeatures.feature3')}</li>
+						<li>{$t('subscription.plusFeatures.feature4')}</li>
+						<li>{$t('subscription.plusFeatures.feature5')}</li>
+					</ul>
+				</div>
 
-			<div class="flex items-center gap-1">
-				{$t('subscription.whenBilled')}
-				<VerticalSelector
-					bind:value={billingCycle}
-					options={[
-						{
-							value: 'monthly',
-							label: $t('subscription.monthly'),
-						},
-						{
-							value: 'yearly',
-							label: $t('subscription.yearly'),
-						},
-					]}
-				/>
-			</div>
+				<div class="[&>a]:text-blue-500 [&>a]:font-medium">
+					{@html $t('subscription.subscriptionNoteForApp')}
+				</div>
+			{:else}
+				<h2 class="mt-2 text-base">
+					{$t('subscription.upgradeToUnlockP1')}
+					<Chip color="blue-500" class="inline-block">Plus</Chip>
+					{$t('subscription.upgradeToUnlockP2')}
+				</h2>
+				<ul class="pl-8 list-disc">
+					<li>{$t('subscription.plusFeatures.feature1')}</li>
+					<li>{$t('subscription.plusFeatures.feature2')}</li>
+					<li>{$t('subscription.plusFeatures.feature3')}</li>
+					<li>{$t('subscription.plusFeatures.feature4')}</li>
+					<li>{$t('subscription.plusFeatures.feature5')}</li>
+				</ul>
 
-			<Button class="mt-2" loading={loadingUpgrade} on:click={onUpgrade} snug>
-				{$t('subscription.upgradeToPlus')}
-			</Button>
-		{:else}
+				<div class="">
+					{$t('subscription.just')}
+					<span class="text-xl">
+						{billingCycle === 'yearly'
+							? $t('subscription.plusPriceYearly')
+							: $t('subscription.plusPriceMonthly')}
+					</span>
+					<span class="text-sm">
+						/
+						{billingCycle === 'yearly' ? $t('subscription.year') : $t('subscription.month')}
+						<i class="text-gray-500">
+							({$t('subscription.plusTax')})
+						</i>
+					</span>
+				</div>
+
+				<div class="flex items-center gap-1">
+					{$t('subscription.whenBilled')}
+					<VerticalSelector
+						bind:value={billingCycle}
+						options={[
+							{
+								value: 'monthly',
+								label: $t('subscription.monthly'),
+							},
+							{
+								value: 'yearly',
+								label: $t('subscription.yearly'),
+							},
+						]}
+					/>
+				</div>
+
+				<Button class="mt-2" loading={loadingUpgrade} on:click={onUpgrade} snug>
+					{$t('subscription.upgradeToPlus')}
+				</Button>
+			{/if}
+		{:else if !$isInstalledFromStore}
 			<Button class="mt-2" loading={loadingOpenPortal} on:click={openPortal} snug>
 				{$t('subscription.manageSubscription')}
 			</Button>

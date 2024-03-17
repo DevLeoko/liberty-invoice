@@ -1,14 +1,24 @@
-import { derived, writable } from 'svelte/store'
+import { browser } from '$app/environment'
+import { persisted } from 'svelte-persisted-store'
+import { derived } from 'svelte/store'
 import { getCurrency as getCurrencyUtil } from '../../../../shared/currencies'
 import { LOCALES, Locale, translate, type TranslationPaths } from '../translations/translations'
 import { logErrorStatic, logInfoStatic, logSuccessStatic } from './alerts'
 
-// Get browser language.
-function getApplicationLanguage(): Locale {
-	// First check localStorage
-	const storedLanguage = localStorage.getItem('language')
+export const pwaSource = persisted<'google-play' | 'app-store' | 'microsoft' | 'pwa' | 'web'>(
+	'pwa-source',
+	'web'
+)
 
-	if (storedLanguage && LOCALES.includes(storedLanguage)) return storedLanguage as Locale
+export const isInstalledFromStore = derived(
+	pwaSource,
+	($pwaSource) =>
+		$pwaSource === 'google-play' || $pwaSource === 'app-store' || $pwaSource === 'microsoft'
+)
+
+// Get browser language.
+function getBrowserLanguage(): Locale {
+	if (!browser) return Locale.EN
 
 	const browserLanguage = navigator.language.split('-')[0]
 	if (browserLanguage && LOCALES.includes(browserLanguage)) return browserLanguage as Locale
@@ -16,11 +26,7 @@ function getApplicationLanguage(): Locale {
 	return Locale.EN
 }
 
-export const applicationLanguage = writable(getApplicationLanguage())
-
-applicationLanguage.subscribe((language) => {
-	localStorage.setItem('language', language)
-})
+export const applicationLanguage = persisted<Locale>('app-language', getBrowserLanguage())
 
 export const t = derived(
 	applicationLanguage,

@@ -96,11 +96,26 @@ export const TRANSLATIONS_DE: TranslationDictionary = {
 		activePlan: 'Aktueller Plan',
 		upgradeToUnlockP1: 'Upgrade auf',
 		upgradeToUnlockP2: 'um diese Funktionen freizuschalten',
-		feature1: 'Rechnungen per E-Mail senden',
-		feature2: '"Erstellt mit Liberty Invoice" entfernen',
-		feature3: 'Rechnungsnummer-Format anpassen',
-		feature4: 'Priorisierter Support',
-		feature5: 'Zugang zu Feature-Abstimmung',
+
+		freeFeatures: {
+			feature1: 'Unbegrenzte Rechnungen',
+			feature2: 'Unbegrenzte Kunden',
+			feature3: 'Unbegrenzte Produkte',
+			feature4: 'Individuelles Branding',
+			feature5: 'Mobile App',
+			feature6: '5 Rechnungs-E-Mails pro Woche',
+		},
+
+		plusFeatures: {
+			feature1: 'Entfernen Sie "Erstellt mit Liberty Invoice"',
+			feature2: 'Unbegrenzte Rechnungs-E-Mails',
+			feature3: 'Rechnungs-E-Mails anpassen',
+			feature4: 'Individuelles Rechnungsnummernformat',
+			feature5: 'Prioritätssupport',
+		},
+
+		subscriptionNoteForApp:
+			'Melden Sie sich mit Ihrem Account auf <a href="https://app.liberty-invoice.com/">app.liberty-invoice.com</a> an, um mehr Informationen über Ihren Account und Plan zu sehen.',
 
 		just: 'Nur',
 		plusPriceMonthly: '10€',

@@ -110,11 +110,26 @@ export const TRANSLATIONS_EN = {
 		activePlan: 'Active plan',
 		upgradeToUnlockP1: 'Upgrade to',
 		upgradeToUnlockP2: 'to unlock these features',
-		feature1: 'Unlimited and customizable invoice emails',
-		feature2: 'Remove "Created with Liberty Invoice"',
-		feature3: 'Customize invoice number format',
-		feature4: 'Priority support',
-		feature5: 'Access to feature voting',
+
+		freeFeatures: {
+			feature1: 'Unlimited invoices',
+			feature2: 'Unlimited clients',
+			feature3: 'Unlimited products',
+			feature4: 'Custom branding',
+			feature5: 'Mobile App',
+			feature6: '5 Invoice mails per week',
+		},
+
+		plusFeatures: {
+			feature1: 'Remove "Created with Liberty Invoice"',
+			feature2: 'Unlimited invoice mails',
+			feature3: 'Customize invoice mails',
+			feature4: 'Custom invoice number format',
+			feature5: 'Priority support',
+		},
+
+		subscriptionNoteForApp:
+			'Login to your account on <a href="https://app.liberty-invoice.com/">app.liberty-invoice.com</a> to see more detailed information about your account and plan.',
 
 		just: 'Just',
 		plusPriceMonthly: '$10',
