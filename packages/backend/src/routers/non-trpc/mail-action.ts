@@ -1,4 +1,5 @@
 import type { Request, Response } from 'express'
+import { prisma } from '../../prisma'
 import { verifyMailActionToken } from '../../utils/MailActionToken'
 
 export async function mailActionHandler(req: Request, res: Response) {
@@ -31,5 +32,16 @@ async function onDisallowEmails(email: string, res: Response) {
 }
 
 async function onUnsubscribe(email: string, res: Response) {
-	res.status(200).send('Todo - please contact support')
+	await prisma.userSettings.updateMany({
+		where: {
+			user: {
+				email,
+			},
+		},
+		data: {
+			marketingEmails: false,
+		},
+	})
+
+	res.status(200).send('You have been unsubscribed from marketing emails.')
 }
