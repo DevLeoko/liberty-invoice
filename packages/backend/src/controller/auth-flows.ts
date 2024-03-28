@@ -17,7 +17,7 @@ async function checkUserPlan(
 ) {
 	if (!user.activePlan) return
 
-	if (user.planValidUntil && user.planValidUntil > new Date()) return
+	if (user.planValidUntil === null || user.planValidUntil > new Date()) return
 
 	await prisma.user.update({
 		where: {
