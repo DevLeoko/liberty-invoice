@@ -40,7 +40,7 @@
 	</div>
 </div> -->
 <div
-	class="fixed top-0 right-0 h-screen flex flex-col p-6 pt-4 bg-white rounded-l-lg max-w-full shadow-lg overflow-y-auto pb-24 md:pb-6 {className}"
+	class="fixed top-0 right-0 h-screen flex flex-col p-6 pt-4 bg-white rounded-l-lg max-w-full shadow-lg overflow-y-auto pb-24 md:pb-6 z-20 {className}"
 	transition:fly={{ x: 400, duration: 100 }}
 >
 	<slot />
