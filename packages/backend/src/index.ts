@@ -29,7 +29,11 @@ app.use(
 			return { userId: req.auth?.userId, plan: req.auth?.plan, res }
 		},
 		onError(data) {
-			if (data.error.message?.startsWith('error.')) return
+			if (
+				data.error.message?.startsWith('error.') &&
+				data.error.message != 'error.internalServerError'
+			)
+				return
 
 			console.error(data.error)
 			data.error.message = 'error.internalServerError'
